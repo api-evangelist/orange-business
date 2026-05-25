@@ -1,0 +1,712 @@
+aid: orange-business
+url: https://raw.githubusercontent.com/api-evangelist/orange-business/refs/heads/main/apis.yml
+apis:
+- aid: orange-business:orange-business-number-verification-api
+  name: Orange Business Number Verification API
+  tags:
+  - Authentication
+  - CAMARA
+  - Identity
+  - Number Verification
+  - Open Gateway
+  - Telco
+  humanURL: https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview
+  properties:
+  - url: https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview
+    type: Documentation
+  - url: openapi/orange-business-number-verification-openapi.yml
+    type: OpenAPI
+  - url: https://github.com/camaraproject/NumberVerification
+    type: SourceCode
+  description: Silent, network-based mobile phone number verification using the SIM in the end user's device. Replaces
+    SMS OTP and authenticator flows for app onboarding, login, and password reset. Implements the CAMARA Number
+    Verification specification on Orange's network. Live in France and Spain through the Orange Open Gateway, with
+    additional Orange Europe and Africa footprints in progress.
+- aid: orange-business:orange-business-sim-swap-api
+  name: Orange Business SIM Swap API
+  tags:
+  - CAMARA
+  - Fraud Prevention
+  - Identity
+  - Open Gateway
+  - SIM Swap
+  - Telco
+  humanURL: https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/current/overview
+  properties:
+  - url: https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/current/overview
+    type: Documentation
+  - url: openapi/orange-business-sim-swap-openapi.yml
+    type: OpenAPI
+  - url: https://github.com/camaraproject/SimSwap
+    type: SourceCode
+  description: Detect whether the SIM associated with a mobile phone number has been swapped recently. Used to flag
+    account takeover risk before high-value actions (login, transfers, password reset). Implements the CAMARA SIM
+    Swap API on Orange France and Orange Spain networks via the Orange Open Gateway.
+- aid: orange-business:orange-business-device-swap-api
+  name: Orange Business Device Swap API
+  tags:
+  - CAMARA
+  - Device Swap
+  - Fraud Prevention
+  - Open Gateway
+  - Telco
+  humanURL: https://docs.developer.orange.com/network-apis/api-catalog/device-swap/es/current/overview
+  properties:
+  - url: https://docs.developer.orange.com/network-apis/api-catalog/device-swap/es/current/overview
+    type: Documentation
+  - url: openapi/orange-business-device-swap-openapi.yml
+    type: OpenAPI
+  - url: https://github.com/camaraproject/DeviceSwap
+    type: SourceCode
+  description: Detect changes to the device (IMEI) associated with a SIM, surfacing risk signals beyond SIM swap.
+    Implements the CAMARA Device Swap API.
+- aid: orange-business:orange-business-kyc-match-api
+  name: Orange Business KYC Match API
+  tags:
+  - CAMARA
+  - Identity
+  - KYC
+  - Open Gateway
+  - Telco
+  humanURL: https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/current/overview
+  properties:
+  - url: https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/current/overview
+    type: Documentation
+  - url: openapi/orange-business-kyc-match-openapi.yml
+    type: OpenAPI
+  - url: https://github.com/camaraproject/KnowYourCustomerMatch
+    type: SourceCode
+  description: Match user-provided KYC attributes (name, address, date of birth, document numbers) against the
+    operator's authoritative subscriber record and return a per-attribute match/no-match response. Implements the
+    CAMARA Know Your Customer (KYC) Match API.
+- aid: orange-business:orange-business-device-location-retrieval-api
+  name: Orange Business Device Location Retrieval API
+  tags:
+  - CAMARA
+  - Device Location
+  - Geolocation
+  - Open Gateway
+  - Telco
+  humanURL: https://developer.orange.com/apis/device-location-retrieval-camara/
+  properties:
+  - url: https://developer.orange.com/apis/device-location-retrieval-camara/
+    type: Documentation
+  - url: openapi/orange-business-device-location-retrieval-openapi.yml
+    type: OpenAPI
+  - url: https://github.com/camaraproject/DeviceLocation
+    type: SourceCode
+  description: Retrieve the network-derived location of a mobile device with operator-provided accuracy and
+    confidence. Implements the CAMARA Device Location Retrieval API.
+- aid: orange-business:orange-business-device-location-verification-api
+  name: Orange Business Device Location Verification API
+  tags:
+  - CAMARA
+  - Device Location
+  - Geolocation
+  - Open Gateway
+  - Telco
+  humanURL: https://developer.orange.com/apis/device-location-verification-camara/
+  properties:
+  - url: https://developer.orange.com/apis/device-location-verification-camara/
+    type: Documentation
+  - url: openapi/orange-business-device-location-verification-openapi.yml
+    type: OpenAPI
+  - url: https://github.com/camaraproject/DeviceLocation
+    type: SourceCode
+  description: Verify whether a mobile device is within a specified geographic area without exposing precise
+    coordinates. Returns match/no-match plus confidence. Implements the CAMARA Device Location Verification API.
+- aid: orange-business:orange-business-geofencing-api
+  name: Orange Business Geofencing API
+  tags:
+  - CAMARA
+  - Geofencing
+  - Geolocation
+  - Open Gateway
+  - Telco
+  humanURL: https://developer.orange.com/apis/camara-geofencing/
+  properties:
+  - url: https://developer.orange.com/apis/camara-geofencing/
+    type: Documentation
+  - url: openapi/orange-business-geofencing-openapi.yml
+    type: OpenAPI
+  - url: https://github.com/camaraproject/DeviceLocation
+    type: SourceCode
+  description: Create event subscriptions that notify when a device enters or leaves a defined geographic area.
+    Implements the CAMARA Geofencing Subscriptions API for area-based event detection.
+- aid: orange-business:orange-business-device-reachability-status-api
+  name: Orange Business Device Reachability Status API
+  tags:
+  - CAMARA
+  - Device Status
+  - Open Gateway
+  - Reachability
+  - Telco
+  humanURL: https://developer.orange.com/apis/camara-device-reachability-status/
+  properties:
+  - url: https://developer.orange.com/apis/camara-device-reachability-status/
+    type: Documentation
+  - url: openapi/orange-business-device-reachability-status-openapi.yml
+    type: OpenAPI
+  - url: https://github.com/camaraproject/DeviceStatus
+    type: SourceCode
+  description: Query whether a device is currently reachable over the mobile network (connected data, connected SMS,
+    or not connected). Implements the CAMARA Device Reachability Status API.
+- aid: orange-business:orange-business-device-roaming-status-api
+  name: Orange Business Device Roaming Status API
+  tags:
+  - CAMARA
+  - Device Status
+  - Open Gateway
+  - Roaming
+  - Telco
+  humanURL: https://developer.orange.com/apis/camara-device-roaming-status/
+  properties:
+  - url: https://developer.orange.com/apis/camara-device-roaming-status/
+    type: Documentation
+  - url: openapi/orange-business-device-roaming-status-openapi.yml
+    type: OpenAPI
+  - url: https://github.com/camaraproject/DeviceStatus
+    type: SourceCode
+  description: Query whether a device is currently roaming and, when permitted, in which country. Implements the
+    CAMARA Device Roaming Status API and supports event subscriptions for roaming changes.
+- aid: orange-business:orange-business-quality-on-demand-api
+  name: Orange Business Quality on Demand API
+  tags:
+  - CAMARA
+  - Network
+  - Open Gateway
+  - QoS
+  - Quality on Demand
+  - Telco
+  humanURL: https://developer.orange.com/apis/camara-quality-of-service-on-demand/
+  properties:
+  - url: https://developer.orange.com/apis/camara-quality-of-service-on-demand/
+    type: Documentation
+  - url: openapi/orange-business-quality-on-demand-openapi.yml
+    type: OpenAPI
+  - url: https://github.com/camaraproject/QualityOnDemand
+    type: SourceCode
+  description: Request a temporary boosted network quality profile (latency, throughput, packet loss target) for a
+    specified device session and application flow. Implements the CAMARA Quality on Demand API and unlocks 5G
+    network-slicing-style guarantees for streaming, gaming, drones, and field operations.
+- aid: orange-business:orange-business-population-density-data-api
+  name: Orange Business Population Density Data API
+  tags:
+  - CAMARA
+  - Mobility
+  - Open Gateway
+  - Population
+  - Telco
+  humanURL: https://developer.orange.com/products/population-density-data/
+  properties:
+  - url: https://developer.orange.com/products/population-density-data/
+    type: Documentation
+  - url: openapi/orange-business-population-density-data-openapi.yml
+    type: OpenAPI
+  - url: https://github.com/camaraproject/PopulationDensityData
+    type: SourceCode
+  description: Predictive population density estimations for France and Corsica derived from anonymised aggregated
+    mobile network signals. Returns per-area density bands for retail, mobility, urban planning, and emergency
+    response use cases. Implements the CAMARA Population Density Data API.
+- aid: orange-business:orange-business-live-objects-api
+  name: Orange Business Live Objects API
+  tags:
+  - Connectivity
+  - Devices
+  - IoT
+  - Live Objects
+  - Telco
+  humanURL: https://liveobjects.orange-business.com/
+  properties:
+  - url: https://liveobjects.orange-business.com/
+    type: Portal
+  - url: https://developer.orange.com/apis/datavenue
+    type: Documentation
+  description: Orange's IoT platform (also branded Datavenue) for connecting, managing, and ingesting data from IoT
+    devices over LoRa, NB-IoT, LTE-M, and classic cellular. REST and MQTT interfaces for device, group, command,
+    and data-stream management with end-to-end security and multi-tenant fleet operations.
+- aid: orange-business:orange-business-iot-managed-global-connectivity-api
+  name: Orange Business IoT Managed Global Connectivity API
+  tags:
+  - Connectivity
+  - IoT
+  - SIM
+  - Telco
+  humanURL: https://developer.orange.com/apis/iot-managed-global-connectivity
+  properties:
+  - url: https://developer.orange.com/apis/iot-managed-global-connectivity
+    type: Documentation
+  description: Manage Orange Business cellular IoT SIM fleets worldwide — activation, suspension, usage, location,
+    diagnostics — across 200+ countries via a single REST surface. Backs the Orange Business Mobile Connect platform
+    for global M2M and IoT deployments.
+- aid: orange-business:orange-business-orange-money-webpay-api
+  name: Orange Business Orange Money WebPay API
+  tags:
+  - Africa
+  - Mobile Money
+  - Orange Money
+  - Payments
+  - Telco
+  humanURL: https://developer.orange.com/apis/om-webpay
+  properties:
+  - url: https://developer.orange.com/apis/om-webpay
+    type: Documentation
+  description: Accept Orange Money mobile-wallet payments on web and mobile checkouts across Mali, Cameroon, Cote
+    d'Ivoire, Senegal, Madagascar, Botswana, Guinea Conakry, Guinea Bissau, Sierra Leone, DR Congo, and Central
+    African Republic. End-user OTP via Orange Money USSD; supports tax, donations, school fees, and standard
+    e-commerce.
+- aid: orange-business:orange-business-pay-with-orange-bill-api
+  name: Orange Business Pay With Orange Bill API
+  tags:
+  - Carrier Billing
+  - Payments
+  - Telco
+  humanURL: https://developer.orange.com/apis/pay-with-orange-bill
+  properties:
+  - url: https://developer.orange.com/apis/pay-with-orange-bill
+    type: Documentation
+  description: Direct-carrier-billing API that lets merchants charge purchases to a customer's Orange mobile
+    invoice. Aimed at digital goods, content, and microtransactions for Orange subscribers.
+- aid: orange-business:orange-business-sms-mea-api
+  name: Orange Business SMS Middle East and Africa API
+  tags:
+  - Africa
+  - Messaging
+  - Middle East
+  - SMS
+  - Telco
+  humanURL: https://developer.orange.com/apis/sms
+  properties:
+  - url: https://developer.orange.com/apis/sms
+    type: Documentation
+  description: A2P SMS delivery API for Orange Middle East and Africa footprint. Supports transactional, OTP, and
+    marketing messages across Orange's African operating companies.
+- aid: orange-business:orange-business-voice-as-a-service-api
+  name: Orange Business Voice as a Service API
+  tags:
+  - Communications
+  - Telco
+  - Voice
+  - VoIP
+  humanURL: https://developer.orange.com/apis/voice-api
+  properties:
+  - url: https://developer.orange.com/apis/voice-api
+    type: Documentation
+  description: Programmable voice / VoIP API for integrating outbound calls, IVR, and click-to-call into business
+    applications on Orange's voice platform.
+- aid: orange-business:orange-business-contact-everyone-api
+  name: Orange Business Contact Everyone API
+  tags:
+  - Communications
+  - Multichannel
+  - Notifications
+  - Telco
+  humanURL: https://developer.orange.com/apis/contact-everyone
+  properties:
+  - url: https://developer.orange.com/apis/contact-everyone
+    type: Documentation
+  description: Multichannel contact and notification API — SMS, voice, email, and fax broadcast — used for crisis
+    communications, mass notifications, and customer outreach campaigns by Orange Business enterprise customers.
+- aid: orange-business:orange-business-business-talk-api
+  name: Orange Business Business Talk API
+  tags:
+  - Communications
+  - Enterprise
+  - SIP Trunking
+  - Telco
+  - Voice
+  humanURL: https://developer.orange.com/apis/businesstalk
+  properties:
+  - url: https://developer.orange.com/apis/businesstalk
+    type: Documentation
+  description: Programmable management for Business Talk, Orange Business's enterprise SIP trunking and IP voice
+    service. Provision lines, manage sites, and integrate voice with UCaaS platforms.
+- aid: orange-business:orange-business-cloud-avenue-api
+  name: Orange Business Cloud Avenue API
+  tags:
+  - Cloud
+  - IaaS
+  - Sovereign Cloud
+  - Telco
+  - VMware
+  humanURL: https://developer.orange.com/apis/cloud-avenue
+  properties:
+  - url: https://developer.orange.com/apis/cloud-avenue
+    type: Documentation
+  description: REST API for Cloud Avenue, Orange Business's France-sovereign VMware-based managed IaaS — provision
+    virtual datacenters, networks, storage, and compute resources programmatically.
+- aid: orange-business:orange-business-evolution-platform-iaas-api
+  name: Orange Business Evolution Platform IaaS API
+  tags:
+  - Cloud
+  - IaaS
+  - Sandbox
+  - Telco
+  humanURL: https://developer.orange.com/apis/evolution-platform-iaas-sandbox
+  properties:
+  - url: https://developer.orange.com/apis/evolution-platform-iaas-sandbox
+    type: Documentation
+  description: Sandbox IaaS environment for testing applications on Orange Business's Evolution Platform with full
+    REST API access to VMs, networks, and storage.
+- aid: orange-business:orange-business-evpl-online-api
+  name: Orange Business EVPL Online API
+  tags:
+  - Connectivity
+  - Enterprise
+  - Ethernet
+  - Network
+  - Telco
+  humanURL: https://developer.orange.com/apis/evpl-online/
+  properties:
+  - url: https://developer.orange.com/apis/evpl-online/
+    type: Documentation
+  description: Order, manage, and monitor Ethernet Virtual Private Line connectivity services across Orange
+    Business's global Ethernet backbone via REST.
+- aid: orange-business:orange-business-evpl-monitoring-api
+  name: Orange Business EVPL Monitoring API
+  tags:
+  - Monitoring
+  - Network
+  - Observability
+  - Telco
+  humanURL: https://developer.orange.com/apis/api-monitoring-live
+  properties:
+  - url: https://developer.orange.com/apis/api-monitoring-live
+    type: Documentation
+  description: Real-time monitoring API for EVPL and adjacent Orange Business network services — fetch link health,
+    throughput, and incident state for managed enterprise connectivity.
+- aid: orange-business:orange-business-content-delivery-boost-api
+  name: Orange Business Content Delivery Boost API
+  tags:
+  - CDN
+  - Content Delivery
+  - Performance
+  - Telco
+  humanURL: https://developer.orange.com/apis/content-delivery-boost
+  properties:
+  - url: https://developer.orange.com/apis/content-delivery-boost
+    type: Documentation
+  description: Manage CDN edge caching, purge, and acceleration policies for content delivered over Orange's
+    networks — primarily targeted at media and large enterprise customers.
+- aid: orange-business:orange-business-core-information-api
+  name: Orange Business Core Information API
+  tags:
+  - B2B
+  - Customer
+  - Inventory
+  - Orange Business Services
+  - Telco
+  humanURL: https://developer.orange.com/apis/orange-business-services-core-information
+  properties:
+  - url: https://developer.orange.com/apis/orange-business-services-core-information
+    type: Documentation
+  description: Customer-facing inventory API for Orange Business Services — list contracts, sites, services, and
+    product instances under a B2B account.
+- aid: orange-business:orange-business-ordering-api
+  name: Orange Business Ordering API
+  tags:
+  - B2B
+  - Ordering
+  - Orange Business Services
+  - TM Forum
+  - Telco
+  humanURL: https://developer.orange.com/apis/orange-business-services-ordering
+  properties:
+  - url: https://developer.orange.com/apis/orange-business-services-ordering
+    type: Documentation
+  description: Place, modify, and cancel orders against the Orange Business Services product catalogue. Aligned with
+    TM Forum Open APIs (TMF622-style product ordering).
+- aid: orange-business:orange-business-order-tracking-api
+  name: Orange Business Order Tracking API
+  tags:
+  - B2B
+  - Order Tracking
+  - Orange Business Services
+  - Telco
+  humanURL: https://developer.orange.com/apis/order-tracking-documentation
+  properties:
+  - url: https://developer.orange.com/apis/order-tracking-documentation
+    type: Documentation
+  description: Track the lifecycle and milestones of an Orange Business Services order — status, expected delivery,
+    blocking issues, and milestone history.
+- aid: orange-business:orange-business-billing-api
+  name: Orange Business Billing API
+  tags:
+  - B2B
+  - Billing
+  - Orange Business Services
+  - Telco
+  humanURL: https://developer.orange.com/apis/orange-business-services-billing-m2m
+  properties:
+  - url: https://developer.orange.com/apis/orange-business-services-billing-m2m
+    type: Documentation
+  description: Programmatic access to Orange Business Services M2M invoices, charges, and itemised usage records for
+    enterprise finance and FinOps integration.
+- aid: orange-business:orange-business-incident-api
+  name: Orange Business Incident API
+  tags:
+  - B2B
+  - Incident Management
+  - ITSM
+  - Orange Business Services
+  - TM Forum
+  - Telco
+  humanURL: https://developer.orange.com/apis/orange-business-services-incident
+  properties:
+  - url: https://developer.orange.com/apis/orange-business-services-incident
+    type: Documentation
+  description: Open, update, and track Orange Business Services support tickets via REST. Aligned with TM Forum
+    TMF621 Trouble Ticket conventions to plug into enterprise ITSM workflows.
+- aid: orange-business:orange-business-api-place-api
+  name: Orange Business API Place
+  tags:
+  - API Marketplace
+  - B2B
+  - Catalogue
+  - Telco
+  humanURL: https://developer.orange.com/apis/api-place
+  properties:
+  - url: https://developer.orange.com/apis/api-place
+    type: Documentation
+  description: Marketplace surface for discovering Orange Business APIs — programmatic catalogue access for the
+    Orange Business API portfolio.
+- aid: orange-business:orange-business-operator-eligibility-fr-api
+  name: Orange Business Operator Eligibility (France) API
+  tags:
+  - B2B
+  - Broadband
+  - Eligibility
+  - France
+  - Telco
+  humanURL: https://developer.orange.com/apis/operator-eligibility-fr
+  properties:
+  - url: https://developer.orange.com/apis/operator-eligibility-fr
+    type: Documentation
+  description: Check broadband and fibre eligibility at a French address for operator partners — feeds B2B
+    onboarding flows.
+- aid: orange-business:orange-business-rip-operator-eligibility-fr-api
+  name: Orange Business RIP Operator Eligibility (France) API
+  tags:
+  - B2B
+  - Broadband
+  - Eligibility
+  - Fibre
+  - France
+  - Telco
+  humanURL: https://developer.orange.com/apis/rip-operator-eligibility-fr
+  properties:
+  - url: https://developer.orange.com/apis/rip-operator-eligibility-fr
+    type: Documentation
+  description: Public-initiative network (RIP) fibre eligibility check for French regional fibre rollouts, used by
+    alternative operators to qualify customer addresses.
+- aid: orange-business:orange-business-live-identity-verify-api
+  name: Orange Business Live Identity Verify API
+  tags:
+  - Biometrics
+  - Fraud Prevention
+  - Identity
+  - KYC
+  - Telco
+  humanURL: https://developer.orange.com/apis/live-identity-verify
+  properties:
+  - url: https://developer.orange.com/apis/live-identity-verify
+    type: Documentation
+  description: Real-time identity verification combining ID-document capture, liveness detection, and biometric
+    match against the document. Targets remote onboarding for regulated industries.
+- aid: orange-business:orange-business-live-identity-captcha-api
+  name: Orange Business Live Identity Captcha API
+  tags:
+  - Anti-Bot
+  - Captcha
+  - Fraud Prevention
+  - Identity
+  - Telco
+  humanURL: https://developer.orange.com/apis/live-identity-captcha
+  properties:
+  - url: https://developer.orange.com/apis/live-identity-captcha
+    type: Documentation
+  description: Behavioural and challenge-based human-verification (captcha) API used inside Orange's Live Identity
+    suite to gate sensitive flows against automated abuse.
+- aid: orange-business:orange-business-messagingpro-cameroon-api
+  name: Orange Business Messaging Pro Cameroon API
+  tags:
+  - Africa
+  - Cameroon
+  - Messaging
+  - SMS
+  - Telco
+  humanURL: https://developer.orange.com/apis/messagingpro-cameroon
+  properties:
+  - url: https://developer.orange.com/apis/messagingpro-cameroon
+    type: Documentation
+  description: Cameroon-specific A2P messaging platform for enterprise SMS, USSD, and rich messaging deliveries to
+    Orange Cameroon subscribers.
+name: Orange Business
+description: Orange Business is the B2B, telco-cloud, and developer arm of Orange S.A. — France's leading
+  telecommunications group operating across Europe, the Middle East, and Africa. The company markets itself as
+  "an operator, integrator, and platform player" and serves 30,000+ enterprise customers across 65 countries
+  with cloud, cybersecurity, SD-WAN/SASE, 5G, IoT, data, AI, and digital-workplace services. Orange's developer
+  surface is split across two tracks. The Orange Developer portal (developer.orange.com) publishes the Orange
+  Open Gateway — Orange's implementation of GSMA Open Gateway / CAMARA standardised network APIs (Number
+  Verification, SIM Swap, Device Swap, KYC Match, Device Location, Geofencing, Device Status, Quality on Demand,
+  Population Density Data) — alongside Orange-specific APIs for IoT (Live Objects, IoT Global Connectivity),
+  payments (Orange Money WebPay, Pay With Orange Bill, carrier billing across Orange Africa), communications
+  (Voice, SMS MEA, Business Talk, Contact Everyone), cloud (Cloud Avenue sovereign IaaS, Evolution Platform), and
+  identity (Live Identity Verify, Live Identity Captcha). The Orange Business Services portfolio adds a B2B
+  TM Forum–aligned API track for ordering, billing, incident management, eligibility, and order tracking. The
+  Orange-OpenSource GitHub org backs the developer ecosystem with 427+ repos including Hurl (the popular Rust
+  HTTP testing CLI with 18K+ stars), the Boosted accessible Bootstrap framework, the OUDS Orange Unified Design
+  System for iOS / Android / Flutter, and 5G Kubernetes Helm charts. Orange has also stood up Orange LiveNet, a
+  business unit dedicated to commercialising programmable network capabilities, and is one of the founding
+  operators of the GSMA Open Gateway initiative with the CAMARA Linux Foundation project.
+tags:
+- 5G
+- AI
+- B2B
+- CAMARA
+- Cloud
+- Communications
+- Cybersecurity
+- Developer Platform
+- Digital Workplace
+- Enterprise
+- France
+- IoT
+- Identity
+- Mobile Money
+- Network APIs
+- Open Gateway
+- Orange
+- Payments
+- SD-WAN
+- SMS
+- SASE
+- Telco
+- Voice
+kind: contract
+image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+access: 3rd-Party
+common:
+- url: https://developer.orange.com/
+  name: Orange Developer Portal
+  type: Portal
+- url: https://www.orange-business.com/en
+  name: Orange Business
+  type: Portal
+- url: https://docs.developer.orange.com/
+  name: Orange Developer Docs
+  type: Documentation
+- url: https://developer.orange.com/products/network-apis/
+  name: Network APIs (Orange Open Gateway)
+  type: Documentation
+- url: https://developer.orange.com/blog/orange-open-gateway-the-new-era-of-digital-services/
+  name: Orange Open Gateway Announcement
+  type: Documentation
+- url: https://developer.orange.com/blog/orange-livenet-a-new-business-unit-to-market-network-apis/
+  name: Orange LiveNet — Network APIs Business Unit
+  type: Documentation
+- url: https://www.gsma.com/solutions-and-impact/gsma-open-gateway/gsma_orgs/orange-2/
+  name: GSMA Open Gateway — Orange
+  type: Documentation
+- url: https://github.com/camaraproject
+  name: CAMARA Project (Linux Foundation)
+  type: SourceCode
+- url: https://github.com/Orange-OpenSource
+  name: Orange-OpenSource GitHub
+  type: GitHubOrganization
+- url: https://github.com/Orange-OpenSource/hurl
+  name: Hurl — HTTP request runner (Rust)
+  type: Tool
+- url: https://github.com/Orange-OpenSource/Orange-Boosted-Bootstrap
+  name: Orange Boosted Bootstrap
+  type: Tool
+- url: https://github.com/Orange-OpenSource/ouds-ios
+  name: OUDS iOS — Orange Unified Design System
+  type: SDK
+- url: https://github.com/Orange-OpenSource/ouds-android
+  name: OUDS Android — Orange Unified Design System
+  type: SDK
+- url: https://github.com/Orange-OpenSource/ouds-flutter
+  name: OUDS Flutter — Orange Unified Design System
+  type: SDK
+- url: https://github.com/Orange-OpenSource/towards5gs-helm
+  name: towards5gs-helm — 5G core Helm charts
+  type: Tool
+- url: https://developer.orange.com/blog/
+  name: Orange Developer Blog
+  type: Blog
+- url: https://www.orange-business.com/en/blogs
+  name: Orange Business Blog
+  type: Blog
+- url: https://5glab.orange.com/en/
+  name: Orange 5G Lab
+  type: Documentation
+- url: https://www.orange.com/en/news
+  name: Orange Group News
+  type: Blog
+- url: https://www.linkedin.com/company/orange-business/
+  name: Orange Business LinkedIn
+  type: LinkedIn
+- url: https://www.linkedin.com/company/orange/
+  name: Orange LinkedIn
+  type: LinkedIn
+- url: https://twitter.com/orangebusiness
+  name: Orange Business on X
+  type: Twitter
+- url: https://www.orange-business.com/en/legal-notice
+  name: Legal Notice
+  type: TermsOfService
+- url: https://www.orange-business.com/en/personal-data-protection
+  name: Personal Data Protection
+  type: PrivacyPolicy
+- url: https://developer.orange.com/contact
+  name: Contact Orange Developer
+  type: Support
+- url: https://developer.orange.com/talk-to-sales/
+  name: Talk to Sales
+  type: Support
+- url: https://developer.orange.com/register
+  name: Register
+  type: SignUp
+- url: https://www.orange-business.com/en/our-solutions
+  name: Orange Business Solutions
+  type: Documentation
+- url: https://www.orange-business.com/en/products/live-intelligence
+  name: Live Intelligence — Generative AI
+  type: Documentation
+- url: https://liveobjects.orange-business.com/
+  name: Live Objects (IoT)
+  type: Portal
+- url: https://cloud.orange-business.com/
+  name: Cloud Avenue Portal
+  type: Portal
+maintainers:
+- FN: Kin Lane
+  email: info@apievangelist.com
+overlays:
+- url: properties.yml
+  type: APIs.io Search
+- url: openapi/orange-business-number-verification-openapi.yml
+  type: OpenAPI
+- url: openapi/orange-business-sim-swap-openapi.yml
+  type: OpenAPI
+- url: openapi/orange-business-device-swap-openapi.yml
+  type: OpenAPI
+- url: openapi/orange-business-kyc-match-openapi.yml
+  type: OpenAPI
+- url: openapi/orange-business-device-location-retrieval-openapi.yml
+  type: OpenAPI
+- url: openapi/orange-business-device-location-verification-openapi.yml
+  type: OpenAPI
+- url: openapi/orange-business-geofencing-openapi.yml
+  type: OpenAPI
+- url: openapi/orange-business-device-reachability-status-openapi.yml
+  type: OpenAPI
+- url: openapi/orange-business-device-roaming-status-openapi.yml
+  type: OpenAPI
+- url: openapi/orange-business-quality-on-demand-openapi.yml
+  type: OpenAPI
+- url: openapi/orange-business-population-density-data-openapi.yml
+  type: OpenAPI
+x-type: company
+x-tier: 1
