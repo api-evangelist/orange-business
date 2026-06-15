@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Device Roaming Status",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Roaming status retrieval",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the current roaming status and the country information",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{apiRoot}/device-roaming-status/v1/retrieve",
+            "headers": [
+              {
+                "name": "x-correlator",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Get the current roaming status and the country information"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

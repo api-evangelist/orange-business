@@ -1,0 +1,139 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Quality-On-Demand",
+    "version": "wip"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "QoS Sessions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Creates a new session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{apiRoot}/quality-on-demand/vwip/sessions",
+            "headers": [
+              {
+                "name": "x-correlator",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create QoS Session to manage latency/throughput priorities\n\nIf the qosStatus in the API response is \"AVAILABLE\" and a notification callback is provided the API consumer will receive in addition to the response a\n`QOS_STATUS_CHANGED` event notification with `qosStatus` as `AVAILABLE`.\n\nIf the `qosStatus` in the API response is `REQUESTED`, the client will receive either\n- a `QOS_STATUS_CHANGED` event notification with `qosStatus` as `AVAILABLE` after the network notifies that it has created the r"
+        },
+        {
+          "info": {
+            "name": "Get QoS session information",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{apiRoot}/quality-on-demand/vwip/sessions/:sessionId",
+            "headers": [
+              {
+                "name": "x-correlator",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "sessionId",
+                "value": "",
+                "type": "path",
+                "description": "Session ID that was obtained from the createSession operation"
+              }
+            ]
+          },
+          "docs": "Querying for QoS session resource information details\n\n**NOTES:**\n- The access token may be either 2-legged or 3-legged.\n- If a 3-legged access token is used, the end user (and device) associated with the session must also be associated with the access token.\n- The session must have been created by the same API client given in the access token\n"
+        },
+        {
+          "info": {
+            "name": "Delete a QoS session",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{apiRoot}/quality-on-demand/vwip/sessions/:sessionId",
+            "headers": [
+              {
+                "name": "x-correlator",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "sessionId",
+                "value": "",
+                "type": "path",
+                "description": "Session ID that was obtained from the createSession operation"
+              }
+            ]
+          },
+          "docs": "Release resources related to QoS session\n\nIf the notification callback is provided and the `qosStatus` of the session was `AVAILABLE` the client will receive in addition to the response a `QOS_STATUS_CHANGED` event with\n- `qosStatus` as `UNAVAILABLE` and\n- `statusInfo` as `DELETE_REQUESTED`\nThere will be no notification event if the `qosStatus` was already `UNAVAILABLE`.\n\n**NOTES:**\n- The access token may be either 2-legged or 3-legged.\n- If a 3-legged access token is used, the subject associate"
+        },
+        {
+          "info": {
+            "name": "Extend the duration of an active session",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{apiRoot}/quality-on-demand/vwip/sessions/:sessionId/extend",
+            "headers": [
+              {
+                "name": "x-correlator",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "sessionId",
+                "value": "",
+                "type": "path",
+                "description": "Session ID that was obtained from the createSession operation"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Extend the overall session duration of an active QoS session (with qosStatus = AVAILABLE).\nThe overall duration of the QoS session, including the additional extended duration, shall not exceed the maximum duration limit fixed for the QoS Profile. If the current duration plus the value of `requestedAdditionalDuration` exceeds the maximum limit, the new overall duration shall be capped to the maximum value allowed.\nAn example: For a QoS profile limited to a `maxDuration` of 50,000 seconds, a QoD s"
+        },
+        {
+          "info": {
+            "name": "Get QoS session information for a device",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{apiRoot}/quality-on-demand/vwip/retrieve-sessions",
+            "headers": [
+              {
+                "name": "x-correlator",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Querying for QoS session resource information details for a device\n\n**NOTES:**\n- The access token may be either 2-legged or 3-legged.\n  - If a 3-legged access token is used, the subject associated with the session must also be associated with the access token. In this case the optional `device` parameter MUST NOT be provided in the request.\n  - If a 2-legged access token is used, the device parameter must be provided and identify a device.\n- The session must have been created by the same API con"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

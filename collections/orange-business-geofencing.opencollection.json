@@ -1,0 +1,106 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Device Geofencing Subscriptions",
+    "version": "wip"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Geofencing subscriptions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve a list of geofencing event subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{apiRoot}/geofencing-subscriptions/vwip/subscriptions",
+            "headers": [
+              {
+                "name": "x-correlator",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Retrieve a list of geofencing event subscription(s)."
+        },
+        {
+          "info": {
+            "name": "Create a geofencing subscription for a device",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{apiRoot}/geofencing-subscriptions/vwip/subscriptions",
+            "headers": [
+              {
+                "name": "x-correlator",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a subscription for a device to receive notifications when the device enters or exits a specified area."
+        },
+        {
+          "info": {
+            "name": "Operation to retrieve a subscription based on the provided ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{apiRoot}/geofencing-subscriptions/vwip/subscriptions/:subscriptionId",
+            "headers": [
+              {
+                "name": "x-correlator",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "subscriptionId",
+                "value": "",
+                "type": "path",
+                "description": "Subscription identifier that was obtained from the create event subscription operation."
+              }
+            ]
+          },
+          "docs": "Retrieve Geofencing subscription information for a given subscription ID."
+        },
+        {
+          "info": {
+            "name": "Delete a Geofencing event subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{apiRoot}/geofencing-subscriptions/vwip/subscriptions/:subscriptionId",
+            "headers": [
+              {
+                "name": "x-correlator",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "subscriptionId",
+                "value": "",
+                "type": "path",
+                "description": "Subscription identifier that was obtained from the create event subscription operation."
+              }
+            ]
+          },
+          "docs": "Delete a given Geofencing subscription."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

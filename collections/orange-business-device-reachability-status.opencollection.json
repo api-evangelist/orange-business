@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Device Reachability Status",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Device reachability status",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the current reachability status information",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{apiRoot}/device-reachability-status/v1/retrieve",
+            "headers": [
+              {
+                "name": "x-correlator",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Get the current reachability status information"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

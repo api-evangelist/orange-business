@@ -1,0 +1,64 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Number Verification",
+    "version": "wip"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Phone number verify",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Verifies if the received hashed/plain text phone number matches the phone number associated with the access token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{apiRoot}/number-verification/vwip/verify",
+            "headers": [
+              {
+                "name": "x-correlator",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Verifies if the specified phone number (either in plain text or hashed format) matches the one that the user is currently using. Only one of the plain or hashed formats must be provided.\n- The number verification will be done for the user that has authenticated via mobile network\n- It returns true/false depending on if the hashed phone number received as input matches the authenticated user's `device phone number` associated to the access token\n"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Phone number share",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Returns the phone number associated with the access token",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{apiRoot}/number-verification/vwip/device-phone-number",
+            "headers": [
+              {
+                "name": "x-correlator",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Returns the phone number so the API clients can verify the number themselves:\n- It will be done for the user that has authenticated via mobile network\n- It returns the authenticated user's `device phone number` associated to the access token\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

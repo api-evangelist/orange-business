@@ -1,0 +1,68 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "SIM Swap",
+    "version": "wip"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Retrieve SIM swap date",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Retrieve SIM swap date",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{apiRoot}/sim-swap/vwip/retrieve-date",
+            "headers": [
+              {
+                "name": "x-correlator",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Get timestamp of last SIM swap event for a mobile user account provided with phone number."
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Check SIM swap",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Check SIM swap",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{apiRoot}/sim-swap/vwip/check",
+            "headers": [
+              {
+                "name": "x-correlator",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Check if SIM swap has been performed during a past period"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
