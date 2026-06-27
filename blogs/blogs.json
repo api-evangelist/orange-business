@@ -2,15 +2,18 @@
   "repo": "orange-business",
   "feeds": [
     {
-      "source": "https://developer.orange.com/blog/",
-      "feed_url": "https://developer.orange.com/blog/",
+      "source": "https://developer.orange.com/feed/",
+      "feed_url": "https://developer.orange.com/feed/",
       "title": "",
       "saved": 0,
-      "method": "none"
+      "method": "feed"
     },
     {
       "source": "https://www.orange-business.com/en/blogs",
-      "error": "HTTPError"
+      "feed_url": "https://www.orange-business.com/en/blogs",
+      "title": "",
+      "saved": 0,
+      "method": "none"
     },
     {
       "source": "https://www.orange.com/en/news",
@@ -18,8 +21,15 @@
       "title": "",
       "saved": 0,
       "method": "none"
+    },
+    {
+      "source": "https://developer.orange.com/blog/",
+      "feed_url": "https://developer.orange.com/blog/",
+      "title": "",
+      "saved": 0,
+      "method": "none"
     }
   ],
   "post_count": 0,
-  "fetched": "2026-06-14T20:42:17Z"
+  "fetched": "2026-06-27T12:03:07Z"
 }

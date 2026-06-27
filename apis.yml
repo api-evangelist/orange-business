@@ -616,22 +616,22 @@ common:
   type: GitHubOrganization
 - url: https://github.com/Orange-OpenSource/hurl
   name: Hurl — HTTP request runner (Rust)
-  type: Tool
+  type: Tools
 - url: https://github.com/Orange-OpenSource/Orange-Boosted-Bootstrap
   name: Orange Boosted Bootstrap
-  type: Tool
+  type: Tools
 - url: https://github.com/Orange-OpenSource/ouds-ios
   name: OUDS iOS — Orange Unified Design System
-  type: SDK
+  type: SDKs
 - url: https://github.com/Orange-OpenSource/ouds-android
   name: OUDS Android — Orange Unified Design System
-  type: SDK
+  type: SDKs
 - url: https://github.com/Orange-OpenSource/ouds-flutter
   name: OUDS Flutter — Orange Unified Design System
-  type: SDK
+  type: SDKs
 - url: https://github.com/Orange-OpenSource/towards5gs-helm
   name: towards5gs-helm — 5G core Helm charts
-  type: Tool
+  type: Tools
 - url: https://developer.orange.com/blog/
   name: Orange Developer Blog
   type: Blog
@@ -667,7 +667,7 @@ common:
   type: Support
 - url: https://developer.orange.com/register
   name: Register
-  type: SignUp
+  type: Signup
 - url: https://www.orange-business.com/en/our-solutions
   name: Orange Business Solutions
   type: Documentation
