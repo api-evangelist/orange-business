@@ -1,0 +1,37 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/orange-business-device-location-retrieval-openapi.yml, openapi/orange-business-device-location-verification-openapi.yml,
+  openapi/orange-business-device-reachability-status-openapi.yml, openapi/orange-business-device-roaming-status-openapi.yml,
+  openapi/orange-business-device-swap-openapi.yml, openapi/orange-business-geofencing-openapi.yml,
+  openapi/orange-business-kyc-match-openapi.yml, openapi/orange-business-number-verification-openapi.yml,
+  openapi/orange-business-population-density-data-openapi.yml, openapi/orange-business-quality-on-demand-openapi.yml,
+  openapi/orange-business-sim-swap-openapi.yml
+summary:
+  types:
+  - http
+  - openIdConnect
+schemes:
+- name: openId
+  type: openIdConnect
+  openIdConnectUrl: https://example.com/.well-known/openid-configuration
+  description: OpenID Connect authentication
+  sources:
+  - openapi/orange-business-device-location-retrieval-openapi.yml
+  - openapi/orange-business-device-location-verification-openapi.yml
+  - openapi/orange-business-device-reachability-status-openapi.yml
+  - openapi/orange-business-device-roaming-status-openapi.yml
+  - openapi/orange-business-device-swap-openapi.yml
+  - openapi/orange-business-geofencing-openapi.yml
+  - openapi/orange-business-kyc-match-openapi.yml
+  - openapi/orange-business-number-verification-openapi.yml
+  - openapi/orange-business-population-density-data-openapi.yml
+  - openapi/orange-business-quality-on-demand-openapi.yml
+  - openapi/orange-business-sim-swap-openapi.yml
+- name: notificationsBearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: '{$request.body#/sinkCredential.credentialType}'
+  sources:
+  - openapi/orange-business-geofencing-openapi.yml
+  - openapi/orange-business-population-density-data-openapi.yml
+  - openapi/orange-business-quality-on-demand-openapi.yml

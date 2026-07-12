@@ -587,6 +587,12 @@ kind: contract
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 access: 3rd-Party
 common:
+- type: VulnerabilityDisclosure
+  url: security/orange-business-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/orange-business-domain-security.yml
+- type: Authentication
+  url: authentication/orange-business-authentication.yml
 - url: https://developer.orange.com/
   name: Orange Developer Portal
   type: Portal
