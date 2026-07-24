@@ -1,0 +1,586 @@
+openapi: 3.0.3
+info:
+  title: Device Location Retrieval Check Device Swap Match API
+  description: "This API provides the ability to retrieve a device location.\n\n# Introduction\n\nWith this API, API consumers can retrieve the area where a certain user device is localized.\nThe area provided in the response could be described:\n-  by a circle determined by coordinates (latitude and longitude) and a radius.\n-  by a simple polygon delimited by segments connecting consecutively an array of coordinates (points). The last point connects to the first point to delimit a closed shape bounded with straight sides.\n\nThe retrieved shape depends on the network conditions at the device's location and any of the supported shapes could be received.\n\nThe requester could optionally ask for\n * a freshness of the localization information by providing a `maxAge` (\"I want a location not older than 600 seconds\").\n * an accuracy of the localization information by providing a `maxSurface` (\"I want a location not larger than 1000000 square meters\").\n\n\nThe result accuracy depends on the network's ability and accuracy to locate the device.\n\nAdditionally to location information, the answer will also provide indication about the location time.\n\nLocation retrieval API could be useful in scenarios such as:\n\n- Fraud protection to ensure a given user is located in the region, country or location authorized for financial transactions\n- Verify the GPS coordinates reported by the app on a device to ensure the GPS was not faked e.g. for content delivery with regional restrictions\n- Contextual-based advertising, to trigger advertising after verifying the device is in the area of interest\n\n- Smart Mobility (Vehicle/bikes renting): obtain the location of a vehicle/bike to guarantee they are rented correctly\n\n**Note**: Location is in most jurisdictions considered to be sensitive data and thereby consent by device owner/user must be verified before providing it to the developer.\n\n# Relevant terms and definitions\n\n* **Device**: A device refers to any physical entity that can connect to a network and participate in network communication.\n\n* **Area**: It specifies the geographical surface where a device may be physically located.\n\n* **Max Age**: Maximum age of the location information which is accepted for the location retrieval (in seconds).\n\n  * Absence of `maxAge` means that \"any age\" is acceptable for the client. In other words, this is like `maxAge`=infinite. The system will return `lastLocationTime` in the response. If the system is not able to provide location, an error 422 with code LOCATION_RETRIEVAL.UNABLE_TO_LOCATE is sent back.\n  * `maxAge`=0 means that a fresh calculation is requested by the client. If the system is not able to provide the fresh location, an error 422 with code LOCATION_RETRIEVAL.UNABLE_TO_FULFILL_MAX_AGE is sent back.\n\n* **Last Location Time** : Last date and time when the device was localized.\n\n* **Max Surface**: Maximum surface in square meters which is accepted by the client for the location retrieval.\n\n  * absence of `maxSurface` means that \"any surface size\" is acceptable for the client.\n  * API implementation could specify the minimum acceptable `maxSurface` in the documentation (for example a minimum of 10000 square meters are allowed).\n  * If the system is not able to provide an area with a surface acceptable with the client request, an error 422 with code LOCATION_RETRIEVAL.UNABLE_TO_FULFILL_MAX_SURFACE is sent back.\n  * Note: if both `maxAge` and `maxSurface` requirements fail, the system can either send back one or the other error code.\n\n# API Functionality\n\nThe API exposes a single endpoint/operation:\n\n- `/retrieve` : Retrieve where the device is localized.\n The operation returns:\n    * a localization defined either as a circle, with the center specified by the latitude and longitude, and a radius for answer accuracy, or as polygon defined by the array of points delimiting its boundary.\n    * a timestamp with the location information freshness.\n\n# Authorization and authentication\n\nThe \"Camara Security and Interoperability Profile\" provides details of how an API consumer requests an access token. Please refer to Identity and Consent Management (https://github.com/camaraproject/IdentityAndConsentManagement/) for the released version of the profile.\n\nThe specific authorization flows to be used will be agreed upon during the onboarding process, happening between the API consumer and the API provider, taking into account the declared purpose for accessing the API, whilst also being subject to the prevailing legal framework dictated by local legislation.\n\nIn cases where personal data is processed by the API and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of three-legged access tokens is mandatory. This ensures that the API remains in compliance with privacy regulations, upholding the principles of transparency and user-centric privacy-by-design.\n\n# Identifying the device from the access token\n\nThis API requires the API consumer to identify a device as the subject of the API as follows:\n- When the API is invoked using a two-legged access token, the subject will be identified from the optional `device` object, which therefore MUST be provided.\n- When a three-legged access token is used however, this optional identifier MUST NOT be provided, as the subject will be uniquely identified from the access token.\n\nThis approach simplifies API usage for API consumers using a three-legged access token to invoke the API by relying on the information that is associated with the access token and was identified during the authentication process.\n\n## Error handling:\n\n- If the subject cannot be identified from the access token and the optional `device` object is not included in the request, then the server will return an error with the `422 MISSING_IDENTIFIER` error code.\n\n- If the subject can be identified from the access token and the optional `device` object is also included in the request, then the server will return an error with the `422 UNNECESSARY_IDENTIFIER` error code. This will be the case even if the same device is identified by these two methods, as the server is unable to make this comparison.\n\n# Multi-SIM scenario handling\n\nIn multi-SIM scenarios, where more than one mobile device is associated with the phone number given as input in the API call (e.g. a smartphone with an associated smartwatch), it might not be possible to uniquely identify the device whose location is to be verified. Check with the API provider what is the expected behaviour when a phone number belonging to a multi-SIM group is used as the device identifier, as the API may response with:\n\n- an error indicating that that phone number is not supported for this API, or\n- the location of a single device in the multi-SIM group, if one of the devices is considered linked to the main SIM and this concept is supported by the operator, or\n- a location value that combines the location of all the SIMs associated to the requested phone number.\n\nPossible solutions to make the scenario more deterministic include:\n\n- Using preferably the authorisation code flow to obtain an access token, which will automatically identify the intended device.\n- Identifying the intended device from a unique identifier for that device, such as its source IP address and port.\n- Check with the API provider whether a unique \"secondary\" phone number is already associated with each device and use the secondary phone number to identify the intended device if available.\n\n# Additional CAMARA error responses\n\n  The list of error codes in this API specification is not exhaustive. Therefore the API specification may not document some non-mandatory error statuses as indicated in `CAMARA API Design Guide`.\n\n  Please refer to the `CAMARA_common.yaml` of the Commonalities Release associated to this API version for a complete list of error responses. The applicable Commonalities Release can be identified in the `API Readiness Checklist` document associated to this API version.\n\n  As a specific rule, error `501 - NOT_IMPLEMENTED` can be only a possible error response if it is explicitly documented in the API.\n\n# Further info and support\n\n(FAQs will be added in a later version of the documentation)\n"
+  version: wip
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  x-camara-commonalities: tbd
+servers:
+- url: '{apiRoot}/location-retrieval/vwip'
+  variables:
+    apiRoot:
+      default: http://localhost:9091
+      description: API root
+tags:
+- name: Match
+  description: Operations to match a customer identity against the account data bound to their phone number.
+paths:
+  /match:
+    post:
+      tags:
+      - Match
+      summary: Matching a customer identity by checking a set of attributes related against the account data bound to their phone number.
+      description: "Verify matching of a number of attributes related to a customer identity against the verified data bound to their phone number in the Operator systems. Regardless of whether the `phoneNumber` is explicitly stated in the request body, at least one of the other fields must be provided, otherwise a `HTTP 400 - KNOW_YOUR_CUSTOMER.INVALID_PARAM_COMBINATION` error will be returned.\n\nThe API will return the result of the matching process for each requested attribute. This means that the response will **only** contain the attributes for which validation has been requested. Possible values are:\n  - **true**: the attribute provided matches with the one in the Operator systems, which is equal to a `match_score` of 100.\n  - **false**: the attribute provided does not match with the one in the Operator systems.\n  - **not_available**: the attribute is not available to validate."
+      operationId: KYC_Match
+      security:
+      - openId:
+        - kyc-match:match
+      parameters:
+      - $ref: '#/components/parameters/x-correlator'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/KYC_MatchRequestBody'
+            examples:
+              Two-Legged and Three-leg Access Token Example:
+                value:
+                  phoneNumber: '+34629255833'
+                  idDocument: 66666666q
+                  idDocumentType: passport
+                  idDocumentExpiryDate: '2027-07-12'
+                  name: Federica Sanchez Arjona
+                  givenName: Federica
+                  familyName: Sanchez Arjona
+                  nameKanaHankaku: federica
+                  nameKanaZenkaku: Ｆｅｄｅｒｉｃａ
+                  middleNames: Sanchez
+                  familyNameAtBirth: YYYY
+                  address: Tokyo-to Chiyoda-ku Iidabashi 3-10-10
+                  streetName: Nicolas Salmeron
+                  streetNumber: '4'
+                  postalCode: '1028460'
+                  region: Tokyo
+                  locality: ZZZZ
+                  country: JP
+                  houseNumberExtension: VVVV
+                  birthdate: '1978-08-22'
+                  email: abc@example.com
+                  gender: OTHER
+                  cityOfBirth: Madrid
+                  countryOfBirth: ES
+                  nationality: ES
+              Three-Legged Without Phone Number Example:
+                value:
+                  idDocument: 66666666q
+                  idDocumentType: passport
+                  idDocumentExpiryDate: '2027-07-12'
+                  name: Federica Sanchez Arjona
+                  givenName: Federica
+                  familyName: Sanchez Arjona
+                  nameKanaHankaku: federica
+                  nameKanaZenkaku: Ｆｅｄｅｒｉｃａ
+                  middleNames: Sanchez
+                  familyNameAtBirth: YYYY
+                  address: Tokyo-to Chiyoda-ku Iidabashi 3-10-10
+                  streetName: Nicolas Salmeron
+                  streetNumber: '4'
+                  postalCode: '1028460'
+                  region: Tokyo
+                  locality: ZZZZ
+                  country: JP
+                  houseNumberExtension: VVVV
+                  birthdate: '1978-08-22'
+                  email: abc@example.com
+                  gender: OTHER
+                  cityOfBirth: Madrid
+                  countryOfBirth: ES
+                  nationality: ES
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-correlator:
+              $ref: '#/components/headers/x-correlator'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/KYC_MatchResponse'
+              examples:
+                KYC_Match200Example:
+                  value:
+                    idDocumentMatch: 'true'
+                    idDocumentTypeMatch: 'true'
+                    idDocumentExpiryDateMatch: 'true'
+                    nameMatch: 'true'
+                    givenNameMatch: not_available
+                    familyNameMatch: not_available
+                    nameKanaHankakuMatch: 'true'
+                    nameKanaZenkakuMatch: 'false'
+                    middleNamesMatch: 'true'
+                    familyNameAtBirthMatch: 'false'
+                    familyNameAtBirthMatchScore: 90
+                    addressMatch: 'true'
+                    streetNameMatch: 'true'
+                    streetNumberMatch: 'true'
+                    postalCodeMatch: 'true'
+                    regionMatch: 'true'
+                    localityMatch: not_available
+                    countryMatch: 'true'
+                    houseNumberExtensionMatch: not_available
+                    birthdateMatch: 'false'
+                    emailMatch: 'false'
+                    emailMatchScore: 87
+                    genderMatch: 'false'
+                    cityOfBirthMatch: 'false'
+                    cityOfBirthMatchScore: 86
+                    countryOfBirthMatch: 'true'
+                    nationalityMatch: 'true'
+        '400':
+          $ref: '#/components/responses/Generic400'
+        '401':
+          $ref: '#/components/responses/Generic401'
+        '403':
+          $ref: '#/components/responses/Generic403'
+        '404':
+          $ref: '#/components/responses/Generic404'
+        '422':
+          $ref: '#/components/responses/Generic422'
+components:
+  schemas:
+    MatchResult:
+      type: string
+      description: 'true -  the attribute provided matches with the one in the Operator systems, which is equal to a `match_score` of 100.
+
+        false - the attribute provided does not match with the one in the Operator systems.
+
+        not_available - the attribute is not available to validate.
+
+        '
+      enum:
+      - 'true'
+      - 'false'
+      - not_available
+    ErrorInfo:
+      type: object
+      required:
+      - status
+      - code
+      - message
+      properties:
+        message:
+          type: string
+          description: A human-readable description of what the event represents
+        status:
+          type: integer
+          description: HTTP response status code
+        code:
+          type: string
+          description: A human-readable code to describe the error
+    MatchScoreResult:
+      type: integer
+      description: 'Indicates the similarity score assigned to the input value when it does not exactly match the value stored in the operator''s system.
+
+        This property shall only be returned when the value of the corresponding match field is `false`.
+
+        A perfect match with a score of 100 is indicated by `match` being ''true'' and no `matchScore` is returned in this case.
+
+        '
+      minimum: 0
+      maximum: 99
+    KYC_MatchRequestBody:
+      type: object
+      description: Payload to validate the customer data.
+      properties:
+        phoneNumber:
+          type: string
+          description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
+          pattern: ^\+[1-9][0-9]{4,14}$
+          example: '+123456789'
+        idDocument:
+          type: string
+          description: Id number associated to the official identity document in the country. It may contain alphanumeric characters.
+        idDocumentType:
+          type: string
+          enum:
+          - passport
+          - national_id_card
+          - residence_permit
+          - diplomatic_id
+          - driver_licence
+          - social_security_id
+          - other
+          description: Type of the official identity document provided.
+        idDocumentExpiryDate:
+          type: string
+          format: date
+          description: Expiration date of the identity document (ISO 8601).
+        name:
+          type: string
+          description: Complete name of the customer, usually composed of first/given name and last/family/sur- name in a country.  Depending on the country, the order of first/give name and last/family/sur- name varies, and middle name could be included.  It can use givenName, middleNames, familyName and/or familyNameAtBirth. For example, in ESP, name+familyName; in NLD, it can be name+middleNames+familyName or name+middleNames+familyNameAtBirth, etc.
+        givenName:
+          type: string
+          description: First/given name or compound first/given name of the customer.
+        familyName:
+          type: string
+          description: Last name, family name, or surname of the customer.
+        nameKanaHankaku:
+          type: string
+          description: Complete name of the customer in Hankaku-Kana format (reading of name) for Japan.
+        nameKanaZenkaku:
+          type: string
+          description: Complete name of the customer in Zenkaku-Kana format (reading of name) for Japan.
+        middleNames:
+          type: string
+          description: Middle name/s of the customer.
+        familyNameAtBirth:
+          type: string
+          description: Last/family/sur- name at birth of the customer.
+        address:
+          type: string
+          description: Complete address of the customer.  For some countries, it is built following the usual concatenation of parameters in a country, but for other countries, this is not the case.  For some countries, it can use streetName, streetNumber and/or houseNumberExtension. For example, in ESP, streetName+streetNumber; in NLD, it can be streetName+streetNumber or streetName+streetNumber+houseNumberExtension.
+        streetName:
+          type: string
+          description: Name of the street of the customer's address. It should not include the type of the street.
+        streetNumber:
+          type: string
+          description: The street number of the customer's address.  Number identifying a specific property on the 'streetName'.
+        postalCode:
+          type: string
+          description: Zip code or postal code
+        region:
+          type: string
+          description: Region/prefecture of the customer's address
+        locality:
+          type: string
+          description: Locality of the customer's address
+        country:
+          type: string
+          description: Country of the customer's address. Format ISO 3166-1 alpha-2
+        houseNumberExtension:
+          type: string
+          description: Specific identifier of the house needed depending on the property type. For example, number of apartment in an apartment building.
+        birthdate:
+          type: string
+          format: date
+          description: The birthdate of the customer, in RFC 3339 / ISO 8601 calendar date format (YYYY-MM-DD).
+        email:
+          type: string
+          format: email
+          description: Email address of the customer in the RFC specified format (local-part@domain).
+        gender:
+          type: string
+          description: Gender of the customer (Male/Female/Other).
+          enum:
+          - MALE
+          - FEMALE
+          - OTHER
+        cityOfBirth:
+          type: string
+          description: City where the customer was born.
+        countryOfBirth:
+          type: string
+          description: Country where the customer was born. Format ISO 3166-1 alpha-2.
+        nationality:
+          type: string
+          description: ISO 3166-1 alpha-2 code of the customer’s nationality. In the case a customer has more than one nationality, it is supposed to be the nationality related to the ID document provided in the match request.
+    KYC_MatchResponse:
+      type: object
+      properties:
+        idDocumentMatch:
+          allOf:
+          - $ref: '#/components/schemas/MatchResult'
+          - description: Indicates whether Id number associated to the ID document of the customer matches with the one on the Operator's system.
+        idDocumentTypeMatch:
+          allOf:
+          - $ref: '#/components/schemas/MatchResult'
+          - description: Indicates whether document type associated to the ID document of the customer matches with the one on the Operator's system.
+        idDocumentExpiryDateMatch:
+          allOf:
+          - $ref: '#/components/schemas/MatchResult'
+          - description: Indicates whether document expiration date associated to the ID document of the customer matches with the one on the Operator's system.
+        nameMatch:
+          allOf:
+          - $ref: '#/components/schemas/MatchResult'
+          - description: Indicates whether the complete name of the customer matches with the one on the Operator's system.
+        nameMatchScore:
+          $ref: '#/components/schemas/MatchScoreResult'
+        givenNameMatch:
+          allOf:
+          - $ref: '#/components/schemas/MatchResult'
+          - description: Indicates whether First name/given name of the customer matches with the one on the Operator's system.
+        givenNameMatchScore:
+          $ref: '#/components/schemas/MatchScoreResult'
+        familyNameMatch:
+          allOf:
+          - $ref: '#/components/schemas/MatchResult'
+          - description: Indicates whether last name/ family name/ surname of the customer matches with the one on the Operator's system.
+        familyNameMatchScore:
+          $ref: '#/components/schemas/MatchScoreResult'
+        nameKanaHankakuMatch:
+          allOf:
+          - $ref: '#/components/schemas/MatchResult'
+          - description: Indicates whether complete name of the customer in Hankaku-Kana format (reading of name) for Japan matches with the one on the Operator's system.
+        nameKanaHankakuMatchScore:
+          $ref: '#/components/schemas/MatchScoreResult'
+        nameKanaZenkakuMatch:
+          allOf:
+          - $ref: '#/components/schemas/MatchResult'
+          - description: Indicates whether complete name of the customer in Zenkaku-Kana format (reading of name) for Japan matches with the one on the Operator's system.
+        nameKanaZenkakuMatchScore:
+          $ref: '#/components/schemas/MatchScoreResult'
+        middleNamesMatch:
+          allOf:
+          - $ref: '#/components/schemas/MatchResult'
+          - description: Indicates whether the middle names of the customer matches with the one on the Operator's system.
+        middleNamesMatchScore:
+          $ref: '#/components/schemas/MatchScoreResult'
+        familyNameAtBirthMatch:
+          allOf:
+          - $ref: '#/components/schemas/MatchResult'
+          - description: Indicates whether the Family Name At Birth of the customer matches with the one on the Operator's system.
+        familyNameAtBirthMatchScore:
+          $ref: '#/components/schemas/MatchScoreResult'
+        addressMatch:
+          allOf:
+          - $ref: '#/components/schemas/MatchResult'
+          - description: Indicates whether complete address of the customer matches with the one on the Operator's system.
+        addressMatchScore:
+          $ref: '#/components/schemas/MatchScoreResult'
+        streetNameMatch:
+          allOf:
+          - $ref: '#/components/schemas/MatchResult'
+          - description: Indicates whether the street name of the customer matches with the one on the Operator's system.
+        streetNameMatchScore:
+          $ref: '#/components/schemas/MatchScoreResult'
+        streetNumberMatch:
+          allOf:
+          - $ref: '#/components/schemas/MatchResult'
+          - description: Indicates whether the street number of the customer matches with the one on the Operator's system.
+        streetNumberMatchScore:
+          $ref: '#/components/schemas/MatchScoreResult'
+        postalCodeMatch:
+          allOf:
+          - $ref: '#/components/schemas/MatchResult'
+          - description: Indicates whether the postal code / zip code of the customer matches with the one on the Operator's system.
+        regionMatch:
+          allOf:
+          - $ref: '#/components/schemas/MatchResult'
+          - description: Indicates whether the region of the customer's address matches with the one on the Operator's system.
+        regionMatchScore:
+          $ref: '#/components/schemas/MatchScoreResult'
+        localityMatch:
+          allOf:
+          - $ref: '#/components/schemas/MatchResult'
+          - description: Indicates whether the locality of the customer's address matches with the one on the Operator's system.
+        localityMatchScore:
+          $ref: '#/components/schemas/MatchScoreResult'
+        countryMatch:
+          allOf:
+          - $ref: '#/components/schemas/MatchResult'
+          - description: Indicates whether the country of the customer's address matches with the one on the Operator's system.
+        houseNumberExtensionMatch:
+          allOf:
+          - $ref: '#/components/schemas/MatchResult'
+          - description: Indicates whether the house number extension of the customer's address with the one on the Operator's system.
+        birthdateMatch:
+          allOf:
+          - $ref: '#/components/schemas/MatchResult'
+          - description: Indicates whether the birthdate of the customer matches with the one on the Operator's system.
+        emailMatch:
+          allOf:
+          - $ref: '#/components/schemas/MatchResult'
+          - description: Indicates whether the email address of the customer matches with the one on the Operator's system.
+        emailMatchScore:
+          $ref: '#/components/schemas/MatchScoreResult'
+        genderMatch:
+          allOf:
+          - $ref: '#/components/schemas/MatchResult'
+          - description: Indicates whether the gender of the customer matches with the one on the Operator's system.
+        cityOfBirthMatch:
+          allOf:
+          - $ref: '#/components/schemas/MatchResult'
+          - description: Indicates whether the city at birth of the customer matches with the one on the Operator's system
+        cityOfBirthMatchScore:
+          $ref: '#/components/schemas/MatchScoreResult'
+        countryOfBirthMatch:
+          allOf:
+          - $ref: '#/components/schemas/MatchResult'
+          - description: Indicates whether the country at birth of the customer matches with the one on the Operator's system
+        nationalityMatch:
+          allOf:
+          - $ref: '#/components/schemas/MatchResult'
+          - description: Indicates whether the nationality of the customer matches with the one on the Operator's system
+    XCorrelator:
+      type: string
+      pattern: ^[a-zA-Z0-9-_:;.\/<>{}]{0,256}$
+      example: b4333c46-49c0-4f62-80d7-f0ef930f1c46
+  responses:
+    Generic404:
+      description: Not found
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - $ref: '#/components/schemas/ErrorInfo'
+            - type: object
+              properties:
+                status:
+                  enum:
+                  - 404
+                code:
+                  enum:
+                  - NOT_FOUND
+                  - IDENTIFIER_NOT_FOUND
+          examples:
+            GENERIC_404_NOT_FOUND:
+              description: Resource is not found
+              value:
+                status: 404
+                code: NOT_FOUND
+                message: The specified resource is not found.
+            GENERIC_404_IDENTIFIER_NOT_FOUND:
+              description: The phone number is not associated with a CSP customer account
+              value:
+                status: 404
+                code: IDENTIFIER_NOT_FOUND
+                message: The phone number provided is not associated with a customer account
+    Generic400:
+      description: Bad Request
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - $ref: '#/components/schemas/ErrorInfo'
+            - type: object
+              properties:
+                status:
+                  enum:
+                  - 400
+                code:
+                  enum:
+                  - INVALID_ARGUMENT
+                  - KNOW_YOUR_CUSTOMER.INVALID_PARAM_COMBINATION
+          examples:
+            GENERIC_400_INVALID_ARGUMENT:
+              description: Invalid Argument. Generic Syntax Exception
+              value:
+                status: 400
+                code: INVALID_ARGUMENT
+                message: Client specified an invalid argument, request body or query param.
+            KNOW_YOUR_CUSTOMER.INVALID_PARAM_COMBINATION:
+              description: Indicated param combination is invalid
+              value:
+                status: 400
+                code: KNOW_YOUR_CUSTOMER.INVALID_PARAM_COMBINATION
+                message: Indicated parameter combination is invalid
+    Generic422:
+      description: Unprocessable Content
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - $ref: '#/components/schemas/ErrorInfo'
+            - type: object
+              properties:
+                status:
+                  enum:
+                  - 422
+                code:
+                  enum:
+                  - SERVICE_NOT_APPLICABLE
+                  - MISSING_IDENTIFIER
+          examples:
+            GENERIC_422_SERVICE_NOT_APPLICABLE:
+              description: Service is not applicable for the provided phone number
+              value:
+                status: 422
+                code: SERVICE_NOT_APPLICABLE
+                message: The service is not applicable for the provided phone number
+            GENERIC_422_MISSING_IDENTIFIER:
+              description: No phone number has been provided either explicitly or associated with the access token
+              value:
+                status: 422
+                code: MISSING_IDENTIFIER
+                message: No phone number has been provided
+    Generic401:
+      description: Unauthorized
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - $ref: '#/components/schemas/ErrorInfo'
+            - type: object
+              properties:
+                status:
+                  enum:
+                  - 401
+                code:
+                  enum:
+                  - UNAUTHENTICATED
+          examples:
+            GENERIC_401_UNAUTHENTICATED:
+              description: Request cannot be authenticated and a new authentication is required
+              value:
+                status: 401
+                code: UNAUTHENTICATED
+                message: Request not authenticated due to missing, invalid, or expired credentials. A new authentication is required.
+    Generic403:
+      description: Forbidden
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - $ref: '#/components/schemas/ErrorInfo'
+            - type: object
+              properties:
+                status:
+                  enum:
+                  - 403
+                code:
+                  enum:
+                  - PERMISSION_DENIED
+                  - INVALID_TOKEN_CONTEXT
+          examples:
+            GENERIC_403_PERMISSION_DENIED:
+              description: Permission denied. OAuth2 token access does not have the required scope or when the user fails operational security
+              value:
+                status: 403
+                code: PERMISSION_DENIED
+                message: Client does not have sufficient permissions to perform this action.
+            GENERIC_403_INVALID_TOKEN_CONTEXT:
+              description: Reflect some inconsistency between information in some field of the API and the related OAuth2 Token
+              value:
+                status: 403
+                code: INVALID_TOKEN_CONTEXT
+                message: phoneNumber is not consistent with access token.
+  parameters:
+    x-correlator:
+      name: x-correlator
+      in: header
+      description: Correlation id for the different services
+      required: false
+      schema:
+        $ref: '#/components/schemas/XCorrelator'
+  headers:
+    x-correlator:
+      description: Correlation id for the different services
+      required: false
+      schema:
+        $ref: '#/components/schemas/XCorrelator'
+  securitySchemes:
+    openId:
+      description: OpenID Connect authentication
+      type: openIdConnect
+      openIdConnectUrl: https://example.com/.well-known/openid-configuration
+externalDocs:
+  description: Project documentation at Camara
+  url: https://github.com/camaraproject/DeviceLocation
