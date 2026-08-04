@@ -1,0 +1,40 @@
+{
+  "provider": "orange-business",
+  "sources": [
+    "orange-business-check-device-swap-api-openapi.yml",
+    "orange-business-check-sim-swap-api-openapi.yml",
+    "orange-business-device-reachability-status-api-openapi.yml",
+    "orange-business-geofencing-subscriptions-api-openapi.yml",
+    "orange-business-location-retrieval-api-openapi.yml",
+    "orange-business-location-verification-api-openapi.yml",
+    "orange-business-match-api-openapi.yml",
+    "orange-business-phone-number-share-api-openapi.yml",
+    "orange-business-phone-number-verify-api-openapi.yml",
+    "orange-business-population-density-data-api-openapi.yml",
+    "orange-business-qos-sessions-api-openapi.yml",
+    "orange-business-retrieve-device-swap-date-api-openapi.yml",
+    "orange-business-retrieve-sim-swap-date-api-openapi.yml",
+    "orange-business-roaming-status-retrieval-api-openapi.yml"
+  ],
+  "outputs": [
+    "orange-business-check-device-swap-api-openapi.yml",
+    "orange-business-check-sim-swap-api-openapi.yml",
+    "orange-business-device-reachability-status-api-openapi.yml",
+    "orange-business-geofencing-subscriptions-api-openapi.yml",
+    "orange-business-location-retrieval-api-openapi.yml",
+    "orange-business-location-verification-api-openapi.yml",
+    "orange-business-match-api-openapi.yml",
+    "orange-business-phone-number-share-api-openapi.yml",
+    "orange-business-phone-number-verify-api-openapi.yml",
+    "orange-business-population-density-data-api-openapi.yml",
+    "orange-business-qos-sessions-api-openapi.yml",
+    "orange-business-retrieve-device-swap-date-api-openapi.yml",
+    "orange-business-retrieve-sim-swap-date-api-openapi.yml",
+    "orange-business-roaming-status-retrieval-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
