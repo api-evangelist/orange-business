@@ -1152,6 +1152,9 @@ accessModel:
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/orange-business.png
 access: 3rd-Party
 common:
+- type: License
+  name: Apache-2.0
+  url: https://github.com/camaraproject/NumberVerification/blob/main/LICENSE
 - type: AgenticAccess
   url: agentic-access/orange-business-agentic-access.yml
 - type: VulnerabilityDisclosure
