@@ -1,0 +1,349 @@
+{
+  "item": [
+    {
+      "id": "5ee170e6-f276-41c6-9376-e8814730b8a1",
+      "name": "Phone number verify",
+      "description": {
+        "content": "API operation to verify a phone number received as input. It can be received either in plain text or hashed format.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "d718e885-77e6-43e2-9278-5aa7de0dc57d",
+          "name": "Verifies if the received hashed/plain text phone number matches the phone number associated with the access token",
+          "request": {
+            "name": "Verifies if the received hashed/plain text phone number matches the phone number associated with the access token",
+            "description": {
+              "content": "Verifies if the specified phone number (either in plain text or hashed format) matches the one that the user is currently using. Only one of the plain or hashed formats must be provided.\n- The number verification will be done for the user that has authenticated via mobile network\n- It returns true/false depending on if the hashed phone number received as input matches the authenticated user's `device phone number` associated to the access token\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "verify"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "API root",
+                  "type": "any",
+                  "value": "{{apiRoot}}",
+                  "key": "apiRoot"
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "Correlation id for the different services",
+                "key": "x-correlator",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phoneNumber\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "bab8f0f0-d8f9-4824-a072-c423fa773935",
+              "name": "OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "verify"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "API root",
+                      "type": "any",
+                      "value": "{{apiRoot}}",
+                      "key": "apiRoot"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Correlation id for the different services",
+                    "key": "x-correlator",
+                    "value": "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phoneNumber\": \"+123456789\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Correlation id for the different services",
+                  "key": "x-correlator",
+                  "value": "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"devicePhoneNumberVerified\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6ba795c0-ac7d-4c27-ad33-2f105af03ad3",
+              "name": "Problem with the client request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "verify"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "API root",
+                      "type": "any",
+                      "value": "{{apiRoot}}",
+                      "key": "apiRoot"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Correlation id for the different services",
+                    "key": "x-correlator",
+                    "value": "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phoneNumber\": \"+123456789\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Correlation id for the different services",
+                  "key": "x-correlator",
+                  "value": "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 400,\n  \"code\": \"INVALID_ARGUMENT\",\n  \"message\": \"Client specified an invalid argument, request body or query param\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "13fbde44-5094-4eb2-887b-434f39e27522",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "verify"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "API root",
+                      "type": "any",
+                      "value": "{{apiRoot}}",
+                      "key": "apiRoot"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Correlation id for the different services",
+                    "key": "x-correlator",
+                    "value": "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phoneNumber\": \"+123456789\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Correlation id for the different services",
+                  "key": "x-correlator",
+                  "value": "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 401,\n  \"code\": \"UNAUTHENTICATED\",\n  \"message\": \"Request not authenticated due to missing, invalid, or expired credentials. A new authentication is required.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "887ccf4a-2f9c-4649-96b1-a12b91c4b44c",
+              "name": "Client does not have sufficient permission.\nIn addition to regular scenario of `PERMISSION_DENIED`, other scenarios may exist:\n  - Client authentication was not via mobile network. In order to check the authentication method, AMR parameter value in the 3-legged user's access token can be used and make sure that the authentication was not either by SMS+OTP nor username/password (`{\"code\": \"NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_MOBILE_NETWORK\",\"message\": \"Client must authenticate via the mobile network to use this service\"}`)\n",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "verify"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "API root",
+                      "type": "any",
+                      "value": "{{apiRoot}}",
+                      "key": "apiRoot"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "disabled": false,
+                    "description": "Correlation id for the different services",
+                    "key": "x-correlator",
+                    "value": "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"phoneNumber\": \"+123456789\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Correlation id for the different services",
+                  "key": "x-correlator",
+                  "value": "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": 403,\n  \"code\": \"PERMISSION_DENIED\",\n  \"message\": \"Client does not have sufficient permissions to perform this action.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "API root",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "http://localhost:9091",
+      "key": "apiRoot"
+    },
+    {
+      "type": "string",
+      "value": "{{apiRoot}}/location-retrieval/vwip",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "e0b1e24f-1f11-4281-bfae-fe2b1c38842f",
+    "name": "Device Location Retrieval Check Device Swap Phone number verify API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "This API provides the ability to retrieve a device location.\n\n# Introduction\n\nWith this API, API consumers can retrieve the area where a certain user device is localized.\nThe area provided in the response could be described:\n-  by a circle determined by coordinates (latitude and longitude) and a radius.\n-  by a simple polygon delimited by segments connecting consecutively an array of coordinates (points). The last point connects to the first point to delimit a closed shape bounded with straight sides.\n\nThe retrieved shape depends on the network conditions at the device's location and any of the supported shapes could be received.\n\nThe requester could optionally ask for\n * a freshness of the localization information by providing a `maxAge` (\"I want a location not older than 600 seconds\").\n * an accuracy of the localization information by providing a `maxSurface` (\"I want a location not larger than 1000000 square meters\").\n\n\nThe result accuracy depends on the network's ability and accuracy to locate the device.\n\nAdditionally to location information, the answer will also provide indication about the location time.\n\nLocation retrieval API could be useful in scenarios such as:\n\n- Fraud protection to ensure a given user is located in the region, country or location authorized for financial transactions\n- Verify the GPS coordinates reported by the app on a device to ensure the GPS was not faked e.g. for content delivery with regional restrictions\n- Contextual-based advertising, to trigger advertising after verifying the device is in the area of interest\n\n- Smart Mobility (Vehicle/bikes renting): obtain the location of a vehicle/bike to guarantee they are rented correctly\n\n**Note**: Location is in most jurisdictions considered to be sensitive data and thereby consent by device owner/user must be verified before providing it to the developer.\n\n# Relevant terms and definitions\n\n* **Device**: A device refers to any physical entity that can connect to a network and participate in network communication.\n\n* **Area**: It specifies the geographical surface where a device may be physically located.\n\n* **Max Age**: Maximum age of the location information which is accepted for the location retrieval (in seconds).\n\n  * Absence of `maxAge` means that \"any age\" is acceptable for the client. In other words, this is like `maxAge`=infinite. The system will return `lastLocationTime` in the response. If the system is not able to provide location, an error 422 with code LOCATION_RETRIEVAL.UNABLE_TO_LOCATE is sent back.\n  * `maxAge`=0 means that a fresh calculation is requested by the client. If the system is not able to provide the fresh location, an error 422 with code LOCATION_RETRIEVAL.UNABLE_TO_FULFILL_MAX_AGE is sent back.\n\n* **Last Location Time** : Last date and time when the device was localized.\n\n* **Max Surface**: Maximum surface in square meters which is accepted by the client for the location retrieval.\n\n  * absence of `maxSurface` means that \"any surface size\" is acceptable for the client.\n  * API implementation could specify the minimum acceptable `maxSurface` in the documentation (for example a minimum of 10000 square meters are allowed).\n  * If the system is not able to provide an area with a surface acceptable with the client request, an error 422 with code LOCATION_RETRIEVAL.UNABLE_TO_FULFILL_MAX_SURFACE is sent back.\n  * Note: if both `maxAge` and `maxSurface` requirements fail, the system can either send back one or the other error code.\n\n# API Functionality\n\nThe API exposes a single endpoint/operation:\n\n- `/retrieve` : Retrieve where the device is localized.\n The operation returns:\n    * a localization defined either as a circle, with the center specified by the latitude and longitude, and a radius for answer accuracy, or as polygon defined by the array of points delimiting its boundary.\n    * a timestamp with the location information freshness.\n\n# Authorization and authentication\n\nThe \"Camara Security and Interoperability Profile\" provides details of how an API consumer requests an access token. Please refer to Identity and Consent Management (https://github.com/camaraproject/IdentityAndConsentManagement/) for the released version of the profile.\n\nThe specific authorization flows to be used will be agreed upon during the onboarding process, happening between the API consumer and the API provider, taking into account the declared purpose for accessing the API, whilst also being subject to the prevailing legal framework dictated by local legislation.\n\nIn cases where personal data is processed by the API and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of three-legged access tokens is mandatory. This ensures that the API remains in compliance with privacy regulations, upholding the principles of transparency and user-centric privacy-by-design.\n\n# Identifying the device from the access token\n\nThis API requires the API consumer to identify a device as the subject of the API as follows:\n- When the API is invoked using a two-legged access token, the subject will be identified from the optional `device` object, which therefore MUST be provided.\n- When a three-legged access token is used however, this optional identifier MUST NOT be provided, as the subject will be uniquely identified from the access token.\n\nThis approach simplifies API usage for API consumers using a three-legged access token to invoke the API by relying on the information that is associated with the access token and was identified during the authentication process.\n\n## Error handling:\n\n- If the subject cannot be identified from the access token and the optional `device` object is not included in the request, then the server will return an error with the `422 MISSING_IDENTIFIER` error code.\n\n- If the subject can be identified from the access token and the optional `device` object is also included in the request, then the server will return an error with the `422 UNNECESSARY_IDENTIFIER` error code. This will be the case even if the same device is identified by these two methods, as the server is unable to make this comparison.\n\n# Multi-SIM scenario handling\n\nIn multi-SIM scenarios, where more than one mobile device is associated with the phone number given as input in the API call (e.g. a smartphone with an associated smartwatch), it might not be possible to uniquely identify the device whose location is to be verified. Check with the API provider what is the expected behaviour when a phone number belonging to a multi-SIM group is used as the device identifier, as the API may response with:\n\n- an error indicating that that phone number is not supported for this API, or\n- the location of a single device in the multi-SIM group, if one of the devices is considered linked to the main SIM and this concept is supported by the operator, or\n- a location value that combines the location of all the SIMs associated to the requested phone number.\n\nPossible solutions to make the scenario more deterministic include:\n\n- Using preferably the authorisation code flow to obtain an access token, which will automatically identify the intended device.\n- Identifying the intended device from a unique identifier for that device, such as its source IP address and port.\n- Check with the API provider whether a unique \"secondary\" phone number is already associated with each device and use the secondary phone number to identify the intended device if available.\n\n# Additional CAMARA error responses\n\n  The list of error codes in this API specification is not exhaustive. Therefore the API specification may not document some non-mandatory error statuses as indicated in `CAMARA API Design Guide`.\n\n  Please refer to the `CAMARA_common.yaml` of the Commonalities Release associated to this API version for a complete list of error responses. The applicable Commonalities Release can be identified in the `API Readiness Checklist` document associated to this API version.\n\n  As a specific rule, error `501 - NOT_IMPLEMENTED` can be only a possible error response if it is explicitly documented in the API.\n\n# Further info and support\n\n(FAQs will be added in a later version of the documentation)\n",
+      "type": "text/plain"
+    }
+  }
+}

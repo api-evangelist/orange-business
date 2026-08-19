@@ -1,0 +1,35 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Device Location Retrieval Check Device Swap Phone number share API",
+    "version": "wip"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Phone number share",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Returns the phone number associated with the access token",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{apiRoot}/location-retrieval/vwip/device-phone-number",
+            "headers": [
+              {
+                "name": "x-correlator",
+                "value": ""
+              }
+            ]
+          },
+          "docs": "Returns the phone number so the API clients can verify the number themselves:\n- It will be done for the user that has authenticated via mobile network\n- It returns the authenticated user's `device phone number` associated to the access token\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

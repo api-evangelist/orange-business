@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Device Location Retrieval Check Device Swap Check SIM swap API",
+    "version": "wip"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Check SIM swap",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Check SIM swap",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{apiRoot}/location-retrieval/vwip/check",
+            "headers": [
+              {
+                "name": "x-correlator",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Check if SIM swap has been performed during a past period"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

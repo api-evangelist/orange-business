@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Device Location Retrieval Check Device Swap Roaming status retrieval API",
+    "version": "wip"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Roaming status retrieval",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the current roaming status and the country information",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{apiRoot}/location-retrieval/vwip/retrieve",
+            "headers": [
+              {
+                "name": "x-correlator",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Get the current roaming status and the country information"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
