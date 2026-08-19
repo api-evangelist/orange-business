@@ -1,5 +1,6 @@
 aid: orange-business
 url: https://raw.githubusercontent.com/api-evangelist/orange-business/refs/heads/main/apis.yml
+specificationVersion: '0.23'
 apis:
 - aid: orange-business:orange-business-live-objects-api
   name: Orange Business Live Objects API
