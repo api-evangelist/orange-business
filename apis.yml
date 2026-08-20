@@ -98,6 +98,11 @@ apis:
   name: Orange Business Contact Everyone API
   tags:
   - Communications
+  - Multi-Channel
+  - Notification
+  - Telco
+  tags_raw:
+  - Communications
   - Multichannel
   - Notifications
   - Telco
@@ -128,6 +133,12 @@ apis:
   name: Orange Business Cloud Avenue API
   tags:
   - Cloud
+  - Infrastructure-as-a-Service
+  - Sovereign Cloud
+  - Telco
+  - VMware
+  tags_raw:
+  - Cloud
   - IaaS
   - Sovereign Cloud
   - Telco
@@ -142,6 +153,11 @@ apis:
 - aid: orange-business:orange-business-evolution-platform-iaas-api
   name: Orange Business Evolution Platform IaaS API
   tags:
+  - Cloud
+  - Infrastructure-as-a-Service
+  - Sandbox
+  - Telco
+  tags_raw:
   - Cloud
   - IaaS
   - Sandbox
@@ -199,6 +215,12 @@ apis:
 - aid: orange-business:orange-business-core-information-api
   name: Orange Business Core Information API
   tags:
+  - B2B
+  - Customers
+  - Inventory
+  - Orange Business Services
+  - Telco
+  tags_raw:
   - B2B
   - Customer
   - Inventory
@@ -333,6 +355,12 @@ apis:
 - aid: orange-business:orange-business-live-identity-captcha-api
   name: Orange Business Live Identity Captcha API
   tags:
+  - Anti-Bot
+  - CAPTCHA
+  - Fraud Prevention
+  - Identity
+  - Telco
+  tags_raw:
   - Anti-Bot
   - Captcha
   - Fraud Prevention
@@ -628,6 +656,8 @@ apis:
   humanURL: >-
     https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview
   tags:
+  - Location Verification
+  tags_raw:
   - Location verification
   properties:
   - type: OpenAPI
@@ -1114,6 +1144,30 @@ description: Orange Business is the B2B, telco-cloud, and developer arm of Orang
   business unit dedicated to commercialising programmable network capabilities, and is one of the founding
   operators of the GSMA Open Gateway initiative with the CAMARA Linux Foundation project.
 tags:
+- 5G
+- Artificial Intelligence
+- B2B
+- CAMARA
+- Cloud
+- Communications
+- Cybersecurity
+- Developer Platform
+- Digital Workplace
+- Enterprise
+- France
+- IoT
+- Identity
+- Mobile Money
+- Network APIs
+- Open Gateway
+- Orange
+- Payments
+- SD-WAN
+- SMS
+- SASE
+- Telco
+- Voice
+tags_raw:
 - 5G
 - AI
 - B2B
