@@ -13,26 +13,23 @@
       "feed_url": "https://www.orange-business.com/en/blogs",
       "title": "",
       "saved": 0,
-      "method": "none",
-      "error": "parse_failed"
+      "method": "none"
     },
     {
       "source": "https://www.orange.com/en/news",
       "feed_url": "https://www.orange.com/en/news",
       "title": "",
       "saved": 0,
-      "method": "none",
-      "error": "parse_failed"
+      "method": "none"
     },
     {
       "source": "https://developer.orange.com/blog/",
       "feed_url": "https://developer.orange.com/blog/",
       "title": "",
       "saved": 0,
-      "method": "none",
-      "error": "parse_failed"
+      "method": "none"
     }
   ],
   "post_count": 1,
-  "fetched": "2026-08-15T12:11:08Z"
+  "fetched": "2026-08-22T20:20:02Z"
 }
