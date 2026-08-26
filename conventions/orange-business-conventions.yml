@@ -1,0 +1,227 @@
+generated: '2026-08-26'
+method: searched
+source: >-
+  https://developer.orange.com/resources/orange-apis-error-handling/ ,
+  https://developer.orange.com/common-errors ,
+  https://docs.developer.orange.com/network-apis/practical-guides/api-authentication/backend-flow ,
+  https://docs.developer.orange.com/network-apis/practical-guides/api-authentication/frontend-flow ,
+  plus derivation from openapi/_original/*.yml and openapi/orange-business-live-objects-openapi.json
+scope_note: >-
+  Orange Business runs two structurally different API estates and their conventions do NOT match.
+  (A) The Orange Developer gateway at api.orange.com, fronting the CAMARA Network APIs and the
+  regional SMS / Orange Money / Contact Everyone APIs. (B) The Live Objects IoT platform at
+  liveobjects.orange-business.com, a single 263-operation REST API with its own auth, its own error
+  envelope and its own pagination. Every block below is labelled with which estate it describes.
+authentication:
+  gateway:
+    style: OAuth 2.0 / OpenID Connect
+    token_url: https://api.orange.com/oauth/v3/token
+    playground_token_url: https://api.orange.com/openidconnect/playground/v1.0/token
+    client_auth: 'Authorization: Basic base64(client_id:client_secret)'
+    alternative_client_auth: >-
+      Signed JWT assertion — client_assertion plus
+      client_assertion_type=urn:ietf:params:oauth:client-assertion-type:jwt-bearer, RS256,
+      iss=client_id, exp recommended 5 minutes.
+    grants:
+    - client_credentials
+    - 'urn:openid:params:grant-type:ciba'
+    ciba_authorize_url: '<authorization server base url>/bc-authorize'
+    ciba_login_hint: 'tel:+33712345678'
+    scope_form: 'openid dpv:<dpvValue> <technicalParameter>'
+    scope_note: >-
+      Purpose is carried in the scope itself using W3C Data Privacy Vocabulary values (dpv:), which
+      is the CAMARA convention for consent-bound network data. An agent must know the purpose before
+      it can request a token — the purpose is not a request-body field.
+    token_lifetime_seconds: 3600
+    caching: >-
+      Tokens carry expires_in; Orange documents that applications should cache the token and request
+      a new one only on expiry rather than calling the token endpoint per request.
+  live_objects:
+    styles:
+    - name: X-API-KEY
+      type: apiKey
+      in: header
+      note: the primary mechanism; keys carry roles (DATA_R, DEVICE_W, ...) and a per-key rate limit
+    - name: OAuth2.0
+      type: oauth2
+      flow: authorizationCode
+      authorization_url: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+      token_url: https://liveobjects.orange-business.com/api/v1/oauth2/token
+      refresh_url: https://liveobjects.orange-business.com/api/v1/oauth2/token
+      scopes: 23 — see scopes/orange-business-scopes.yml
+idempotency:
+  supported: false
+  header: null
+  scope: null
+  retention: null
+  note: >-
+    Checked and absent. Neither estate documents an idempotency key: the string "idempoten" does not
+    appear anywhere in the 263-operation Live Objects OpenAPI, in any of the 11 CAMARA contracts, or
+    in the Orange Developer error-handling and getting-started guides. Retrying a POST after a
+    timeout is not safe by contract — most CAMARA reads are effectively idempotent by nature
+    (POST /check, POST /retrieve are queries), but every genuine write (createSession,
+    createGeofencingSubscription, all Live Objects creates) has no replay protection.
+pagination:
+  gateway:
+    style: none-documented
+    note: The CAMARA contracts in this repo expose no collection endpoints with paging parameters.
+  live_objects:
+    styles:
+    - name: page/size
+      params: [page, size]
+      used_by: most list endpoints
+    - name: limit/offset
+      params: [limit, offset]
+      deprecated_param: offset
+      deprecation_note: >-
+        "number of items to skip (optional & DEPRECATED if >10000, please use bookmarkId Instead)"
+    - name: bookmark cursor
+      params: [bookmarkId, bookmarkEndpointName]
+      description: >-
+        id of the last document retrieved, used as a cursor. The documented escape hatch once offset
+        exceeds 10,000 — the only paging style that scales on this API.
+    total_count:
+      header: X-Total-Count
+      direction: request
+      description: 'true if a total count must be returned in response'
+      note: >-
+        Unusual — X-Total-Count is a REQUEST header here (opt in to counting), not a response header.
+    sorting:
+      param: sort
+field_selection:
+  expand_param: expand
+  sensitive_data_params: [showSensitiveInformation, showSecuritySecrets]
+  note: >-
+    Live Objects gates secret material behind explicit query flags rather than a separate endpoint —
+    an agent must opt in to receive credentials, which is a good default worth preserving.
+metadata:
+  live_objects: device tags[] and groupPath used as the tenant-side metadata model
+request_id:
+  gateway:
+    header: X-OAPI-Request-Id
+    direction: response
+    note: >-
+      "Every response includes X-OAPI-Request-Id header for troubleshooting." Include it when
+      reporting persistent issues to support. This is the only tracing signal Orange publishes.
+  live_objects:
+    field: id
+    location: error body
+    note: >-
+      Live Objects returns a per-error UUID in the response body (WebErrorResponse.id) rather than a
+      correlation header.
+versioning:
+  gateway:
+    style: path segment
+    pattern: 'https://api.orange.com/camara/{environment}/api/{api-name}/{version}'
+    camara_pattern: '{apiRoot}/{api-name}/v{major}'
+    note: >-
+      CAMARA APIs version in the path at major granularity (v1, vwip). Orange additionally versions
+      per COUNTRY in its docs URLs — sim-swap/fr/1.0 and sim-swap/be/1.0 are separately versioned
+      deployments of the same CAMARA API, so "which version" is a two-part answer (country + version).
+  live_objects:
+    style: path segment, mixed generations
+    versions_in_use: [/api/v0/, /api/v1/]
+    note: >-
+      v0 and v1 are live simultaneously in one contract; v0 is not marked deprecated as a whole,
+      though five individual v0 operations are.
+error_envelope:
+  count: 3
+  detail: see errors/orange-business-problem-types.yml
+  rfc9457: false
+  summary: >-
+    Gateway {code:int, message, description, infoURL}; CAMARA {status:int, code:string, message};
+    Live Objects {id, code:string, message, details, category}. A client spanning both estates must
+    parse all three.
+rate_limit_signaling:
+  headers: []
+  note: >-
+    No X-RateLimit-*, RateLimit-* or Retry-After headers on either estate. The gateway signals
+    exhaustion with HTTP 403 (and, per the common-errors table, 429) carrying code 53. Live Objects
+    stores a per-API-key rate limit as DATA (mqttBridgeWindowSize / mqttBridgeMaxMessages /
+    mqttDeviceWindowSize / mqttDeviceMaxMessages on the API key resource) that a client can READ back
+    via the Api keys endpoints — an unusual and genuinely useful pattern: the limit is introspectable
+    even though it is never signalled on the response.
+  detail: see rate-limits/orange-business-rate-limits.yml
+dry_run_mode:
+  supported: false
+  note: >-
+    No dry-run/preview parameter on either estate. The Network APIs Playground is the rehearsal
+    mechanism instead — a full mock environment rather than a per-call flag.
+reversibility:
+  grade: documented
+  grade_basis: >-
+    Reversal operations exist and are named on both estates, and the QoD session reversal carries a
+    stated window. But most Live Objects deletes and the geofencing/subscription deletes publish no
+    restore path and no window at all, and Orange states no retention or undo period anywhere, so the
+    estate as a whole grades `documented` rather than `verified`.
+  surfaces:
+  - api: Quality on Demand (CAMARA)
+    write_operation: createSession
+    reversal_operation: deleteSession
+    reversal_kind: terminate
+    window: >-
+      Before the session's planned end time. The session duration is fixed at creation; deleteSession
+      "releases resources related to the QoS session" and, if the session was AVAILABLE, emits a
+      QOS_STATUS_CHANGED event with qosStatus UNAVAILABLE and statusInfo DELETE_REQUESTED. Once the
+      duration elapses the session ends on its own and there is nothing to reverse.
+    window_stated: true
+    docs: openapi/_original/orange-business-quality-on-demand-openapi.yml
+    restores_state: false
+    note: >-
+      Extension is the mirror control: extendQosSessionDuration works only while qosStatus is
+      AVAILABLE, and the total duration is capped at the QoS Profile's maxDuration (documented
+      example: a 50,000s profile caps a 30,000s session extended by 30,000s at 50,000s).
+  - api: Geofencing Subscriptions (CAMARA)
+    write_operation: createGeofencingSubscription
+    reversal_operation: deleteGeofencingSubscription
+    reversal_kind: cancel-subscription
+    window: null
+    window_stated: false
+    docs: openapi/_original/orange-business-geofencing-openapi.yml
+    note: Subscription can be deleted at any time; no retention or restore window is published.
+  - api: Live Objects — device campaigns
+    write_operation: campaign creation (Campaign management)
+    reversal_operation: cancelCampaign
+    reversal_kind: cancel
+    window: null
+    window_stated: false
+    docs: openapi/orange-business-live-objects-openapi.json PUT /api/v0/deviceMgt/campaigns/{campaignId}/cancel
+    note: >-
+      A mass firmware/config deployment across a device fleet can be cancelled, but Orange does not
+      state up to which campaign state cancellation still works.
+  - api: Live Objects — resource updates
+    write_operation: resource update push
+    reversal_operation: cancelResourceUpdateV1
+    reversal_kind: cancel
+    window: null
+    window_stated: false
+    docs: openapi/orange-business-live-objects-openapi.json POST /api/v1/deviceMgt/devices/{deviceId}/resources/updates/{resourceId}/status
+  - api: Live Objects — enable/disable toggles
+    reversal_operation:
+    - setEnabledField
+    - activateCsvDecoder
+    - activateBinaryDecoder
+    - setApiKeyDebugMode
+    reversal_kind: toggle
+    window: n/a
+    window_stated: true
+    note: >-
+      Rules, decoders and API-key debug mode are enable/disable toggles rather than destructive
+      operations — fully reversible with no window because nothing is destroyed.
+  irreversible:
+  - operation: delete-playground-phone-number (MCP tool / Playground Admin API)
+    note: >-
+      Orange labels it explicitly: "Delete a phone number and all its data from the playground
+      (WARNING: irreversible)". The clearest reversibility statement Orange publishes, and it is a
+      negative one.
+  - operation: deleteResource / deleteResourceVersion / deletePipeline / deleteTwinObservations and 30+ other Live Objects DELETEs
+    note: >-
+      No restore, undelete or trash endpoint exists anywhere in the 263-operation contract, and no
+      retention period is stated. An agent must treat every Live Objects DELETE as permanent.
+cross_links:
+  errors: errors/orange-business-problem-types.yml
+  lifecycle: lifecycle/orange-business-lifecycle.yml
+  authentication: authentication/orange-business-authentication.yml
+  scopes: scopes/orange-business-scopes.yml
+  rate_limits: rate-limits/orange-business-rate-limits.yml
+  sandbox: sandbox/orange-business-sandbox.yml

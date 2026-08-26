@@ -1,0 +1,81 @@
+generated: '2026-08-26'
+method: probed
+source: live HTTP probes of every apis.yml host and every OpenAPI servers[] host
+note: >-
+  Only developer.orange.com serves a real /.well-known/ document (security.txt, saved verbatim
+  as orange-business-security.txt). www.orange-business.com answers HTTP 200 with the site's
+  Drupal HTML shell for EVERY /.well-known/* path — a catch-all, not a document — so those rows
+  are recorded as misses (html_shell: true) and earn no pointer. www.orange.com does the same
+  for security.txt. api.orange.com and liveobjects.orange-business.com return their normal API
+  error envelopes (404 code 60 / S3 AccessDenied) for every well-known path.
+hosts:
+- host: developer.orange.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    file: well-known/orange-business-security.txt
+    content_type: text/plain;charset=UTF-8
+  - path: /.well-known/openid-configuration
+    status: 403
+    note: edge answered "Access denied unauthorized dot." to a browser User-Agent as well
+  - path: /.well-known/oauth-authorization-server
+    status: 403
+  - path: /.well-known/api-catalog
+    status: 403
+  - path: /.well-known/ai-plugin.json
+    status: 403
+  - path: /.well-known/agent-card.json
+    status: 403
+  - path: /.well-known/agent.json
+    status: 403
+- host: www.orange-business.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 200
+    html_shell: true
+    note: returns the site HTML shell, not a document — treated as a miss
+  - path: /.well-known/oauth-authorization-server
+    status: 200
+    html_shell: true
+  - path: /.well-known/api-catalog
+    status: 200
+    html_shell: true
+  - path: /.well-known/ai-plugin.json
+    status: 200
+    html_shell: true
+  - path: /.well-known/agent-card.json
+    status: 200
+    html_shell: true
+    note: SPA catch-all — body is the Orange Business marketing page, NOT an A2A AgentCard
+- host: docs.developer.orange.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: api.orange.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+- host: liveobjects.orange-business.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 403
+  - path: /.well-known/openid-configuration
+    status: 403
+- host: www.orange.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    html_shell: true
+    note: soft-200 — returns the orange.com HTML page, not an RFC 9116 document

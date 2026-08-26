@@ -1,0 +1,6 @@
+Contact: https://developer.orange.com/support/contact-us/
+Preferred-Languages: en
+Canonical: https://developer.orange.com/.well-known/security.txt
+
+
+

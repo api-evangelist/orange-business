@@ -1,0 +1,174 @@
+generated: '2026-08-26'
+method: searched
+source: >-
+  openapi/_original/*.yml (x-camara-commonalities extensions, ErrorInfo schemas, securitySchemes),
+  openapi/orange-business-live-objects-openapi.json,
+  https://docs.developer.orange.com/network-apis/practical-guides/api-authentication/backend-flow ,
+  https://docs.developer.orange.com/network-apis/api-catalog/tmf931-onboarding-and-ordering/ww/5.1.2/overview ,
+  https://developer.orange.com/products/network-apis/
+domain_standard:
+  market: telecommunications / network APIs
+  standards:
+  - id: camara
+    name: CAMARA (Linux Foundation) network APIs
+    conforms: true
+    evidence: >-
+      Ten of the eleven contracts in openapi/_original/ carry the CAMARA `x-camara-commonalities`
+      info extension — 0.6 on device-swap, kyc-match, number-verification, population-density-data,
+      quality-on-demand and sim-swap; 0.5 on device-reachability-status and device-roaming-status;
+      `tbd` on device-location-retrieval, device-location-verification and geofencing. Every one
+      declares the CAMARA `{apiRoot}/{api-name}/v{n}` server template, the CAMARA `ErrorInfo`
+      schema ({status,code,message}) and the CAMARA `openId` openIdConnect security scheme. The
+      contracts are the CAMARA specs Orange implements, and Orange serves them at
+      https://api.orange.com/camara/... — a `/camara/` path segment on its own production gateway.
+    location: 'info.x-camara-commonalities; servers[0].url; components.schemas.ErrorInfo; components.securitySchemes.openId'
+    probed: 'POST https://api.orange.com/camara/playground/api/sim-swap/v1/check -> 401 {"status":401,"code":"UNAUTHENTICATED"} (CAMARA ErrorInfo shape on the wire)'
+  - id: tm-forum-open-api
+    name: TM Forum Open API — TMF931 Onboarding and Ordering
+    conforms: true
+    version: 5.1.2
+    evidence: >-
+      Orange publishes a TMF931 Onboarding and Ordering API at
+      docs.developer.orange.com/network-apis/api-catalog/tmf931-onboarding-and-ordering/ww/5.1.2/
+      whose overview states it "adheres to the TMForum 931 standard, as outlined in the GSMA Open
+      Gateway playbook, ensuring industry-wide compatibility and interoperability."
+    location: https://docs.developer.orange.com/network-apis/api-catalog/tmf931-onboarding-and-ordering/ww/5.1.2/overview
+    note: >-
+      Not yet harvested into openapi/ — the api-reference page is a client-rendered Nuxt view and no
+      downloadable TMF931 contract was found. Recorded as a documented conformance claim, not a
+      verified contract.
+  - id: gsma-open-gateway
+    name: GSMA Open Gateway
+    conforms: true
+    evidence: >-
+      Orange is a named GSMA Open Gateway operator (gsma.com/solutions-and-impact/gsma-open-gateway/
+      gsma_orgs/orange-2/, already wired in apis.yml) and the TMF931 overview positions the
+      onboarding API inside "the GSMA Open Gateway playbook".
+    location: https://developer.orange.com/products/network-apis/
+  - id: ciba
+    name: OpenID Connect Client-Initiated Backchannel Authentication (CIBA)
+    conforms: true
+    evidence: >-
+      Orange's backend-flow authentication guide documents grant_type
+      `urn:openid:params:grant-type:ciba` against `<authorization server base url>/bc-authorize`
+      with `login_hint: tel:+33712345678` — the CAMARA-specified authorization flow for
+      network-bound identity.
+    location: https://docs.developer.orange.com/network-apis/practical-guides/api-authentication/backend-flow
+standards:
+- id: oauth2
+  conforms: true
+  evidence: >-
+    Live Objects declares an OAuth 2.0 authorizationCode flow with 23 named scopes at
+    https://liveobjects.orange-business.com/api/v1/oauth2/authorize|token. The gateway issues
+    client_credentials tokens at https://api.orange.com/oauth/v3/token — probed 2026-08-26,
+    returned 400 {"error":"invalid_request","error_description":"Missing grant_type in body"},
+    an OAuth 2.0-shaped error.
+- id: oidc
+  conforms: true
+  evidence: >-
+    Every CAMARA contract declares `type: openIdConnect`; Orange documents an OIDC authorization
+    server with /bc-authorize and /token, JWT client assertions (RS256) and `openid` scope.
+  gap: >-
+    No discovery document is reachable. /.well-known/openid-configuration returns 403 on
+    developer.orange.com and 404 on api.orange.com, and every harvested CAMARA contract still
+    carries the CAMARA placeholder `https://example.com/.well-known/openid-configuration` rather
+    than an Orange URL. A client cannot discover the authorization server from the contract.
+- id: jwt-client-assertion
+  conforms: true
+  evidence: >-
+    client_assertion_type urn:ietf:params:oauth:client-assertion-type:jwt-bearer, RS256, iss=client
+    ID, exp recommended 5 minutes.
+  location: https://docs.developer.orange.com/network-apis/practical-guides/api-authentication/backend-flow
+- id: dpv-purpose-scopes
+  name: W3C Data Privacy Vocabulary purpose binding
+  conforms: true
+  evidence: 'Scope form documented as `openid dpv:<dpvValue> <technicalParameter>` — purpose is carried in the OAuth scope.'
+  location: https://docs.developer.orange.com/network-apis/practical-guides/api-authentication/backend-flow
+- id: rfc9457
+  name: RFC 9457 Problem Details for HTTP APIs
+  conforms: false
+  evidence: >-
+    None of the three error envelopes uses application/problem+json. Gateway errors are
+    {code:int,message,description,infoURL}; CAMARA errors are ErrorInfo {status,code,message};
+    Live Objects errors are {id,code,message,details,category}. All are served as application/json.
+- id: rfc9116
+  name: RFC 9116 security.txt
+  conforms: true
+  evidence: >-
+    https://developer.orange.com/.well-known/security.txt returns 200 text/plain with Contact,
+    Preferred-Languages and Canonical fields. Saved as well-known/orange-business-security.txt.
+  gap: >-
+    No Expires field, which RFC 9116 requires. Contact is a support web form rather than a security
+    mailbox, and no Policy or Encryption field is present.
+- id: rfc8594
+  name: RFC 8594 Sunset header
+  conforms: false
+  evidence: >-
+    No Sunset or Deprecation header is documented on either estate, and none of the harvested
+    contracts declares one. Five Live Objects operations carry OpenAPI `deprecated: true` but no
+    sunset date accompanies them.
+- id: pagination
+  conforms: true
+  evidence: >-
+    Live Objects publishes three paging styles (page/size, limit/offset, and a bookmarkId cursor)
+    plus an X-Total-Count opt-in request header. The CAMARA contracts expose no collections.
+- id: idempotency
+  conforms: false
+  evidence: >-
+    The token "idempoten" appears zero times across the 263-operation Live Objects contract, the
+    eleven CAMARA contracts, and the Orange Developer guides.
+- id: json-schema
+  conforms: true
+  evidence: 'Live Objects publishes OpenAPI 3.1.0 with 439 component schemas (JSON Schema 2020-12 dialect).'
+- id: e164
+  name: E.164 phone number formatting
+  conforms: true
+  evidence: 'CAMARA contracts and the playground guide require phoneNumber in E.164 format (e.g. +33712345678).'
+- id: geohash
+  conforms: true
+  evidence: >-
+    Population Density Data expresses cell precision as Geohash length and errors with
+    POPULATION_DENSITY_DATA.UNSUPPORTED_PRECISION when a Geohash length is unsupported.
+- id: lwm2m
+  name: OMA LwM2M
+  conforms: true
+  evidence: >-
+    Live Objects ships a full LwM2M bootstrap surface — /api/v1/bootstrap/lwm2m/configs,
+    /api/v1/bootstrap/lwm2m/entries — with configs, entries and run servers, plus the OMA
+    device-management resource model.
+- id: mqtt
+  conforms: true
+  evidence: >-
+    Live Objects is MQTT-first: the API-key resource carries mqttBridgeWindowSize /
+    mqttBridgeMaxMessages / mqttDeviceWindowSize / mqttDeviceMaxMessages rate limits, and the
+    first-party SDKs (Python, Arduino, Linux, nodeJS) are all MQTT clients.
+- id: lorawan
+  conforms: true
+  evidence: >-
+    Live Objects exposes LoRa-specific connector nodes, gateway management for LoRa and LoRa device
+    profiles as first-class API surfaces.
+- id: fhir
+  conforms: false
+  evidence: not applicable — no healthcare surface
+- id: fapi
+  conforms: false
+  evidence: not applicable — no open-banking surface
+- id: scim
+  conforms: false
+  evidence: >-
+    Live Objects has a full user/role surface (Users management, User Profile and Access Management)
+    but implements it with its own schemas; no urn:ietf:params:scim:schemas:* URN appears anywhere.
+- id: odata
+  conforms: false
+  evidence: no $metadata surface on any host
+- id: psd2
+  conforms: false
+  evidence: not applicable
+- id: json-api
+  conforms: false
+  evidence: no application/vnd.api+json media type on any operation
+compliance_note: >-
+  Orange publishes no trust center and no named certification list on developer.orange.com —
+  probe-security-programs.py found a vulnerability-disclosure surface (security.txt) but no trust
+  center. Certifications are asserted on the corporate orange-business.com site rather than on the
+  developer surface, so no Compliance pointer is emitted.

@@ -16,10 +16,23 @@ apis:
     type: Portal
   - url: https://developer.orange.com/apis/datavenue
     type: Documentation
+  - type: OpenAPI
+    url: openapi/orange-business-live-objects-openapi.json
+  - type: Overlay
+    url: overlays/orange-business-live-objects-overlay.yaml
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
   description: >-
     Orange's IoT platform (also branded Datavenue) for connecting, managing, and ingesting data from IoT
     devices over LoRa, NB-IoT, LTE-M, and classic cellular. REST and MQTT interfaces for device, group,
     command, and data-stream management with end-to-end security and multi-tenant fleet operations.
+  baseURL: https://liveobjects.orange-business.com/api/v1
 - aid: orange-business:orange-business-iot-managed-global-connectivity-api
   name: Orange Business IoT Managed Global Connectivity API
   tags:
@@ -52,6 +65,7 @@ apis:
     d'Ivoire, Senegal, Madagascar, Botswana, Guinea Conakry, Guinea Bissau, Sierra Leone, DR Congo, and
     Central African Republic. End-user OTP via Orange Money USSD; supports tax, donations, school fees,
     and standard e-commerce.
+  baseURL: https://api.orange.com/orange-money-webpay/dev/v1
 - aid: orange-business:orange-business-pay-with-orange-bill-api
   name: Orange Business Pay With Orange Bill API
   tags:
@@ -80,6 +94,7 @@ apis:
   description: >-
     A2P SMS delivery API for Orange Middle East and Africa footprint. Supports transactional, OTP, and
     marketing messages across Orange's African operating companies.
+  baseURL: https://api.orange.com/smsmessaging/v1
 - aid: orange-business:orange-business-voice-as-a-service-api
   name: Orange Business Voice as a Service API
   tags:
@@ -162,10 +177,10 @@ apis:
   - IaaS
   - Sandbox
   - Telco
-  humanURL: https://developer.orange.com/apis/evolution-platform-iaas-sandbox
+  humanURL: https://developer.orange.com/products/
   properties:
-  - url: https://developer.orange.com/apis/evolution-platform-iaas-sandbox
-    type: Documentation
+  - type: Documentation
+    url: https://developer.orange.com/products/
   description: >-
     Sandbox IaaS environment for testing applications on Orange Business's Evolution Platform with full
     REST API access to VMs, networks, and storage.
@@ -393,7 +408,7 @@ apis:
   description: >-
     Validate if the SIM of the end-user has been installed in a different device during a past period
   humanURL: >-
-    https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview
+    https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/1.0/getting-started
   tags:
   - Check Device Swap
   properties:
@@ -401,22 +416,22 @@ apis:
     url: openapi/orange-business-check-device-swap-api-openapi.yml
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/1.0/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/NumberVerification
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/1.0/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/SimSwap
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/device-swap/es/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/device-swap/playground/0.2/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/DeviceSwap
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/0.2/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/KnowYourCustomerMatch
   - type: Documentation
@@ -441,11 +456,14 @@ apis:
     url: https://developer.orange.com/products/population-density-data/
   - type: SourceCode
     url: https://github.com/camaraproject/PopulationDensityData
+  - type: Overlay
+    url: overlays/orange-business-check-device-swap-api-overlay.yaml
+  baseURL: https://api.orange.com/camara/playground/api/device-swap/v0.2
 - aid: orange-business:orange-business-check-sim-swap-api
   name: Orange Business Check SIM swap API
   description: The Check SIM swap API from Orange Business — 1 operation(s) for check sim swap.
   humanURL: >-
-    https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview
+    https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/1.0/getting-started
   tags:
   - Check SIM swap
   properties:
@@ -453,22 +471,22 @@ apis:
     url: openapi/orange-business-check-sim-swap-api-openapi.yml
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/1.0/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/NumberVerification
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/1.0/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/SimSwap
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/device-swap/es/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/device-swap/playground/0.2/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/DeviceSwap
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/0.2/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/KnowYourCustomerMatch
   - type: Documentation
@@ -493,11 +511,14 @@ apis:
     url: https://developer.orange.com/products/population-density-data/
   - type: SourceCode
     url: https://github.com/camaraproject/PopulationDensityData
+  - type: Overlay
+    url: overlays/orange-business-check-sim-swap-api-overlay.yaml
+  baseURL: https://api.orange.com/camara/playground/api/sim-swap/v1
 - aid: orange-business:orange-business-device-reachability-status-api
   name: Orange Business Device reachability status API
   description: Operations to get the current reachability status of a device
   humanURL: >-
-    https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview
+    https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/1.0/getting-started
   tags:
   - Device reachability status
   properties:
@@ -505,22 +526,22 @@ apis:
     url: openapi/orange-business-device-reachability-status-api-openapi.yml
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/1.0/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/NumberVerification
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/1.0/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/SimSwap
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/device-swap/es/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/device-swap/playground/0.2/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/DeviceSwap
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/0.2/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/KnowYourCustomerMatch
   - type: Documentation
@@ -545,12 +566,15 @@ apis:
     url: https://developer.orange.com/products/population-density-data/
   - type: SourceCode
     url: https://github.com/camaraproject/PopulationDensityData
+  - type: Overlay
+    url: overlays/orange-business-device-reachability-status-api-overlay.yaml
+  baseURL: https://api.orange.com/camara/playground/api/device-reachability-status/v0.6
 - aid: orange-business:orange-business-geofencing-subscriptions-api
   name: Orange Business Geofencing subscriptions API
   description: >-
     Operations to manage event subscriptions on geofencing events for leaving and entering an area.
   humanURL: >-
-    https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview
+    https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/1.0/getting-started
   tags:
   - Geofencing subscriptions
   properties:
@@ -558,22 +582,22 @@ apis:
     url: openapi/orange-business-geofencing-subscriptions-api-openapi.yml
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/1.0/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/NumberVerification
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/1.0/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/SimSwap
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/device-swap/es/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/device-swap/playground/0.2/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/DeviceSwap
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/0.2/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/KnowYourCustomerMatch
   - type: Documentation
@@ -598,11 +622,14 @@ apis:
     url: https://developer.orange.com/products/population-density-data/
   - type: SourceCode
     url: https://github.com/camaraproject/PopulationDensityData
+  - type: Overlay
+    url: overlays/orange-business-geofencing-subscriptions-api-overlay.yaml
+  baseURL: https://api.orange.com/camara/playground/api/geofencing-subscriptions/v0.3
 - aid: orange-business:orange-business-location-retrieval-api
   name: Orange Business Location retrieval API
   description: Retrieve the location of a device
   humanURL: >-
-    https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview
+    https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/1.0/getting-started
   tags:
   - Location retrieval
   properties:
@@ -610,22 +637,22 @@ apis:
     url: openapi/orange-business-location-retrieval-api-openapi.yml
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/1.0/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/NumberVerification
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/1.0/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/SimSwap
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/device-swap/es/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/device-swap/playground/0.2/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/DeviceSwap
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/0.2/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/KnowYourCustomerMatch
   - type: Documentation
@@ -650,11 +677,14 @@ apis:
     url: https://developer.orange.com/products/population-density-data/
   - type: SourceCode
     url: https://github.com/camaraproject/PopulationDensityData
+  - type: Overlay
+    url: overlays/orange-business-location-retrieval-api-overlay.yaml
+  baseURL: https://api.orange.com/camara/playground/api/location-retrieval/v0.3
 - aid: orange-business:orange-business-location-verification-api
   name: Orange Business Location verification API
   description: Verification of the location of a device
   humanURL: >-
-    https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview
+    https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/1.0/getting-started
   tags:
   - Location Verification
   tags_raw:
@@ -664,22 +694,22 @@ apis:
     url: openapi/orange-business-location-verification-api-openapi.yml
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/1.0/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/NumberVerification
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/1.0/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/SimSwap
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/device-swap/es/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/device-swap/playground/0.2/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/DeviceSwap
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/0.2/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/KnowYourCustomerMatch
   - type: Documentation
@@ -704,12 +734,15 @@ apis:
     url: https://developer.orange.com/products/population-density-data/
   - type: SourceCode
     url: https://github.com/camaraproject/PopulationDensityData
+  - type: Overlay
+    url: overlays/orange-business-location-verification-api-overlay.yaml
+  baseURL: https://api.orange.com/camara/playground/api/location-verification/v1
 - aid: orange-business:orange-business-match-api
   name: Orange Business Match API
   description: >-
     Operations to match a customer identity against the account data bound to their phone number.
   humanURL: >-
-    https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview
+    https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/1.0/getting-started
   tags:
   - Match
   properties:
@@ -717,22 +750,22 @@ apis:
     url: openapi/orange-business-match-api-openapi.yml
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/1.0/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/NumberVerification
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/1.0/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/SimSwap
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/device-swap/es/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/device-swap/playground/0.2/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/DeviceSwap
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/0.2/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/KnowYourCustomerMatch
   - type: Documentation
@@ -757,11 +790,14 @@ apis:
     url: https://developer.orange.com/products/population-density-data/
   - type: SourceCode
     url: https://github.com/camaraproject/PopulationDensityData
+  - type: Overlay
+    url: overlays/orange-business-match-api-overlay.yaml
+  baseURL: https://api.orange.com/camara/playground/api/kyc-match/v0.2
 - aid: orange-business:orange-business-phone-number-share-api
   name: Orange Business Phone number share API
   description: API operation to return the phone number associated to the access token.
   humanURL: >-
-    https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview
+    https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/1.0/getting-started
   tags:
   - Phone number share
   properties:
@@ -769,22 +805,22 @@ apis:
     url: openapi/orange-business-phone-number-share-api-openapi.yml
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/1.0/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/NumberVerification
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/1.0/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/SimSwap
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/device-swap/es/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/device-swap/playground/0.2/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/DeviceSwap
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/0.2/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/KnowYourCustomerMatch
   - type: Documentation
@@ -809,13 +845,16 @@ apis:
     url: https://developer.orange.com/products/population-density-data/
   - type: SourceCode
     url: https://github.com/camaraproject/PopulationDensityData
+  - type: Overlay
+    url: overlays/orange-business-phone-number-share-api-overlay.yaml
+  baseURL: https://api.orange.com/camara/playground/api/number-verification/v1
 - aid: orange-business:orange-business-phone-number-verify-api
   name: Orange Business Phone number verify API
   description: >-
     API operation to verify a phone number received as input. It can be received either in plain text
     or hashed format.
   humanURL: >-
-    https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview
+    https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/1.0/getting-started
   tags:
   - Phone number verify
   properties:
@@ -823,22 +862,22 @@ apis:
     url: openapi/orange-business-phone-number-verify-api-openapi.yml
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/1.0/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/NumberVerification
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/1.0/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/SimSwap
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/device-swap/es/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/device-swap/playground/0.2/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/DeviceSwap
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/0.2/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/KnowYourCustomerMatch
   - type: Documentation
@@ -863,11 +902,14 @@ apis:
     url: https://developer.orange.com/products/population-density-data/
   - type: SourceCode
     url: https://github.com/camaraproject/PopulationDensityData
+  - type: Overlay
+    url: overlays/orange-business-phone-number-verify-api-overlay.yaml
+  baseURL: https://api.orange.com/camara/playground/api/number-verification/v1
 - aid: orange-business:orange-business-population-density-data-api
   name: Orange Business Population Density Data API
   description: Operations to retrieve population density information.
   humanURL: >-
-    https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview
+    https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/1.0/getting-started
   tags:
   - Population Density Data
   properties:
@@ -875,22 +917,22 @@ apis:
     url: openapi/orange-business-population-density-data-api-openapi.yml
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/1.0/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/NumberVerification
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/1.0/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/SimSwap
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/device-swap/es/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/device-swap/playground/0.2/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/DeviceSwap
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/0.2/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/KnowYourCustomerMatch
   - type: Documentation
@@ -915,11 +957,14 @@ apis:
     url: https://developer.orange.com/products/population-density-data/
   - type: SourceCode
     url: https://github.com/camaraproject/PopulationDensityData
+  - type: Overlay
+    url: overlays/orange-business-population-density-data-api-overlay.yaml
+  baseURL: https://api.orange.com/camara/playground/api/population-density-data/v0.3
 - aid: orange-business:orange-business-qos-sessions-api
   name: Orange Business QoS Sessions API
   description: Manage QoS sessions
   humanURL: >-
-    https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview
+    https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/1.0/getting-started
   tags:
   - QoS Sessions
   properties:
@@ -927,22 +972,22 @@ apis:
     url: openapi/orange-business-qos-sessions-api-openapi.yml
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/1.0/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/NumberVerification
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/1.0/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/SimSwap
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/device-swap/es/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/device-swap/playground/0.2/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/DeviceSwap
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/0.2/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/KnowYourCustomerMatch
   - type: Documentation
@@ -967,11 +1012,14 @@ apis:
     url: https://developer.orange.com/products/population-density-data/
   - type: SourceCode
     url: https://github.com/camaraproject/PopulationDensityData
+  - type: Overlay
+    url: overlays/orange-business-qos-sessions-api-overlay.yaml
+  baseURL: https://api.orange.com/camara/playground/api/quality-on-demand/v0.11
 - aid: orange-business:orange-business-retrieve-device-swap-date-api
   name: Orange Business Retrieve Device Swap Date API
   description: Receive the last date in which the device of the end-user was swapped
   humanURL: >-
-    https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview
+    https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/1.0/getting-started
   tags:
   - Retrieve Device Swap Date
   properties:
@@ -979,22 +1027,22 @@ apis:
     url: openapi/orange-business-retrieve-device-swap-date-api-openapi.yml
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/1.0/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/NumberVerification
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/1.0/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/SimSwap
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/device-swap/es/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/device-swap/playground/0.2/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/DeviceSwap
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/0.2/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/KnowYourCustomerMatch
   - type: Documentation
@@ -1019,12 +1067,15 @@ apis:
     url: https://developer.orange.com/products/population-density-data/
   - type: SourceCode
     url: https://github.com/camaraproject/PopulationDensityData
+  - type: Overlay
+    url: overlays/orange-business-retrieve-device-swap-date-api-overlay.yaml
+  baseURL: https://api.orange.com/camara/playground/api/device-swap/v0.2
 - aid: orange-business:orange-business-retrieve-sim-swap-date-api
   name: Orange Business Retrieve SIM swap date API
   description: >-
     The Retrieve SIM swap date API from Orange Business — 1 operation(s) for retrieve sim swap date.
   humanURL: >-
-    https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview
+    https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/1.0/getting-started
   tags:
   - Retrieve SIM swap date
   properties:
@@ -1032,22 +1083,22 @@ apis:
     url: openapi/orange-business-retrieve-sim-swap-date-api-openapi.yml
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/1.0/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/NumberVerification
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/1.0/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/SimSwap
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/device-swap/es/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/device-swap/playground/0.2/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/DeviceSwap
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/0.2/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/KnowYourCustomerMatch
   - type: Documentation
@@ -1072,12 +1123,15 @@ apis:
     url: https://developer.orange.com/products/population-density-data/
   - type: SourceCode
     url: https://github.com/camaraproject/PopulationDensityData
+  - type: Overlay
+    url: overlays/orange-business-retrieve-sim-swap-date-api-overlay.yaml
+  baseURL: https://api.orange.com/camara/playground/api/sim-swap/v1
 - aid: orange-business:orange-business-roaming-status-retrieval-api
   name: Orange Business Roaming status retrieval API
   description: >-
     Operation to get device roaming status and country information (if roaming) synchronously
   humanURL: >-
-    https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview
+    https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/1.0/getting-started
   tags:
   - Roaming status retrieval
   properties:
@@ -1085,22 +1139,22 @@ apis:
     url: openapi/orange-business-roaming-status-retrieval-api-openapi.yml
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/1.0/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/NumberVerification
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/1.0/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/SimSwap
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/device-swap/es/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/device-swap/playground/0.2/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/DeviceSwap
   - type: Documentation
     url: >-
-      https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/current/overview
+      https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/0.2/getting-started
   - type: SourceCode
     url: https://github.com/camaraproject/KnowYourCustomerMatch
   - type: Documentation
@@ -1125,24 +1179,11 @@ apis:
     url: https://developer.orange.com/products/population-density-data/
   - type: SourceCode
     url: https://github.com/camaraproject/PopulationDensityData
+  - type: Overlay
+    url: overlays/orange-business-roaming-status-retrieval-api-overlay.yaml
+  baseURL: https://api.orange.com/camara/playground/api/device-roaming-status/v0.6
 name: Orange Business
-description: Orange Business is the B2B, telco-cloud, and developer arm of Orange S.A. — France's leading
-  telecommunications group operating across Europe, the Middle East, and Africa. The company markets itself as
-  "an operator, integrator, and platform player" and serves 30,000+ enterprise customers across 65 countries
-  with cloud, cybersecurity, SD-WAN/SASE, 5G, IoT, data, AI, and digital-workplace services. Orange's developer
-  surface is split across two tracks. The Orange Developer portal (developer.orange.com) publishes the Orange
-  Open Gateway — Orange's implementation of GSMA Open Gateway / CAMARA standardised network APIs (Number
-  Verification, SIM Swap, Device Swap, KYC Match, Device Location, Geofencing, Device Status, Quality on Demand,
-  Population Density Data) — alongside Orange-specific APIs for IoT (Live Objects, IoT Global Connectivity),
-  payments (Orange Money WebPay, Pay With Orange Bill, carrier billing across Orange Africa), communications
-  (Voice, SMS MEA, Business Talk, Contact Everyone), cloud (Cloud Avenue sovereign IaaS, Evolution Platform), and
-  identity (Live Identity Verify, Live Identity Captcha). The Orange Business Services portfolio adds a B2B
-  TM Forum–aligned API track for ordering, billing, incident management, eligibility, and order tracking. The
-  Orange-OpenSource GitHub org backs the developer ecosystem with 427+ repos including Hurl (the popular Rust
-  HTTP testing CLI with 18K+ stars), the Boosted accessible Bootstrap framework, the OUDS Orange Unified Design
-  System for iOS / Android / Flutter, and 5G Kubernetes Helm charts. Orange has also stood up Orange LiveNet, a
-  business unit dedicated to commercialising programmable network capabilities, and is one of the founding
-  operators of the GSMA Open Gateway initiative with the CAMARA Linux Foundation project.
+description: Orange Business is the B2B, telco-cloud, and developer arm of Orange S.A. — France's leading telecommunications group operating across Europe, the Middle East, and Africa. The company markets itself as "an operator, integrator, and platform player" and serves 30,000+ enterprise customers across 65 countries with cloud, cybersecurity, SD-WAN/SASE, 5G, IoT, data, AI, and digital-workplace services. Orange's developer surface is split across two tracks. The Orange Developer portal (developer.orange.com) publishes the Orange Open Gateway — Orange's implementation of GSMA Open Gateway / CAMARA standardised network APIs (Number Verification, SIM Swap, Device Swap, KYC Match, Device Location, Geofencing, Device Status, Quality on Demand, Population Density Data) — alongside Orange-specific APIs for IoT (Live Objects, IoT Global Connectivity), payments (Orange Money WebPay, Pay With Orange Bill, carrier billing across Orange Africa), communications (Voice, SMS MEA, Business Talk, Contact Everyone), cloud (Cloud Avenue sovereign IaaS, Evolution Platform), and identity (Live Identity Verify, Live Identity Captcha). The Orange Business Services portfolio adds a B2B TM Forum–aligned API track for ordering, billing, incident management, eligibility, and order tracking. The Orange-OpenSource GitHub org backs the developer ecosystem with 427+ repos including Hurl (the popular Rust HTTP testing CLI with 18K+ stars), the Boosted accessible Bootstrap framework, the OUDS Orange Unified Design System for iOS / Android / Flutter, and 5G Kubernetes Helm charts. Orange has also stood up Orange LiveNet, a business unit dedicated to commercialising programmable network capabilities, and is one of the founding operators of the GSMA Open Gateway initiative with the CAMARA Linux Foundation project.
 tags:
 - 5G
 - Artificial Intelligence
@@ -1207,6 +1248,8 @@ accessModel:
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/orange-business.png
 access: 3rd-Party
 common:
+- type: OAuthScopes
+  url: scopes/orange-business-scopes.yml
 - type: License
   name: Apache-2.0
   url: https://github.com/camaraproject/NumberVerification/blob/main/LICENSE
@@ -1284,10 +1327,10 @@ common:
 - url: https://twitter.com/orangebusiness
   name: Orange Business on X
   type: Twitter
-- url: https://www.orange-business.com/en/legal-notice
+- url: https://www.orange-business.com/en/legal-information
   name: Legal Notice
   type: TermsOfService
-- url: https://www.orange-business.com/en/personal-data-protection
+- url: https://www.orange-business.com/en/privacy-policy
   name: Personal Data Protection
   type: PrivacyPolicy
 - url: https://developer.orange.com/contact
@@ -1296,12 +1339,9 @@ common:
 - url: https://developer.orange.com/talk-to-sales/
   name: Talk to Sales
   type: Support
-- url: https://developer.orange.com/register
+- url: https://developer.orange.com/signup
   name: Register
   type: Signup
-- url: https://www.orange-business.com/en/our-solutions
-  name: Orange Business Solutions
-  type: Documentation
 - url: https://www.orange-business.com/en/products/live-intelligence
   name: Live Intelligence — Generative AI
   type: Documentation
@@ -1311,33 +1351,118 @@ common:
 - url: https://cloud.orange-business.com/
   name: Cloud Avenue Portal
   type: Portal
+- type: Packages
+  url: packages/orange-business-packages.yml
+  name: Orange Business client libraries
+- type: SDKs
+  url: packages/orange-business-packages.yml
+  name: Orange Business first-party SDKs
+- type: WellKnown
+  url: well-known/orange-business-well-known.yml
+  name: .well-known probe index
+- type: SecurityTxt
+  url: well-known/orange-business-security.txt
+  name: RFC 9116 security.txt (served by developer.orange.com)
+- type: MCPServer
+  url: mcp/orange-business-mcp.yml
+  name: Orange CAMARA MCP Enablement PI1 server
+- type: ToolCrosswalk
+  url: mcp/orange-business-tool-crosswalk.yml
+  name: MCP tools bound to OpenAPI operations
+- type: LLMsTxt
+  url: llms/orange-business-llms.txt
+  name: Published llms.txt (www.orange-business.com)
+- type: Conformance
+  url: conformance/orange-business-conformance.yml
+  name: Standards conformance — CAMARA, TMF931, GSMA Open Gateway, CIBA
+- type: ErrorCatalog
+  url: errors/orange-business-problem-types.yml
+  name: Error catalog — gateway + CAMARA + Live Objects envelopes
+- type: Lifecycle
+  url: lifecycle/orange-business-lifecycle.yml
+  name: Versioning, deprecation and support posture
+- type: Deprecation
+  url: lifecycle/orange-business-lifecycle.yml
+  name: Deprecated operations (no published sunset policy)
+- type: Conventions
+  url: conventions/orange-business-conventions.yml
+  name: Cross-cutting runtime semantics + reversibility
+- type: Sandbox
+  url: sandbox/orange-business-sandbox.yml
+  name: Network APIs Playground — 15 published test numbers
+- type: ChangeLog
+  url: changelog/orange-business-changelog.yml
+  name: Release communication (Live Objects news feed)
+- type: DataModel
+  url: data-model/orange-business-data-model.yml
+  name: Entity graph across Live Objects and CAMARA
+- type: Webhooks
+  url: asyncapi/orange-business-webhooks.yml
+  name: CloudEvents subscriptions + Live Objects action policies
+- type: AgentSkill
+  url: skills/_index.yml
+  name: Packaged agent skills grounded in real operationIds
+- type: Plans
+  url: plans/orange-business-plans-pricing.yml
+  name: Plans and pricing posture
+- type: RateLimits
+  url: rate-limits/orange-business-rate-limits.yml
+  name: Published rate limits — 25 rps, code 53
+- type: Security
+  url: security/orange-business-vulnerability-disclosure.yml
+  name: Vulnerability disclosure via security.txt
+- type: DeveloperPortal
+  url: https://developer.orange.com/
+  name: Orange Developer
+- type: APIReference
+  url: https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/1.0/api-reference
+  name: Network API reference
+- type: GettingStarted
+  url: https://docs.developer.orange.com/network-apis/practical-guides/try-it-for-free/getting-started
+  name: Getting started with the Playground APIs
+- type: HelpCenter
+  url: https://developer.orange.com/support/
+  name: Orange Developer support
+- type: Pricing
+  url: https://developer.orange.com/talk-to-sales/
+  name: Production access runs through sales; no public rate card
+- type: TermsOfService
+  url: https://developer.orange.com/terms-and-conditions
+  name: Orange Developer Terms of Use
 maintainers:
 - FN: Kin Lane
   email: info@apievangelist.com
 overlays:
 - url: properties.yml
   type: APIs.io Search
-- url: openapi/orange-business-number-verification-openapi.yml
+- url: openapi/_original/orange-business-number-verification-openapi.yml
   type: OpenAPI
-- url: openapi/orange-business-sim-swap-openapi.yml
+- url: openapi/_original/orange-business-sim-swap-openapi.yml
   type: OpenAPI
-- url: openapi/orange-business-device-swap-openapi.yml
+- url: openapi/_original/orange-business-device-swap-openapi.yml
   type: OpenAPI
-- url: openapi/orange-business-kyc-match-openapi.yml
+- url: openapi/_original/orange-business-kyc-match-openapi.yml
   type: OpenAPI
-- url: openapi/orange-business-device-location-retrieval-openapi.yml
+- url: openapi/_original/orange-business-device-location-retrieval-openapi.yml
   type: OpenAPI
-- url: openapi/orange-business-device-location-verification-openapi.yml
+- url: openapi/_original/orange-business-device-location-verification-openapi.yml
   type: OpenAPI
-- url: openapi/orange-business-geofencing-openapi.yml
+- url: openapi/_original/orange-business-geofencing-openapi.yml
   type: OpenAPI
-- url: openapi/orange-business-device-reachability-status-openapi.yml
+- url: openapi/_original/orange-business-device-reachability-status-openapi.yml
   type: OpenAPI
-- url: openapi/orange-business-device-roaming-status-openapi.yml
+- url: openapi/_original/orange-business-device-roaming-status-openapi.yml
   type: OpenAPI
-- url: openapi/orange-business-quality-on-demand-openapi.yml
+- url: openapi/_original/orange-business-quality-on-demand-openapi.yml
   type: OpenAPI
-- url: openapi/orange-business-population-density-data-openapi.yml
+- url: openapi/_original/orange-business-population-density-data-openapi.yml
   type: OpenAPI
 x-type: company
 x-tier: 1
+created: '2026-05-25'
+modified: '2026-08-26'
+x-enrichment:
+  date: '2026-08-26'
+  status: enriched
+  artifacts_added: 39
+  pass: local-v1

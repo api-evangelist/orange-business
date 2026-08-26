@@ -1,37 +1,109 @@
-generated: '2026-07-11'
-method: derived
-source: openapi/orange-business-device-location-retrieval-openapi.yml, openapi/orange-business-device-location-verification-openapi.yml,
-  openapi/orange-business-device-reachability-status-openapi.yml, openapi/orange-business-device-roaming-status-openapi.yml,
-  openapi/orange-business-device-swap-openapi.yml, openapi/orange-business-geofencing-openapi.yml,
-  openapi/orange-business-kyc-match-openapi.yml, openapi/orange-business-number-verification-openapi.yml,
-  openapi/orange-business-population-density-data-openapi.yml, openapi/orange-business-quality-on-demand-openapi.yml,
-  openapi/orange-business-sim-swap-openapi.yml
+generated: '2026-08-26'
+method: searched
+source: 'openapi/orange-business-check-device-swap-api-openapi.yml, openapi/orange-business-check-sim-swap-api-openapi.yml,
+  openapi/orange-business-device-reachability-status-api-openapi.yml, openapi/orange-business-geofencing-subscriptions-api-openapi.yml,
+  openapi/orange-business-live-objects-openapi.json, openapi/orange-business-location-retrieval-api-openapi.yml,
+  openapi/orange-business-location-verification-api-openapi.yml, openapi/orange-business-match-api-openapi.yml,
+  openapi/orange-business-phone-number-share-api-openapi.yml, openapi/orange-business-phone-number-verify-api-openapi.yml,
+  openapi/orange-business-population-density-data-api-openapi.yml, openapi/orange-business-qos-sessions-api-openapi.yml
+  ... + SEARCHED: the Orange Developer authentication guides (backend-flow, frontend-flow) and the error-handling
+  reference, plus live probes of the token endpoints.'
 summary:
   types:
-  - http
+  - apiKey
+  - oauth2
   - openIdConnect
+  api_key_in:
+  - header
+  oauth2_flows:
+  - authorizationCode
 schemes:
 - name: openId
   type: openIdConnect
   openIdConnectUrl: https://example.com/.well-known/openid-configuration
   description: OpenID Connect authentication
   sources:
-  - openapi/orange-business-device-location-retrieval-openapi.yml
-  - openapi/orange-business-device-location-verification-openapi.yml
-  - openapi/orange-business-device-reachability-status-openapi.yml
-  - openapi/orange-business-device-roaming-status-openapi.yml
-  - openapi/orange-business-device-swap-openapi.yml
-  - openapi/orange-business-geofencing-openapi.yml
-  - openapi/orange-business-kyc-match-openapi.yml
-  - openapi/orange-business-number-verification-openapi.yml
-  - openapi/orange-business-population-density-data-openapi.yml
-  - openapi/orange-business-quality-on-demand-openapi.yml
-  - openapi/orange-business-sim-swap-openapi.yml
-- name: notificationsBearerAuth
-  type: http
-  scheme: bearer
-  bearerFormat: '{$request.body#/sinkCredential.credentialType}'
+  - openapi/orange-business-check-device-swap-api-openapi.yml
+  - openapi/orange-business-check-sim-swap-api-openapi.yml
+  - openapi/orange-business-device-reachability-status-api-openapi.yml
+  - openapi/orange-business-geofencing-subscriptions-api-openapi.yml
+  - openapi/orange-business-location-retrieval-api-openapi.yml
+  - openapi/orange-business-location-verification-api-openapi.yml
+  - openapi/orange-business-match-api-openapi.yml
+  - openapi/orange-business-phone-number-share-api-openapi.yml
+  - openapi/orange-business-phone-number-verify-api-openapi.yml
+  - openapi/orange-business-population-density-data-api-openapi.yml
+  - openapi/orange-business-qos-sessions-api-openapi.yml
+  - openapi/orange-business-retrieve-device-swap-date-api-openapi.yml
+  - openapi/orange-business-retrieve-sim-swap-date-api-openapi.yml
+  - openapi/orange-business-roaming-status-retrieval-api-openapi.yml
+- name: X-API-KEY
+  type: apiKey
+  in: header
+  parameter: X-API-KEY
   sources:
-  - openapi/orange-business-geofencing-openapi.yml
-  - openapi/orange-business-population-density-data-openapi.yml
-  - openapi/orange-business-quality-on-demand-openapi.yml
+  - openapi/orange-business-live-objects-openapi.json
+- name: OAuth2.0
+  type: oauth2
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+    tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+    scopes: 23
+  sources:
+  - openapi/orange-business-live-objects-openapi.json
+docs:
+- https://docs.developer.orange.com/network-apis/practical-guides/api-authentication/backend-flow
+- https://docs.developer.orange.com/network-apis/practical-guides/api-authentication/frontend-flow
+- https://developer.orange.com/resources/orange-apis-error-handling/
+documented:
+  gateway:
+    token_url: https://api.orange.com/oauth/v3/token
+    token_url_probe: POST 2026-08-26 -> 400 {"error":"invalid_request","error_description":"Missing grant_type
+      in body"} (live)
+    playground_token_url: https://api.orange.com/openidconnect/playground/v1.0/token
+    playground_token_url_probe: POST 2026-08-26 -> 415 {"error":"invalid_request","error_description":"The
+      URI does not support the requested content type"} (live)
+    ciba_authorize_url: <authorization server base url>/bc-authorize
+    grants:
+    - client_credentials
+    - urn:openid:params:grant-type:ciba
+    client_auth:
+    - 'Authorization: Basic base64(client_id:client_secret)'
+    - private_key_jwt — client_assertion + client_assertion_type=urn:ietf:params:oauth:client-assertion-type:jwt-bearer,
+      RS256, iss=client_id, exp recommended 5 minutes
+    login_hint: tel:+33712345678
+    scope_form: openid dpv:<dpvValue> <technicalParameter>
+    scope_note: Purpose is bound into the OAuth scope with W3C Data Privacy Vocabulary values — the CAMARA
+      convention for consent-gated network data.
+    token_lifetime_seconds: 3600
+    caching: Tokens carry expires_in; Orange documents caching the token and refreshing only on expiry rather
+      than calling /token per request.
+    errors:
+      401 code 40: Missing credentials — missing Authorization header, missing token, or missing Bearer prefix
+      401 code 41: Invalid credentials — invalid, pending or revoked client_id/client_secret
+      401 code 42: Expired credentials — expired OAuth 2.0 token
+      403 code 50: Access denied — API not subscribed, or subscription pending/revoked
+  live_objects:
+    api_key_header: X-API-KEY
+    api_key_note: Keys carry roles (23 named scopes) and a per-key MQTT rate limit; GET /api/v0/apiKeys/current_key
+      introspects the key in use.
+    authorization_url: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+    token_url: https://liveobjects.orange-business.com/api/v1/oauth2/token
+    refresh_url: https://liveobjects.orange-business.com/api/v1/oauth2/token
+    flow: authorizationCode
+    scopes: 23
+discovery:
+  openid_configuration_reachable: false
+  probes:
+  - url: https://developer.orange.com/.well-known/openid-configuration
+    status: 403
+  - url: https://api.orange.com/.well-known/openid-configuration
+    status: 404
+  - url: https://api.orange.com/.well-known/oauth-authorization-server
+    status: 404
+  - url: https://liveobjects.orange-business.com/.well-known/openid-configuration
+    status: 403
+  note: Every harvested CAMARA contract still declares the upstream placeholder openIdConnectUrl https://example.com/.well-known/openid-configuration.
+    Orange serves no reachable discovery document on any host, so a client cannot resolve the authorization
+    server from the contract — it must be read out of the prose guides.

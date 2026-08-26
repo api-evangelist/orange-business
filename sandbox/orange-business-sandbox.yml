@@ -1,0 +1,142 @@
+generated: '2026-08-26'
+method: searched
+source: https://docs.developer.orange.com/network-apis/practical-guides/try-it-for-free/test-phone-numbers
+docs:
+- https://docs.developer.orange.com/network-apis/practical-guides/try-it-for-free/overview
+- https://docs.developer.orange.com/network-apis/practical-guides/try-it-for-free/getting-started
+- https://docs.developer.orange.com/network-apis/practical-guides/try-it-for-free/test-phone-numbers
+- https://docs.developer.orange.com/network-apis/practical-guides/try-it-for-free/testing-with-your-dataset
+- https://docs.developer.orange.com/network-apis/practical-guides/try-it-for-free/subscribe-guide
+- https://docs.developer.orange.com/network-apis/practical-guides/api-environments/playground
+name: Orange Network APIs Playground
+summary: >-
+  A free, fully mocked environment covering 12 CAMARA Network APIs, with 15 published test phone
+  numbers whose responses are documented, plus a Playground Admin API for creating and mutating your
+  own test subscribers. Self-serve — no sales conversation, no onboarding. Moving to production is a
+  credential and base-URL swap: "Simply update your credentials and the API endpoints, and your code
+  remains unchanged."
+environments:
+- name: playground
+  kind: mock
+  base_url: https://api.orange.com/camara/playground/api/{api-name}/{version}
+  example_endpoint: https://api.orange.com/camara/playground/api/sim-swap/v1/check
+  admin_base_url: https://api.orange.com/camara/playground/admin/v1.0
+  token_url: https://api.orange.com/openidconnect/playground/v1.0/token
+  access: free developer account + subscription to the CAMARA Playground API
+  signup: https://developer.orange.com/apis/camara-playground
+  probed: '2026-08-26 — POST returned 401 {"status":401,"code":"UNAUTHENTICATED"} (live, credential-gated)'
+- name: trial
+  kind: real-network
+  note: >-
+    Orange documents a Trial tier between Playground and Production. No base URL is published for it;
+    access is arranged with Orange.
+- name: production
+  kind: live
+  base_url: https://api.orange.com
+  token_url: https://api.orange.com/oauth/v3/token
+  probed: '2026-08-26 — POST /oauth/v3/token returned 400 {"error":"invalid_request","error_description":"Missing grant_type in body"} (live)'
+credentials:
+  scheme: OAuth 2.0 client_credentials (backend) / OIDC CIBA (user-bound flows)
+  header: 'Authorization: Basic base64(client_id:client_secret)'
+  grant_type_backend: client_credentials
+  grant_type_ciba: 'urn:openid:params:grant-type:ciba'
+  token_lifetime_seconds: 3600
+  note: >-
+    No test-vs-live key PREFIX. Orange separates environments by base URL and by which subscription
+    the client_id belongs to, not by a key prefix — so a client cannot tell from the credential alone
+    whether it is pointed at mock or live data. Worth knowing before wiring an agent.
+test_data:
+  kind: published test phone numbers
+  count: 15
+  range: '+990100000000 .. +990100000014'
+  note: >-
+    Values below are published verbatim by Orange on the test-phone-numbers page. Each number carries
+    a full profile — SIM swap history, device swap history, reachability, roaming country, location
+    and KYC fields — so one number exercises every API consistently.
+  numbers:
+  - number: '+990100000000'
+    profile: Nominal French user
+    behaviour: 'Baseline. Long-standing postpaid customer located in Paris, no fraud signals. SIM Swap returns swapped: false.'
+  - number: '+990100000001'
+    profile: Recently SIM swapped
+    behaviour: 'SIM issued within 7 days. SIM Swap returns swapped: true.'
+  - number: '+990100000002'
+    profile: Roaming in Europe (Spain)
+    behaviour: 'Roaming status Spain (country code 34); location Madrid.'
+  - number: '+990100000003'
+    profile: Disconnected device
+    behaviour: 'Reachability NOT_CONNECTED; location unavailable.'
+  - number: '+990100000004'
+    profile: Prepaid customer
+    behaviour: 'PAYG contract; reachability CONNECTED_SMS only; Marseille location.'
+  - number: '+990100000005'
+    profile: Recently swapped device
+    behaviour: 'Device changed within 6 hours; Lyon location.'
+  - number: '+990100000006'
+    profile: SIM and device both recently swapped
+    behaviour: 'Both swap signals active; Nantes location.'
+  - number: '+990100000007'
+    profile: Roaming outside EU (Japan)
+    behaviour: 'Roaming Japan (country code 81); Tokyo location.'
+  - number: '+990100000008'
+    profile: Very complete KYC
+    behaviour: 'All KYC fields populated; Toulouse location; PAYM since 2015.'
+  - number: '+990100000009'
+    profile: Not reachable (PAYG)
+    behaviour: 'Prepaid; NOT_CONNECTED; location unavailable.'
+  - number: '+990100000010'
+    profile: Roaming plus recent SIM swap
+    behaviour: 'Combined fraud signals; Italy roaming; Rome location.'
+  - number: '+990100000011'
+    profile: New customer
+    behaviour: 'Subscribed less than 20 days ago; Lille location.'
+  - number: '+990100000012'
+    profile: Overseas territory
+    behaviour: 'Reunion Island location; NOT classified as roaming.'
+  - number: '+990100000013'
+    profile: High fraud risk
+    behaviour: 'Every fraud signal active at once; Madrid location; Spain roaming.'
+  - number: '+990100000014'
+    profile: Roaming SMS only
+    behaviour: 'Germany roaming; CONNECTED_SMS (no data); Berlin location.'
+mocked_apis:
+- Number Verification
+- SIM Swap
+- Device Swap
+- KYC Match
+- KYC Tenure
+- Device Reachability Status
+- Device Roaming Status
+- Device Location Verification
+- Device Location Retrieval
+- Population Density Data
+- Geofencing
+- Quality On Demand
+fixture_tooling:
+  name: Playground Admin API
+  docs: https://docs.developer.orange.com/network-apis/api-catalog/playground-admin/playground/1.0/api-reference
+  base_url: https://api.orange.com/camara/playground/admin/v1.0
+  capabilities:
+  - create/read/update/delete your own mock phone numbers
+  - set location data per number
+  - set KYC data per number
+  - set reachability status per number
+  - set roaming status per number
+  - set SIM swap data per number
+  limits:
+  - 'up to 4 mock phone numbers per application'
+  - 'up to 10 phone profiles for diverse testing'
+  agent_access: >-
+    All nine admin operations are also exposed as MCP tools by Orange's CAMARA MCP Enablement PI1
+    server — see mcp/orange-business-mcp.yml.
+time_simulation: null
+time_simulation_note: >-
+  Orange publishes no test clock. Time-dependent signals (SIM swap age, device swap age, tenure) are
+  simulated by choosing the right test number, or by setting the values through the Admin API — not
+  by advancing a clock.
+live_objects:
+  sandbox: null
+  note: >-
+    The Live Objects IoT platform publishes no separate sandbox. Its docs direct developers to
+    "request a trial account" on the production platform at liveobjects.orange-business.com and
+    create a device API key with the Device access role.

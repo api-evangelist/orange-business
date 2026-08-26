@@ -1,0 +1,127 @@
+generated: '2026-08-26'
+method: searched
+source: https://github.com/camaraproject/MCPEnablement_PI1
+ownership_note: >-
+  The server lives in the camaraproject GitHub org rather than an Orange one, but its own README
+  states it plainly: "This repository contains a Provider Implementation contributed by Orange in
+  the context of the CAMARA MCP Enablement initiative" and "implementation code for the Orange MCP
+  server contribution". It authenticates against Orange's own developer portal
+  (https://developer.orange.com/apis/camara-playground) with an Orange CLIENT_ID/CLIENT_SECRET and
+  calls Orange's gateway at api.orange.com, so it is first-party Orange work hosted in the standards
+  body's org.
+name: Orange Network API MCP Server (CAMARA MCP Enablement PI1)
+description: >-
+  A Model Context Protocol server exposing Orange's CAMARA Network APIs — SIM swap, device location,
+  reachability, roaming, KYC match, population density and quality-on-demand — plus the Orange
+  Network APIs Playground administration API, to any MCP-compatible AI assistant.
+deployment:
+  mode: local-stdio
+  install: >-
+    corepack enable && yarn install && yarn build   # then run dist/index.js over stdio
+  package: https://github.com/camaraproject/MCPEnablement_PI1
+  auth: oauth
+  verified: searched
+  note: >-
+    NO hosted/remote endpoint. Orange publishes no MCP URL an agent can POST to — probes of
+    https://mcp.developer.orange.com/mcp (no response), https://developer.orange.com/mcp (403),
+    https://api.orange.com/mcp (404) and https://docs.developer.orange.com/mcp (404) all missed.
+    The server must be cloned, built (Node >= 24, Yarn 4.13.0 via Corepack) and run locally over
+    stdio by a human before any agent can see it. package.json declares the binary as
+    "@zodiac/network-api-mcp" v0.0.3 but that name is NOT published to npm (registry.npmjs.org 404),
+    so `npx` will not fetch it — source build is the only install path.
+requires:
+  runtime: Node.js >= 24.0.0
+  package_manager: Yarn 4.13.0 (via Corepack)
+  credentials: >-
+    CLIENT_ID and CLIENT_SECRET obtained by subscribing to the CAMARA Playground API at
+    https://developer.orange.com/apis/camara-playground
+environment: >-
+  Playground (mock) only — the tools call https://api.orange.com/camara/playground/api/... and the
+  playground admin API. The same tools point at production once credentials and base URL are swapped.
+tool_count: 24
+tools:
+- name: get-sim-swap-date
+  title: Get SIM swap date
+  description: Retrieve the timestamp of the latest SIM swap event for a phone number
+- name: check-sim-swap
+  title: Check SIM swap
+  description: Check if a SIM swap occurred in the last X hours for a phone number
+- name: get-device-location
+  title: Get device location
+  description: Retrieve the geographical location (area) where a device is currently localized
+- name: verify-device-location
+  title: Verify device location
+  description: Verify if a device is within a specified circular area
+- name: get-device-reachability-status
+  title: Get device reachability status
+  description: Retrieve the current reachability status (connectivity) of a device/phone number
+- name: get-device-roaming-status
+  title: Get device roaming status
+  description: Retrieve roaming status and country information for a device/phone number
+- name: kyc-match
+  title: KYC Match
+  description: Compare user information with verified data from the user's Operator for identity verification
+- name: get-population-density-data
+  title: Get population density data
+  description: Retrieve population density estimations for a specified polygonal area and time interval
+- name: retrieve-qos-profiles
+  title: Retrieve QoS Profiles
+  description: Retrieve all available Quality of Service profiles managed by the server
+- name: get-qos-profile
+  title: Get QoS Profile
+  description: Get detailed information about a specific Quality of Service profile by name
+- name: create-qos-session
+  title: Create QoS Session
+  description: Create an enhanced quality session between a device and an application server
+- name: get-qos-session
+  title: Get QoS Session
+  description: Retrieve information about a specific Quality of Service session
+- name: delete-qos-session
+  title: Delete QoS Session
+  description: Terminate a Quality of Service session before its planned end time
+- name: extend-qos-session
+  title: Extend QoS Session
+  description: Extend the duration of an existing Quality of Service session
+- name: retrieve-qos-sessions
+  title: Retrieve QoS Sessions
+  description: Retrieve all Quality of Service sessions for a specific device
+- name: list-playground-phone-numbers
+  title: List playground phone numbers
+  description: List all phone numbers in the playground
+- name: create-playground-phone-number
+  title: Create playground phone number
+  description: Create a new phone number in the playground with default data
+- name: read-playground-phone-number
+  title: Read playground phone number data
+  description: Read all data associated with a phone number in the playground
+- name: update-playground-phone-location
+  title: Update playground phone number location
+  description: Update the location data for a phone number in the playground
+- name: update-playground-phone-kyc
+  title: Update playground phone number KYC
+  description: Update the KYC (Know Your Customer) data for a phone number in the playground
+- name: delete-playground-phone-number
+  title: Delete playground phone number
+  description: 'Delete a phone number and all its data from the playground (WARNING: irreversible)'
+- name: update-playground-phone-reachability
+  title: Update playground phone number reachability
+  description: Update the reachability status for a phone number in the playground
+- name: update-playground-phone-roaming
+  title: Update playground phone number roaming
+  description: Update the roaming status for a phone number in the playground
+- name: update-playground-phone-sim-swap
+  title: Update playground phone number SIM swap
+  description: Update the SIM swap data for a phone number in the playground
+evidence:
+- url: https://github.com/camaraproject/MCPEnablement_PI1
+  status: 200
+  note: README, package.json and src/tools/*.ts read directly; tool ids taken verbatim from registerTool() calls
+- url: https://registry.npmjs.org/@zodiac%2Fnetwork-api-mcp
+  status: 404
+  note: declared package name is not published
+- url: https://mcp.developer.orange.com/mcp
+  status: '<no response>'
+- url: https://developer.orange.com/mcp
+  status: 403
+- url: https://api.orange.com/mcp
+  status: 404

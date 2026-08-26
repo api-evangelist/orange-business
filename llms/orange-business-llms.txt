@@ -1,0 +1,20 @@
+# llms.txt
+# URL: https://www.orange-business.com/llms.txt[site]
+name: Orange Business
+url: https://www.orange-business.com
+language: fr-FR
+contact: mailto:obs-support@orange.com
+updated: 2026-06-09[access]
+allow_crawl: true
+disallow_auth_walls: true
+disallow_private_areas: true[usage]
+allow_training: false
+allow_fine_tuning: false
+allow_embedding: false
+allow_snippet_quote: true
+require_attribution: true[attribution]
+preferred_name: Orange Business
+preferred_url: https://www.orange-business.com/en
+citation_format: "Source: Orange Business - {URL}"[scope]
+disallow_personal_data_collection: true
+disallow_sensitive_data_processing: true

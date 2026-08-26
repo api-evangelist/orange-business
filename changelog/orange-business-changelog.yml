@@ -1,0 +1,79 @@
+generated: '2026-08-26'
+method: searched
+source: https://blog.liveobjects.orange-business.com/category/news/feed/
+docs:
+- https://blog.liveobjects.orange-business.com/category/news/
+- https://developer.orange.com/insights/
+- https://developer.orange.com/blog/
+scheme: calendar-versioning
+current_version: 2026.7.0
+current_version_source: openapi/orange-business-live-objects-openapi.json info.version
+finding: >-
+  Orange publishes NO dated API changelog or release-notes page on either estate. There is no
+  /changelog, /release-notes or /whats-new on developer.orange.com or docs.developer.orange.com
+  (docs.developer.orange.com/network-apis/changelog returns 404, and the docs sitemap lists 117 URLs
+  with no changelog among them). Live Objects carries a real calendar version — 2026.7.0, meaning
+  the July 2026 release — inside its OpenAPI info.version, but nothing maps that number to a set of
+  changes. The closest thing to release communication is the Live Objects blog's News category, an
+  RSS feed of platform announcements, which is what is recorded below. Version-to-change traceability
+  is the gap: a consumer can see that the contract moved from one calendar version to the next but
+  cannot find out what moved.
+entries_source: >-
+  blog announcements, not a changelog — each entry is a dated platform notice from the Live Objects
+  News feed. Breaking-vs-additive classification below is read from the announcement text.
+entries:
+- date: '2026-04-21'
+  version: null
+  title: Incident During the Deployment of a New Release on April 21, 2026
+  kind: incident
+  breaking: false
+  highlights: >-
+    A platform release involving complex changes to the data bus, including FIFO MQTT, did not
+    perform as expected despite prior testing. Notable because it is Orange's only public
+    release-level communication about the platform.
+  url: https://blog.liveobjects.orange-business.com/release-incident-21apr26/
+- date: '2026-03-24'
+  version: null
+  title: Data Routing Resilience Improvement from May 27, 2026
+  kind: addition
+  breaking: false
+  highlights: >-
+    From 2026-05-27, HTTP push and MQTT application messages can be queued for a guaranteed duration
+    regardless of the volume of data routed on the account.
+  url: https://blog.liveobjects.orange-business.com/data-routing-resilience-fifo/
+- date: '2026-02-28'
+  version: null
+  title: 'Unification of Your Portal Login Credentials'
+  kind: change
+  breaking: false
+  highlights: Users with multiple Live Objects portal logins can merge them into one identity.
+  url: https://blog.liveobjects.orange-business.com/fusion-login/
+- date: '2025-11-03'
+  version: null
+  title: Orange M2M SIM card fleet association / Discover offer
+  kind: addition
+  breaking: false
+  url: https://blog.liveobjects.orange-business.com/live-objects-account-and-orange-m2m-sims-cards-fleet-association/
+- date: '2025-07-29'
+  version: null
+  title: NodeRED By Orange — file management interface and secure nodes
+  kind: addition
+  breaking: false
+  url: https://blog.liveobjects.orange-business.com/file-management-interface-secure-nodes-industrial-iot/
+- date: '2025-07-18'
+  version: null
+  title: 'Live Objects LoRa Premium: three new IoT features'
+  kind: addition
+  breaking: false
+  url: https://blog.liveobjects.orange-business.com/live-objects-lora-premium-3-nouvelles-fonctionnalites-iot-innovantes/
+- date: '2025-02-16'
+  version: null
+  title: Live Objects Infrastructure Renovation
+  kind: change
+  breaking: false
+  url: https://blog.liveobjects.orange-business.com/renovation-live-objects/
+feeds:
+- url: https://blog.liveobjects.orange-business.com/category/news/feed/
+  status: 200
+  format: rss
+  note: The only machine-readable release-communication channel Orange publishes for either estate.

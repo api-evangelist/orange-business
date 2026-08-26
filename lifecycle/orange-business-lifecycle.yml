@@ -1,0 +1,114 @@
+generated: '2026-08-26'
+method: searched
+source: >-
+  https://developer.orange.com/terms-and-conditions ,
+  https://docs.developer.orange.com/ (sitemap walked: 117 URLs, no versioning/deprecation page),
+  openapi/_original/*.yml and openapi/orange-business-live-objects-openapi.json
+versioning:
+  gateway:
+    scheme: path-segment major version
+    pattern: 'https://api.orange.com/camara/{environment}/api/{api-name}/{version}'
+    examples:
+    - https://api.orange.com/camara/playground/api/sim-swap/v1/check
+    - https://api.orange.com/camara/playground/admin/v1.0
+    - https://api.orange.com/smsmessaging/v1
+    - https://api.orange.com/orange-money-webpay/dev/v1
+    per_country: >-
+      Orange versions each CAMARA API per COUNTRY as well as per version — sim-swap/fr/1.0,
+      sim-swap/be/1.0, sim-swap/es/1.0, sim-swap/ro/1.0, kyc-match/fr/0.2, kyc-match/be/0.2,
+      kyc-match/es/0.2, kyc-match/ro/0.2, device-swap/es/0.1. "Which version" is a two-part answer:
+      country plus version. A client integrating across Orange's European footprint is integrating
+      against several versions of the same standard at once.
+    wip_versions: >-
+      Six of the eleven harvested CAMARA contracts declare info.version `wip` (work in progress) —
+      device-location-retrieval, device-location-verification, device-swap, geofencing, kyc-match,
+      number-verification, population-density-data, quality-on-demand, sim-swap. These are the
+      upstream CAMARA drafts; Orange's own deployed versions are numbered (1.0, 0.3, 0.2, 0.1) in
+      the docs URLs.
+  live_objects:
+    scheme: calendar version on the contract, path-segment generation on the routes
+    current_version: 2026.7.0
+    generations_live: [/api/v0/, /api/v1/]
+    note: >-
+      v0 and v1 coexist in a single contract. The v0 routes are not marked deprecated as a group,
+      although five individual v0 operations are.
+deprecation:
+  policy_published: false
+  policy_url: null
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  note: >-
+    Orange publishes no deprecation or sunset policy for either estate, and neither returns a
+    Deprecation or Sunset response header. The only deprecation signal anywhere is OpenAPI
+    `deprecated: true` on individual Live Objects operations and one query parameter. No notice
+    period, migration guide or removal date accompanies any of them. This is the clearest lifecycle
+    gap in the profile: a consumer of the deprecated FIFO v0 endpoints has no published date by
+    which they must move.
+  deprecated_operations:
+  - operationId: listFifoV0
+    api: Live Objects
+    tag: Deprecated - Bus management
+    sunset_date: null
+  - operationId: createFifoV0
+    api: Live Objects
+    tag: Deprecated - Bus management
+    sunset_date: null
+  - operationId: getFifoV0
+    api: Live Objects
+    tag: Deprecated - Bus management
+    sunset_date: null
+  - operationId: deleteFifoV0
+    api: Live Objects
+    tag: Deprecated - Bus management
+    sunset_date: null
+  - operationId: listLoRaDeviceProfileIds
+    api: Live Objects
+    tag: Device management - Connector nodes - LoRa specific
+    sunset_date: null
+  deprecated_tags:
+  - Deprecated - Bus management
+  - Deprecated - Data management data search - V0
+  deprecated_parameters:
+  - name: offset
+    api: Live Objects
+    note: '"optional & DEPRECATED if >10000, please use bookmarkId Instead" — a soft deprecation with a threshold rather than a date.'
+status_page:
+  published: false
+  probed:
+  - url: https://developer.orange.com/api-status
+    status: 404
+  - url: https://status.orange-business.com
+    status: '<no response>'
+  - url: https://www.orange-business.com/en/status
+    status: 200
+    note: soft-200 — www.orange-business.com serves its homepage for every unknown path; not a status page
+  - url: https://status.orange.com
+    status: '<no response>'
+  note: >-
+    No status page for either estate. Incidents are announced retrospectively on the Live Objects
+    blog (see changelog/orange-business-changelog.yml, 2026-04-21 release incident) rather than on a
+    live status surface. Orange's own error catalog tells clients to "check API status" on a 503,
+    but publishes no status page to check.
+sla:
+  published: false
+  note: >-
+    No public SLA. Availability commitments are contractual and arranged through
+    https://developer.orange.com/talk-to-sales/.
+terms:
+  developer_terms: https://developer.orange.com/terms-and-conditions
+  corporate_terms: https://www.orange-business.com/en/legal-information
+  privacy: https://www.orange-business.com/en/privacy-policy
+  per_api_terms: >-
+    Orange publishes per-API terms-and-conditions pages for most CAMARA APIs, e.g.
+    docs.developer.orange.com/network-apis/api-catalog/sim-swap/fr/1.0/terms-and-conditions
+support:
+  channels:
+  - https://developer.orange.com/support/
+  - https://developer.orange.com/support/faq/
+  - https://developer.orange.com/contact
+  - https://developer.orange.com/talk-to-sales/
+  live_objects: https://liveobjects.orange-business.com/#/cms/support
+  correlation: >-
+    Orange asks that the X-OAPI-Request-Id response header be included when reporting persistent
+    issues.

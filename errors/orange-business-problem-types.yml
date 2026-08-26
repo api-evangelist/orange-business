@@ -1,0 +1,532 @@
+# Orange Business error catalog
+generated: '2026-08-26'
+method: searched
+source: https://developer.orange.com/common-errors and https://developer.orange.com/resources/orange-apis-error-handling/
+  for the gateway catalog; openapi/_original/*.yml (CAMARA contracts) and openapi/orange-business-live-objects-openapi.json
+  for the per-API catalogs.
+format: vendor-json
+rfc9457: false
+note: Orange runs THREE different error envelopes, and a client has to handle all three. (1) The api.orange.com
+  gateway returns {code:<int>, message, description, infoURL} — a numeric code, documented at developer.orange.com/common-errors.
+  (2) The CAMARA Network APIs behind that gateway return the CAMARA ErrorInfo shape {status:<int>, code:<string>,
+  message} with string codes such as UNAUTHENTICATED and LOCATION_RETRIEVAL.UNABLE_TO_LOCATE. (3) Live
+  Objects returns {id, code:<string>, message, details} plus, on some operations, a category enum of PERMANENT/TRANSIENT/UNEXPECTED.
+  None of the three is application/problem+json, so RFC 9457 does not apply. The Live Objects `category`
+  field is the only machine-readable retryability signal Orange publishes anywhere.
+envelopes:
+- name: Orange API gateway
+  applies_to: every API on api.orange.com
+  shape: '{"code": 41, "message": "Invalid credentials", "description": "...", "infoURL": "..."}'
+  code_type: integer
+  source: https://developer.orange.com/common-errors
+- name: CAMARA ErrorInfo
+  applies_to: the CAMARA Network APIs (SIM Swap, Device Location, KYC Match, QoD, ...)
+  shape: '{"status": 401, "code": "UNAUTHENTICATED", "message": "..."}'
+  code_type: string
+  source: openapi/_original/*.yml components.schemas.ErrorInfo
+- name: Live Objects WebErrorResponse / ServiceErrorResponse
+  applies_to: liveobjects.orange-business.com
+  shape: '{"id": "<uuid>", "code": "UNAUTHORIZED", "message": "...", "details": "...", "category": "PERMANENT|TRANSIENT|UNEXPECTED"}'
+  code_type: string
+  source: openapi/orange-business-live-objects-openapi.json components.schemas.WebErrorResponse
+gateway_problem_types:
+- status: 400
+  code: '20'
+  title: Invalid URL parameter value
+  detail: One or more URL parameters contain invalid values.
+  remediation: Verify URL parameters
+- status: 400
+  code: '21'
+  title: Missing body
+  detail: Request body required
+  remediation: Add required body
+- status: 400
+  code: '22'
+  title: Invalid body
+  detail: Body format incorrect
+  remediation: Fix body format
+- status: 400
+  code: '23'
+  title: Missing body field
+  detail: Required field absent
+  remediation: Include missing field
+- status: 400
+  code: '24'
+  title: Invalid body field
+  detail: Field value invalid
+  remediation: Correct field value
+- status: 400
+  code: '25'
+  title: Missing header
+  detail: Required header absent
+  remediation: Add required header
+- status: 400
+  code: '26'
+  title: Invalid header value
+  detail: Header contains invalid value
+  remediation: Fix header value
+- status: 400
+  code: '27'
+  title: Missing query-string parameter
+  detail: Query parameter required
+  remediation: Add parameter
+- status: 400
+  code: '28'
+  title: Invalid query-string parameter value
+  detail: One or more query-string parameters contain invalid values.
+  remediation: Validate parameters
+- status: 401
+  code: '40'
+  title: Missing credentials
+  detail: 'The requested service needs credentials, but none were provided. Causes: missing Authorization
+    header, missing token, missing Bearer prefix.'
+  remediation: Send a valid Bearer access token
+- status: 401
+  code: '41'
+  title: Invalid credentials
+  detail: Invalid client_id and/or client_secret, or a pending or revoked client_id.
+  remediation: Check app credentials in the developer portal
+- status: 401
+  code: '42'
+  title: Expired credentials
+  detail: The requested service needs credentials, and the ones provided were out-of-date (expired OAuth
+    2.0 token).
+  remediation: Request a new token from the token endpoint
+- status: 403
+  code: '50'
+  title: Access denied
+  detail: Not subscribed API, or a pending or revoked API subscription.
+  remediation: Verify the API subscription in the portal
+- status: 403
+  code: '51'
+  title: Forbidden requester
+  detail: Requester blocked
+  remediation: Contact support
+- status: 403
+  code: '52'
+  title: Forbidden user
+  detail: User blocked
+  remediation: Contact support
+- status: 403
+  code: '53'
+  title: Too many requests
+  detail: The application has made too many calls and has exceeded the rate limit for this service (spike
+    arrest limit or global quota limit).
+  remediation: Back off and retry after at least one second
+- status: 404
+  code: '60'
+  title: Resource not found
+  detail: The requested URI or the requested resource does not exist.
+  remediation: Verify the resource path
+- status: 405
+  code: '61'
+  title: Method not allowed
+  detail: HTTP method unsupported
+  remediation: Use the correct HTTP method
+- status: 406
+  code: '62'
+  title: Not acceptable
+  detail: Accept header mismatch
+  remediation: Check the requested content type
+- status: 408
+  code: '63'
+  title: Request time-out
+  detail: The server timed out waiting for the incoming request.
+  remediation: Retry the request
+- status: 409
+  code: '69'
+  title: Conflict
+  detail: State conflict detected
+  remediation: Resolve the conflict
+- status: 411
+  code: '64'
+  title: Length required
+  detail: The request did not specify a Content-Length header, which is required by the requested resource.
+  remediation: Add Content-Length
+- status: 412
+  code: '65'
+  title: Precondition failed
+  detail: Conditional header failed
+  remediation: Review preconditions
+- status: 413
+  code: '66'
+  title: Request entity too large
+  detail: The body of the request/response (PATCH, POST and PUT methods) is larger than the server is
+    willing or able to process.
+  remediation: Reduce payload size
+- status: 414
+  code: '67'
+  title: Request-URI too long
+  detail: URI exceeds limit
+  remediation: Shorten the URI
+- status: 415
+  code: '68'
+  title: Unsupported Media Type
+  detail: The format of the posted body is not supported by the endpoint.
+  remediation: Use a supported format
+- status: 429
+  code: '53'
+  title: Too many requests
+  detail: Rate limit exceeded
+  remediation: Implement backoff
+- status: 500
+  code: '1'
+  title: Internal error
+  detail: Generic failure message, used if no more precise code can be provided.
+  remediation: Retry or contact support
+- status: 502
+  code: '1'
+  title: Bad gateway
+  detail: A runtime execution error occurs (RaiseFault).
+  remediation: Retry the request
+- status: 503
+  code: '5'
+  title: Service temporarily unavailable
+  detail: Service down or undergoing maintenance
+  remediation: Retry later
+- status: 503
+  code: '6'
+  title: Orange API is over capacity, retry later!
+  detail: The service faces too much requests and can not handle the call.
+  remediation: Implement exponential backoff
+- status: 504
+  code: '6'
+  title: Gateway timeout
+  detail: No response was received in time from a backend server acting as gateway or proxy.
+  remediation: Retry the request
+camara_problem_types:
+- status: 400
+  code: INVALID_ARGUMENT
+  title: Client specified an invalid argument, request body or query param.
+  specs:
+  - orange-business-device-location-retrieval-openapi.yml
+  - orange-business-device-location-verification-openapi.yml
+  - orange-business-device-reachability-status-openapi.yml
+  - orange-business-device-roaming-status-openapi.yml
+  - orange-business-device-swap-openapi.yml
+  - orange-business-geofencing-openapi.yml
+  - orange-business-kyc-match-openapi.yml
+  - orange-business-population-density-data-openapi.yml
+  - orange-business-quality-on-demand-openapi.yml
+  - orange-business-sim-swap-openapi.yml
+- status: 400
+  code: INVALID_CREDENTIAL
+  title: Only Access token is supported.
+  specs:
+  - orange-business-geofencing-openapi.yml
+  - orange-business-population-density-data-openapi.yml
+  - orange-business-quality-on-demand-openapi.yml
+- status: 400
+  code: INVALID_PROTOCOL
+  title: Only HTTP is supported.
+  specs:
+  - orange-business-geofencing-openapi.yml
+- status: 400
+  code: INVALID_SINK
+  title: sink not valid for the specified protocol
+  specs:
+  - orange-business-geofencing-openapi.yml
+  - orange-business-population-density-data-openapi.yml
+  - orange-business-quality-on-demand-openapi.yml
+- status: 400
+  code: INVALID_TOKEN
+  title: Only bearer token is supported.
+  specs:
+  - orange-business-geofencing-openapi.yml
+  - orange-business-population-density-data-openapi.yml
+  - orange-business-quality-on-demand-openapi.yml
+- status: 400
+  code: KNOW_YOUR_CUSTOMER.INVALID_PARAM_COMBINATION
+  title: Indicated parameter combination is invalid
+  specs:
+  - orange-business-kyc-match-openapi.yml
+- status: 400
+  code: OUT_OF_RANGE
+  title: Client specified an invalid range.
+  specs:
+  - orange-business-device-location-verification-openapi.yml
+  - orange-business-device-swap-openapi.yml
+  - orange-business-quality-on-demand-openapi.yml
+  - orange-business-sim-swap-openapi.yml
+- status: 400
+  code: POPULATION_DENSITY_DATA.INVALID_AREA
+  title: The area is not a polygon shape or has an arbitrary complexity
+  specs:
+  - orange-business-population-density-data-openapi.yml
+- status: 400
+  code: POPULATION_DENSITY_DATA.INVALID_END_TIME
+  title: Indicated endDate is earlier than the startTime
+  specs:
+  - orange-business-population-density-data-openapi.yml
+- status: 400
+  code: POPULATION_DENSITY_DATA.INVALID_TIME_PERIOD
+  title: Indicated time period is partially in the past and partially in the future
+  specs:
+  - orange-business-population-density-data-openapi.yml
+- status: 400
+  code: POPULATION_DENSITY_DATA.MAX_STARTTIME_EXCEEDED
+  title: Indicated startTime is greater than the maximum allowed
+  specs:
+  - orange-business-population-density-data-openapi.yml
+- status: 400
+  code: POPULATION_DENSITY_DATA.MAX_TIME_PERIOD_EXCEEDED
+  title: Indicated time period is greater than the maximum allowed (More than maximum hours between startTime
+    and endTime)
+  specs:
+  - orange-business-population-density-data-openapi.yml
+- status: 400
+  code: POPULATION_DENSITY_DATA.MIN_STARTTIME_EXCEEDED
+  title: Indicated startTime is earlier than the minimum allowed
+  specs:
+  - orange-business-population-density-data-openapi.yml
+- status: 400
+  code: QUALITY_ON_DEMAND.DURATION_OUT_OF_RANGE
+  title: The requested duration is out of the allowed range for the specific QoS profile
+  specs:
+  - orange-business-quality-on-demand-openapi.yml
+- status: 401
+  code: AUTHENTICATION_REQUIRED
+  title: New authentication is required.
+  specs:
+  - orange-business-device-reachability-status-openapi.yml
+  - orange-business-device-roaming-status-openapi.yml
+- status: 401
+  code: UNAUTHENTICATED
+  title: Request not authenticated due to missing, invalid, or expired credentials. A new authentication
+    is required.
+  specs:
+  - orange-business-device-location-retrieval-openapi.yml
+  - orange-business-device-location-verification-openapi.yml
+  - orange-business-device-reachability-status-openapi.yml
+  - orange-business-device-roaming-status-openapi.yml
+  - orange-business-device-swap-openapi.yml
+  - orange-business-geofencing-openapi.yml
+  - orange-business-kyc-match-openapi.yml
+  - orange-business-number-verification-openapi.yml
+  - orange-business-population-density-data-openapi.yml
+  - orange-business-quality-on-demand-openapi.yml
+  - orange-business-sim-swap-openapi.yml
+- status: 403
+  code: INVALID_TOKEN_CONTEXT
+  title: phoneNumber is not consistent with access token.
+  specs:
+  - orange-business-kyc-match-openapi.yml
+- status: 403
+  code: NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_MOBILE_NETWORK
+  title: Client must authenticate via the mobile network to use this service
+  specs:
+  - orange-business-number-verification-openapi.yml
+- status: 403
+  code: PERMISSION_DENIED
+  title: Client does not have sufficient permissions to perform this action.
+  specs:
+  - orange-business-device-location-retrieval-openapi.yml
+  - orange-business-device-location-verification-openapi.yml
+  - orange-business-device-reachability-status-openapi.yml
+  - orange-business-device-roaming-status-openapi.yml
+  - orange-business-device-swap-openapi.yml
+  - orange-business-geofencing-openapi.yml
+  - orange-business-kyc-match-openapi.yml
+  - orange-business-number-verification-openapi.yml
+  - orange-business-population-density-data-openapi.yml
+  - orange-business-quality-on-demand-openapi.yml
+  - orange-business-sim-swap-openapi.yml
+- status: 403
+  code: SUBSCRIPTION_MISMATCH
+  title: Inconsistent access token for requested events subscription.
+  specs:
+  - orange-business-geofencing-openapi.yml
+- status: 404
+  code: IDENTIFIER_NOT_FOUND
+  title: Device identifier not found.
+  specs:
+  - orange-business-device-location-retrieval-openapi.yml
+  - orange-business-device-location-verification-openapi.yml
+  - orange-business-device-reachability-status-openapi.yml
+  - orange-business-device-roaming-status-openapi.yml
+  - orange-business-device-swap-openapi.yml
+  - orange-business-kyc-match-openapi.yml
+  - orange-business-quality-on-demand-openapi.yml
+- status: 404
+  code: NOT_FOUND
+  title: The specified resource is not found.
+  specs:
+  - orange-business-device-reachability-status-openapi.yml
+  - orange-business-device-roaming-status-openapi.yml
+  - orange-business-device-swap-openapi.yml
+  - orange-business-geofencing-openapi.yml
+  - orange-business-kyc-match-openapi.yml
+  - orange-business-population-density-data-openapi.yml
+  - orange-business-quality-on-demand-openapi.yml
+  - orange-business-sim-swap-openapi.yml
+- status: 409
+  code: QUALITY_ON_DEMAND.SESSION_EXTENSION_NOT_ALLOWED
+  title: Extending the session duration is not allowed in the current state ({qosStatus}). The session
+    must be in the AVAILABLE state.
+  specs:
+  - orange-business-quality-on-demand-openapi.yml
+- status: 410
+  code: GONE
+  title: Access to the target resource is no longer available.
+  specs:
+  - orange-business-geofencing-openapi.yml
+  - orange-business-population-density-data-openapi.yml
+  - orange-business-quality-on-demand-openapi.yml
+- status: 422
+  code: GEOFENCING_SUBSCRIPTIONS.AREA_NOT_COVERED
+  title: Unable to cover the requested area
+  specs:
+  - orange-business-geofencing-openapi.yml
+- status: 422
+  code: GEOFENCING_SUBSCRIPTIONS.INVALID_AREA
+  title: The requested area is too small
+  specs:
+  - orange-business-geofencing-openapi.yml
+- status: 422
+  code: IDENTIFIER_MISMATCH
+  title: Provided identifiers are not consistent.
+  specs:
+  - orange-business-device-reachability-status-openapi.yml
+  - orange-business-device-roaming-status-openapi.yml
+- status: 422
+  code: LOCATION_RETRIEVAL.UNABLE_TO_FULFILL_MAX_AGE
+  title: Unable to provide expected freshness for location
+  specs:
+  - orange-business-device-location-retrieval-openapi.yml
+- status: 422
+  code: LOCATION_RETRIEVAL.UNABLE_TO_FULFILL_MAX_SURFACE
+  title: Unable to provide accurate acceptable surface for location
+  specs:
+  - orange-business-device-location-retrieval-openapi.yml
+- status: 422
+  code: LOCATION_RETRIEVAL.UNABLE_TO_LOCATE
+  title: The network is unable to locate the device
+  specs:
+  - orange-business-device-location-retrieval-openapi.yml
+- status: 422
+  code: LOCATION_VERIFICATION.AREA_NOT_COVERED
+  title: Unable to cover the requested area
+  specs:
+  - orange-business-device-location-verification-openapi.yml
+- status: 422
+  code: LOCATION_VERIFICATION.INVALID_AREA
+  title: The requested area is too small
+  specs:
+  - orange-business-device-location-verification-openapi.yml
+- status: 422
+  code: LOCATION_VERIFICATION.UNABLE_TO_FULFILL_MAX_AGE
+  title: Unable to provide expected freshness for location
+  specs:
+  - orange-business-device-location-verification-openapi.yml
+- status: 422
+  code: LOCATION_VERIFICATION.UNABLE_TO_LOCATE
+  title: The network is unable to locate the device
+  specs:
+  - orange-business-device-location-verification-openapi.yml
+- status: 422
+  code: MISSING_IDENTIFIER
+  title: The device cannot be identified.
+  specs:
+  - orange-business-device-location-retrieval-openapi.yml
+  - orange-business-device-location-verification-openapi.yml
+  - orange-business-device-reachability-status-openapi.yml
+  - orange-business-device-roaming-status-openapi.yml
+  - orange-business-device-swap-openapi.yml
+  - orange-business-geofencing-openapi.yml
+  - orange-business-kyc-match-openapi.yml
+  - orange-business-quality-on-demand-openapi.yml
+  - orange-business-sim-swap-openapi.yml
+- status: 422
+  code: MULTIEVENT_SUBSCRIPTION_NOT_SUPPORTED
+  title: Multi event types subscription not managed.
+  specs:
+  - orange-business-geofencing-openapi.yml
+- status: 422
+  code: POPULATION_DENSITY_DATA.UNSUPPORTED_PRECISION
+  title: Indicated cell precision (Geohash length) is not supported
+  specs:
+  - orange-business-population-density-data-openapi.yml
+- status: 422
+  code: POPULATION_DENSITY_DATA.UNSUPPORTED_REQUEST
+  title: Indicated combination of area, time interval and precision is too big for both synchronous and
+    asynchronous processing
+  specs:
+  - orange-business-population-density-data-openapi.yml
+- status: 422
+  code: POPULATION_DENSITY_DATA.UNSUPPORTED_SYNC_RESPONSE
+  title: Indicated combination of area, time interval and precision is too big for synchronous processing
+    and asynchronous processing is not enabled
+  specs:
+  - orange-business-population-density-data-openapi.yml
+- status: 422
+  code: QUALITY_ON_DEMAND.QOS_PROFILE_NOT_APPLICABLE
+  title: The requested QoS Profile is currently not available for session creation.
+  specs:
+  - orange-business-quality-on-demand-openapi.yml
+- status: 422
+  code: SERVICE_NOT_APPLICABLE
+  title: The service is not available for the provided identifier.
+  specs:
+  - orange-business-device-location-retrieval-openapi.yml
+  - orange-business-device-location-verification-openapi.yml
+  - orange-business-device-reachability-status-openapi.yml
+  - orange-business-device-roaming-status-openapi.yml
+  - orange-business-device-swap-openapi.yml
+  - orange-business-geofencing-openapi.yml
+  - orange-business-kyc-match-openapi.yml
+  - orange-business-quality-on-demand-openapi.yml
+  - orange-business-sim-swap-openapi.yml
+- status: 422
+  code: UNNECESSARY_IDENTIFIER
+  title: The device is already identified by the access token.
+  specs:
+  - orange-business-device-location-retrieval-openapi.yml
+  - orange-business-device-location-verification-openapi.yml
+  - orange-business-device-reachability-status-openapi.yml
+  - orange-business-device-roaming-status-openapi.yml
+  - orange-business-device-swap-openapi.yml
+  - orange-business-geofencing-openapi.yml
+  - orange-business-quality-on-demand-openapi.yml
+  - orange-business-sim-swap-openapi.yml
+- status: 422
+  code: UNSUPPORTED_IDENTIFIER
+  title: The identifier provided is not supported.
+  specs:
+  - orange-business-device-location-retrieval-openapi.yml
+  - orange-business-device-location-verification-openapi.yml
+  - orange-business-device-reachability-status-openapi.yml
+  - orange-business-device-roaming-status-openapi.yml
+  - orange-business-geofencing-openapi.yml
+  - orange-business-quality-on-demand-openapi.yml
+- status: 429
+  code: QUOTA_EXCEEDED
+  title: Out of resource quota.
+  specs:
+  - orange-business-device-reachability-status-openapi.yml
+  - orange-business-device-roaming-status-openapi.yml
+  - orange-business-device-swap-openapi.yml
+  - orange-business-geofencing-openapi.yml
+  - orange-business-population-density-data-openapi.yml
+  - orange-business-quality-on-demand-openapi.yml
+  - orange-business-sim-swap-openapi.yml
+- status: 429
+  code: TOO_MANY_REQUESTS
+  title: Rate limit reached.
+  specs:
+  - orange-business-device-reachability-status-openapi.yml
+  - orange-business-device-roaming-status-openapi.yml
+  - orange-business-device-swap-openapi.yml
+  - orange-business-geofencing-openapi.yml
+  - orange-business-population-density-data-openapi.yml
+  - orange-business-quality-on-demand-openapi.yml
+  - orange-business-sim-swap-openapi.yml
+- status: 503
+  code: UNAVAILABLE
+  title: Network issue
+  specs:
+  - orange-business-device-reachability-status-openapi.yml
+  - orange-business-device-roaming-status-openapi.yml
+summary:
+  gateway_codes: 32
+  camara_codes: 46
+  envelopes: 3

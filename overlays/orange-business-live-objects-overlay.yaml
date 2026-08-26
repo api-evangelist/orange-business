@@ -1,0 +1,59 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements — Orange Business Live Objects
+  version: 1.0.0
+extends: openapi/orange-business-live-objects-openapi.json
+x-generated: '2026-08-26'
+x-method: generated
+x-source: Enrichment derived from the spec itself plus Orange Business docs and blog; the original is saved verbatim
+  and never mutated.
+actions:
+- target: $.info
+  description: Add the provenance and the runtime semantics the contract does not carry.
+  update:
+    x-provenance:
+      fetched: https://liveobjects.orange-business.com/swagger/
+      http_status: 200
+      fetched_on: '2026-08-26'
+      ownership: servers[0] is https://liveobjects.orange-business.com and info.contact points at liveobjects.orange-business.com/#/cms/support
+        — first-party Orange Business.
+    x-api-evangelist:
+      authentication: authentication/orange-business-authentication.yml
+      scopes: scopes/orange-business-scopes.yml
+      errors: errors/orange-business-problem-types.yml
+      conventions: conventions/orange-business-conventions.yml
+      data-model: data-model/orange-business-data-model.yml
+      webhooks: asyncapi/orange-business-webhooks.yml
+      lifecycle: lifecycle/orange-business-lifecycle.yml
+      changelog: changelog/orange-business-changelog.yml
+      packages: packages/orange-business-packages.yml
+      skills: skills/_index.yml
+    x-pagination:
+      styles:
+      - page+size
+      - limit+offset (offset deprecated above 10000)
+      - bookmarkId cursor
+      total_count: X-Total-Count is a REQUEST header (opt in), not a response header
+    x-rate-limit:
+      documented: false
+      introspectable: true
+      note: No numeric limit is published and no rate-limit response header is returned, but the per-API-key limit
+        is READABLE as data on the ApiKey resource (mqttBridgeWindowSize, mqttBridgeMaxMessages, mqttDeviceWindowSize,
+        mqttDeviceMaxMessages) via GET /api/v0/apiKeys/{apiKeyId}.
+    x-reversibility:
+      grade: documented
+      note: Toggles (setEnabledField, start/stopDebugMode, decoder activate) and cancels (cancelCampaign, cancelResourceUpdateV1)
+        exist, but no restore/undelete endpoint appears anywhere in the 263-operation contract and no retention
+        window is published. Treat every DELETE as permanent.
+    x-idempotency:
+      supported: false
+      note: The token "idempoten" appears zero times in this contract.
+    x-deprecation:
+      sunset_header: false
+      note: Five operations carry deprecated:true (listFifoV0, createFifoV0, getFifoV0, deleteFifoV0, listLoRaDeviceProfileIds)
+        and two tags are named Deprecated, but no sunset date is published for any of them.
+- target: $.components.schemas.ServiceErrorResponse
+  description: Call out the retryability signal.
+  update:
+    x-retryability: The category enum (PERMANENT / TRANSIENT / UNEXPECTED) is the only machine-readable retryability
+      signal Orange publishes across either estate. Retry TRANSIENT; never retry PERMANENT.

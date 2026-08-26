@@ -1,0 +1,65 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements — Orange Business Device Swap
+  version: 1.0.0
+extends: openapi/orange-business-retrieve-device-swap-date-api-openapi.yml
+x-generated: '2026-08-26'
+x-method: generated
+x-source: Corrections and enrichment derived from openapi/_original/orange-business-device-swap-openapi.yml (the
+  upstream CAMARA contract Orange implements), the Orange Developer docs at docs.developer.orange.com, and live
+  probes of api.orange.com. The overlay never mutates the original.
+x-note: 'The refined spec this overlay extends carries two defects introduced by the tag-split refine pass, not
+  by Orange: info.title was concatenated across sibling APIs, and the servers[] block was copied from location-retrieval
+  onto every sibling. Current value in the refined file: [''{apiRoot}/location-retrieval/vwip'']. The correct CAMARA
+  template is {apiRoot}/device-swap/vwip, and the concrete Orange playground host is https://api.orange.com/camara/playground/api/device-swap/v0.2
+  (probed 2026-08-26 — POST returns 401 UNAUTHENTICATED, i.e. live and credential-gated).'
+actions:
+- target: $.info
+  description: Restore the API title and point contact and terms at Orange rather than the CAMARA draft.
+  update:
+    title: Orange Business Device Swap
+    contact:
+      name: Orange Developer Support
+      url: https://developer.orange.com/support/
+    x-orange-docs: https://docs.developer.orange.com/network-apis/api-catalog/device-swap/playground/0.2/api-reference
+    x-camara-upstream: openapi/_original/orange-business-device-swap-openapi.yml
+- target: $.servers
+  description: Replace the mis-copied servers block with the CAMARA apiRoot template plus the concrete Orange playground
+    host.
+  update:
+  - url: '{apiRoot}/device-swap/vwip'
+    description: CAMARA apiRoot template — substitute the Orange environment host
+  - url: https://api.orange.com/camara/playground/api/device-swap/v0.2
+    description: Orange Network APIs Playground (mock). Production swaps the base URL and the credentials; request
+      and response shapes are unchanged.
+- target: $.info
+  description: Link the runtime semantics an agent needs but the contract does not carry.
+  update:
+    x-api-evangelist:
+      authentication: authentication/orange-business-authentication.yml
+      scopes: scopes/orange-business-scopes.yml
+      errors: errors/orange-business-problem-types.yml
+      conventions: conventions/orange-business-conventions.yml
+      rate-limits: rate-limits/orange-business-rate-limits.yml
+      sandbox: sandbox/orange-business-sandbox.yml
+      lifecycle: lifecycle/orange-business-lifecycle.yml
+      conformance: conformance/orange-business-conformance.yml
+      skills: skills/_index.yml
+- target: $.components.securitySchemes.openId
+  description: Flag that the openIdConnectUrl is still the CAMARA placeholder, not an Orange discovery document.
+  update:
+    x-discovery-status: placeholder
+    x-note: openIdConnectUrl is https://example.com/.well-known/openid-configuration — the CAMARA draft placeholder.
+      Orange serves no reachable discovery document (developer.orange.com/.well-known/openid-configuration returns
+      403, api.orange.com returns 404). Token endpoint documented at https://api.orange.com/oauth/v3/token; playground
+      at https://api.orange.com/openidconnect/playground/v1.0/token; CIBA authorize at <authorization server base
+      url>/bc-authorize.
+- target: $.info
+  description: Record the runtime rate-limit ceiling Orange documents but does not signal on the wire.
+  update:
+    x-rate-limit:
+      global: 25 requests/second across all Orange APIs
+      exhaustion: HTTP 403 with code 53 (also documented under 429)
+      headers: none — no X-RateLimit-*, RateLimit-* or Retry-After
+      correlation: X-OAPI-Request-Id on every response
+      source: https://developer.orange.com/resources/orange-apis-error-handling/

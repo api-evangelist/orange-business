@@ -1,0 +1,126 @@
+generated: '2026-08-26'
+method: searched
+source: >-
+  PyPI (pypi.org/pypi/LiveObjects/json), npm registry (registry.npmjs.org), Maven Central
+  (search.maven.org), and the GitHub REST API against github.com/DatavenueLiveObjects and
+  github.com/Orange-OpenSource — the two GitHub organisations Orange publishes its client
+  libraries from. DatavenueLiveObjects is the first-party org for the Live Objects (Datavenue)
+  IoT platform at liveobjects.orange-business.com; Orange-OpenSource is the group-wide Orange
+  open-source org already wired into apis.yml as GitHubOrganization.
+note: >-
+  Orange publishes NO client SDK for the CAMARA Network APIs on api.orange.com — the getting-started
+  guides show raw curl/HTTP only. Every first-party package below wraps the Live Objects IoT platform
+  or is an Orange design-system library rather than an API client. The Python SDK's last release
+  (2.1.0, 2023-03-12) predates the current Live Objects REST API version (2026.7.0) by three years.
+summary:
+  total: 9
+  official: 9
+  api_clients: 6
+  design_system: 3
+  registries_with_metadata: 3
+  no_sdk_for:
+  - CAMARA Network APIs (api.orange.com) — documented as raw HTTP only
+packages:
+- name: LiveObjects
+  registry: pypi
+  url: https://pypi.org/project/LiveObjects/
+  repository: https://github.com/DatavenueLiveObjects/LiveObjects_SDK_for_Python
+  language: python
+  kind: api-client
+  api: Live Objects
+  official: true
+  version: 2.1.0
+  published: '2023-03-12'
+  note: >-
+    Python 3 and MicroPython MQTT client for Live Objects. Registry metadata read from
+    pypi.org/pypi/LiveObjects/json. Three years behind the 2026.7.0 REST API it accompanies.
+- name: LiveObjects_SDK_for_Arduino
+  registry: github
+  url: https://github.com/DatavenueLiveObjects/LiveObjects_SDK_for_Arduino
+  language: cpp
+  kind: api-client
+  api: Live Objects
+  official: true
+  version: 2.1.2
+  published: '2025-01-16'
+  note: >-
+    Distributed as a GitHub release / Arduino library, not via a package registry with a
+    metadata endpoint. Version read from the repository's latest release tag.
+- name: LiveObjects_SDK_for_Linux
+  registry: github
+  url: https://github.com/DatavenueLiveObjects/LiveObjects_SDK_for_Linux
+  language: c
+  kind: api-client
+  api: Live Objects
+  official: true
+  version: null
+  published: null
+  note: >-
+    Checked — the repository publishes no releases and no tags, so there is no version to record.
+    Last push 2022-11-30.
+- name: Start-here-nodeJS
+  registry: github
+  url: https://github.com/DatavenueLiveObjects/Start-here-nodeJS
+  language: javascript
+  kind: api-client
+  api: Live Objects
+  official: true
+  version: v1.0.8
+  published: '2026-07-03'
+  note: >-
+    First-party MQTT client code samples for Live Objects in JavaScript. Not published to npm —
+    checked registry.npmjs.org for liveobjects, orange-liveobjects and @orange/liveobjects, all 404.
+- name: FIFO_SDK_LiveObjects
+  registry: github
+  url: https://github.com/DatavenueLiveObjects/FIFO_SDK_LiveObjects
+  language: java
+  kind: api-client
+  api: Live Objects
+  official: true
+  version: v2.0.2
+  published: '2025-06-06'
+- name: external-connector-SDK-LiveObjects-
+  registry: github
+  url: https://github.com/DatavenueLiveObjects/external-connector-SDK-LiveObjects-
+  language: java
+  kind: api-client
+  api: Live Objects
+  official: true
+  version: null
+  published: null
+  note: Checked — no releases and no tags on the repository. Last push 2026-06-30.
+- name: boosted
+  registry: npm
+  url: https://www.npmjs.com/package/boosted
+  repository: https://github.com/Orange-OpenSource/Orange-Boosted-Bootstrap
+  language: javascript
+  kind: design-system
+  official: true
+  version: 5.3.8
+  published: '2025-11-19'
+  note: >-
+    Orange Boosted — Orange's Bootstrap fork. A UI framework, not an API client; recorded because
+    apis.yml already advertises it under Tools.
+- name: com.orange.ouds.android:ouds-core
+  registry: maven
+  url: https://central.sonatype.com/artifact/com.orange.ouds.android/ouds-core
+  repository: https://github.com/Orange-OpenSource/ouds-android
+  language: kotlin
+  kind: design-system
+  official: true
+  version: 0.2.0
+  published: '2025-05-27'
+  note: >-
+    Orange Unified Design System for Android. Version and timestamp read from the Maven Central
+    solrsearch API. A UI component library, not an API client.
+- name: ouds-ios
+  registry: github
+  url: https://github.com/Orange-OpenSource/ouds-ios
+  language: swift
+  kind: design-system
+  official: true
+  version: null
+  published: null
+  note: >-
+    Swift Package Manager distribution from the Git repository; no package-registry metadata
+    endpoint to query. Version not recorded rather than guessed.

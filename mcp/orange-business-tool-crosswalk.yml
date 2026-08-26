@@ -1,0 +1,156 @@
+generated: '2026-08-26'
+method: derived
+source: >-
+  mcp/orange-business-mcp.yml (tool ids read verbatim from
+  github.com/camaraproject/MCPEnablement_PI1 src/tools/*.ts) bound against the operationIds in
+  openapi/_original/*.yml (the CAMARA contracts Orange implements) and
+  openapi/orange-business-live-objects-openapi.json.
+note: >-
+  The live MCP server is local-stdio only and requires Orange playground credentials, so no
+  authenticated tools/list introspection was possible. Bindings are by name + documented semantics
+  against the CAMARA operationIds in this repo; confidence is set accordingly. Orange's Playground
+  Admin API has a published human reference but no OpenAPI in this repo, so those nine tools are
+  recorded as mcp_only rather than bound to a guessed operationId.
+surfaces:
+  openapi:
+  - path: openapi/_original/
+    note: 11 CAMARA contracts (Device Location, Device Swap, SIM Swap, KYC Match, Number Verification, Device Status, Geofencing, Population Density, Quality-On-Demand)
+    gated: false
+  - path: openapi/orange-business-live-objects-openapi.json
+    note: Live Objects REST API 2026.7.0, 263 operations — no MCP tool covers any of it
+    gated: false
+  graphql: null
+  mcp:
+    url: null
+    transport: stdio
+    gated: true
+    note: requires a local build plus Orange CLIENT_ID/CLIENT_SECRET; no remote endpoint published
+coverage:
+  mcp_tools: 24
+  bound_to_rest: 13
+  mcp_only: 11
+  rest_operations_total: 284
+  rest_only: 271
+crosswalk:
+- tool: get-sim-swap-date
+  category: fraud-signals
+  rest:
+  - retrieveSimSwapDate
+  binding: openapi/_original/orange-business-sim-swap-openapi.yml POST /retrieve-date
+  confidence: high
+- tool: check-sim-swap
+  category: fraud-signals
+  rest:
+  - checkSimSwap
+  binding: openapi/_original/orange-business-sim-swap-openapi.yml POST /check
+  confidence: high
+- tool: get-device-location
+  category: location
+  rest:
+  - retrieveLocation
+  binding: openapi/_original/orange-business-device-location-retrieval-openapi.yml POST /retrieve
+  confidence: high
+- tool: verify-device-location
+  category: location
+  rest:
+  - verifyLocation
+  binding: openapi/_original/orange-business-device-location-verification-openapi.yml POST /verify
+  confidence: high
+- tool: get-device-reachability-status
+  category: device-status
+  rest:
+  - getReachabilityStatus
+  binding: openapi/_original/orange-business-device-reachability-status-openapi.yml POST /retrieve
+  confidence: high
+- tool: get-device-roaming-status
+  category: device-status
+  rest:
+  - getRoamingStatus
+  binding: openapi/_original/orange-business-device-roaming-status-openapi.yml POST /retrieve
+  confidence: high
+- tool: kyc-match
+  category: identity
+  rest:
+  - KYC_Match
+  binding: openapi/_original/orange-business-kyc-match-openapi.yml POST /match
+  confidence: high
+- tool: get-population-density-data
+  category: network-insights
+  rest:
+  - retrievePopulationDensity
+  binding: openapi/_original/orange-business-population-density-data-openapi.yml POST /retrieve
+  confidence: high
+- tool: create-qos-session
+  category: quality-of-service
+  rest:
+  - createSession
+  binding: openapi/_original/orange-business-quality-on-demand-openapi.yml POST /sessions
+  confidence: high
+- tool: get-qos-session
+  category: quality-of-service
+  rest:
+  - getSession
+  binding: openapi/_original/orange-business-quality-on-demand-openapi.yml GET /sessions/{sessionId}
+  confidence: high
+- tool: delete-qos-session
+  category: quality-of-service
+  rest:
+  - deleteSession
+  binding: openapi/_original/orange-business-quality-on-demand-openapi.yml DELETE /sessions/{sessionId}
+  confidence: high
+- tool: extend-qos-session
+  category: quality-of-service
+  rest:
+  - extendQosSessionDuration
+  binding: openapi/_original/orange-business-quality-on-demand-openapi.yml POST /sessions/{sessionId}/extend
+  confidence: high
+- tool: retrieve-qos-sessions
+  category: quality-of-service
+  rest:
+  - retrieveSessionsByDevice
+  binding: openapi/_original/orange-business-quality-on-demand-openapi.yml POST /retrieve-sessions
+  confidence: high
+mcp_only:
+- tool: retrieve-qos-profiles
+  reason: >-
+    CAMARA QoS Profiles is a separate contract Orange documents at
+    docs.developer.orange.com/network-apis/api-catalog/qos-profiles/es/1.1/api-reference; it is not
+    among the specs harvested into this repo, so there is no operationId to bind to.
+- tool: get-qos-profile
+  reason: same as retrieve-qos-profiles — QoS Profiles contract not present in openapi/
+- tool: list-playground-phone-numbers
+  reason: Orange Network APIs Playground Admin API — human reference published, no OpenAPI in this repo
+- tool: create-playground-phone-number
+  reason: Playground Admin API — no OpenAPI in this repo
+- tool: read-playground-phone-number
+  reason: Playground Admin API — no OpenAPI in this repo
+- tool: update-playground-phone-location
+  reason: Playground Admin API — no OpenAPI in this repo
+- tool: update-playground-phone-kyc
+  reason: Playground Admin API — no OpenAPI in this repo
+- tool: delete-playground-phone-number
+  reason: Playground Admin API — no OpenAPI in this repo; documented as irreversible
+- tool: update-playground-phone-reachability
+  reason: Playground Admin API — no OpenAPI in this repo
+- tool: update-playground-phone-roaming
+  reason: Playground Admin API — no OpenAPI in this repo
+- tool: update-playground-phone-sim-swap
+  reason: Playground Admin API — no OpenAPI in this repo
+rest_only:
+  count: 271
+  note: >-
+    No MCP tool covers Number Verification (phoneNumberVerify, phoneNumberShare), Device Swap
+    (retrieveDeviceSwapDate, checkDeviceSwap), Geofencing Subscriptions
+    (createGeofencingSubscription, retrieveGeofencingSubscriptionList,
+    retrieveGeofencingSubscription, deleteGeofencingSubscription) or ANY of the 263 Live Objects
+    IoT operations. Live Objects is the single largest uncovered surface — the entire IoT platform
+    has no agent tooling.
+  examples:
+  - phoneNumberVerify
+  - phoneNumberShare
+  - retrieveDeviceSwapDate
+  - checkDeviceSwap
+  - createGeofencingSubscription
+  - retrieveGeofencingSubscriptionList
+  - retrieveGeofencingSubscription
+  - deleteGeofencingSubscription

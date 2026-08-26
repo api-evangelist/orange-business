@@ -1,0 +1,172 @@
+generated: '2026-08-26'
+method: searched
+source: openapi/orange-business-live-objects-openapi.json
+schemes:
+- name: OAuth2.0
+  source: openapi/orange-business-live-objects-openapi.json
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+    tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+scopes:
+- scope: API_KEY_R
+  description: Read parameters and status of an API key.
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/orange-business-live-objects-openapi.json
+- scope: API_KEY_W
+  description: Create, modify, disable an API key.
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/orange-business-live-objects-openapi.json
+- scope: BOOTSTRAP_R
+  description: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/orange-business-live-objects-openapi.json
+- scope: BOOTSTRAP_W
+  description: Create ans modify LwM2M Bootstrap configurations and entries.
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/orange-business-live-objects-openapi.json
+- scope: BUS_CONFIG_R
+  description: Read config parameters of a FIFO queue.
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/orange-business-live-objects-openapi.json
+- scope: BUS_CONFIG_W
+  description: Create, modify a FIFO queue.
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/orange-business-live-objects-openapi.json
+- scope: BUS_R
+  description: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting
+    data on Live Objects in MQTT(s).
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/orange-business-live-objects-openapi.json
+- scope: BUS_W
+  description: Publish data on the Live Objects bus.
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/orange-business-live-objects-openapi.json
+- scope: CAMPAIGN_R
+  description: Read parameters and status of a massive deployment campaign on your Device Fleet.
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/orange-business-live-objects-openapi.json
+- scope: CAMPAIGN_W
+  description: Create, modify a campaign on your Device Fleet.
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/orange-business-live-objects-openapi.json
+- scope: CONNECTOR_ACCESS
+  description: Role to set on a external connector API key to allow only MQTT external connector mode
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/orange-business-live-objects-openapi.json
+- scope: DATA_PROCESSING_R
+  description: Read parameters and status of an event processing rule or a Data decoder.
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/orange-business-live-objects-openapi.json
+- scope: DATA_PROCESSING_W
+  description: Create, modify, disable an event processing rule or a Data decoder.
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/orange-business-live-objects-openapi.json
+- scope: DATA_R
+  description: Read the data collected by the Store Service or search into this data using the Search Service.
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/orange-business-live-objects-openapi.json
+- scope: DATA_W
+  description: Insert a data record to the Store Service. Minimum permission required for the API key of a
+    device pushing data to Live Objects in HTTPS.
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/orange-business-live-objects-openapi.json
+- scope: DEVICE_ACCESS
+  description: Role to set on a Device API key to allow only MQTT Device mode
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/orange-business-live-objects-openapi.json
+- scope: DEVICE_R
+  description: Read parameters and status of a Device management.
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/orange-business-live-objects-openapi.json
+- scope: DEVICE_W
+  description: Create, modify, disable a Device management, send command, modify config, update resource of
+    a Device.
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/orange-business-live-objects-openapi.json
+- scope: LOGS_R
+  description: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log
+    service as debugging tool.
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/orange-business-live-objects-openapi.json
+- scope: SETTINGS_R
+  description: Read the tenant account custom settings.
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/orange-business-live-objects-openapi.json
+- scope: SETTINGS_W
+  description: Create, modify tenant account custom settings.
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/orange-business-live-objects-openapi.json
+- scope: USER_R
+  description: Read parameters and status of a user.
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/orange-business-live-objects-openapi.json
+- scope: USER_W
+  description: Create, modify, disable a user.
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/orange-business-live-objects-openapi.json
+docs:
+- https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+- https://docs.developer.orange.com/network-apis/practical-guides/api-authentication/backend-flow
+note: 'The 23 scopes below are Live Objects API-key roles, declared verbatim in the Live Objects OpenAPI OAuth2.0
+  authorizationCode flow and enforced per operation ("Restricted to API keys with at least one of the following
+  roles: ..."). They pair R/W by domain — DATA, DEVICE, USER, API_KEY, BUS, BUS_CONFIG, CAMPAIGN, DATA_PROCESSING,
+  BOOTSTRAP, SETTINGS — plus two connection-mode roles (DEVICE_ACCESS, CONNECTOR_ACCESS) and one read-only
+  audit role (LOGS_R).
+
+
+  The CAMARA Network APIs on api.orange.com do NOT use named scopes. Their authorization is purpose-bound instead:
+  the scope string is `openid dpv:<dpvValue> <technicalParameter>`, carrying a W3C Data Privacy Vocabulary
+  purpose value rather than an API permission. There is no scope list to enumerate for that estate — the vocabulary
+  is DPV''s, not Orange''s.'
+camara_scope_model:
+  style: purpose-bound (W3C DPV)
+  form: openid dpv:<dpvValue> <technicalParameter>
+  source: https://docs.developer.orange.com/network-apis/practical-guides/api-authentication/backend-flow
+  named_scopes: 0

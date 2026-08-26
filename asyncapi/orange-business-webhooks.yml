@@ -1,0 +1,113 @@
+generated: '2026-08-26'
+method: derived
+source: >-
+  openapi/_original/orange-business-geofencing-openapi.yml ,
+  openapi/_original/orange-business-quality-on-demand-openapi.yml ,
+  openapi/_original/orange-business-population-density-data-openapi.yml ,
+  openapi/orange-business-live-objects-openapi.json
+asyncapi_published: false
+asyncapi_note: >-
+  No AsyncAPI document exists. Probed https://liveobjects.orange-business.com/asyncapi.yaml (403) and
+  /asyncapi.json (403), and searched the DatavenueLiveObjects and Orange-OpenSource GitHub orgs —
+  nothing. This is a real gap rather than an absent event surface: Orange runs a substantial event
+  estate across both API families and describes none of it in a machine-readable event contract.
+event_surfaces:
+- name: CAMARA CloudEvents subscriptions
+  style: webhook (HTTP push) with CloudEvents 1.0 payloads
+  transport: HTTP only
+  transport_note: '"Only HTTP is allowed for now" — the sink protocol is constrained by the contract.'
+  subscription_model: >-
+    Client POSTs a subscription carrying a `sink` URL and optional `sinkCredential`; Orange pushes
+    CloudEvents to that sink. Declared in OpenAPI as `callbacks:` on the creating operation.
+  auth: >-
+    notificationsBearerAuth — an http bearer scheme whose bearerFormat is
+    `{$request.body#/sinkCredential.credentialType}`, i.e. the consumer supplies the credential
+    Orange will present when calling back.
+  envelope: CloudEvents (specversion, type, source, id, time, data)
+  apis:
+  - api: Geofencing Subscriptions
+    spec: openapi/_original/orange-business-geofencing-openapi.yml
+    manage_operations:
+    - createGeofencingSubscription
+    - retrieveGeofencingSubscriptionList
+    - retrieveGeofencingSubscription
+    - deleteGeofencingSubscription
+    events:
+    - type: org.camaraproject.geofencing-subscriptions.v0.area-entered
+      description: the device entered the subscribed circular area
+    - type: org.camaraproject.geofencing-subscriptions.v0.area-left
+      description: the device left the subscribed circular area
+    - type: org.camaraproject.geofencing-subscriptions.v0.subscription-started
+      description: subscription activated
+    - type: org.camaraproject.geofencing-subscriptions.v0.subscription-updated
+      description: subscription changed
+    - type: org.camaraproject.geofencing-subscriptions.v0.subscription-ended
+      description: subscription terminated
+  - api: Quality on Demand
+    spec: openapi/_original/orange-business-quality-on-demand-openapi.yml
+    manage_operations:
+    - createSession
+    - deleteSession
+    - extendQosSessionDuration
+    events:
+    - type: org.camaraproject.quality-on-demand.v1.qos-status-changed
+      description: >-
+        qosStatus moved between AVAILABLE and UNAVAILABLE. statusInfo carries the reason —
+        DELETE_REQUESTED when the client deleted the session, NETWORK_TERMINATED when the network
+        could not provide or ended it, DURATION_EXPIRED at natural end.
+  - api: Population Density Data
+    spec: openapi/_original/orange-business-population-density-data-openapi.yml
+    manage_operations:
+    - retrievePopulationDensity
+    events: []
+    note: >-
+      Declares a `populationDensityDataCallback` on POST /retrieve for asynchronous results, with a
+      sinkCredential, but publishes no CloudEvents event type — the callback delivers the result
+      payload rather than a typed event.
+- name: Live Objects notification channels and Triggers/Actions
+  style: HTTP push and MQTT/FIFO fan-out, configured through the REST API
+  spec: openapi/orange-business-live-objects-openapi.json
+  transport:
+  - HTTP push
+  - MQTT
+  - FIFO queue (AMQP-style bus)
+  manage_operations:
+  - path: /api/v1/contact/notificationChannels
+    methods: [get, post]
+  - path: /api/v1/contact/notificationChannels/{notificationChannelId}
+    methods: [get, put, delete]
+  - path: /api/v1/event2action/actionPolicies
+    methods: [get, post]
+  - path: /api/v1/event2action/actionPolicies/{policyId}
+    methods: [get, put, delete]
+  - path: /api/v1/event2action/actionPolicies/{policyId}/enabled
+    methods: [put]
+  test_operations:
+  - path: /api/v1/event2action/test/http-push
+    methods: [post]
+    note: fire a test HTTP push at your endpoint before going live
+  - path: /api/v1/event2action/test/fifo
+    methods: [post]
+    note: fire a test message onto a FIFO queue
+  diagnostics:
+  - /api/v1/event2action/diagnostics/actionPolicies
+  - /api/v1/event2action/diagnostics/actionPolicies/{policyId}
+  - /api/v1/event2action/diagnostics/actionPolicies/{policyId}/actions/{actionId}
+  - /api/v1/event2action/diagnostics/actionPolicies/{policyId}/actions/{actionId}/suspended
+  - /api/v1/event2action/metrics/actionPolicies/{policyId}/actions/{actionId}
+  note: >-
+    Live Objects ships something most providers do not: a first-class test-and-diagnose surface for
+    its own event delivery — test endpoints, per-action diagnostics, per-action metrics and a
+    suspend toggle. It is a strong webhook operations story described entirely in OpenAPI, with no
+    event catalog or AsyncAPI to name the events themselves.
+  deprecated:
+  - tag: Deprecated - Bus management
+    operations: [listFifoV0, createFifoV0, getFifoV0, deleteFifoV0]
+  reliability: >-
+    From 2026-05-27 Orange guarantees a queuing duration for HTTP push and MQTT application messages
+    regardless of routed volume (announced on the Live Objects blog, 2026-03-24).
+summary:
+  asyncapi_documents: 0
+  webhook_apis: 4
+  cloudevent_types: 6
+  webhook_management_operations: 15

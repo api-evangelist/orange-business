@@ -1,0 +1,78 @@
+generated: '2026-08-26'
+method: searched
+source: https://developer.orange.com/resources/orange-apis-error-handling/
+docs:
+- https://developer.orange.com/resources/orange-apis-error-handling/
+- https://developer.orange.com/common-errors
+scope_note: >-
+  These limits are enforced by the Orange API gateway at api.orange.com and therefore apply to
+  every Orange Developer API behind it — the CAMARA Network APIs, SMS, Orange Money WebPay, Contact
+  Everyone and the rest. Orange publishes NO rate limits for the Live Objects platform at
+  liveobjects.orange-business.com; its OpenAPI declares 429 responses on 3 of 263 operations but
+  documents no numeric limit.
+limit_count: 3
+limits:
+- name: Spike arrest (global)
+  scope: per-application, all inbound traffic
+  limit: 25
+  unit: requests
+  window: 1 second
+  burst: null
+  applies_to: every API behind api.orange.com
+  exhaustion_status: 403
+  error_code: 53
+  error_message: Too many requests
+  error_description: spike arrest limit
+  retry_guidance: >-
+    "wait a short delay (in the range of seconds) before retrying the request" — documented
+    recommendation is 1 second or more.
+  source: https://developer.orange.com/resources/orange-apis-error-handling/
+- name: Application quota — fixed window
+  scope: per-application, per-API
+  limit: 2500
+  unit: requests
+  window: 1 month
+  applies_to: optional per-API quota; the documented example value
+  exhaustion_status: 403
+  error_code: 53
+  error_description: global quota limit
+  note: >-
+    Documented as an example of the fixed-window quota policy, not a universal number. The actual
+    quota is set per API and per subscription and is not published as a single catalog-wide figure.
+  source: https://developer.orange.com/resources/orange-apis-error-handling/
+- name: Application quota — rolling window
+  scope: per-application, per-API
+  limit: 600
+  unit: requests
+  window: 1 minute
+  applies_to: optional per-API quota; the documented example value
+  exhaustion_status: 403
+  error_code: 53
+  error_description: global quota limit
+  note: Documented example of the rolling-window quota policy; counter resets vary by window type.
+  source: https://developer.orange.com/resources/orange-apis-error-handling/
+response_headers:
+  rate_limit_headers: []
+  rate_limit_headers_note: >-
+    Orange documents NO X-RateLimit-* / RateLimit-* / Retry-After response headers. An agent cannot
+    read remaining budget from a response — the only runtime signal is the 403 (and, per the common
+    errors table, 429) carrying code 53. This is the most actionable gap in Orange's runtime
+    contract: the number is in the docs but not on the wire.
+  correlation_header: X-OAPI-Request-Id
+  correlation_note: >-
+    "Every response includes X-OAPI-Request-Id header for troubleshooting." Present on all
+    api.orange.com responses; include it when reporting persistent issues to support.
+exhaustion:
+  primary_status: 403
+  also_documented_status: 429
+  code: 53
+  envelope: '{"code": 53, "message": "Too many requests", "description": "...", "infoURL": "..."}'
+  note: >-
+    Orange's common-errors table lists code 53 under BOTH 403 and 429. Clients must treat a 403
+    with code 53 as a rate-limit signal, not an authorization failure — an unusual mapping worth
+    coding for explicitly.
+also_relevant:
+- status: 503
+  code: 6
+  message: Orange API is over capacity, retry later!
+  guidance: implement exponential backoff

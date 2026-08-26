@@ -1,0 +1,71 @@
+generated: '2026-08-26'
+method: searched
+source: >-
+  https://developer.orange.com/products/network-apis/ ,
+  https://docs.developer.orange.com/network-apis/practical-guides/try-it-for-free/overview ,
+  https://docs.developer.orange.com/network-apis/api-catalog/population-density-data/fr/0.3/cost-calculator ,
+  and the per-API /pricing pages on developer.orange.com.
+plan_count: 1
+model: contact-sales
+summary: >-
+  Orange publishes ONE self-serve tier — the free Network APIs Playground — and no public price for
+  any production API. Production access to the CAMARA Network APIs runs through "Talk to sales"; the
+  per-API /pricing pages on developer.orange.com describe the billing MODEL (SMS bundles bought in
+  airtime or Orange Money, free allowances on a few regional APIs) rather than a rate card. Live
+  Objects publishes no price list at all.
+plans:
+- name: Network APIs Playground
+  price: 0
+  currency: EUR
+  billing_period: null
+  access: self-serve — free developer account plus a subscription request
+  signup: https://developer.orange.com/apis/camara-playground
+  included:
+    apis: 12 mocked CAMARA APIs
+    test_numbers: 15 published test phone numbers
+    own_numbers: up to 4 mock phone numbers per application
+    profiles: up to 10 phone profiles
+  data: mock only — no live network data
+  overage: null
+  source: https://docs.developer.orange.com/network-apis/practical-guides/try-it-for-free/overview
+- name: Production (CAMARA Network APIs)
+  price: null
+  currency: null
+  billing_period: null
+  access: contact sales
+  signup: https://developer.orange.com/talk-to-sales/
+  note: >-
+    No published price. Orange's Network APIs product page routes production access through
+    "Talk to sales" with "a clear path to commercial deployment and support".
+  source: https://developer.orange.com/products/network-apis/
+observed_pricing_surfaces:
+- api: Population Density Data
+  url: https://docs.developer.orange.com/network-apis/api-catalog/population-density-data/fr/0.3/cost-calculator
+  status: 200
+  finding: >-
+    A per-call cost calculator EXISTS ("Configure your zone and estimate your API call cost") but the
+    figures live inside a client-side widget (::mdc-pdd-calculator::). The served HTML carries no
+    price, so no unit price could be read without executing the page. This is a real published price
+    that is not machine-readable.
+- api: SMS (regional — DR Congo, Senegal, Madagascar, Cameroon)
+  url: https://developer.orange.com/apis/sms
+  status: 200
+  finding: >-
+    Billed as prepaid SMS bundles purchased in airtime or Orange Money, sized 50 to 50,000 SMS. Sold
+    per country, not as a global rate card.
+- api: KYC Match (CAMARA)
+  url: https://developer.orange.com/apis/kyc-match/
+  status: 200
+  finding: Pricing page exists under the API but publishes no numeric rate.
+- api: Live Objects
+  url: https://liveobjects.orange-business.com/
+  status: 200
+  finding: No public price list. Commercial terms are arranged with Orange Business.
+probed_dead:
+- url: https://developer.orange.com/api-pricing/
+  status: 404
+- url: https://developer.orange.com/pricing
+  status: 404
+- url: https://developer.orange.com/apis/kyc-match/pricing
+  status: 404
+  note: the /pricing sub-path 404s even though the parent API page is live

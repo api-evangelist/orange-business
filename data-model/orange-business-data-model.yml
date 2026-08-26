@@ -1,0 +1,235 @@
+generated: '2026-08-26'
+method: derived
+source: >-
+  openapi/orange-business-live-objects-openapi.json (439 component schemas, 263 operations) and
+  openapi/_original/*.yml (the CAMARA contracts)
+note: >-
+  Two independent domains, no shared identifiers. Live Objects is a stateful multi-tenant IoT
+  platform with a real entity graph; the CAMARA Network APIs are stateless query endpoints keyed on
+  a phone number, with only Quality on Demand and Geofencing holding server-side state at all.
+domains:
+- name: Live Objects (IoT platform)
+  spec: openapi/orange-business-live-objects-openapi.json
+  schemas: 439
+  root_entity: Tenant
+  entities:
+  - name: Tenant
+    description: the account boundary; every other resource belongs to exactly one
+    identifier: tenantId
+  - name: User
+    description: a human account holder within a tenant, with roles and access
+    identifier: userId
+  - name: ApiKey
+    description: >-
+      a credential scoped by roles (DATA_R, DEVICE_W, ...) and carrying its own rate limit
+      (mqttBridgeWindowSize, mqttBridgeMaxMessages, mqttDeviceWindowSize, mqttDeviceMaxMessages)
+      and a debug-mode toggle
+    identifier: apiKeyId
+  - name: Device
+    description: the central object — a connected thing with interfaces, resources, twin state and group membership
+    identifier: deviceId
+  - name: Group
+    description: hierarchical device grouping (self-referential via parentId / groupPath)
+    identifier: groupId
+  - name: ConnectorNode
+    description: a LoRa/network connector node binding a device interface to a network
+    identifier: nodeId
+  - name: Command
+    description: an instruction sent to a device
+  - name: DeviceResourceUpdate
+    description: a firmware/resource push to one device, cancellable
+    identifier: resourceId
+  - name: Resource / ResourceVersion
+    description: a versioned artifact (firmware, config) held by the tenant and pushed to devices
+    identifier: [resourceId, resourceVersionId]
+  - name: Campaign
+    description: a mass deployment of a resource across a device fleet; cancellable
+    identifier: campaignId
+  - name: TwinModel / ObjectDefinition
+    description: the digital-twin model a device conforms to, built from LwM2M object definitions
+    identifier: objectDefinitionId
+  - name: TwinObservation
+    description: observed twin state for a device
+  - name: DataMessage
+    description: the payload a device pushes; searchable and storable
+  - name: Pipeline
+    description: a custom transformation applied to incoming DataMessages
+    identifier: pipelineId
+  - name: Decoder
+    description: binary or CSV payload decoder turning compacted payloads into JSON
+    identifier: decoderId
+  - name: AlarmRule / ActivityRule / FiringRule / MatchingRule / StateProcessingRule / Geozone
+    description: the event-processing rule family evaluated against incoming data
+    identifier: ruleId
+  - name: ActionPolicy
+    description: what to do when a rule fires — HTTP push, FIFO, notification channel
+    identifier: policyId
+  - name: NotificationChannel
+    description: an outbound delivery target
+    identifier: notificationChannelId
+  - name: Lwm2mBootstrapConfig / BootstrapEntry / Lwm2mServer
+    description: LwM2M bootstrap provisioning objects
+    identifier: [configId, endpointName, shortServerId]
+  - name: AuditLog
+    description: tenant-scoped audit record
+  relationships:
+  - from: Tenant
+    to: User
+    kind: has_many
+    via: tenantId
+  - from: Tenant
+    to: ApiKey
+    kind: has_many
+    via: tenantId
+  - from: User
+    to: ApiKey
+    kind: has_many
+    via: userId
+  - from: ApiKey
+    to: ApiKey
+    kind: belongs_to
+    via: parentId
+    note: API keys nest — a key can derive from a parent key
+  - from: Tenant
+    to: Device
+    kind: has_many
+  - from: Group
+    to: Group
+    kind: belongs_to
+    via: parentId
+    note: self-referential hierarchy, also flattened into groupPath
+  - from: Group
+    to: Device
+    kind: has_many
+  - from: Device
+    to: DeviceInterface
+    kind: has_many
+  - from: DeviceInterface
+    to: ConnectorNode
+    kind: belongs_to
+    via: nodeId
+  - from: Device
+    to: DataMessage
+    kind: has_many
+    via: defaultDataStreamId
+  - from: Device
+    to: Command
+    kind: has_many
+  - from: Device
+    to: DeviceResourceUpdate
+    kind: has_many
+    via: resourceId
+  - from: Resource
+    to: ResourceVersion
+    kind: has_many
+    via: resourceId
+  - from: Campaign
+    to: Resource
+    kind: belongs_to
+    via: resourceId
+  - from: Campaign
+    to: Group
+    kind: targets
+    note: a campaign is scoped to a device group
+  - from: Device
+    to: TwinModel
+    kind: belongs_to
+    via: objectDefinitionId
+  - from: TwinModel
+    to: ObjectDefinition
+    kind: has_many
+    via: objectDefinitionId
+  - from: Device
+    to: TwinObservation
+    kind: has_many
+    via: deviceId
+  - from: DataMessage
+    to: Pipeline
+    kind: processed_by
+    via: pipelineId
+  - from: DataMessage
+    to: Decoder
+    kind: decoded_by
+    via: decoderId
+  - from: AlarmRule
+    to: Device
+    kind: evaluates
+  - from: ActivityRule
+    to: Device
+    kind: evaluates
+    via: [activityRuleId, deviceId]
+  - from: ActionPolicy
+    to: NotificationChannel
+    kind: delivers_to
+  - from: ActionPolicy
+    to: Fifo
+    kind: delivers_to
+  - from: Lwm2mBootstrapConfig
+    to: Lwm2mServer
+    kind: has_many
+    via: shortServerId
+  - from: Lwm2mBootstrapConfig
+    to: BootstrapEntry
+    kind: has_many
+    via: endpointName
+  id_conventions:
+    style: opaque UUID
+    example: 'bc865fe0-aa2c-40c8-b101-aee64ad78611 (observed on a live 401 error body)'
+    prefixes: none
+    note: >-
+      No typed id prefixes (no `dev_`, `key_` style). Ids are bare UUIDs, so an id alone does not
+      say what it identifies — an agent must track the entity type alongside the id.
+- name: CAMARA Network APIs
+  specs: openapi/_original/*.yml
+  root_entity: Device
+  note: >-
+    Stateless by design. The subject is a Device identified by phoneNumber (E.164),
+    networkAccessIdentifier, ipv4Address or ipv6Address; most operations take that identifier and
+    return an answer without creating a resource.
+  entities:
+  - name: Device
+    identifier: [phoneNumber, networkAccessIdentifier, ipv4Address, ipv6Address]
+    note: >-
+      When a 3-legged access token is used the device is already bound to the token — passing an
+      identifier as well raises UNNECESSARY_IDENTIFIER (422).
+  - name: QosSession
+    identifier: sessionId
+    stateful: true
+    lifecycle: created with a duration, extendable while AVAILABLE, deletable before expiry
+  - name: QosProfile
+    identifier: name
+    note: >-
+      Constrains session duration (maxDuration) and throughput; served by a separate CAMARA contract
+      not harvested into this repo.
+  - name: GeofencingSubscription
+    identifier: subscriptionId
+    stateful: true
+    lifecycle: created against a circular area, emits CloudEvents to a sink, deletable
+  - name: Area
+    kind: value object
+    shapes: [CIRCLE, POLYGON]
+    note: 'Population Density Data takes a POLYGON with Geohash-length precision; Location Verification takes a CIRCLE.'
+  relationships:
+  - from: Device
+    to: QosSession
+    kind: has_many
+    via: sessionId
+    note: retrieveSessionsByDevice returns every session for one device
+  - from: QosSession
+    to: QosProfile
+    kind: belongs_to
+    via: qosProfile
+  - from: GeofencingSubscription
+    to: Device
+    kind: watches
+  - from: GeofencingSubscription
+    to: Area
+    kind: has_one
+cross_domain:
+  shared_identifiers: none
+  note: >-
+    Nothing joins the two domains. A Live Objects device is a UUID on Orange's IoT platform; a CAMARA
+    device is a phone number on Orange's mobile network. Even for an Orange M2M SIM managed in Live
+    Objects there is no published field carrying the MSISDN that the CAMARA APIs would key on — so a
+    fleet operator cannot ask a CAMARA network question about a Live Objects device without
+    maintaining its own mapping. This is the single most consequential modelling gap in the estate.
