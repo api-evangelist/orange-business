@@ -1,0 +1,59 @@
+# Kin Score artifact — orange-business — 2026-08-27T132314
+# The API Evangelist rating (https://github.com/api-evangelist/kin-score). Generated; do not edit.
+---
+kin_score:
+  slug: orange-business
+  schema_version: 0.15.1
+  scored_at: '2026-08-27'
+  run_ts: 2026-08-27T132314
+  composite: 74.6
+  band: exemplar
+  facets:
+    discoverability: 77.8
+    contract_quality: 65.6
+    governance: 30.3
+    operational_transparency: 78.9
+    developer_ergonomics: 82.7
+    commercial_clarity: 65.8
+    contract_governance: 30.3
+    access_clarity: 65.8
+  agent_readiness:
+    score: 44.3
+    band: agent-ready
+    band_gated_from: agent-native
+    dimensions:
+      spec_presence: true
+      agentic_access: derived
+      reversibility_documented: false
+      mcp_server: documented
+      auth_clarity: negotiable
+      idempotency: false
+      error_semantics: documented
+      openapi_examples: verified
+      rate_limit_signal: documented
+      event_surface_described: true
+      agent_skills: derived
+      well_known_catalog: true
+      consent_identity: false
+      agent_card: false
+      dry_run_mode: false
+      delegated_identity: documented
+      protected_resource_metadata: false
+      dynamic_client_registration: false
+      agentic_commerce: false
+  regulatory:
+    applies: true
+    regime: Telecommunications
+    regime_id: telecommunications
+    score: 75.0
+    matched_via: tags
+  provenance:
+    mcp: first-party
+    skills: derived
+    agentic_access: derived
+    conformance: first-party
+    contracts:
+      total: 14
+      derived: 0
+      coverage: 0.0
+      callable: 0.0

@@ -2,37 +2,6 @@ aid: orange-business
 url: https://raw.githubusercontent.com/api-evangelist/orange-business/refs/heads/main/apis.yml
 specificationVersion: '0.23'
 apis:
-- aid: orange-business:orange-business-live-objects-api
-  name: Orange Business Live Objects API
-  tags:
-  - Connectivity
-  - Devices
-  - IoT
-  - Live Objects
-  - Telco
-  humanURL: https://liveobjects.orange-business.com/
-  properties:
-  - url: https://liveobjects.orange-business.com/
-    type: Portal
-  - url: https://developer.orange.com/apis/datavenue
-    type: Documentation
-  - type: OpenAPI
-    url: openapi/orange-business-live-objects-openapi.json
-  - type: Overlay
-    url: overlays/orange-business-live-objects-overlay.yaml
-  - type: DataModel
-    url: data-model/orange-business-data-model.yml
-  - type: Webhooks
-    url: asyncapi/orange-business-webhooks.yml
-  - type: APIReference
-    url: https://liveobjects.orange-business.com/swagger/
-  - type: Blog
-    url: https://blog.liveobjects.orange-business.com/
-  description: >-
-    Orange's IoT platform (also branded Datavenue) for connecting, managing, and ingesting data from IoT
-    devices over LoRa, NB-IoT, LTE-M, and classic cellular. REST and MQTT interfaces for device, group,
-    command, and data-stream management with end-to-end security and multi-tenant fleet operations.
-  baseURL: https://liveobjects.orange-business.com/api/v1
 - aid: orange-business:orange-business-iot-managed-global-connectivity-api
   name: Orange Business IoT Managed Global Connectivity API
   tags:
@@ -1182,6 +1151,1216 @@ apis:
   - type: Overlay
     url: overlays/orange-business-roaming-status-retrieval-api-overlay.yaml
   baseURL: https://api.orange.com/camara/playground/api/device-roaming-status/v0.6
+- aid: orange-business:orange-business-accounting-v1-api
+  name: Orange Business Accounting - V1 API
+  description: get your accounting metrics
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Accounting - V1
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-accounting-v1-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-alarm-rules-api
+  name: Orange Business Alarm rules API
+  description: Manage your alarm rules
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Alarm rules
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-alarm-rules-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-api-keys-api
+  name: Orange Business Api keys API
+  description: API key management
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Api keys
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-api-keys-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-api-self-keys-api
+  name: Orange Business Api self keys API
+  description: API self key management
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Api self keys
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-api-self-keys-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-audit-log-api
+  name: Orange Business Audit Log API
+  description: Search through your AuditLog messages
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Audit Log
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-audit-log-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-beta-cellular-networks-management-api
+  name: Orange Business Beta - Cellular networks management API
+  description: Cellular subscriptions and providers management
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Beta - Cellular networks management
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-beta-cellular-networks-management-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-beta-network-metrics-api
+  name: Orange Business Beta - Network metrics API
+  description: Search network metrics
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Beta - Network metrics
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-beta-network-metrics-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-bootstrap-config-api
+  name: Orange Business Bootstrap Config API
+  description: Manage lwm2m bootstrap config
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Bootstrap Config
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-bootstrap-config-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-bootstrap-entry-api
+  name: Orange Business Bootstrap Entry API
+  description: Manage LwM2M bootstrap entries
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Bootstrap Entry
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-bootstrap-entry-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-bootstrap-master-entry-api
+  name: Orange Business Bootstrap Master Entry API
+  description: Manage LwM2M bootstrap master entries
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Bootstrap Master Entry
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-bootstrap-master-entry-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-ca-certificates-api
+  name: Orange Business CA certificates API
+  description: CA certificates for MQTT client cert. authentication
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - CA certificates
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-ca-certificates-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-campaign-management-api
+  name: Orange Business Campaign management API
+  description: Management of actions on a fleet of devices
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Campaign management
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-campaign-management-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-data-bulk-injection-api
+  name: Orange Business Data bulk injection API
+  description: APIs to inject a bulk of data
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Data bulk injection
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-data-bulk-injection-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-data-management-custom-pipelines-api
+  name: Orange Business Data management custom pipelines API
+  description: APIs to manage dataMessage custom pipelines
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Data management custom pipelines
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-data-management-custom-pipelines-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-data-management-data-search-api
+  name: Orange Business Data management data search API
+  description: APIs to search through injected data
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Data management data search
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-data-management-data-search-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-data-management-data-store-api
+  name: Orange Business Data management data store API
+  description: APIs to store and retrieve data
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Data management data store
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-data-management-data-store-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-decoders-api
+  name: Orange Business Decoders API
+  description: list all decoders for a tenant
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Decoders
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-decoders-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-decoders-binary-api
+  name: Orange Business Decoders - binary API
+  description: binary decoder provisioning
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Decoders - binary
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-decoders-binary-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-decoders-csv-api
+  name: Orange Business Decoders - CSV API
+  description: CSV decoder provisioning
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Decoders - CSV
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-decoders-csv-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-decoders-public-api
+  name: Orange Business Decoders - public API
+  description: public decoder management
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Decoders - public
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-decoders-public-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-deprecated-bus-management-api
+  name: Orange Business Deprecated - Bus management API
+  description: FIFO are now automatically managed with FifoPublish Action in Trigger & Actions
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Deprecated - Bus management
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-deprecated-bus-management-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-deprecated-data-management-data-search-v0-api
+  name: Orange Business Deprecated - Data management data search - V0 API
+  description: use data search V1 instead
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Deprecated - Data management data search - V0
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-deprecated-data-management-data-search-v0-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-device-analytics-api
+  name: Orange Business Device Analytics API
+  description: Manage your device analytics rules
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Device Analytics
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-device-analytics-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-device-management-commands-api
+  name: Orange Business Device management - Commands API
+  description: Devices commands
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Device management - Commands
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-device-management-commands-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-device-management-configuration-api
+  name: Orange Business Device management - Configuration API
+  description: Devices configuration
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Device management - Configuration
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-device-management-configuration-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-device-management-connector-nodes-lora-specific-api
+  name: Orange Business Device management - Connector nodes - LoRa specific API
+  description: LoRa connector specificity
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Device management - Connector nodes - LoRa specific
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-device-management-connector-nodes-lora-specific-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-device-management-connector-nodes-v1-api
+  name: Orange Business Device management - Connector nodes - V1 API
+  description: Connector nodes management
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Device management - Connector nodes - V1
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-device-management-connector-nodes-v1-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-device-management-groups-v1-api
+  name: Orange Business Device management - Groups - V1 API
+  description: Group management
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Device management - Groups - V1
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-device-management-groups-v1-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-device-management-interfaces-api
+  name: Orange Business Device management - Interfaces API
+  description: Devices' interfaces management
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Device management - Interfaces
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-device-management-interfaces-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-device-management-inventory-v1-api
+  name: Orange Business Device management - Inventory - V1 API
+  description: Devices inventory
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Device management - Inventory - V1
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-device-management-inventory-v1-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-device-management-resources-api
+  name: Orange Business Device management - Resources API
+  description: Devices resources and firmware
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Device management - Resources
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-device-management-resources-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-device-management-resources-management-api
+  name: Orange Business Device management - Resources management API
+  description: Resources management and firmware
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Device management - Resources management
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-device-management-resources-management-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-event-processing-activity-api
+  name: Orange Business Event processing - Activity API
+  description: ActivityRule management
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Event processing - Activity
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-event-processing-activity-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-event-processing-context-api
+  name: Orange Business Event processing - Context API
+  description: Context management
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Event processing - Context
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-event-processing-context-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-event-processing-firing-api
+  name: Orange Business Event processing - Firing API
+  description: FiringRules and FiringGuards management
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Event processing - Firing
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-event-processing-firing-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-event-processing-geozone-api
+  name: Orange Business Event processing - Geozone API
+  description: Geozone management
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Event processing - Geozone
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-event-processing-geozone-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-event-processing-matching-api
+  name: Orange Business Event processing - Matching API
+  description: MatchingRules management
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Event processing - Matching
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-event-processing-matching-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-event-processing-state-processing-api
+  name: Orange Business Event processing - State processing API
+  description: State processing Rules management
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Event processing - State processing
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-event-processing-state-processing-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-gateway-management-for-lora-api
+  name: Orange Business Gateway management for LoRa API
+  description: Gateway management
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Gateway management for LoRa
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-gateway-management-for-lora-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-inventory-explorer-api
+  name: Orange Business Inventory Explorer API
+  description: Inventory explorer management
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Inventory Explorer
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-inventory-explorer-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-notification-api
+  name: Orange Business Notification API
+  description: sending email or sms notifications
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Notification
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-notification-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-notification-channels-api
+  name: Orange Business Notification channels API
+  description: Manage notification channels
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Notification channels
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-notification-channels-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-self-tenant-account-api
+  name: Orange Business Self tenant account API
+  description: Self tenant account management
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Self tenant account
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-self-tenant-account-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-self-user-management-api
+  name: Orange Business Self User management API
+  description: manage self user
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Self User management
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-self-user-management-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-triggers-and-actions-api
+  name: Orange Business Triggers and Actions API
+  description: Action policies on event and messages
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Triggers and Actions
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-triggers-and-actions-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-triggers-and-actions-test-api
+  name: Orange Business Triggers and Actions - Test API
+  description: Test api for actions
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Triggers and Actions - Test
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-triggers-and-actions-test-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-twin-data-rules-management-api
+  name: Orange Business Twin data rules management API
+  description: Manage twin data rules
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Twin data rules management
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-twin-data-rules-management-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-twin-devices-management-api
+  name: Orange Business Twin devices management API
+  description: Manage twin device
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Twin devices management
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-twin-devices-management-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-twin-models-management-api
+  name: Orange Business Twin models management API
+  description: Manage twin model
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Twin models management
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-twin-models-management-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-twin-observations-api
+  name: Orange Business Twin observations API
+  description: Manage twin observations
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Twin observations
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-twin-observations-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-twin-operations-management-api
+  name: Orange Business Twin operations management API
+  description: Manage twin device operations
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Twin operations management
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-twin-operations-management-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-user-authentication-api
+  name: Orange Business User authentication API
+  description: authentication
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - User authentication
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-user-authentication-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-user-authentication-management-api
+  name: Orange Business User authentication management API
+  description: authentication management
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - User authentication management
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-user-authentication-management-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-user-profile-and-access-management-api
+  name: Orange Business User Profile and Access Management API
+  description: manage user profile and get access list
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - User Profile and Access Management
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-user-profile-and-access-management-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-users-management-api
+  name: Orange Business Users management API
+  description: manage users
+  humanURL: https://liveobjects.orange-business.com/
+  baseURL: https://liveobjects.orange-business.com/api/v1
+  tags:
+  - Users management
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-users-management-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
 name: Orange Business
 description: Orange Business is the B2B, telco-cloud, and developer arm of Orange S.A. — France's leading telecommunications group operating across Europe, the Middle East, and Africa. The company markets itself as "an operator, integrator, and platform player" and serves 30,000+ enterprise customers across 65 countries with cloud, cybersecurity, SD-WAN/SASE, 5G, IoT, data, AI, and digital-workplace services. Orange's developer surface is split across two tracks. The Orange Developer portal (developer.orange.com) publishes the Orange Open Gateway — Orange's implementation of GSMA Open Gateway / CAMARA standardised network APIs (Number Verification, SIM Swap, Device Swap, KYC Match, Device Location, Geofencing, Device Status, Quality on Demand, Population Density Data) — alongside Orange-specific APIs for IoT (Live Objects, IoT Global Connectivity), payments (Orange Money WebPay, Pay With Orange Bill, carrier billing across Orange Africa), communications (Voice, SMS MEA, Business Talk, Contact Everyone), cloud (Cloud Avenue sovereign IaaS, Evolution Platform), and identity (Live Identity Verify, Live Identity Captcha). The Orange Business Services portfolio adds a B2B TM Forum–aligned API track for ordering, billing, incident management, eligibility, and order tracking. The Orange-OpenSource GitHub org backs the developer ecosystem with 427+ repos including Hurl (the popular Rust HTTP testing CLI with 18K+ stars), the Boosted accessible Bootstrap framework, the OUDS Orange Unified Design System for iOS / Android / Flutter, and 5G Kubernetes Helm charts. Orange has also stood up Orange LiveNet, a business unit dedicated to commercialising programmable network capabilities, and is one of the founding operators of the GSMA Open Gateway initiative with the CAMARA Linux Foundation project.
 tags:
@@ -1248,6 +2427,8 @@ accessModel:
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/orange-business.png
 access: 3rd-Party
 common:
+- type: Overlay
+  url: overlays/orange-business-live-objects-overlay.yaml
 - type: OAuthScopes
   url: scopes/orange-business-scopes.yml
 - type: License
