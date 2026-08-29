@@ -1,5 +1,19 @@
 aid: orange-business
 url: https://raw.githubusercontent.com/api-evangelist/orange-business/refs/heads/main/apis.yml
+deliveryModel:
+  model: open-core
+  license: Apache-2.0
+  open_source: true
+  commercial: true
+  callable_host: false
+  label: Open core · an OSS project plus a commercial hosted product
+  confidence: high
+  source:
+  - license
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 specificationVersion: '0.23'
 apis:
 - aid: orange-business:orange-business-iot-managed-global-connectivity-api
@@ -2427,6 +2441,13 @@ accessModel:
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/orange-business.png
 access: 3rd-Party
 common:
+- type: CapabilityMap
+  url: capabilities/orange-business-capability-edges.yml
+  name: Orange Business Business Capability Map
+- type: IssueTracker
+  url: https://github.com/camaraproject/NumberVerification/issues
+- type: Releases
+  url: https://github.com/camaraproject/NumberVerification/releases
 - type: Overlay
   url: overlays/orange-business-live-objects-overlay.yaml
 - type: OAuthScopes
