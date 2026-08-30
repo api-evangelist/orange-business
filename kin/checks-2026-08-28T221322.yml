@@ -2,16 +2,16 @@
 kin_checks:
   slug: orange-business
   schema_version: 0.15.1
-  scored_at: '2026-08-27'
-  run_ts: 2026-08-27T140727
+  scored_at: '2026-08-28'
+  run_ts: 2026-08-28T221322
   note: Actionable checks only (missed + partial). earned/na are every other check
     in rubric/scoring-0.15.1.yml; counts below let you verify that.
   counts:
     total: 130
     earned: 62
-    partial: 11
-    missed: 37
-    na: 20
+    partial: 12
+    missed: 40
+    na: 16
   checks:
   - id: maintainer_present
     status: missed
@@ -21,10 +21,10 @@ kin_checks:
     status: missed
   - id: openapi_3_2
     status: missed
-    detail: 0 of 14 openapi documents pass
+    detail: 0 of 69 openapi documents pass
   - id: info_complete
     status: missed
-    detail: 0 of 14 openapi documents pass
+    detail: 0 of 69 openapi documents pass
   - id: servers_resolvable
     status: missed
   - id: json_schema_present
@@ -73,6 +73,12 @@ kin_checks:
     status: missed
   - id: reg_certification_signal
     status: missed
+  - id: os_security_policy
+    status: missed
+  - id: os_contribution_guide
+    status: missed
+  - id: os_code_of_conduct
+    status: missed
   - id: reversibility_documented
     status: missed
   - id: idempotency
@@ -89,17 +95,21 @@ kin_checks:
     status: missed
   - id: agentic_commerce
     status: missed
+  - id: error_responses_documented
+    status: partial
+    earned: 2.32
+    detail: 40 of 69 openapi documents pass
   - id: examples_present
     status: partial
-    earned: 3.16
+    earned: 1.27
   - id: components_reuse
     status: partial
-    earned: 2.79
-    detail: 13 of 14 openapi documents pass
+    earned: 2.0
+    detail: 46 of 69 openapi documents pass
   - id: webhooks_or_callbacks
     status: partial
-    earned: 0.43
-    detail: 3 of 14 openapi documents pass
+    earned: 0.09
+    detail: 3 of 69 openapi documents pass
   - id: agent_skill_present
     status: partial
     earned: 0.75
@@ -113,12 +123,12 @@ kin_checks:
     detail: 'grade: documented'
   - id: auth_clarity
     status: partial
-    earned: 7.5
-    detail: 'grade: negotiable'
-  - id: error_semantics
+    earned: 3.5
+    detail: 'grade: bearer'
+  - id: openapi_examples
     status: partial
-    earned: 4.0
-    detail: 'grade: documented'
+    earned: 3.5
+    detail: 'grade: partial'
   - id: rate_limit_signal
     status: partial
     earned: 3.5
