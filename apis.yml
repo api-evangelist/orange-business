@@ -96,7 +96,7 @@ apis:
   name: Orange Business Contact Everyone API
   tags:
   - Communications
-  - Multi-Channel
+  - Multichannel
   - Notification
   - Telco
   tags_raw:
@@ -131,7 +131,7 @@ apis:
   name: Orange Business Cloud Avenue API
   tags:
   - Cloud
-  - Infrastructure-as-a-Service
+  - IaaS
   - Sovereign Cloud
   - Telco
   - VMware
@@ -152,7 +152,7 @@ apis:
   name: Orange Business Evolution Platform IaaS API
   tags:
   - Cloud
-  - Infrastructure-as-a-Service
+  - IaaS
   - Sandbox
   - Telco
   tags_raw:
@@ -354,7 +354,7 @@ apis:
   name: Orange Business Live Identity Captcha API
   tags:
   - Anti-Bot
-  - CAPTCHA
+  - Captcha
   - Fraud Prevention
   - Identity
   - Telco
@@ -1193,6 +1193,8 @@ apis:
   humanURL: https://liveobjects.orange-business.com/
   baseURL: https://liveobjects.orange-business.com/api/v1
   tags:
+  - Alarm Rules
+  tags_raw:
   - Alarm rules
   properties:
   - type: OpenAPI
@@ -1215,6 +1217,8 @@ apis:
   humanURL: https://liveobjects.orange-business.com/
   baseURL: https://liveobjects.orange-business.com/api/v1
   tags:
+  - APIKeys
+  tags_raw:
   - Api keys
   properties:
   - type: OpenAPI
@@ -1391,6 +1395,8 @@ apis:
   humanURL: https://liveobjects.orange-business.com/
   baseURL: https://liveobjects.orange-business.com/api/v1
   tags:
+  - Cacertificates
+  tags_raw:
   - CA certificates
   properties:
   - type: OpenAPI
@@ -1413,6 +1419,8 @@ apis:
   humanURL: https://liveobjects.orange-business.com/
   baseURL: https://liveobjects.orange-business.com/api/v1
   tags:
+  - Campaign Management
+  tags_raw:
   - Campaign management
   properties:
   - type: OpenAPI
@@ -1632,7 +1640,8 @@ apis:
   description: use data search V1 instead
   humanURL: https://liveobjects.orange-business.com/
   baseURL: https://liveobjects.orange-business.com/api/v1
-  tags:
+  tags: []
+  tags_raw:
   - Deprecated - Data management data search - V0
   properties:
   - type: OpenAPI
@@ -1720,7 +1729,8 @@ apis:
   description: LoRa connector specificity
   humanURL: https://liveobjects.orange-business.com/
   baseURL: https://liveobjects.orange-business.com/api/v1
-  tags:
+  tags: []
+  tags_raw:
   - Device management - Connector nodes - LoRa specific
   properties:
   - type: OpenAPI
@@ -1742,7 +1752,8 @@ apis:
   description: Connector nodes management
   humanURL: https://liveobjects.orange-business.com/
   baseURL: https://liveobjects.orange-business.com/api/v1
-  tags:
+  tags: []
+  tags_raw:
   - Device management - Connector nodes - V1
   properties:
   - type: OpenAPI
@@ -2073,6 +2084,8 @@ apis:
   humanURL: https://liveobjects.orange-business.com/
   baseURL: https://liveobjects.orange-business.com/api/v1
   tags:
+  - Notification Channels
+  tags_raw:
   - Notification channels
   properties:
   - type: OpenAPI
@@ -2293,6 +2306,8 @@ apis:
   humanURL: https://liveobjects.orange-business.com/
   baseURL: https://liveobjects.orange-business.com/api/v1
   tags:
+  - User Authentication
+  tags_raw:
   - User authentication
   properties:
   - type: OpenAPI
