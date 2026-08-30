@@ -1,0 +1,367 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide Twin devices management API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: Twin devices management
+  description: Manage twin device
+paths:
+  /api/v1/deviceMgt/devices/{deviceId}/twin/supported-objects:
+    get:
+      tags:
+      - Twin devices management
+      summary: Get twin device supported objects
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: readDeviceSupportedObjects
+      parameters:
+      - name: deviceId
+        in: path
+        description: device identifier. A Live Objects URN 'urn:lo:nsid:{namespace}:{id}' must respect the following regular expression <code>^urn:lo:nsid:([\w\-]{1,128}):([\w\-:]{1,128})$</code> (max 269 characters)
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Read forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+  /api/v1/deviceMgt/devices/{deviceId}/twin/objects:
+    get:
+      tags:
+      - Twin devices management
+      summary: Get twin device objects
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: readDeviceObjects
+      parameters:
+      - name: deviceId
+        in: path
+        description: device identifier. A Live Objects URN 'urn:lo:nsid:{namespace}:{id}' must respect the following regular expression <code>^urn:lo:nsid:([\w\-]{1,128}):([\w\-:]{1,128})$</code> (max 269 characters)
+        required: true
+        schema:
+          type: string
+      - name: expand
+        in: query
+        description: If 1 then detailed object is returned
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParentTwinObject'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Read forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+  /api/v1/deviceMgt/devices/{deviceId}/twin/objects/{objectId}:
+    get:
+      tags:
+      - Twin devices management
+      summary: Get twin device object from a given objectId
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: readDeviceDetailedObjectFromObjectId
+      parameters:
+      - name: deviceId
+        in: path
+        description: A Live Objects URN 'urn:lo:nsid:{namespace}:{id}' must respect the following regular expression <code>^urn:lo:nsid:([\w\-]{1,128}):([\w\-:]{1,128})$</code> (max 269 characters)
+        required: true
+        schema:
+          type: string
+      - name: objectId
+        in: path
+        description: object id value (expect path segment matching ^[a-zA-Z0-9]{1,256}$)
+        required: true
+        schema:
+          type: string
+        example: 5
+      - name: expand
+        in: query
+        description: If 1 then detailed instance is returned
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TwinObject'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Read forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+  /api/v1/deviceMgt/devices/{deviceId}/twin/objects/{objectId}/{objectInstanceId}:
+    get:
+      tags:
+      - Twin devices management
+      summary: Get twin device object instance from a given objectId and instanceId
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: readDeviceDetailedObjectInstanceFromObjectIdAndInstanceId
+      parameters:
+      - name: deviceId
+        in: path
+        description: A Live Objects URN 'urn:lo:nsid:{namespace}:{id}' must respect the following regular expression <code>^urn:lo:nsid:([\w\-]{1,128}):([\w\-:]{1,128})$</code> (max 269 characters)
+        required: true
+        schema:
+          type: string
+      - name: objectId
+        in: path
+        description: object id value (expect path segment matching ^[a-zA-Z0-9]{1,256}$)
+        required: true
+        schema:
+          type: string
+        example: 5
+      - name: objectInstanceId
+        in: path
+        description: object instance id value (expect path segment matching ^[a-zA-Z0-9]{1,256}$)
+        required: true
+        schema:
+          type: string
+        example: 1
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TwinObjectInstance'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Read forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+components:
+  schemas:
+    WebErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+      required:
+      - code
+      - id
+      - message
+    TwinAttributeInstanceValue:
+      type: object
+      properties:
+        reportedValue:
+          type: string
+          description: Attribute reported value
+        timestamp:
+          type: string
+          description: Value timestamp
+        pendingValue:
+          type: string
+          description: Pending value
+        path:
+          type: string
+          description: Attribute multi-instantiable value path
+    TwinAttribute:
+      type: object
+      properties:
+        path:
+          type: string
+          description: Path of the attribute
+          example: /5/0/3
+          minLength: 1
+        pathSegment:
+          type: string
+          description: Path segment of the attribute
+          example: '3'
+          minLength: 1
+        content:
+          $ref: '#/components/schemas/TwinAttributeValue'
+          description: Single attribute value
+        contents:
+          type: array
+          description: Multi-instance attribute values
+          items:
+            $ref: '#/components/schemas/TwinAttributeInstanceValue'
+      required:
+      - path
+      - pathSegment
+    TwinObject:
+      type: object
+      properties:
+        path:
+          type: string
+          description: Path of the object
+          example: /5
+          minLength: 1
+        objectDefinitionId:
+          type: string
+          description: Unique identifier of the object-definition
+          example: urn:oma:lwm2m:oma:5:1.1
+          minLength: 1
+        instances:
+          type: array
+          description: List of object instances
+          items:
+            $ref: '#/components/schemas/TwinObjectInstance'
+          uniqueItems: true
+      required:
+      - objectDefinitionId
+      - path
+    ParentTwinObject:
+      type: object
+      properties:
+        path:
+          type: string
+          description: Root path
+          example: /
+          minLength: 1
+        objectDefinitionId:
+          type: string
+          description: Unique identifier of the object-definition
+          example: urn:oma:lwm2m
+          minLength: 1
+        children:
+          type: array
+          description: List of children objects
+          items:
+            $ref: '#/components/schemas/TwinObject'
+          uniqueItems: true
+      required:
+      - objectDefinitionId
+      - path
+    TwinObjectInstance:
+      type: object
+      properties:
+        path:
+          type: string
+          description: Path of the object
+          example: /5/0
+          minLength: 1
+        objectDefinitionId:
+          type: string
+          description: Unique identifier of the object-definition
+          example: urn:oma:lwm2m:oma:5:1.1
+          minLength: 1
+        attributes:
+          type: array
+          description: List of object attributes
+          items:
+            $ref: '#/components/schemas/TwinAttribute'
+          uniqueItems: true
+      required:
+      - objectDefinitionId
+      - path
+    TwinAttributeValue:
+      type: object
+      properties:
+        reportedValue:
+          type: string
+          description: Attribute reported value
+        timestamp:
+          type: string
+          description: Value timestamp
+        pendingValue:
+          type: string
+          description: Pending value
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''

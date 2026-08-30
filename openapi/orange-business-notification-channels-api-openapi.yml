@@ -1,0 +1,277 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide Notification channels API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: Notification channels
+  description: Manage notification channels
+paths:
+  /api/v1/contact/notificationChannels/{notificationChannelId}:
+    get:
+      tags:
+      - Notification channels
+      summary: Get a notification channel.
+      description: 'Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: getNotificationChannel
+      parameters:
+      - name: notificationChannelId
+        in: path
+        description: notification channel identifier
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The notification channel
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationChannel'
+    put:
+      tags:
+      - Notification channels
+      summary: Update a notification channel.
+      description: 'Usage of this API will be reported in your access log under ''notification'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      operationId: updateNotificationChannel
+      parameters:
+      - name: notificationChannelId
+        in: path
+        description: notification channel identifier
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationChannelRequest'
+        required: true
+      responses:
+        '200':
+          description: The notification channel was successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationChannel'
+        '404':
+          description: The notification channel was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceErrorResponse'
+    delete:
+      tags:
+      - Notification channels
+      summary: Delete a notification channel.
+      description: 'Usage of this API will be reported in your access log under ''notification'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      operationId: deleteNotificationChannel
+      parameters:
+      - name: notificationChannelId
+        in: path
+        description: notification channel identifier
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: The notification channel was successfully deleted
+        '404':
+          description: The notification channel was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceErrorResponse'
+  /api/v1/contact/notificationChannels:
+    get:
+      tags:
+      - Notification channels
+      summary: List notification channels.
+      description: 'Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: listNotificationChannels
+      responses:
+        '200':
+          description: The notification channels list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotificationChannel'
+    post:
+      tags:
+      - Notification channels
+      summary: Create a notification channel.
+      description: 'Usage of this API will be reported in your access log under ''notification'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      operationId: createNotificationChannel
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationChannelRequest'
+        required: true
+      responses:
+        '201':
+          description: The notification channel was successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationChannel'
+components:
+  schemas:
+    NotificationChannelEmailRecipients:
+      type: object
+      description: Email recipients for a notification channel.
+      properties:
+        to:
+          type: array
+          example:
+          - to@example.com
+          items:
+            type: string
+          maxItems: 20
+          minItems: 1
+        cc:
+          type: array
+          example:
+          - cc@example.com
+          items:
+            type: string
+          maxItems: 20
+          minItems: 0
+        bcc:
+          type: array
+          example:
+          - bcc@example.com
+          items:
+            type: string
+          maxItems: 20
+          minItems: 0
+      required:
+      - to
+    NotificationChannelRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: User-defined name for the notification channel. Must not be null, must contain at least one non-whitespace character and at most 255 characters.
+          example: OPS Team
+          maxLength: 255
+          minLength: 0
+        language:
+          type: string
+          description: Language to use for this notification channel. Must be either 'en' or 'fr.
+          example: en
+          pattern: ^(en|fr)$
+        emails:
+          $ref: '#/components/schemas/NotificationChannelEmailRecipients'
+      required:
+      - emails
+      - language
+      - name
+    ServiceErrorResponse:
+      type: object
+      description: Generic Error in Response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+        category:
+          type: string
+          description: Error category
+          enum:
+          - PERMANENT
+          - TRANSIENT
+          - UNEXPECTED
+      required:
+      - category
+      - code
+      - id
+      - message
+    NotificationChannel:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The notification channel unique identifier. The default notification channel ID is 'default'.
+          example: 6798a90560fe8807d0d58f64
+        name:
+          type: string
+          description: User-defined name for the notification channel. Must not be null, must contain at least one non-whitespace character and at most 255 characters.
+          example: OPS Team
+        language:
+          type: string
+          description: Language to use for this notification channel. Must be either 'en' or 'fr.
+          example: en
+        emails:
+          $ref: '#/components/schemas/NotificationChannelEmailRecipients'
+        created:
+          type: string
+          format: date-time
+          description: Notification channel creation datetime.
+        updated:
+          type: string
+          format: date-time
+          description: Notification channel update datetime.
+      required:
+      - emails
+      - id
+      - language
+      - name
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''

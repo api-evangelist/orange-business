@@ -1,0 +1,299 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide Twin data rules management API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: Twin data rules management
+  description: Manage twin data rules
+paths:
+  /api/v1/deviceMgt/twin/data/rules:
+    get:
+      tags:
+      - Twin data rules management
+      summary: List twin data rules
+      description: 'Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: listTwinDataRules
+      responses:
+        '200':
+          description: List of twin data rules
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TwinDataRule'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Read forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+    post:
+      tags:
+      - Twin data rules management
+      summary: Create new twin data rule
+      description: 'Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      operationId: createTwinDataRule
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TwinDataRuleRequest'
+        required: true
+      responses:
+        '201':
+          description: Twin data rule created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TwinDataRule'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceErrorResponse'
+        '403':
+          description: Create forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceErrorResponse'
+  /api/v1/deviceMgt/twin/data/rules/{dataRuleId}:
+    get:
+      tags:
+      - Twin data rules management
+      summary: Get twin data rule from a given dataRuleId
+      description: 'Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: getTwinDataRule
+      parameters:
+      - name: dataRuleId
+        in: path
+        description: Identifier of specific twin data rule. Expected string (max 24 characters)
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TwinDataRule'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Read forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: Twin data rule not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceErrorResponse'
+    delete:
+      tags:
+      - Twin data rules management
+      summary: Delete twin data rule for a given dataRuleId
+      description: 'Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      operationId: deleteTwinDataRule
+      parameters:
+      - name: dataRuleId
+        in: path
+        description: Identifier of specific twin data rule. Expected string (max 24 characters)
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Twin data rule deleted
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Delete forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: Twin data rule not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceErrorResponse'
+components:
+  schemas:
+    WebErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+      required:
+      - code
+      - id
+      - message
+    TwinDataRuleRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: name of data rule
+          example: my twin data rule
+        type:
+          type: string
+          description: type of data rule, must be "passthrough"
+          example: passthrough
+        paths:
+          type: array
+          description: paths used as data new filter, must be ["/"]
+          example:
+          - /
+          items:
+            type: string
+          uniqueItems: true
+      required:
+      - name
+      - paths
+      - type
+    ServiceErrorResponse:
+      type: object
+      description: Generic Error in Response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+        category:
+          type: string
+          description: Error category
+          enum:
+          - PERMANENT
+          - TRANSIENT
+          - UNEXPECTED
+      required:
+      - category
+      - code
+      - id
+      - message
+    TwinDataRule:
+      type: object
+      properties:
+        id:
+          type: string
+          description: data rule unique identifier
+          example: 623df1ba014fd248812e5ee9
+        name:
+          type: string
+          description: name of data rule
+          example: my twin data rule
+        type:
+          type: string
+          description: type of data rule
+          enum:
+          - PASSTHROUGH
+          - UNKNOWN
+          example: passthrough
+        paths:
+          type: array
+          description: paths used as data new filter
+          example:
+          - /
+          items:
+            type: string
+          uniqueItems: true
+        created:
+          type: string
+          format: date-time
+          description: data rule creation date/time
+          example: '2022-02-08T11:32:25.055Z'
+      required:
+      - created
+      - id
+      - name
+      - paths
+      - type
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''

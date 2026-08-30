@@ -1,0 +1,398 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide Gateway management for LoRa API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: Gateway management for LoRa
+  description: Gateway management
+paths:
+  /api/v1/deviceMgt/connectors/lora/gateways/{id}:
+    get:
+      tags:
+      - Gateway management for LoRa
+      summary: Get a specific gateway information
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: getLoRaGateway
+      parameters:
+      - name: id
+        in: path
+        description: identifier of the gateway
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Return a list of LoRa gateways
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoraGatewayInfo'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '401':
+          description: Unauthorized. Please check your API Key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+    patch:
+      tags:
+      - Gateway management for LoRa
+      summary: Update a LoRa gateway.
+      description: 'Set the location property to an empty object to remove the gateway location.<br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      operationId: updateLoRaGateway
+      parameters:
+      - name: id
+        in: path
+        description: identifier of the gateway
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoraGatewayDefinition'
+        required: true
+      responses:
+        '200':
+          description: Return a list of LoRa gateways
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoraGatewayInfo'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '401':
+          description: Unauthorized. Please check your API Key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+  /api/v1/deviceMgt/connectors/lora/gateways:
+    get:
+      tags:
+      - Gateway management for LoRa
+      summary: List your LoRa gateways
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: listLoRaGateways
+      parameters:
+      - name: size
+        in: query
+        description: the maximum number of items per page (optional, highest value is 1000)
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: page
+        in: query
+        description: the requested page number (optional)
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: id
+        in: query
+        description: filtering by identifier (regexp filter) of gateway
+        required: false
+        schema:
+          type: string
+          default: ''
+        example: ^(002|0ff)
+      - name: name
+        in: query
+        description: filtering by name (regexp filter) of gateway
+        required: false
+        schema:
+          type: string
+          default: ''
+        example: .*def.*
+      - name: status
+        in: query
+        description: filtering by status of gateway
+        required: false
+        schema:
+          type: string
+          default: ''
+        example: ONLINE
+      - name: manufacturer
+        in: query
+        description: filtering by manufacturer of gateway
+        required: false
+        schema:
+          type: string
+          default: ''
+        example: Kerlink
+      - name: model
+        in: query
+        description: filtering by model of gateway
+        required: false
+        schema:
+          type: string
+          default: ''
+        example: Warbler
+      responses:
+        '200':
+          description: Return a list of LoRa gateways
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageableLoraGatewayInfo'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '401':
+          description: Unauthorized. Please check your API Key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+components:
+  schemas:
+    WebErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+      required:
+      - code
+      - id
+      - message
+    PageableLoraGatewayInfo:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int64
+          description: 'number of the current page: starts at 0.'
+          example: 0
+        size:
+          type: integer
+          format: int64
+          description: number of data per page (= maximum number of data in the associated list of data:the last page can have less data)
+          example: 1
+        totalCount:
+          type: integer
+          format: int64
+          description: total count of data in the complete list.
+          example: 1
+        data:
+          type: array
+          description: list of data in this page.
+          items:
+            $ref: '#/components/schemas/LoraGatewayInfo'
+      required:
+      - data
+      - page
+      - size
+      - totalCount
+    LoraGatewayLocation:
+      type: object
+      properties:
+        lat:
+          type: number
+          format: double
+          description: Last geolocation latitude (GPS coordinate system)
+          example: 10.11212
+        lon:
+          type: number
+          format: double
+          description: Last geolocation longitude (GPS coordinate system)
+          example: 7.44464
+        alt:
+          type: number
+          format: double
+          description: Last geolocation altitude (meter)
+          example: 50
+        provider:
+          type: string
+          description: Computing geolocation method
+          example: GPS
+        lastUpdateTs:
+          type: string
+          format: date-time
+          description: Date/time of the last location
+          example: '2016-06-14T11:09:22.125Z'
+    LoraGatewayInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique id of the gateway
+          example: FF02041D
+        name:
+          type: string
+          description: Name of the gateway
+          example: FF02041D
+        description:
+          type: string
+          description: Description
+        manufacturer:
+          type: string
+          description: Manufacturer of the gateway
+          example: Kerlink
+        model:
+          type: string
+          description: Model of the gateway
+          example: Warbler
+        status:
+          type: string
+          description: Status of the gateway
+          example: ONLINE
+        lastReportTs:
+          type: string
+          description: Date/time of the last report
+          example: '2016-06-03T15:55:36.944Z'
+        location:
+          $ref: '#/components/schemas/LoraGatewayLocation'
+          description: Gateway location
+        system:
+          $ref: '#/components/schemas/GwSystem'
+          description: 'System of the gateway:'
+        config:
+          $ref: '#/components/schemas/GwConfig'
+          description: 'Configuration of the gateway:'
+        networkPartner:
+          $ref: '#/components/schemas/GwNetworkPartner'
+          description: Network partner
+    GwNetworkPartner:
+      type: object
+      properties:
+        instance:
+          type: string
+          description: Partner related instance
+          example: OCP
+    GwSystem:
+      type: object
+      properties:
+        gpsState:
+          type: string
+          description: GPS state
+          example: UNKNOWN
+        timeSync:
+          type: string
+          description: Time synchronization
+          example: NTP
+    LoraGatewayDefinition:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the gateway
+          example: FF02041D
+        description:
+          type: string
+          description: Description
+        location:
+          $ref: '#/components/schemas/LoraGatewayLocation'
+          description: Gateway location
+    GwConfig:
+      type: object
+      properties:
+        version:
+          type: string
+          description: Version
+          example: 2.2.47
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''

@@ -1,0 +1,581 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide Device management - Commands API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: Device management - Commands
+  description: Devices commands
+paths:
+  /api/v1/deviceMgt/commands/{commandId}/status:
+    get:
+      tags:
+      - Device management - Commands
+      summary: Get the status of a specific command by its identifier. A command is an instruction sent to a device, telling it to perform a specific action, change a configuration parameter, or report information.
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: getCommandStatusV1
+      parameters:
+      - name: commandId
+        in: path
+        description: identifier of specific command. Expected identifier (max 24 characters)
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The command status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommandStatusReport'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: Command not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+    put:
+      tags:
+      - Device management - Commands
+      summary: Update the status of a specific command by its identifier. A command is an instruction sent to a device, telling it to perform a specific action, change a configuration parameter, or report information.
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      operationId: setCommandStatusV1
+      parameters:
+      - name: commandId
+        in: path
+        description: identifier of specific command. Expected identifier (max 24 characters)
+        required: true
+        schema:
+          type: string
+      - name: force
+        in: query
+        description: force the update of the command status
+        required: false
+        schema:
+          type: boolean
+          default: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+              description: future state of the command  --> CANCELED
+              enum:
+              - CANCELED
+        required: true
+      responses:
+        '200':
+          description: Command status updated
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: Command not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '409':
+          description: Invalid command status update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+  /api/v1/deviceMgt/devices/{deviceId}/commands:
+    get:
+      tags:
+      - Device management - Commands
+      summary: List commands targeting a specific device by its identifier (URN).  A command is an instruction sent to a device, telling it to perform a specific action, change a configuration parameter, or report information.
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: getDeviceCommandsV1
+      parameters:
+      - name: deviceId
+        in: path
+        description: requested commands target device identifier (URN). A Live Objects URN 'urn:lo:nsid:{namespace}:{id}' must respect the following regular expression <code>^urn:lo:nsid:([\w\-]{1,128}):([\w\-:]{1,128})$</code> (max 269 characters)
+        required: true
+        schema:
+          type: string
+      - name: from
+        in: query
+        description: Search for commands created after this date. Use ISO-8601 normalization.
+        required: false
+        schema:
+          type: string
+        example: '2018-10-05T15:45:51Z'
+      - name: to
+        in: query
+        description: Search for commands created before this date. Use ISO-8601 normalization.
+        required: false
+        schema:
+          type: string
+        example: '2018-10-05T15:45:51Z'
+      - name: limit
+        in: query
+        description: the maximum number of items per page (optional, highest value is 1000)
+        required: false
+        schema:
+          type: string
+          default: '20'
+      - name: offset
+        in: query
+        description: number of items to skip (optional)
+        required: false
+        schema:
+          type: string
+          default: '0'
+      - name: sort
+        in: query
+        description: 'sorting list by attributes. DefaultValue : -created.  Supported columns: id, status, created. Example: ["status","-created"]. '
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+        example: status,-created
+      - name: X-Total-Count
+        in: header
+        description: true if a total count must be returned in response
+        required: false
+        schema:
+          type: boolean
+          default: false
+        example: true
+      responses:
+        '200':
+          description: The list of commands of the device
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Command'
+              examples:
+                Commands list:
+                  $ref: swagger/static/examples/dm/commands/list_command_response.json
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: Unknown device
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+    post:
+      tags:
+      - Device management - Commands
+      summary: Register a new command targeting a device by its identifier (URN).  A command is an instruction sent to a device, telling it to perform a specific action, change a configuration parameter, or report information.
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      operationId: addDeviceCommandV1
+      parameters:
+      - name: deviceId
+        in: path
+        description: target device identifier (URN). A Live Objects URN 'urn:lo:nsid:{namespace}:{id}' must respect the following regular expression <code>^urn:lo:nsid:([\w\-]{1,128}):([\w\-:]{1,128})$</code> (max 269 characters)
+        required: true
+        schema:
+          type: string
+      - name: validate
+        in: query
+        description: Command will be validated by connector before registration. Default is "true"
+        required: false
+        schema:
+          type: boolean
+          default: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreationCommandRequest'
+            examples:
+              LoRa command:
+                $ref: swagger/static/examples/dm/commands/lora_command_request.json
+              SMS text command:
+                $ref: swagger/static/examples/dm/commands/sms_text_command_request.json
+              SMS binary command:
+                $ref: swagger/static/examples/dm/commands/sms_binary_command_request.json
+              MQTT command:
+                $ref: swagger/static/examples/dm/commands/mqtt_command_request.json
+              External interface command:
+                $ref: swagger/static/examples/dm/commands/x_connector_command_request.json
+        required: true
+      responses:
+        '201':
+          description: The command created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Command'
+              examples:
+                LoRa command:
+                  $ref: swagger/static/examples/dm/commands/lora_command_req_response.json
+                MQTT command:
+                  $ref: swagger/static/examples/dm/commands/mqtt_command_req_response.json
+                SMS command:
+                  $ref: swagger/static/examples/dm/commands/sms_command_req_response.json
+                External interface command:
+                  $ref: swagger/static/examples/dm/commands/x_connector_command_req_response.json
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: Unknown device
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+  /api/v1/deviceMgt/commands/{commandId}:
+    get:
+      tags:
+      - Device management - Commands
+      summary: Get a specific command by its identifier. A command is an instruction sent to a device, telling it to perform a specific action, change a configuration parameter, or report information.
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: getCommandV1
+      parameters:
+      - name: commandId
+        in: path
+        description: identifier of specific command. Expected identifier (max 24 characters)
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The command
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Command'
+              examples:
+                LoRa command:
+                  $ref: swagger/static/examples/dm/commands/lora_command_response.json
+                MQTT command:
+                  $ref: swagger/static/examples/dm/commands/mqtt_command_response.json
+                SMS command:
+                  $ref: swagger/static/examples/dm/commands/sms_command_response.json
+                External interface command:
+                  $ref: swagger/static/examples/dm/commands/x_connector_command_response.json
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: Command not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+    delete:
+      tags:
+      - Device management - Commands
+      summary: Delete a specific command by its identifier.  A command is an instruction sent to a device, telling it to perform a specific action, change a configuration parameter, or report information.
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      operationId: deleteCommandV1
+      parameters:
+      - name: commandId
+        in: path
+        description: identifier of specific command. Expected identifier (max 24 characters)
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Command deleted
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: Command not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+components:
+  schemas:
+    Command:
+      type: object
+      properties:
+        id:
+          type: string
+          description: command unique identifier
+          example: ae49129f-9ce4-4782-82c4c6a2
+        targetDeviceId:
+          type: string
+          description: targeted device identifier (URN)
+          example: urn:lo:nsid:sensor:2327398
+        request:
+          $ref: '#/components/schemas/CommandRequest'
+          description: command request
+        response:
+          $ref: '#/components/schemas/CommandResponse'
+          description: command response
+          example:
+            value:
+              success: true
+        status:
+          type: string
+          description: command current status
+          enum:
+          - PENDING
+          - PROCESSING
+          - PROCESSED
+          - CANCELED
+          - ERROR
+          - RETRYING
+          - EXPIRED
+          - UNKNOWN
+          example: PROCESSING
+        deliveryStatus:
+          type: string
+          description: command current delivery status
+          enum:
+          - SENDING
+          - SENT
+          - DELIVERED
+          - REPLIED
+          example: SENT
+        errorCode:
+          type: string
+          description: error code in case of ERROR status
+          example: INVALID_COMMAND_REQUEST
+        policy:
+          $ref: '#/components/schemas/CommandPolicy'
+          description: command policy
+        history:
+          type: array
+          description: command history
+          example:
+          - timestamp: '2017-12-06T11:38:22.481Z'
+            status: PROCESSING
+            deliveryStatus: SENT
+            nodeId: '2327398'
+          items:
+            $ref: '#/components/schemas/CommandHistory'
+        created:
+          type: string
+          format: date-time
+          description: command creation date/time
+          example: '2017-12-06T11:32:25.055Z'
+        updated:
+          type: string
+          format: date-time
+          description: command last status update date/time
+          example: '2017-12-06T11:32:25.055Z'
+    WebErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+      required:
+      - code
+      - id
+      - message
+    CommandStatusReport:
+      type: object
+      properties:
+        content:
+          type: string
+    CommandRequest:
+      type: object
+      properties:
+        connector:
+          type: string
+          description: connector/protocol to use to forward the command
+          enum:
+          - mqtt
+          - lora
+          - sms
+          - x-connector
+          example: mqtt
+        value:
+          description: 'command value (protocol/connector-dependant). The length is limited. Examples:
+
+            - For mqtt: "{ "req": "unlock", "arg": { "delay": 1000 }}" in which "req" is a supported command and "arg" the appropriate arguments
+
+            - For lora: "{ "data": "ab12cd34", "port": "42" }" in which "data" is the downlink content (in hexadecimal) and "port" the target port, between 1 and 223.
+
+            - For sms (text): "{ "payload": "Hello Live Objects!", "type": "TEXT" }" where "payload" is the text message to send
+
+            - For sms (binary):  "{ "payload": "756e6c6f636b", "type": "BINARY"}" where "payload" is the binary message to send
+
+            - For x-connector: "{ "req": "turn on", "arg": { "device": "6", "delay": "300" }" in which "req" is a supported command and "arg" the appropriate arguments
+
+            '
+      required:
+      - connector
+      - value
+    CommandResponse:
+      type: object
+      properties:
+        value:
+          description: command response value (protocol/connector-dependant)
+          example:
+            success: true
+      required:
+      - value
+    CreationCommandRequest:
+      type: object
+      description: new command request
+      properties:
+        request:
+          $ref: '#/components/schemas/CommandRequest'
+          description: command request
+        policy:
+          $ref: '#/components/schemas/CommandPolicy'
+          description: Delivery policy for this command
+      required:
+      - request
+    CommandPolicy:
+      type: object
+      properties:
+        expirationInSeconds:
+          type: integer
+          format: int64
+          description: Expiration in seconds since command creation date. Min value is 5 seconds. For default, and max value, cf. developer guide.
+          example: 604800
+          maximum: 9223372036854775
+          minimum: 5
+        ackTimeoutInSeconds:
+          type: integer
+          format: int64
+          description: Ack timeout in seconds since command was sent. Default is no ack timeout. Min value is 10 seconds
+          example: 120
+        ackMode:
+          type: string
+          description: Ack mode for this command. NONE (or AUTO) ack means that the command is automatically acknowledged (set to 'PROCESSED' status) as the command is sent to the device. NETWORK ack requires a reception acknowledge. APPLICATIVE (or DEVICE) ack requires a command response from the device to change its status. Default ack mode is connectivity dependant.
+          enum:
+          - NONE
+          - NETWORK
+          - APPLICATIVE
+          example: APPLICATIVE
+        attempts:
+          type: integer
+          format: int32
+          description: Number of attempts in case of ERROR. Default to 1
+          example: 3
+          maximum: 5
+          minimum: 1
+    CommandHistory:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: timestamp of the entry
+          example: '2017-12-06T11:38:22.481Z'
+        status:
+          type: string
+          description: command status at the timestamp
+          enum:
+          - PENDING
+          - PROCESSING
+          - PROCESSED
+          - CANCELED
+          - ERROR
+          - RETRYING
+          - EXPIRED
+          - UNKNOWN
+          example: PROCESSING
+        deliveryStatus:
+          type: string
+          description: command delivery status at the timestamp
+          enum:
+          - SENDING
+          - SENT
+          - DELIVERED
+          - REPLIED
+          example: SENT
+        errorCode:
+          type: string
+          description: error code in case of ERROR status
+          example: INVALID_COMMAND_REQUEST
+        nodeId:
+          type: string
+          description: node id
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''

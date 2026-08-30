@@ -1,0 +1,843 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide Device management - Resources management API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: Device management - Resources management
+  description: Resources management and firmware
+paths:
+  /api/v0/rm/{resourceId}/version/{resourceVersionId}:
+    get:
+      tags:
+      - Device management - Resources management
+      summary: Get a resource's version
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: getResourceVersion
+      parameters:
+      - name: resourceId
+        in: path
+        description: the resource id. Expected string (max 255 characters)
+        required: true
+        schema:
+          type: string
+      - name: resourceVersionId
+        in: path
+        description: the resource version id
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The resource version
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceVersion'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: Resource version not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+    put:
+      tags:
+      - Device management - Resources management
+      summary: Update a resource's version
+      description: 'Usage of this API will be reported in your access log under ''device_resource'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      operationId: updateResourceVersion
+      parameters:
+      - name: resourceId
+        in: path
+        description: the resource id. Expected string (max 255 characters)
+        required: true
+        schema:
+          type: string
+      - name: resourceVersionId
+        in: path
+        description: the resource version id. Expected string (max 255 characters)
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateResourceVersionRequest'
+        required: true
+      responses:
+        '200':
+          description: The resource version
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceVersion'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: Resource version not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+    delete:
+      tags:
+      - Device management - Resources management
+      summary: Delete a resource's version
+      description: 'Usage of this API will be reported in your access log under ''device_resource'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      operationId: deleteResourceVersion
+      parameters:
+      - name: resourceId
+        in: path
+        description: the resource id. Expected string (max 255 characters)
+        required: true
+        schema:
+          type: string
+      - name: resourceVersionId
+        in: path
+        description: the resource version id. Expected string (max 255 characters)
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Resource version deleted
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: Resource version not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+  /api/v0/rm/{resourceId}:
+    get:
+      tags:
+      - Device management - Resources management
+      summary: Get a resource
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: getResource
+      parameters:
+      - name: resourceId
+        in: path
+        description: the resource id. Expected string (max 255 characters)
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The resource
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+    put:
+      tags:
+      - Device management - Resources management
+      summary: Update a resource
+      description: 'Usage of this API will be reported in your access log under ''device_resource'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      operationId: updateResource
+      parameters:
+      - name: resourceId
+        in: path
+        description: the resource Id. Expected string (max 255 characters)
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateResourceRequest'
+        required: true
+      responses:
+        '200':
+          description: The resource
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+    delete:
+      tags:
+      - Device management - Resources management
+      summary: Delete a resource
+      description: 'Usage of this API will be reported in your access log under ''device_resource'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      operationId: deleteResource
+      parameters:
+      - name: resourceId
+        in: path
+        description: the resource id. Expected string (max 255 characters)
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Resource deleted
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+  /api/v0/rm:
+    get:
+      tags:
+      - Device management - Resources management
+      summary: List all resources
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: getResources
+      parameters:
+      - name: size
+        in: query
+        description: the maximum number of items per page (optional, highest value is 1000)
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: page
+        in: query
+        description: the requested page number (optional)
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      responses:
+        '200':
+          description: Treatment success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageableResource'
+        '403':
+          description: Request forbidden (missing role)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageableResource'
+    post:
+      tags:
+      - Device management - Resources management
+      summary: Add a resource in Resource Manager
+      description: 'Usage of this API will be reported in your access log under ''device_resource'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      operationId: addResource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddResourceRequest'
+        required: true
+      responses:
+        '200':
+          description: Treatment success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resource'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden (missing role)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+  /api/v0/rm/{resourceId}/version:
+    get:
+      tags:
+      - Device management - Resources management
+      summary: List resource's versions
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: getResourceVersions
+      parameters:
+      - name: resourceId
+        in: path
+        description: the resource id. Expected string (max 255 characters)
+        required: true
+        schema:
+          type: string
+      - name: size
+        in: query
+        description: the maximum number of items per page (optional, highest value is 1000)
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: page
+        in: query
+        description: the requested page number (optional)
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      responses:
+        '200':
+          description: The list of resource versions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageableResourceVersion'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+    post:
+      tags:
+      - Device management - Resources management
+      summary: Add a new version to a resource
+      description: 'Usage of this API will be reported in your access log under ''device_resource'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      operationId: addResourceVersion
+      parameters:
+      - name: resourceId
+        in: path
+        description: the resource id. Expected string (max 255 characters)
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddResourceVersionRequest'
+        required: true
+      responses:
+        '200':
+          description: The resource version
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResourceVersion'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '409':
+          description: Resource version already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+  /api/v0/rm/{resourceId}/compatibleVersion/{currentVersion}:
+    get:
+      tags:
+      - Device management - Resources management
+      summary: List the versions from which a resource update to the version can be done
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: getResourceCompatibleVersions
+      parameters:
+      - name: resourceId
+        in: path
+        description: the resource id. Expected string (max 255 characters)
+        required: true
+        schema:
+          type: string
+      - name: currentVersion
+        in: path
+        description: current version. Expected string (max 255 characters)
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The set of all the compatible versions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                uniqueItems: true
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+  /api/v0/rm/connectors:
+    get:
+      tags:
+      - Device management - Resources management
+      summary: Get all available connectors
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: getAllConnectors
+      responses:
+        '200':
+          description: The set of all the available connectors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                uniqueItems: true
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+  /api/v0/rm/connectors/{connector}/metadata:
+    get:
+      tags:
+      - Device management - Resources management
+      summary: Get mandatory and optional metadata of a connector
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: getConnectorMandatoryAndOptionalMetadata
+      parameters:
+      - name: connector
+        in: path
+        description: the resource's connector (ex. "http-updater"). A connector must respect the following regular expression <code>([\w\-]{1,128})</code> (max 128 characters)
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The set of all the mandatory and optional metadata for the connector
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetadataResourceConnectors'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+components:
+  schemas:
+    WebErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+      required:
+      - code
+      - id
+      - message
+    AddResourceVersionRequest:
+      type: object
+      description: body of add resource version
+      properties:
+        file:
+          type: string
+          description: the version's Base64-encoded binary. File max size is 10MB
+        checksum:
+          type: string
+          description: The Base64-encoded MD5 checksum of the version's raw file (non Base64-encoded)Expected string (max 255 characters)
+        description:
+          type: string
+          description: the version's description. Expected string (max 255 characters)
+        resourceVersionId:
+          type: string
+          description: the resource version id. Expected string (max 255 characters)
+        compatibleVersions:
+          type: array
+          description: 'set of the versions from which a resource update to the version can be done. Max number of versions is 100. A version max length is 255. '
+          items:
+            type: string
+          uniqueItems: true
+      required:
+      - checksum
+      - file
+      - resourceVersionId
+    ResourceVersion:
+      type: object
+      properties:
+        tenantId:
+          type: string
+        resourceId:
+          type: string
+        resourceVersionId:
+          type: string
+        description:
+          type: string
+        compatibleVersions:
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+        creationTs:
+          type: integer
+          format: int64
+        updateTs:
+          type: integer
+          format: int64
+        file:
+          type: string
+        checksum:
+          type: string
+    PageableResource:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int64
+          description: 'number of the current page: starts at 0.'
+          example: 0
+        size:
+          type: integer
+          format: int64
+          description: number of data per page (= maximum number of data in the associated list of data:the last page can have less data)
+          example: 1
+        totalCount:
+          type: integer
+          format: int64
+          description: total count of data in the complete list.
+          example: 1
+        data:
+          type: array
+          description: list of data in this page.
+          items:
+            $ref: '#/components/schemas/Resource'
+      required:
+      - data
+      - page
+      - size
+      - totalCount
+    UpdateResourceVersionRequest:
+      type: object
+      description: body of resource version update
+      properties:
+        description:
+          type: string
+          description: the version's description. Expected string (max 255 characters)
+          example: 1.1.1
+        compatibleVersions:
+          type: array
+          description: 'set of the versions from which a resource update to the version can be done. Max number of versions is 100. A version max length is 255. '
+          example:
+          - 1.0.0
+          - 1.0.1
+          - '0.9'
+          items:
+            type: string
+          uniqueItems: true
+    MetadataResourceConnectors:
+      type: object
+      properties:
+        mandatory:
+          type: array
+          description: the mandatory connector metadata
+          items:
+            type: string
+          uniqueItems: true
+        optional:
+          type: array
+          description: the optional connector metadata
+          items:
+            type: string
+          uniqueItems: true
+    Resource:
+      type: object
+      description: Resource data
+      properties:
+        tenantId:
+          type: string
+          description: identifier of tenant account
+          example: 57xxxxxxxxxxxxxxxxxxxxxx
+        resourceId:
+          type: string
+          description: the resource's identifier
+          example: MyResource001
+        label:
+          type: string
+          description: the resource's label
+          example: My resource Label
+        description:
+          type: string
+          description: the resource's description
+          example: It the last provided resource
+        connector:
+          type: string
+          description: the resource's connector
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: 'the resource metadata. Max number of metadata is 100. Metadata name max length is 255. A Metadata name must not include following characters <code>$.</code>. Invalid Metadata names are : ''class'', ''_class''. Metadata value max length is 255. Optional metadata key ''<code>secured</code>'': controls the transfer protocol for firmware download. Value ''<code>true</code>'' generates HTTPS URL, ''<code>false</code>'' or absent generates HTTP URL (default). Supported by http-updater connector only.'
+          example:
+            secured: 'true'
+        versionAliases:
+          type: object
+          additionalProperties:
+            type: string
+          description: the resource version aliases
+          example:
+            prod: '1.1'
+        creationTs:
+          type: integer
+          format: int64
+          description: creation timestamp
+          example: '2016-06-03T15:50:39.669Z'
+        updateTs:
+          type: integer
+          format: int64
+          description: last update timestamp
+          example: '2016-06-04T14:40:40.444Z'
+    AddResourceRequest:
+      type: object
+      description: body of add resource
+      properties:
+        resourceId:
+          type: string
+          description: the resource's id. Expected string (max 255 characters)
+          example: MyResource001
+        label:
+          type: string
+          description: the resource's label. Expected string (max 255 characters)
+          example: My resource Label
+        description:
+          type: string
+          description: the resource's description. Expected string (max 255 characters)
+          example: It the last provided resource
+        connector:
+          type: string
+          description: the resource's connector. A connector must respect the following regular expression <code>([\w\-]{1,128})</code> (max 128 characters)
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: 'the resource metadata. Max number of metadata is 100. Metadata name max length is 255. A Metadata name must not include following characters <code>$.</code>. Invalid Metadata names are : ''class'', ''_class''. Metadata value max length is 255. Optional metadata key ''<code>secured</code>'': controls the transfer protocol for firmware download. Value ''<code>true</code>'' generates HTTPS URL, ''<code>false</code>'' or absent generates HTTP URL (default). Supported by http-updater connector only.'
+          example:
+            secured: 'true'
+      required:
+      - resourceId
+    UpdateResourceRequest:
+      type: object
+      description: body of resource update
+      properties:
+        label:
+          type: string
+          description: the resource's label. Expected string (max 255 characters)
+          example: My resource Label
+        description:
+          type: string
+          description: the resource's description. Expected string (max 255 characters)
+          example: It the last provided resource
+        connector:
+          type: string
+          description: the resource's connector. A connector must respect the following regular expression <code>([\w\-]{1,128})</code> (max 128 characters)
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: 'the operation metadata. Max number of metadata is 100. Metadata name max length is 255. A Metadata name must not include following characters <code>$.</code>. Invalid Metadata names are : ''class'', ''_class''. Metadata value max length is 255. Optional metadata key ''<code>secured</code>'': controls the transfer protocol for firmware download. Value ''<code>true</code>'' generates HTTPS URL, ''<code>false</code>'' or absent generates HTTP URL (default). Supported by http-updater connector only.'
+          example:
+            secured: 'true'
+        versionAliases:
+          type: object
+          additionalProperties:
+            type: string
+          description: the resource version aliases. Max number of alias is 5. Alias name max length is 128. Alias value max length is 255.
+          example:
+            prod: '1.1'
+      required:
+      - label
+    PageableResourceVersion:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int64
+          description: 'number of the current page: starts at 0.'
+          example: 0
+        size:
+          type: integer
+          format: int64
+          description: number of data per page (= maximum number of data in the associated list of data:the last page can have less data)
+          example: 1
+        totalCount:
+          type: integer
+          format: int64
+          description: total count of data in the complete list.
+          example: 1
+        data:
+          type: array
+          description: list of data in this page.
+          items:
+            $ref: '#/components/schemas/ResourceVersion'
+      required:
+      - data
+      - page
+      - size
+      - totalCount
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''

@@ -1,0 +1,285 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide Event processing - State processing API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: Event processing - State processing
+  description: State processing Rules management
+paths:
+  /api/v0/eventprocessing/stateprocessing-rule/{stateProcessingRuleId}:
+    get:
+      tags:
+      - Event processing - State processing
+      summary: Retrieve a StateProcessingRule
+      description: 'State processing service aims at detecting changes in ''device state'' computed from data messages. A state can represent any result computed from Live Objects data messages : geo-zone (''paris-area'', ''london-area'', ..), temperature status (''hot'', ''cold'', ..), availability status (''ok'' , ''ko''). Each state is identified by a key retrieved from the user-defined json-path in the data message. stateKeyPath examples : ''streamId'', ''metadata.source''...<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: getStateProcessingRule
+      parameters:
+      - name: stateProcessingRuleId
+        in: path
+        description: id of the StateProcessingRule to retrieve
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: StateProcessingRule
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StateProcessingRule'
+    put:
+      tags:
+      - Event processing - State processing
+      summary: Update a StateProcessingRule
+      description: 'State processing service aims at detecting changes in ''device state'' computed from data messages. A state can represent any result computed from Live Objects data messages : geo-zone (''paris-area'', ''london-area'', ..), temperature status (''hot'', ''cold'', ..), availability status (''ok'' , ''ko''). Each state is identified by a key retrieved from the user-defined json-path in the data message. stateKeyPath examples : ''streamId'', ''metadata.source''...<br/><br/>Usage of this API will be reported in your access log under ''alarming'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      operationId: updateStateProcessingRule
+      parameters:
+      - name: stateProcessingRuleId
+        in: path
+        description: id of the StateProcessingRule to update
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StateProcessingRule'
+        required: true
+      responses:
+        '204':
+          description: The StateProcessingRule has been updated
+    delete:
+      tags:
+      - Event processing - State processing
+      summary: Delete a StateProcessingRule
+      description: 'State processing service aims at detecting changes in ''device state'' computed from data messages. A state can represent any result computed from Live Objects data messages : geo-zone (''paris-area'', ''london-area'', ..), temperature status (''hot'', ''cold'', ..), availability status (''ok'' , ''ko''). Each state is identified by a key retrieved from the user-defined json-path in the data message. stateKeyPath examples : ''streamId'', ''metadata.source''...<br/><br/>Usage of this API will be reported in your access log under ''alarming'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      operationId: deleteStateProcessingRule
+      parameters:
+      - name: stateProcessingRuleId
+        in: path
+        description: id of the StateProcessingRule to delete
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: StateProcessingRule has been deleted
+  /api/v0/eventprocessing/stateprocessing-rule:
+    get:
+      tags:
+      - Event processing - State processing
+      summary: Retrieve the list of all the StateProcessingRules or get a StateProcessingRule by its name
+      description: 'State processing service aims at detecting changes in ''device state'' computed from data messages. A state can represent any result computed from Live Objects data messages : geo-zone (''paris-area'', ''london-area'', ..), temperature status (''hot'', ''cold'', ..), availability status (''ok'' , ''ko''). Each state is identified by a key retrieved from the user-defined json-path in the data message. stateKeyPath examples : ''streamId'', ''metadata.source''...<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: listStateProcessingRules
+      parameters:
+      - name: name
+        in: query
+        description: name of the StateProcessingRules to retrieve
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: list of StateProcessingRules
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StateProcessingRule'
+    post:
+      tags:
+      - Event processing - State processing
+      summary: Create a StateProcessingRule
+      description: 'State processing service aims at detecting changes in ''device state'' computed from data messages. A state can represent any result computed from Live Objects data messages : geo-zone (''paris-area'', ''london-area'', ..), temperature status (''hot'', ''cold'', ..), availability status (''ok'' , ''ko''). Each state is identified by a key retrieved from the user-defined json-path in the data message. stateKeyPath examples : ''streamId'', ''metadata.source''... Total number of StateProcessingRule is limited. Contact the commercial team or see developer guide to get more information.<br/><br/>Usage of this API will be reported in your access log under ''alarming'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      operationId: createStateProcessingRule
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StateProcessingRule'
+        required: true
+      responses:
+        '201':
+          description: StateProcessingRule stored
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StateProcessingRule'
+  /api/v0/eventprocessing/stateprocessing-rule/test:
+    post:
+      tags:
+      - Event processing - State processing
+      summary: test a  State Processing function
+      description: 'State processing service aims at detecting changes in ''device state'' computed from data messages. A state can represent any result computed from Live Objects data messages : geo-zone (''paris-area'', ''london-area'', ..), temperature status (''hot'', ''cold'', ..), availability status (''ok'' , ''ko''). Each state is identified by a key retrieved from the user-defined json-path in the data message. stateKeyPath examples : ''streamId'', ''metadata.source''...<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: testStateProcessingRule
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StateProcessingFunctionTest'
+        required: true
+      responses:
+        '200':
+          description: State Processing function result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StateProcessingFunctionTestResult'
+components:
+  schemas:
+    StateProcessingRule:
+      type: object
+      description: StateProcessingRule to add
+      properties:
+        id:
+          type: string
+          description: id of the StateProcessingRule. Should be null when used for POST, and set for PUT.
+        name:
+          type: string
+          description: name of the StateProcessingRule. Must be unique.
+        enabled:
+          type: boolean
+          description: activate or not the StateProcessingRule. Default is false.
+        stateFunction:
+          description: 'the JsonLogic (http://jsonlogic.com/) state function. This is the core of the state processing logic. There are additional operators : ''currentstate'' to retrieve the current state value, ''ctx'' to retrieve values stored in Event Processing Context, ''distance'' and ''inside'' for geographic operators. This function takes as input a data message and computes a state associated whith the state key. It can return any primitive value : String, Number, Boolean. e.g. ''{"if":[{"<":[{"var":"value.temp"},0]},"cold",{"<=":[{"var":"value.temp"},100]},"normal","hot"]}'''
+        filterPredicate:
+          description: 'the JsonLogic (http://jsonlogic.com/) filter predicate applied before state function : if it does match, the stateFunction is applied, else it is not. If no filter predicate is specified, state function is applied to every data message. e.g. ''{"in":[{"var":"metadata.connector"},["mqtt","lwm2m"]]}'''
+        stateKeyPath:
+          type: string
+          description: the json path applied on dataMessage used to compute the stateKey. The state comparison is then restricted to dataMessages sharing the same stateKeyPath. e.g. 'streamId', 'metadata.source', 'metadata.group.id'
+      required:
+      - name
+      - stateFunction
+    StateProcessingFunctionTest:
+      type: object
+      description: State Processing function test request
+      properties:
+        data:
+          $ref: '#/components/schemas/NewData'
+          description: data to test the stateProcessingFunction with
+        stateProcessingFunction:
+          description: 'the JsonLogic (http://jsonlogic.com/) state function. This is the core of the state processing logic. This function takes as input a data message and computes a state associated whith the state key. It can return any primitive value : String, Number, Boolean. e.g. ''{"if":[{"<":[{"var":"value.temp"},0]},"cold",{"<=":[{"var":"value.temp"},100]},"normal","hot"]}'''
+        currentState:
+          description: simulate a current state, it can be used by the state function
+      required:
+      - data
+      - stateProcessingFunction
+    StateProcessingFunctionTestResult:
+      type: object
+      properties:
+        stateFunctionValid:
+          type: boolean
+          description: indicates if the state function is valid with jsonLogic syntax
+        dataValid:
+          type: boolean
+          description: indicates if data is valid
+        stateFunctionResult:
+          description: state function result when applied to data
+    Location:
+      type: object
+      description: geographic location
+      properties:
+        lat:
+          type: number
+          format: double
+          description: Latitude value
+          example: 45.000009
+        lon:
+          type: number
+          format: double
+          description: Longitude value
+          example: -30.00001
+        alt:
+          type: number
+          format: double
+          description: Altitude value
+          example: 5.00001
+        accuracy:
+          type: number
+          format: double
+          description: Accuracy value
+          example: 10.0
+        provider:
+          type: string
+          description: Provider of the location
+          example: GPS
+      required:
+      - lat
+      - lon
+    NewData:
+      type: object
+      properties:
+        streamId:
+          type: string
+        timestamp:
+          type: string
+        location:
+          $ref: '#/components/schemas/Location'
+        model:
+          type: string
+        value: {}
+        tags:
+          type: array
+          items:
+            type: string
+        extra:
+          type: object
+          additionalProperties:
+            type: string
+        metadata: {}
+        created:
+          type: string
+      required:
+      - streamId
+      - timestamp
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''

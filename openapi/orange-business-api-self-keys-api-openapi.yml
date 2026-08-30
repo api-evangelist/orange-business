@@ -1,0 +1,265 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide Api self keys API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: Api self keys
+  description: API self key management
+paths:
+  /api/v0/apiKeys/current_key:
+    get:
+      tags:
+      - Api self keys
+      summary: Get API key information from current authentification
+      description: Useful to get information about the API key you are using, like current roles.<br/><br/>No specific role on API key required.
+      operationId: getApiKeyFromAuthentication
+      responses:
+        '200':
+          description: The ApiKey
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiKey'
+        '400':
+          description: An ErrorMessage
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: Unknown
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+components:
+  schemas:
+    ScopeApplication:
+      type: object
+      properties:
+        fifos:
+          type: array
+          description: List of allowed FIFOs to publish or subscribe. Expected array of string (max 100 elements, value max 255 characters)
+          example:
+          - default
+          - supplierA
+          items:
+            type: string
+          uniqueItems: true
+    WebErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+      required:
+      - code
+      - id
+      - message
+    ApiKey:
+      type: object
+      properties:
+        id:
+          type: string
+          description: API key unique identifier, randomly generated at creation
+          example: 52FFCAFEDECAFFFFFFFFFFF
+        parentId:
+          type: string
+          description: identifier of the parent API key, can be null if API key is a master API key
+          example: 57FFFFFFFFFFFFFFFFFFFFFF
+        tenantId:
+          type: string
+          description: identifier of tenant account this API key belongs to
+          example: 57FFFFFFFFFFFFFFFFFFFFFF
+        userId:
+          type: string
+          description: identifier of the user account this API key belongs to (or null if not a user session API key)
+          example: 57FFFFFFFFFFFFFFFFFFFFFF
+        value:
+          type: string
+          description: API key value (= the secret!)
+          example: e45ffc0d97c64cd6b959436f9200d5d1
+        nonce:
+          type: string
+          description: Nonce
+          example: 875fd664f97540f0ad9ec2f889a40ce9
+        creationTs:
+          type: integer
+          format: int64
+          description: Date/time of creation (in ms)
+          example: 1473078982518
+        from:
+          type: integer
+          format: int64
+          description: Date/time of start of validity (in ms)
+          example: 1473078900000
+        to:
+          type: integer
+          format: int64
+          description: ' Date/time of end of validity (in ms)'
+          example: 1475224200000
+        lastActivity:
+          type: integer
+          format: int64
+          description: Date/time of last activity (in ms)
+          example: 1473078982518
+        sessionTTL:
+          type: integer
+          format: int64
+          description: Duration of validity since the last activity (in ms)
+          example: 144410
+        label:
+          type: string
+          description: Title of the key
+          example: My Api Key Name
+        description:
+          type: string
+          description: Short description of the key
+          example: My description of Api Key target
+        active:
+          type: boolean
+          description: Switch to activate/deactivate the API Key
+          example: true
+        rateLimit:
+          $ref: '#/components/schemas/RateLimit'
+        roles:
+          type: array
+          description: list of API key associated roles.
+          example:
+          - USER_R
+          - APIKEY_R
+          items:
+            type: string
+          uniqueItems: true
+        scope:
+          $ref: '#/components/schemas/ScopeApplication'
+          description: List of scope to apply
+        debugModeEndTs:
+          type: integer
+          format: int64
+          description: Timestamp indicating the end date for the debug mode
+          example: 1475224200000
+        clientCert:
+          $ref: '#/components/schemas/ClientCertificatesConfiguration'
+        sessionKey:
+          type: boolean
+        masterKey:
+          type: boolean
+        expired:
+          type: boolean
+      required:
+      - roles
+    RateLimit:
+      type: object
+      properties:
+        mqttBridgeWindowSize:
+          type: integer
+          format: int64
+          description: 'mqtt bridge rate limit: window size in seconds'
+          example: 1
+        mqttBridgeMaxMessages:
+          type: integer
+          format: int64
+          description: 'mqtt bridge rate limit: maximum messages allowed per time window'
+          example: 1
+        mqttDeviceWindowSize:
+          type: integer
+          format: int64
+          description: 'mqtt device rate limit: window size in seconds'
+          example: 1
+        mqttDeviceMaxMessages:
+          type: integer
+          format: int64
+          description: 'mqtt device rate limit: maximum messages allowed per time window'
+          example: 1
+        httpWindowSize:
+          type: integer
+          format: int64
+          description: 'http rate limit: window size in seconds'
+          example: 1
+        httpMaxCalls:
+          type: integer
+          format: int64
+          description: 'http rate limit: maximum api calls allowed per time window'
+          example: 1
+    ClientCertificatesConfiguration:
+      type: object
+      properties:
+        required:
+          type: boolean
+          description: Indicates if the client must use TLS client cert authentication
+          example: true
+        caCertIds:
+          type: array
+          description: List of Ca Certificate Ids used to authenticate devices. Expected array of string (max 100 elements, value max 255 characters)
+          example:
+          - 5b057d0fb8605a5e80758e42
+          items:
+            type: string
+      required:
+      - required
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''

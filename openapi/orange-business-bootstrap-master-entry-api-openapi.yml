@@ -1,0 +1,332 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide Bootstrap Master Entry API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: Bootstrap Master Entry
+  description: Manage LwM2M bootstrap master entries
+paths:
+  /api/v1/bootstrap/lwm2m/masterEntries/{masterEntryId}/name:
+    put:
+      tags:
+      - Bootstrap Master Entry
+      summary: Set the name of a bootstrap master entry.
+      description: 'Usage of this API will be reported in your access log under ''bootstrap'' category.<br/><br/>Restricted to API keys with at least one of the following roles: BOOTSTRAP_W.'
+      operationId: setMasterEntryName
+      parameters:
+      - name: masterEntryId
+        in: path
+        description: the id of the master entry to update
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+            examples:
+              name:
+                description: name
+                value: My Bootstrap Master Entry
+      responses:
+        '204':
+          description: No Content
+  /api/v1/bootstrap/lwm2m/masterEntries/{masterEntryId}/definition/bootstrapConfigId:
+    put:
+      tags:
+      - Bootstrap Master Entry
+      summary: Set the bootstrapConfigId field of a bootstrap master entry.
+      description: 'Usage of this API will be reported in your access log under ''bootstrap'' category.<br/><br/>Restricted to API keys with at least one of the following roles: BOOTSTRAP_W.'
+      operationId: setMasterEntryBootstrapConfigId
+      parameters:
+      - name: masterEntryId
+        in: path
+        description: the id of the master entry to update
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+            examples:
+              bootstrapConfigId:
+                description: bootstrapConfigId
+                value: 63c17e68f98ac770eac303fb
+      responses:
+        '204':
+          description: No Content
+  /api/v1/bootstrap/lwm2m/masterEntries:
+    get:
+      tags:
+      - Bootstrap Master Entry
+      summary: List LwM2M bootstrap master entries.
+      description: 'Restricted to API keys with at least one of the following roles: BOOTSTRAP_R.'
+      operationId: listBootstrapMasterEntries
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BootstrapMasterEntrySummary'
+    post:
+      tags:
+      - Bootstrap Master Entry
+      summary: Create a LwM2M bootstrap master entry.
+      description: 'Usage of this API will be reported in your access log under ''bootstrap'' category.<br/><br/>Restricted to API keys with at least one of the following roles: BOOTSTRAP_W.'
+      operationId: createBootstrapMasterEntry
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BootstrapMasterEntryRequest'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BootstrapMasterEntry'
+  /api/v1/bootstrap/lwm2m/masterEntries/{masterEntryId}:
+    get:
+      tags:
+      - Bootstrap Master Entry
+      summary: Get a LwM2M bootstrap master entry from its id.
+      description: 'Restricted to API keys with at least one of the following roles: BOOTSTRAP_R.'
+      operationId: getBootstrapMasterEntry
+      parameters:
+      - name: masterEntryId
+        in: path
+        description: the master entry id
+        required: true
+        schema:
+          type: string
+      - name: showSecuritySecrets
+        in: query
+        description: whether or not to show the secrets
+        required: false
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BootstrapMasterEntry'
+    delete:
+      tags:
+      - Bootstrap Master Entry
+      summary: Delete a LwM2M bootstrap master entry from its id.
+      description: 'Usage of this API will be reported in your access log under ''bootstrap'' category.<br/><br/>Restricted to API keys with at least one of the following roles: BOOTSTRAP_W.'
+      operationId: deleteBootstrapMasterEntry
+      parameters:
+      - name: masterEntryId
+        in: path
+        description: the master entry to delete
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+components:
+  schemas:
+    BootstrapMasterEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id of the the bootstrap master entry
+          example: mQeAYP
+        name:
+          type: string
+          description: User-defined name of the bootstrap master entry
+          example: My bootstrap master entry
+        security:
+          $ref: '#/components/schemas/BootstrapMasterEntrySecurityInfo'
+          description: Security info of the bootstrap master entry
+        definition:
+          $ref: '#/components/schemas/BootstrapMasterEntryDefinition'
+          description: The bootstrap master entry parameters
+        activity:
+          $ref: '#/components/schemas/BootstrapMasterEntryActivity'
+          description: Information about past Bootstrap sessions
+        created:
+          type: string
+          format: date-time
+          description: Date on which the bootstrap master entry was created
+          example: '2022-10-21T10:30:58Z'
+        updated:
+          type: string
+          format: date-time
+          description: Date on which the bootstrap master entry was last updated
+          example: '2022-10-25T17:45:02Z'
+      required:
+      - created
+      - definition
+      - id
+      - name
+      - security
+      - updated
+    BootstrapMasterEntryDefinition:
+      type: object
+      properties:
+        bootstrapConfigId:
+          type: string
+          description: The identifier of the bootstrap config to use (must be defined for the Bootstrap to work).
+          example: 63c17e68f98ac770eac303fb
+    BootstrapMasterEntrySecurityInfo:
+      type: object
+      properties:
+        mode:
+          type: string
+          description: The security mode used to authenticate to the LwM2M Bootstrap server
+          enum:
+          - PSK
+          example: PSK
+        pskInfo:
+          $ref: '#/components/schemas/BootstrapMasterEntryPreSharedKeyInfo'
+          description: The master Pre-Shared Key (PSK) information
+      required:
+      - mode
+    BootstrapMasterEntryRequest:
+      type: object
+      description: Bootstrap master entry creation request
+      properties:
+        name:
+          type: string
+          description: User-defined name of the bootstrap master entry
+          example: My bootstrap master entry
+          maxLength: 255
+          minLength: 0
+        security:
+          $ref: '#/components/schemas/BootstrapMasterEntryRequestSecurityInfo'
+          description: Security info of the bootstrap master entry
+        definition:
+          $ref: '#/components/schemas/BootstrapMasterEntryDefinition'
+      required:
+      - name
+      - security
+    BootstrapMasterEntryActivity:
+      type: object
+      properties:
+        bootstrapRequestCount:
+          type: integer
+          format: int32
+          description: The number of times a Bootstrap sequence has been initiated (a Bootstrap-Request has been received by the LwM2M server) using this master entry.
+          example: 1
+        lastBootstrapRequestDate:
+          type: string
+          format: date-time
+          description: The last time a Bootstrap sequence was initiated (a Bootstrap-Request has been received by the LwM2M server) using this master entry.
+          example: '2022-10-25T18:47:06Z'
+        bootstrapFinishCount:
+          type: integer
+          format: int32
+          description: The number of times a Bootstrap sequence has been successfully completed (a Bootstrap-Finish has been sent by the LwM2M server) using this master entry.
+          example: 1
+        lastBootstrapFinishDate:
+          type: string
+          format: date-time
+          description: The last time a Bootstrap sequence has been successfully completed (a Bootstrap-Finish has been sent by the LwM2M server) using this master entry.
+          example: '2022-10-25T18:49:10Z'
+      required:
+      - bootstrapFinishCount
+      - bootstrapRequestCount
+    BootstrapMasterEntryRequestSecurityInfo:
+      type: object
+      properties:
+        mode:
+          type: string
+          description: The security mode used to authenticate to the LwM2M Bootstrap server
+          enum:
+          - PSK
+          example: PSK
+      required:
+      - mode
+    BootstrapMasterEntryPreSharedKeyInfo:
+      type: object
+      properties:
+        secret:
+          type: string
+          description: The PSK master secret. Encoded in hexadecimal.
+          example: 0123456789ABCDEF0123456789ABCDEF
+      required:
+      - secret
+    BootstrapMasterEntrySummary:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id of the the bootstrap master entry
+          example: mQeAYP
+        name:
+          type: string
+          description: User-defined name of the bootstrap master entry
+          example: My bootstrap master entry
+        definition:
+          $ref: '#/components/schemas/BootstrapMasterEntryDefinition'
+          description: The bootstrap master entry parameters
+        activity:
+          $ref: '#/components/schemas/BootstrapMasterEntryActivity'
+          description: Information about past Bootstrap sessions
+      required:
+      - definition
+      - id
+      - name
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''

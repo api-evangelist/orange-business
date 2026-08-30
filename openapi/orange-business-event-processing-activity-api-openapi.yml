@@ -1,0 +1,344 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide Event processing - Activity API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: Event processing - Activity
+  description: ActivityRule management
+paths:
+  /api/v0/eventprocessing/activity/states/mute:
+    put:
+      tags:
+      - Event processing - Activity
+      summary: Mute or reset nextAlarm of ActivityStates targeted by a specific deviceId/activityRuleId
+      description: 'Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      operationId: muteActivityRule
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActivityStateMuteRequest'
+        required: true
+      responses:
+        '200':
+          description: ActivityState has been updated, return the number of targeted states
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+  /api/v0/eventprocessing/activity/rules/{activityRuleId}:
+    get:
+      tags:
+      - Event processing - Activity
+      summary: Retrieve an ActivityRule
+      description: 'An ActivityRule will monitor device activity and trigger events when they become silent after certain amount a time.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: getActivityRule
+      parameters:
+      - name: activityRuleId
+        in: path
+        description: id of the ActivityRule to retrieve
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: ActivityRule
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityRule'
+    put:
+      tags:
+      - Event processing - Activity
+      summary: Update an ActivityRule
+      description: 'An ActivityRule will monitor device activity and trigger events when they become silent after certain amount a time.<br/><br/>Usage of this API will be reported in your access log under ''alarming'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      operationId: updateActivityRule
+      parameters:
+      - name: activityRuleId
+        in: path
+        description: id of the ActivityRule to update
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActivityRule'
+        required: true
+      responses:
+        '204':
+          description: The ActivityRule has been updated
+    delete:
+      tags:
+      - Event processing - Activity
+      summary: Delete an ActivityRule
+      description: 'An ActivityRule will monitor device activity and trigger events when they become silent after certain amount a time.<br/><br/>Usage of this API will be reported in your access log under ''alarming'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      operationId: deleteActivityRule
+      parameters:
+      - name: activityRuleId
+        in: path
+        description: id of the ActivityRule to delete
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ActivityRule has been deleted
+  /api/v0/eventprocessing/activity/rules:
+    get:
+      tags:
+      - Event processing - Activity
+      summary: Retrieve the list of all the ActivityRules or get an ActivityRule by its name
+      description: 'An ActivityRule will monitor device activity and trigger events when they become silent after certain amount a time.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: listActivityRules
+      parameters:
+      - name: name
+        in: query
+        description: name of the ActivityRule to retrieve
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: list of ActivityRules
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ActivityRule'
+    post:
+      tags:
+      - Event processing - Activity
+      summary: Create an ActivityRule
+      description: 'An ActivityRule will monitor device activity and trigger events when they become silent after certain amount a time. These activity events can then be forwarded to FIFO or HttpPush with ActionPolicy rules. Total number of ActivityRules is limited.<br/><br/>Usage of this API will be reported in your access log under ''alarming'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      operationId: createActivityRule
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActivityRule'
+        required: true
+      responses:
+        '201':
+          description: ActivityRule created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActivityRule'
+  /api/v0/eventprocessing/activity/states:
+    get:
+      tags:
+      - Event processing - Activity
+      summary: Retrieve the list of all the ActivityStates linked to a specific device and/or rule
+      description: 'You can retrieve current state of a the device, as well as its last activity timestamp and next alarm timestamp.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: getDeviceActivityStates
+      parameters:
+      - name: deviceId
+        in: query
+        description: id of the device targeted by the states to retrieve. At least one of deviceId/activityRuleId must be set.
+        required: false
+        schema:
+          type: string
+      - name: activityRuleId
+        in: query
+        description: id of the rule targeted by the states to retrieve. At least one of deviceId/activityRuleId must be set.
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: when listing by activityRuleId, thousands of devices could be targeted. Indicates the number of ActivityStates to return (one per targeted device). Default and maximum value is 1000. To get next results use bookmarkDeviceId field.
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: bookmarkDeviceId
+        in: query
+        description: '''bookmark'' of previous listing by activityRuleId request : this is the last deviceId retrieved in previous request. If null, first ActivityStates results will be returned.'
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: list of ActivityStates
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ActivityState'
+components:
+  schemas:
+    GroupPath:
+      type: object
+      description: defines targeted group path
+      properties:
+        path:
+          type: string
+          description: path of the group
+          example: /europe/france
+        includeSubPath:
+          type: boolean
+          description: 'if true, all sub-paths will be targeted by this ActivityRule '
+      required:
+      - includeSubPath
+      - path
+    ActivityStateMuteRequest:
+      type: object
+      description: request to mute or reset the nextAlarm of ActivityStates targeting specific deviceId and/or ruleId
+      properties:
+        deviceId:
+          type: string
+          description: id of the targeted device. At least one of deviceId/activityRuleId must be set.
+        activityRuleId:
+          type: string
+          description: id of the targeted activityRule. At least one of deviceId/activityRuleId must be set.
+        nextAlarmOrder:
+          type: string
+          description: 'set the order type : mute or reset (from now) the next alarm'
+          enum:
+          - MUTE
+          - RESET
+      required:
+      - nextAlarmOrder
+    SilentPolicy:
+      type: object
+      properties:
+        duration:
+          type: string
+          description: the duration (ISO 8601) after which the device will be considered as silent if it had no contact with the platform. If less than 10 minutes, this duration will be handled as a 10 minutes delay. A silent event/alarm will be sent after expiration.
+          example: PT6H
+        repeatInterval:
+          type: string
+          description: if the device previously triggered a silent alarm and still had no contact with the platform; duration (ISO 8601) after which a new silent event/alarm will be sent. If less than 10 minutes, this duration will be handled as a 10 minutes delay. If null, no further alarm will be sent until the new active/silent cycle.
+          example: P1DT12H
+      required:
+      - duration
+    Targets:
+      type: object
+      properties:
+        deviceIds:
+          type: array
+          description: List of targeted device ids. This field should not be empty if groupPaths is empty.
+          items:
+            type: string
+        groupPaths:
+          type: array
+          description: list of targeted group paths. This field should not be empty if deviceIds is empty.
+          items:
+            $ref: '#/components/schemas/GroupPath'
+    ActivityRule:
+      type: object
+      description: defines the targets and the triggering behavior to watch for silent devices
+      properties:
+        id:
+          type: string
+          description: id of the ActivityRule. Should be null when used for POST.
+        name:
+          type: string
+          description: user-defined name for the rule, must be unique and not empty.
+        targets:
+          $ref: '#/components/schemas/Targets'
+          description: define the targeted devices of the ActivityRule.
+        silentPolicy:
+          $ref: '#/components/schemas/SilentPolicy'
+          description: defines the 'silent device' triggering behavior
+        tags:
+          type: array
+          description: list of tags that will be set on alarms triggered by this rule. e.g. 'level:HIGH'
+          items:
+            type: string
+        enabled:
+          type: boolean
+          description: activate or not the ActivityRule. Default is false.
+      required:
+      - name
+      - silentPolicy
+      - targets
+    ActivityState:
+      type: object
+      description: defines the current activity state of a specific device and a specific activity rule
+      properties:
+        deviceId:
+          type: string
+          description: id of the targeted device
+        activityRule:
+          $ref: '#/components/schemas/ActivityRule'
+          description: ActivityRule triggering this state
+        nextAlarm:
+          type: string
+          format: date-time
+          description: timestamp (ISO 8601) of the next alarm for this rule if the device remains silent
+        lastActivity:
+          type: string
+          format: date-time
+          description: timestamp (ISO 8601) of the last registered contact of the device
+        state:
+          type: string
+          description: current state of the device
+          enum:
+          - UNKNOWN
+          - SILENT
+          - ACTIVE
+        numberOfAlarmReminders:
+          type: integer
+          format: int32
+          description: number of times a reminder has been sent for the current state
+      required:
+      - activityRule
+      - deviceId
+      - nextAlarm
+      - numberOfAlarmReminders
+      - state
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''

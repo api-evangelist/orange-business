@@ -1,0 +1,402 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide Self User management API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: Self User management
+  description: manage self user
+paths:
+  /api/v0/users/me/portaldata:
+    get:
+      tags:
+      - Self User management
+      summary: Get the portal data of me
+      description: No specific role on API key required.
+      operationId: getUserPortalData
+      responses:
+        '200':
+          description: User portal data
+          content:
+            application/json:
+              schema:
+                type: string
+        '400':
+          description: An ErrorMessage
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: Unknown
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+    put:
+      tags:
+      - Self User management
+      summary: Update the portal data of me
+      description: No specific role on API key required.
+      operationId: updateUserPortalData
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              description: body of my user portal data Update
+        required: true
+      responses:
+        '204':
+          description: No content
+        '400':
+          description: An ErrorMessage
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: Unknown
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '413':
+          description: Request Entity Too Large
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+  /api/v0/users/{userId}/password:
+    post:
+      tags:
+      - Self User management
+      summary: Update user password
+      description: Usage of this API will be reported in your access log under 'user' category.<br/><br/>No specific role on API key required.
+      operationId: updateUserPassword
+      parameters:
+      - name: userId
+        in: path
+        description: the User Identifier. Expected identifier (max 24 characters)
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserPasswordInfo'
+        required: true
+      responses:
+        '200':
+          description: Updating of the password is done, nothing in the response
+        '400':
+          description: An ErrorMessage
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: Unknown
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+  /api/v0/users/activateTrial:
+    post:
+      tags:
+      - Self User management
+      summary: Activate discover account
+      description: Usage of this API will be reported in your access log under 'user' category.<br/><br/>No specific role on API key required.
+      operationId: updateUserPasswordWithTokenWithoutCaptcha
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DiscoverActivationDefinition'
+        required: true
+      responses:
+        '200':
+          description: Updating of the password is done, nothing in the response
+        '400':
+          description: An ErrorMessage
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: Unknown
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+  /api/v0/users/me:
+    get:
+      tags:
+      - Self User management
+      summary: Get a "myself" user data of Tenant
+      description: No specific role on API key required.
+      operationId: getCurrentUser
+      responses:
+        '200':
+          description: The User data are available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: An ErrorMessage
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: Unknown
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+components:
+  schemas:
+    WebErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+      required:
+      - code
+      - id
+      - message
+    User:
+      type: object
+      description: body of user data
+      properties:
+        id:
+          type: string
+          description: identifier of user
+          example: 57FFFFFFFFFFFFFFFFFFFFFF
+        login:
+          type: string
+          description: user login
+          example: MyLoginName
+        externalIdentity:
+          $ref: '#/components/schemas/ExternalIdentity'
+        email:
+          type: string
+          description: user email
+          example: me.name@mycompagny.mycom
+        tenantId:
+          type: string
+          description: identifier of tenant account this user will belong to
+          example: 51FFFFFFFFFFFFFFFFFFFFFF
+        roles:
+          type: array
+          description: list of user associated roles.
+          example:
+          - USER_R
+          - APIKEY_R
+          items:
+            type: string
+          uniqueItems: true
+        state:
+          type: string
+          description: 'user state : disabled, enabled or suspended'
+          example: enabled
+        lastAuthentication:
+          type: integer
+          format: int64
+          description: user last authentication timestamp in ms
+          example: 1475224200000
+        lastResetPassword:
+          type: integer
+          format: int64
+          description: user last password renewal operation timestamp in ms
+          example: 1475224200000
+        passwordExpiration:
+          type: integer
+          format: int64
+          description: user password expiration timestamp in ms
+          example: 1475224200000
+        language:
+          type: string
+          description: the user language, in ISO 639-1 format
+          example: en
+        portalData:
+          description: user portal data
+        mainUser:
+          type: boolean
+          description: user is the tenant's main user
+      required:
+      - email
+      - id
+      - login
+      - roles
+      - state
+      - tenantId
+    DiscoverActivationDefinition:
+      type: object
+      description: Trial activation definition
+      properties:
+        password:
+          type: string
+          description: Main user's password
+          example: MynewPWD
+        tokenId:
+          type: string
+          description: Token provided by email
+        company:
+          type: string
+          description: Main user's company
+        login:
+          type: string
+          description: Main user's email
+      required:
+      - login
+      - password
+      - tokenId
+    ExternalIdentity:
+      type: object
+      description: user's external identity
+      properties:
+        provider:
+          type: string
+          description: the external identity provider. Expected string (max 255 characters)
+          example: SIU
+        id:
+          type: string
+          description: the external identity identifier. Expected string (max 255 characters)
+          example: 44b738a0-b280-11e7-abc4-cec278b6b50a
+        login:
+          type: string
+          description: the external identity login. Expected string (max 255 characters)
+          example: bagginsf
+      required:
+      - provider
+    UpdateUserPasswordInfo:
+      type: object
+      description: body of user update password
+      properties:
+        oldPassword:
+          type: string
+          description: old password string
+          example: MyCurrentPWD
+        newPassword:
+          type: string
+          description: new password string
+          example: MyNewPWD
+        captcha:
+          type: string
+          description: security captcha got from user
+        captchaToken:
+          type: string
+          description: captcha token, that will be checked for authorizing the update
+        tokenId:
+          type: string
+          description: token identifier
+      required:
+      - captcha
+      - captchaToken
+      - newPassword
+      - oldPassword
+      - tokenId
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''

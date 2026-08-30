@@ -1,0 +1,138 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide Decoders API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: Decoders
+  description: list all decoders for a tenant
+paths:
+  /api/v0/decoders:
+    get:
+      tags:
+      - Decoders
+      summary: Retrieve the list of all your private decoders (binary, csv, js)
+      description: 'A data decoder allows you to decode your data message payload into a json format. When an encoding is defined in the device interface or in the data message, the decoder will be be applied and the data message will be updated accordingly. This list contains only common fields of all type of decoders. To get a list with decoder type''s specific fields, use the dedicated API for this type of decoder.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: listAllDecodersV0
+      parameters:
+      - name: tags
+        in: query
+        description: filter on decoders containing at least one of these tags
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: list all decoders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PayloadDescription'
+components:
+  schemas:
+    PayloadDescription:
+      type: object
+      properties:
+        id:
+          type: string
+          description: id of the decoder. Should be null when used for POST. Required for update.
+        encoding:
+          type: string
+          description: unique decoder name. Will be used to trigger the decoding function. To be applied, it must match exactly the data message 'metadata.encoding' field or the 'encoding' property of the device's interface.
+        enabled:
+          type: boolean
+          description: decoder activation. Default is false. If disabled, the decoder will not be applied on the data messages.
+        model:
+          type: string
+          description: if empty, the decoded data will use the value of 'model' field from encoded data. If set, this value will be used to override 'model' field in decoded data.
+        type:
+          type: string
+          description: 'decoder type : csv, binary, javascript, javascript-split'
+          readOnly: true
+        template:
+          type: string
+          description: 'decoding result optional template. Use mustache-like format. Available mustache functions : math, toUpperCase, toLowerCase. e.g. ''{{#math}}{{temperature}} * 1.8 + 32{{/math}}''The template will be applied on the decoded result only if the decoder is enabled and the decoding is successful. If not set, the decoded result will be used as is.'
+        mathEvalEnabled:
+          type: boolean
+          description: Applying, or not, math evaluation on templated decoded result. Default is true
+        tags:
+          type: array
+          description: tags used for description and filtering
+          items:
+            type: string
+        metadata:
+          $ref: '#/components/schemas/PayloadDescriptionMetadata'
+          description: decoder metadata. Read-only, set by the platform.
+          readOnly: true
+        updated:
+          type: string
+          description: date of the last update. ISO 8601 date time. Read-only, set by the platform.
+          example: '2019-05-15T07:55:55.555Z'
+          readOnly: true
+      required:
+      - enabled
+      - encoding
+    PayloadDescriptionMetadata:
+      type: object
+      properties:
+        certified:
+          type: boolean
+          description: the decoder is certified for the specified encoding. Only a public decoder can be certified. The default value is false.
+          readOnly: true
+        certifiedSince:
+          type: string
+          description: date since when the decoder is certified. ISO 8601 date time.
+          example: '2019-05-15T07:55:55.555Z'
+          readOnly: true
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''

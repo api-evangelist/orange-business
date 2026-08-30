@@ -1,0 +1,302 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide Data management custom pipelines API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: Data management custom pipelines
+  description: APIs to manage dataMessage custom pipelines
+paths:
+  /api/v0/pipelines/{pipelineId}:
+    get:
+      tags:
+      - Data management custom pipelines
+      summary: Retrieve a DataMessage pipeline
+      description: 'DataMessage pipelines can transform your data by calling external services in the processing flow.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: getPipeline
+      parameters:
+      - name: pipelineId
+        in: path
+        description: id of the pipeline to retrieve
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      - name: showSensitiveInformation
+        in: query
+        description: whether or not to show sensitive information, such as headers. Default value is false.
+        required: false
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: DataMessage pipeline
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pipeline'
+    put:
+      tags:
+      - Data management custom pipelines
+      summary: Update a DataMessage pipeline
+      description: 'DataMessage pipelines can transform your data by calling external services in the processing flow.<br/><br/>Usage of this API will be reported in your access log under ''data_pipeline'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      operationId: updatePipeline
+      parameters:
+      - name: pipelineId
+        in: path
+        description: id of the pipeline to update
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pipeline'
+        required: true
+      responses:
+        '200':
+          description: DataMessage pipeline updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pipeline'
+    delete:
+      tags:
+      - Data management custom pipelines
+      summary: Delete a DataMessage pipeline
+      description: 'DataMessage pipelines can transform your data by calling external services in the processing flow.<br/><br/>Usage of this API will be reported in your access log under ''data_pipeline'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      operationId: deletePipeline
+      parameters:
+      - name: pipelineId
+        in: path
+        description: id of the pipeline to delete
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: DataMessage pipeline deleted
+  /api/v0/pipelines:
+    get:
+      tags:
+      - Data management custom pipelines
+      summary: Retrieve the list of DataMessage pipelines, ordered by priorityLevel
+      description: 'DataMessage pipelines can transform your data by calling external services in the processing flow.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: listPipelines
+      responses:
+        '200':
+          description: list of DataMessage pipelines
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pipeline'
+    post:
+      tags:
+      - Data management custom pipelines
+      summary: Create a DataMessage pipeline
+      description: 'DataMessage pipelines can transform your data by calling external services in the processing flow.<br/><br/>Usage of this API will be reported in your access log under ''data_pipeline'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      operationId: postPipeline
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Pipeline'
+        required: true
+      responses:
+        '201':
+          description: DataMessage pipeline created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pipeline'
+components:
+  schemas:
+    ExternalTransformationStepDescription:
+      allOf:
+      - $ref: '#/components/schemas/PipelineStepDescription'
+      - type: object
+        properties:
+          url:
+            type: string
+            description: url of the external transformation service to call. (only the ports 80, 443, 8080, 8443 and 9243 are allowed).
+            example: http://lo-data-transformation.appspot.com/enrich
+          headers:
+            type: object
+            additionalProperties:
+              type: array
+              items:
+                type: string
+            description: A map of header to be passed in the http POST headers of the transformation request.
+            example:
+              x-my-header:
+              - account-1234
+          name:
+            type: string
+            description: Name of the step (will be added in the http POST headers of the transformation request).
+            maxLength: 1000
+            minLength: 0
+      required:
+      - url
+    GroupPath:
+      type: object
+      description: defines targeted group path
+      properties:
+        path:
+          type: string
+          description: path of the group
+          example: /europe/france
+        includeSubPath:
+          type: boolean
+          description: 'if true, all sub-paths will be targeted by this ActivityRule '
+      required:
+      - includeSubPath
+      - path
+    Pipeline:
+      type: object
+      description: DataMessage Pipeline definition
+      properties:
+        id:
+          type: string
+          description: id of the pipeline. Should be null when used for POST. Required for update.
+          readOnly: true
+        name:
+          type: string
+          description: 'pipeline name (length limit : 1000).'
+          maxLength: 1000
+          minLength: 1
+        description:
+          type: string
+          description: 'pipeline description (length limit : 2000).'
+          maxLength: 2000
+          minLength: 0
+        priorityLevel:
+          type: integer
+          format: int64
+          description: Pipeline's priority level. Up to 1 pipeline will be applied to a data message. When several pipelines match the input filter, then the priority is given to the pipeline with lowest priorityLevel. If several pipelines match filter and the share the same priorityLevel, then the oldest pipeline is chosen (based on 'created' field).
+        enabled:
+          type: boolean
+          description: pipeline activation. Default is false.
+        filter:
+          $ref: '#/components/schemas/PipelineFilter'
+          description: Define which DataMessage can be processed by this pipeline. A null filter means the pipeline matches all data.
+        steps:
+          type: array
+          anyOf:
+          - $ref: '#/components/schemas/ExternalTransformationStepDescription'
+          description: list of steps of the pipelines. Should contain at least 1 step. For now, only externalTransformation steps are available. ExternalTransformationStep forwards DataMessage on a webhook url that enriched it before it is stored in LiveObjects.
+          example:
+          - type: externalTransformation
+            name: appspot data enricher
+            url: http://lo-data-transformation.appspot.com/enrich
+            headers:
+              x-my-header:
+              - account-1234
+          items:
+            oneOf:
+            - $ref: '#/components/schemas/ExternalTransformationStepDescription'
+          maxItems: 10
+          minItems: 1
+        created:
+          type: string
+          format: date-time
+          description: Pipeline's creation date (ISO-8601). Should be null for post and update action.
+          readOnly: true
+      required:
+      - enabled
+      - name
+      - priorityLevel
+      - steps
+    PipelineFilter:
+      type: object
+      properties:
+        connectors:
+          type: array
+          description: list of filtered connectors. Null or empty to accept all connectors. e.g. lora, sms, mqtt, lwm2m.
+          example:
+          - lora
+          items:
+            type: string
+          uniqueItems: true
+        encodings:
+          type: array
+          description: list of filtered datamessage's encodings. Null or empty to accept all datamessage's encodings
+          items:
+            type: string
+          uniqueItems: true
+        groupPaths:
+          type: array
+          description: list of filtered group paths. Null or empty to accept all group paths
+          items:
+            $ref: '#/components/schemas/GroupPath'
+          uniqueItems: true
+        tags:
+          type: array
+          description: list of groups of tags that should be contained in message tags. There is a match if at least one group of tags is a match. A group of tags is a match if the tags of the message contains all elements of this group.<br>e.g. [["ALERT"]] will match all messages containing tag 'ALERT'.<br>e.g. [["HIGH", "ALERT"],["PROD"]] will match messages with either tag 'PROD' or both tags 'ALERT' and 'HIGH'.
+          example:
+          - - ALERT
+          items:
+            type: array
+            items:
+              type: string
+            uniqueItems: true
+          uniqueItems: true
+    PipelineStepDescription:
+      type: object
+      discriminator:
+        propertyName: type
+      properties:
+        type:
+          type: string
+          enum:
+          - externalTransformation
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''

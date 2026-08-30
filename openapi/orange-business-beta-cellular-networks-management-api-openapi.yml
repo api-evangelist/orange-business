@@ -1,0 +1,556 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide Beta - Cellular networks management API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: Beta - Cellular networks management
+  description: Cellular subscriptions and providers management
+paths:
+  /api/v1/networks/cellular/subscriptions/search:
+    post:
+      tags:
+      - Beta - Cellular networks management
+      summary: Search cellular subscriptions. BETA - please note that the API is currently in beta state, and therefore still subject to breaking changes.
+      description: "<p>A network subscription identified by a subscriptionId. It is linked to a SIM card\nand contains information such as:</p>\n<ul>\n    <li>The last network interaction</li>\n    <li>The attached device</li>\n    <li>The provider of the subscription</li>\n    <li>The SIM card capabilities and IDs</li>\n</ul>\n<p>If you use the \"deviceId\" search type, Live Objects will look for potential 'imei' or 'msisdn' in your device inventory based on the following fields (in order) :</p><ul><li>\"imei\" property (Cf. properties in device inventory)</li><li>\"msisdn\" property (Cf. properties in device inventory)</li><li>\"deviceId\" </li><li>\"nodeId\" of your device interfaces for SMS, LwM2M, MQTT or x-connector connectors</li></ul><br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_R."
+      operationId: searchSubscriptions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchSubscriptionsRequest'
+        required: true
+      responses:
+        '200':
+          description: The requested subscriptions list.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SubscriptionResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+  /api/v1/networks/cellular/subscriptions/{subscriptionId}:
+    get:
+      tags:
+      - Beta - Cellular networks management
+      summary: Get a cellular subscription. BETA - please note that the API is currently in beta state, and therefore still subject to breaking changes.
+      description: "<p>A network subscription identified by a subscriptionId. It is linked to a SIM card\nand contains information such as:</p>\n<ul>\n    <li>The last network interaction</li>\n    <li>The attached device</li>\n    <li>The provider of the subscription</li>\n    <li>The SIM card capabilities and IDs</li>\n</ul>\n<br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_R."
+      operationId: getSubscription
+      parameters:
+      - name: subscriptionId
+        in: path
+        description: 'identifier of subscription ex: "06xxxxxxx". Expected identifier (max 24 characters)'
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The requested subscription.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSubscriptionResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: the subscription was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+  /api/v1/networks/cellular/subscriptions/{subscriptionId}/traffic/history:
+    get:
+      tags:
+      - Beta - Cellular networks management
+      summary: Get the aggregated traffic history for a cellular subscription. BETA - please note that the API is currently in beta state, and therefore still subject to breaking changes.
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: getTrafficHistory
+      parameters:
+      - name: subscriptionId
+        in: path
+        description: 'identifier of subscription ex: "06xxxxxxx". Expected identifier (max 24 characters)'
+        required: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Limit the response to the last n elements (0 < n < 1000)
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: interval
+        in: query
+        description: Aggregation interval (hour, day or week)
+        required: false
+        schema:
+          type: string
+          default: 1d
+          enum:
+          - 1h
+          - 1d
+          - 1w
+      - name: timeZone
+        in: query
+        description: 'time zone as TZ database name (ex : Europe/Paris) or UTC offset  (ex : -02:00 or %2B02:00)'
+        required: false
+        schema:
+          type: string
+          default: UTC
+      responses:
+        '200':
+          description: The requested traffic history.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TrafficData'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: The subscription was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+  /api/v1/networks/cellular/subscriptions/{subscriptionId}/location:
+    get:
+      tags:
+      - Beta - Cellular networks management
+      summary: Get the last known location of a cellular subscription. BETA - please note that the API is currently in beta state, and therefore still subject to breaking changes.
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: getLocation
+      parameters:
+      - name: subscriptionId
+        in: path
+        description: 'identifier of subscription ex: "06xxxxxxx". Expected identifier (max 24 characters)'
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The requested location.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetLocationResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: the location was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+  /api/v1/networks/cellular/providers:
+    get:
+      tags:
+      - Beta - Cellular networks management
+      summary: List cellular network providers. BETA - please note that the API is currently in beta state, and therefore still subject to breaking changes.
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: listCellularProviders
+      responses:
+        '200':
+          description: The providers list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProviderResponse'
+components:
+  schemas:
+    Provider:
+      type: object
+      description: Customer Cellular-Network provider
+      properties:
+        type:
+          type: string
+          description: 'Provider type. Allowed values: [malima] (case insensitive)'
+          example: malima
+        configuration:
+          $ref: '#/components/schemas/ProviderConfiguration'
+          description: Provider customer account configuration
+          example:
+            cen: cen111
+            instanceId: OFR
+        accountName:
+          type: string
+          description: Provider account name
+          example: MyAccountName
+        link:
+          type: string
+          description: link to access portal M2M
+          example: https://m2mexpress.fr.orange-business.com/mac/customer/fleet/details.do?subId=06361404&category=SIM
+    WebErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+      required:
+      - code
+      - id
+      - message
+    ProviderResponse:
+      type: object
+      description: Customer Cellular-Network provider
+      properties:
+        id:
+          type: string
+          description: Provider unique identifier
+          example: 601bb1565e92fc53fce1c92d
+        type:
+          type: string
+          description: 'Provider type. Allowed values: [malima] (case insensitive)'
+          example: malima
+        configuration:
+          $ref: '#/components/schemas/ProviderConfiguration'
+          description: Provider customer account configuration
+          example:
+            cen: cen111
+            instanceId: OFR
+        accountName:
+          type: string
+          description: Provider account name
+          example: MyAccountName
+    SubscriptionResponse:
+      type: object
+      description: Subscription Response
+      properties:
+        id:
+          type: string
+          description: Subscription unique identifier
+          example: '06361404'
+        msisdn:
+          type: string
+          description: Number uniquely identifying a subscription in a Global System for Mobile communications
+          example: '337000003543020'
+        imsi:
+          type: string
+          description: International Mobile Subscriber Identity
+          example: '208017401123509'
+        sim:
+          $ref: '#/components/schemas/Sim'
+          description: Sim
+        provider:
+          $ref: '#/components/schemas/Provider'
+          description: Provider
+        device:
+          $ref: '#/components/schemas/CellularDevice'
+          description: Device
+    SimCapabilities:
+      type: object
+      properties:
+        smartSim:
+          type: boolean
+          description: Status of Smart SIM
+          example: true
+    SearchSubscriptionsRequest:
+      type: object
+      description: Search subscriptions request
+      properties:
+        type:
+          type: string
+          description: 'Search type of the subscription, allowed types : "msisdn", "imei" or "deviceId"'
+          example: msisdn
+        value:
+          type: string
+          description: Search value of the subscription (max 269 characters)
+          example: '337000003543020'
+      required:
+      - type
+      - value
+    CellularDevice:
+      type: object
+      properties:
+        imei:
+          type: string
+          description: International Mobile Equipment Identity
+          example: '352753093029773'
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Last update date of device
+          example: '2021-02-03T10:45:35+01:00'
+    MobileNetwork:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Code of mobile network
+          example: 208-01
+        value:
+          type: string
+          description: Value of mobile network
+          example: Orange
+    Sim:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Status of SIM
+          enum:
+          - PRE_ACTIVATED
+          - ACTIVATED_FOR_TEST
+          - ACTIVATED
+          - SLEEPING
+          - SUSPENDED
+          - CANCELLED
+          - PAUSE
+          - WAITING_FOR_SUSPENSION
+          - TEST
+          - BLOCKED_BY_CUSTOMER
+          - BLOCKED_BY_BRULES_PERM
+          - UNKNOWN
+          example: PRE_ACTIVATED, ACTIVATED_FOR_TEST, ACTIVATED, SLEEPING, SUSPENDED, CANCELLED, PAUSE
+        iccid:
+          type: string
+          description: Integrated Circuit Card Identifier
+          example: '89330129210007850940'
+        serialNumber:
+          type: string
+          description: Serial Number of SIM
+          example: '2921000785084'
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Last update date of SIM
+          example: '2021-01-09T18:22:28+01:00'
+        capabilities:
+          $ref: '#/components/schemas/SimCapabilities'
+          description: List of SIM capabilities
+    ProviderConfiguration:
+      description: Provider customer account configuration
+    TrafficData:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: Start date of the traffic data bucket
+          example: '2021-02-03T10:45:35+01:00'
+        smsIn:
+          type: integer
+          format: int64
+          description: Number of SMS received by the device
+          example: 5
+        smsOut:
+          type: integer
+          format: int64
+          description: Number of SMS sent by the device
+          example: 5
+        dataIn:
+          type: integer
+          format: int64
+          description: Volume in bytes of data received by the device
+          example: 1096
+        dataOut:
+          type: integer
+          format: int64
+          description: Volume in bytes of data sent by the device
+          example: 1096
+    GetLocationResponse:
+      type: object
+      description: Cellular-Network get location
+      properties:
+        lat:
+          type: number
+          format: double
+          description: 'Latitude value. The latitude must be between -180 and 180 '
+          example: 45.000009
+        lon:
+          type: number
+          format: double
+          description: Longitude value. The longitude must be between -90 and 90
+          example: -30.00001
+        accuracy:
+          type: number
+          format: double
+          description: Accuracy value (in meter).
+          example: 20.0
+        provider:
+          type: string
+          description: Location provider.
+          example: network
+        lastUpdateTs:
+          type: string
+          format: date-time
+          description: Location date.
+          example: '2016-06-03T15:55:36.944Z'
+        link:
+          type: string
+          description: link to access portal M2M
+          example: https://m2mexpress.fr.orange-business.com/mac/customer/fleet/deviceinfo/localization-details.do?subId=06361404&category=SIM
+    MobileCountry:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Code of mobile country
+          example: '208'
+        value:
+          type: string
+          description: Value of mobile country
+          example: France
+    GetSubscriptionResponse:
+      type: object
+      description: Cellular-Network get subscription
+      properties:
+        id:
+          type: string
+          description: Subscription unique identifier
+          example: '06361404'
+        msisdn:
+          type: string
+          description: Number uniquely identifying a subscription in a Global System for Mobile communications
+          example: '337000003543020'
+        imsi:
+          type: string
+          description: International Mobile Subscriber Identity
+          example: '208017401123509'
+        sim:
+          $ref: '#/components/schemas/Sim'
+          description: Sim
+        provider:
+          $ref: '#/components/schemas/Provider'
+          description: Provider
+        network:
+          $ref: '#/components/schemas/Network'
+        device:
+          $ref: '#/components/schemas/CellularDevice'
+          description: Device
+    Network:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Status of network attachment
+          enum:
+          - ONLINE
+          - OFFLINE
+          example: ONLINE, OFFLINE
+        radio:
+          type: string
+          description: Radio type of network attachment
+          example: 3G, 4G
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Last update date of network attachment
+          example: '2021-02-03T10:45:35+01:00'
+        mobileCountry:
+          $ref: '#/components/schemas/MobileCountry'
+          description: Mobile country
+        mobileNetwork:
+          $ref: '#/components/schemas/MobileNetwork'
+          description: Mobile network
+        lastInteraction:
+          type: string
+          description: Last interaction of network attachment
+          enum:
+          - DATA
+          - SMS
+          example: DATA, SMS
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''

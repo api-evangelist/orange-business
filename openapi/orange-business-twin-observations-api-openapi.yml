@@ -1,0 +1,274 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide Twin observations API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: Twin observations
+  description: Manage twin observations
+paths:
+  /api/v1/deviceMgt/devices/{deviceId}/twin/observations:
+    get:
+      tags:
+      - Twin observations
+      summary: List twin observations for a given device.
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: listTwinObservations
+      parameters:
+      - name: deviceId
+        in: path
+        description: A Live Objects URN 'urn:lo:nsid:{namespace}:{id}' must respect the following regular expression <code>^urn:lo:nsid:([\w\-]{1,128}):([\w\-:]{1,128})$</code> (max 269 characters)
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TwinObservation'
+    post:
+      tags:
+      - Twin observations
+      summary: Create a twin observation.
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      operationId: createTwinObservation
+      parameters:
+      - name: deviceId
+        in: path
+        description: A Live Objects URN 'urn:lo:nsid:{namespace}:{id}' must respect the following regular expression <code>^urn:lo:nsid:([\w\-]{1,128}):([\w\-:]{1,128})$</code> (max 269 characters)
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TwinObservationCreateRequest'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TwinObservation'
+    delete:
+      tags:
+      - Twin observations
+      summary: Delete device's twin observations.
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      operationId: deleteTwinObservations
+      parameters:
+      - name: deviceId
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Observations have been removed. Return actual number of removed Observations.
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int32
+  /api/v1/deviceMgt/devices/{deviceId}/twin/observations/{observationId}:
+    get:
+      tags:
+      - Twin observations
+      summary: Get a twin observation.
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: getTwinObservation
+      parameters:
+      - name: deviceId
+        in: path
+        description: A Live Objects URN 'urn:lo:nsid:{namespace}:{id}' must respect the following regular expression <code>^urn:lo:nsid:([\w\-]{1,128}):([\w\-:]{1,128})$</code> (max 269 characters)
+        required: true
+        schema:
+          type: string
+      - name: observationId
+        in: path
+        description: Identifier of specific twin observation.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TwinObservation'
+    delete:
+      tags:
+      - Twin observations
+      summary: Delete a twin observation.
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      operationId: deleteTwinObservation
+      parameters:
+      - name: deviceId
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: observationId
+        in: path
+        description: Identifier of specific twin observation.
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: No Content
+components:
+  schemas:
+    TwinObservation:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Observation unique identifier
+          example: 62554f236bb22101c8386956
+        paths:
+          type: array
+          description: Paths of attribute, attribute instance, object instance or all the object instances of an object to observe
+          example:
+          - /1
+          - /3/0
+          - /3442/0/110
+          - /3442/0/1110/0
+          items:
+            type: string
+          uniqueItems: true
+        status:
+          type: string
+          description: Status of the observation
+          enum:
+          - PENDING
+          - OBSERVING
+          - FAILED
+          - UNKNOWN
+          example: FAILED
+        lastError:
+          $ref: '#/components/schemas/TwinObservationError'
+          description: Error on last attempt. Only present if the status is 'FAILED'.
+        name:
+          type: string
+          description: User-defined name for the observation
+          example: myObservation
+        created:
+          type: string
+          format: date-time
+          description: Observation creation date/time
+          example: '2021-12-06T11:32:25.055Z'
+      required:
+      - created
+      - id
+      - name
+      - paths
+      - status
+    TwinObservationCreateRequest:
+      type: object
+      description: Twin observation to create
+      properties:
+        paths:
+          type: array
+          description: Paths of attribute, attribute instance, object instance or all the object instances of an object to observe
+          example:
+          - /1
+          - /3/0
+          - /3442/0/110
+          - /3442/0/1110/0
+          items:
+            type: string
+            maxLength: 255
+            minLength: 0
+          maxItems: 100
+          minItems: 0
+          uniqueItems: true
+        name:
+          type: string
+          description: User-defined name for the observation, must not be null, must contain at least one non-whitespace character and at most 255 characters
+          example: myObservation
+          maxLength: 255
+          minLength: 0
+      required:
+      - name
+      - paths
+    DeviceErrorCode:
+      type: object
+      properties:
+        value:
+          type: string
+          description: device error code value
+          example: '404'
+        reason:
+          type: string
+          description: device error code reason
+          example: NOT_FOUND
+    TwinObservationError:
+      type: object
+      properties:
+        code:
+          type: string
+          description: observation error code
+          example: DEVICE_ERROR
+        details:
+          type: string
+          description: observation error explanations
+          example: URIs were not found or are not supported
+        deviceCode:
+          $ref: '#/components/schemas/DeviceErrorCode'
+          description: device error response code, if any
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''

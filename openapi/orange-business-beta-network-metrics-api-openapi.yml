@@ -1,0 +1,349 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide Beta - Network metrics API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: Beta - Network metrics
+  description: Search network metrics
+paths:
+  /api/v1/network-metrics:
+    post:
+      tags:
+      - Beta - Network metrics
+      summary: Get the network metrics regarding provided filters BETA - please note that the API is currently in beta state, and therefore still subject to breaking changes.
+      description: '<p>
+
+        This endpoint gives you statistics on exchanges between devices and Live Objects.
+
+        It is very useful to monitor the health of your devices'' connections to Live Objects and investigate unexpected behavior.
+
+        Connectivities available with such statistics : LwM2M.
+
+        <br/>
+
+        Results are aggregated per bucket (hour, day or week).
+
+        </p>
+
+        <p>
+
+        Provided temporal fields ("from", "to" and "interval") must not lead to the generation of too many buckets :
+
+        <ul>
+
+        <li>If the query does not contain a sub aggregation : 1000 buckets max</li>
+
+        <li>If the query contains a sub aggregation : 100 buckets max</li>
+
+        </ul>
+
+        </p>
+
+        <br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: getNetworkMetrics
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NetworkMetricsRequest'
+        required: true
+      responses:
+        '200':
+          description: Network metrics
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NetworkMetricsResult'
+  /api/v1/network-metrics/lostMessagesRatio:
+    post:
+      tags:
+      - Beta - Network metrics
+      summary: Get lost messages ratio regarding provided filters BETA - please note that the API is currently in beta state, and therefore still subject to breaking changes.
+      description: '<p>
+
+        This endpoint gives you lost messages ratio on exchanges between devices and Live Objects.
+
+        Not all connectivities have such statistics.
+
+        <br/>
+
+        Results are aggregated per bucket (hour, day or week).
+
+        <br/>
+
+        Buckets having zero as ratio value are not included in the response.
+
+        </p>
+
+        <p>
+
+        Provided temporal fields ("from", "to" and "interval") must not lead to the generation of too many buckets : 1000 buckets max.
+
+        </p>
+
+        <p>
+
+        The lost message rate for the current day is never included in the response.
+
+        </p>
+
+        <br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: getLostMessagesRatio
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LostMessagesRatioRequest'
+            example:
+              filters:
+                from: '2003-09-06T20:05:00Z'
+                to: '2003-09-07T15:12:13Z'
+                interface:
+                  connector: lwm2m
+                  nodeId: 12345A0409001C1A
+              timeAggregation:
+                interval: hour
+                timezone: +01:00
+        required: true
+      responses:
+        '200':
+          description: Lost messages ratio
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LostMessagesRatioResult'
+components:
+  schemas:
+    LostMessagesRatioRequest:
+      type: object
+      description: Filters applying to the lost messages ratio search
+      properties:
+        filters:
+          $ref: '#/components/schemas/LostMessagesFilters'
+          description: Lost messages filters
+        timeAggregation:
+          $ref: '#/components/schemas/TimeAggregation'
+          description: Time aggregation
+      required:
+      - filters
+      - timeAggregation
+    NetworkMetricsFilters:
+      type: object
+      properties:
+        direction:
+          type: string
+          description: Direction of the exchange. `uplink` (from device to Live Objects), `downlink` (from Live Objects to device)
+          example: uplink
+        messageTypes:
+          type: array
+          description: Message types filters
+          example:
+          - REGISTER_REQUEST
+          - UPDATE_REQUEST
+          - DEREGISTER_REQUEST
+          - READ_REQUEST
+          - READ_RESPONSE
+          - NOTIFY
+          - SEND_REQUEST
+          items:
+            type: string
+          uniqueItems: true
+        groupPath:
+          type: string
+          description: Group path filter, if it ends with `/*` it includes subgroups
+          example: /myGroup/*
+        tags:
+          type: array
+          description: Tags filters (OR between tags)
+          example:
+          - demo
+          - v1
+          items:
+            type: string
+          uniqueItems: true
+        from:
+          type: string
+          format: date-time
+          description: Date and time from which the search for network metrics begins. Use ISO-8601 normalization.
+          example: '2003-09-06T20:05:00Z'
+        to:
+          type: string
+          format: date-time
+          description: Date and time until which the search for network metrics ends. Use ISO-8601 normalization.
+          example: '2003-09-07T15:12:13Z'
+        interface:
+          $ref: '#/components/schemas/InterfaceDefinition'
+          description: Interface
+      required:
+      - from
+      - interface
+      - to
+    SubAggregation:
+      type: object
+      description: Sub aggregation
+      properties:
+        field:
+          type: string
+          description: Aggregated results on specify field. Supported value is `messageType`
+          example: messageType
+      required:
+      - field
+    NetworkMetricsRequest:
+      type: object
+      description: Filters applying to the network metrics search
+      properties:
+        filters:
+          $ref: '#/components/schemas/NetworkMetricsFilters'
+          description: Network metrics filters
+        timeAggregation:
+          $ref: '#/components/schemas/TimeAggregation'
+          description: Time aggregation
+        subAggregation:
+          $ref: '#/components/schemas/SubAggregation'
+          description: Sub aggregation
+      required:
+      - filters
+      - timeAggregation
+    NetworkMetricsResult:
+      type: object
+      properties:
+        timeStart:
+          type: string
+          format: date-time
+          description: Date/time
+          example: '2019-01-01T00:00:00.000Z'
+        messageCount:
+          type: integer
+          format: int64
+          description: count
+          example: 5
+        subAggregationBuckets:
+          type: array
+          description: sub aggregation buckets
+          items:
+            $ref: '#/components/schemas/SubAggregationBucket'
+    SubAggregationBucket:
+      type: object
+      properties:
+        key:
+          type: string
+          description: key of sub aggregation
+          example: UPDATE_REQUEST
+        messageCount:
+          type: integer
+          format: int64
+          description: count
+          example: 5
+    LostMessagesFilters:
+      type: object
+      properties:
+        from:
+          type: string
+          format: date-time
+          description: Date and time from which the search for lost messages begins. Use ISO-8601 normalization.
+          example: '2003-09-06T20:05:00Z'
+        to:
+          type: string
+          format: date-time
+          description: Date and time until which the search for lost messages ends. Use ISO-8601 normalization.
+          example: '2003-09-07T15:12:13Z'
+        interface:
+          $ref: '#/components/schemas/InterfaceDefinition'
+          description: Interface
+      required:
+      - from
+      - interface
+      - to
+    LostMessagesRatioResult:
+      type: object
+      properties:
+        timeStart:
+          type: string
+          format: date-time
+          description: Date/time
+          example: '2019-01-01T00:00:00.000Z'
+        value:
+          type: number
+          format: double
+          description: ratio
+          example: 0.1
+    InterfaceDefinition:
+      type: object
+      properties:
+        connector:
+          type: string
+          description: Interface connector
+          example: lwm2m
+        nodeId:
+          type: string
+          description: Interface node identifier
+          example: 12345A0409001C1A
+      required:
+      - connector
+    TimeAggregation:
+      type: object
+      description: Time aggregation
+      properties:
+        interval:
+          type: string
+          description: Interval of the aggregated results.Available values are `15m`, `hour`, `day`, `week`
+          example: hour
+        timezone:
+          type: string
+          description: Timezone applied to the aggregated result on the filtered period. This field matches ISO 8601 UTC offset (e.g. +01:00)
+          example: +01:00
+      required:
+      - interval
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''

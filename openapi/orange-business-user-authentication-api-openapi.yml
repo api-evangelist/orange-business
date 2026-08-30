@@ -1,0 +1,341 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide User authentication API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: User authentication
+  description: authentication
+paths:
+  /api/v0/setpwd:
+    post:
+      tags:
+      - User authentication
+      summary: Update user's password
+      description: Usage of this API will be reported in your access log under 'authentication' category.
+      operationId: updateUserPasswordWithToken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePasswordValidationInfo'
+        required: true
+      responses:
+        '200':
+          description: OK
+      security: []
+  /api/v0/resetpwd:
+    post:
+      tags:
+      - User authentication
+      summary: Request password reset or connection reminder
+      description: Initiates a password reset process for internal users or sends connection instructions for external identity provider (merged) users. Requires valid captcha. The user must have a known, valid account. Returns success even if user is not found to prevent enumeration attacks.<br/><br/>Usage of this API will be reported in your access log under 'authentication' category.
+      operationId: resetUserPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordValidationInfo'
+        required: true
+      responses:
+        '200':
+          description: OK
+      security: []
+  /api/v0/auth:
+    post:
+      tags:
+      - User authentication
+      summary: Authenticate a user
+      description: Usage of this API will be reported in your access log under 'authentication' category.
+      operationId: authenticateUser
+      parameters:
+      - name: cookie
+        in: query
+        description: if true, send the API key value in a secure cookie
+        required: false
+        schema:
+          type: boolean
+          default: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PasswordAuthenticationInfo'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResWeb'
+      security: []
+components:
+  schemas:
+    ScopeApplication:
+      type: object
+      properties:
+        fifos:
+          type: array
+          description: List of allowed FIFOs to publish or subscribe. Expected array of string (max 100 elements, value max 255 characters)
+          example:
+          - default
+          - supplierA
+          items:
+            type: string
+          uniqueItems: true
+    ApiKey:
+      type: object
+      properties:
+        id:
+          type: string
+          description: API key unique identifier, randomly generated at creation
+          example: 52FFCAFEDECAFFFFFFFFFFF
+        parentId:
+          type: string
+          description: identifier of the parent API key, can be null if API key is a master API key
+          example: 57FFFFFFFFFFFFFFFFFFFFFF
+        tenantId:
+          type: string
+          description: identifier of tenant account this API key belongs to
+          example: 57FFFFFFFFFFFFFFFFFFFFFF
+        userId:
+          type: string
+          description: identifier of the user account this API key belongs to (or null if not a user session API key)
+          example: 57FFFFFFFFFFFFFFFFFFFFFF
+        value:
+          type: string
+          description: API key value (= the secret!)
+          example: e45ffc0d97c64cd6b959436f9200d5d1
+        nonce:
+          type: string
+          description: Nonce
+          example: 875fd664f97540f0ad9ec2f889a40ce9
+        creationTs:
+          type: integer
+          format: int64
+          description: Date/time of creation (in ms)
+          example: 1473078982518
+        from:
+          type: integer
+          format: int64
+          description: Date/time of start of validity (in ms)
+          example: 1473078900000
+        to:
+          type: integer
+          format: int64
+          description: ' Date/time of end of validity (in ms)'
+          example: 1475224200000
+        lastActivity:
+          type: integer
+          format: int64
+          description: Date/time of last activity (in ms)
+          example: 1473078982518
+        sessionTTL:
+          type: integer
+          format: int64
+          description: Duration of validity since the last activity (in ms)
+          example: 144410
+        label:
+          type: string
+          description: Title of the key
+          example: My Api Key Name
+        description:
+          type: string
+          description: Short description of the key
+          example: My description of Api Key target
+        active:
+          type: boolean
+          description: Switch to activate/deactivate the API Key
+          example: true
+        rateLimit:
+          $ref: '#/components/schemas/RateLimit'
+        roles:
+          type: array
+          description: list of API key associated roles.
+          example:
+          - USER_R
+          - APIKEY_R
+          items:
+            type: string
+          uniqueItems: true
+        scope:
+          $ref: '#/components/schemas/ScopeApplication'
+          description: List of scope to apply
+        debugModeEndTs:
+          type: integer
+          format: int64
+          description: Timestamp indicating the end date for the debug mode
+          example: 1475224200000
+        clientCert:
+          $ref: '#/components/schemas/ClientCertificatesConfiguration'
+        sessionKey:
+          type: boolean
+        masterKey:
+          type: boolean
+        expired:
+          type: boolean
+      required:
+      - roles
+    AuthResWeb:
+      type: object
+      properties:
+        apiKey:
+          $ref: '#/components/schemas/ApiKey'
+        admin:
+          type: boolean
+    RateLimit:
+      type: object
+      properties:
+        mqttBridgeWindowSize:
+          type: integer
+          format: int64
+          description: 'mqtt bridge rate limit: window size in seconds'
+          example: 1
+        mqttBridgeMaxMessages:
+          type: integer
+          format: int64
+          description: 'mqtt bridge rate limit: maximum messages allowed per time window'
+          example: 1
+        mqttDeviceWindowSize:
+          type: integer
+          format: int64
+          description: 'mqtt device rate limit: window size in seconds'
+          example: 1
+        mqttDeviceMaxMessages:
+          type: integer
+          format: int64
+          description: 'mqtt device rate limit: maximum messages allowed per time window'
+          example: 1
+        httpWindowSize:
+          type: integer
+          format: int64
+          description: 'http rate limit: window size in seconds'
+          example: 1
+        httpMaxCalls:
+          type: integer
+          format: int64
+          description: 'http rate limit: maximum api calls allowed per time window'
+          example: 1
+    ClientCertificatesConfiguration:
+      type: object
+      properties:
+        required:
+          type: boolean
+          description: Indicates if the client must use TLS client cert authentication
+          example: true
+        caCertIds:
+          type: array
+          description: List of Ca Certificate Ids used to authenticate devices. Expected array of string (max 100 elements, value max 255 characters)
+          example:
+          - 5b057d0fb8605a5e80758e42
+          items:
+            type: string
+      required:
+      - required
+    PasswordAuthenticationInfo:
+      type: object
+      description: body of authentication request
+      properties:
+        email:
+          type: string
+          description: User's email
+          example: me.name@mycompagny.mycom
+        login:
+          type: string
+          description: User's login
+          example: MyLoginName
+        password:
+          type: string
+          description: User's password
+          example: MyCurrentPWD
+      required:
+      - password
+    ResetPasswordValidationInfo:
+      type: object
+      description: Reset password request with user login/email and captcha validation
+      properties:
+        userLogin:
+          type: string
+          description: User's login
+          example: MyLoginName
+        captcha:
+          type: string
+          description: User-provided captcha value
+        captchaToken:
+          type: string
+          description: Captcha token
+      required:
+      - captcha
+      - captchaToken
+      - userLogin
+    UpdatePasswordValidationInfo:
+      type: object
+      description: body of user update password with token
+      properties:
+        captcha:
+          type: string
+          description: User-provided captcha value
+        captchaToken:
+          type: string
+          description: Captcha token
+        tokenId:
+          type: string
+          description: Token provided by email
+        password:
+          type: string
+          description: new user's password
+          example: MyP@sswr0d
+      required:
+      - captcha
+      - captchaToken
+      - password
+      - tokenId
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''

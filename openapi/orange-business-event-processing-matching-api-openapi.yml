@@ -1,0 +1,222 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide Event processing - Matching API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: Event processing - Matching
+  description: MatchingRules management
+paths:
+  /api/v0/eventprocessing/matching-rule/{matchingRuleId}:
+    get:
+      tags:
+      - Event processing - Matching
+      summary: Retrieve a MatchingRule
+      description: 'A MatchingRule will be applied on each data message to evaluate if a ''match'' occurs. It is evaluated as a boolean result. It supports numeric, string, logic and distance operators and is based on JsonLogic. This MatchingRule should then be linked to a FiringRule to trigger an event when a match occurs.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: getMatchingRule
+      parameters:
+      - name: matchingRuleId
+        in: path
+        description: id of the MatchingRule to retrieve
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: MatchingRule
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MatchingRule'
+    put:
+      tags:
+      - Event processing - Matching
+      summary: Update a MatchingRule
+      description: 'A MatchingRule will be applied on each data message to evaluate if a ''match'' occurs. It is evaluated as a boolean result. It supports numeric, string, logic and distance operators and is based on JsonLogic. This MatchingRule should then be linked to a FiringRule to trigger an event when a match occurs.<br/><br/>Usage of this API will be reported in your access log under ''alarming'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      operationId: updateMatchingRule
+      parameters:
+      - name: matchingRuleId
+        in: path
+        description: id of the MatchingRule to update
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MatchingRule'
+        required: true
+      responses:
+        '204':
+          description: The MatchingRule has been updated
+    delete:
+      tags:
+      - Event processing - Matching
+      summary: Delete a MatchingRule
+      description: 'A MatchingRule will be applied on each data message to evaluate if a ''match'' occurs. It is evaluated as a boolean result. It supports numeric, string, logic and distance operators and is based on JsonLogic. This MatchingRule should then be linked to a FiringRule to trigger an event when a match occurs.<br/><br/>Usage of this API will be reported in your access log under ''alarming'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      operationId: deleteMatchingRule
+      parameters:
+      - name: matchingRuleId
+        in: path
+        description: id of the MatchingRule to delete
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: MatchingRule has been deleted
+  /api/v0/eventprocessing/matching-rule:
+    get:
+      tags:
+      - Event processing - Matching
+      summary: Retrieve the list of all the MatchingRules or get a MatchingRule by its name
+      description: 'A MatchingRule will be applied on each data message to evaluate if a ''match'' occurs. It is evaluated as a boolean result. It supports numeric, string, logic and distance operators and is based on JsonLogic. This MatchingRule should then be linked to a FiringRule to trigger an event when a match occurs.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: listMatchingRules
+      parameters:
+      - name: name
+        in: query
+        description: name of the MatchingRule to retrieve
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: list of MatchingRules
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MatchingRule'
+    post:
+      tags:
+      - Event processing - Matching
+      summary: Create a MatchingRule
+      description: 'A MatchingRule will be applied on each data message to evaluate if a ''match'' occurs. It is evaluated as a boolean result. It supports numeric, string, logic and distance operators and is based on JsonLogic. This MatchingRule should then be linked to a FiringRule to trigger an event when a match occurs. Total number of MatchingRules is limited. Contact the commercial team or see developer guide to get more information.<br/><br/>Usage of this API will be reported in your access log under ''alarming'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      operationId: createMatchingRule
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MatchingRule'
+        required: true
+      responses:
+        '201':
+          description: MatchingRule stored
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MatchingRule'
+  /api/v0/eventprocessing/matching-rule/test:
+    post:
+      tags:
+      - Event processing - Matching
+      summary: Test a JsonLogic predicate with some data sample
+      description: 'It can be used for troubleshooting or for testing the matching result of a MatchingRule before applying it. A MatchingRule will be applied on each data message to evaluate if a ''match'' occurs. It is evaluated as a boolean result. It supports numeric, string, logic and distance operators and is based on JsonLogic. This MatchingRule should then be linked to a FiringRule to trigger an event when a match occurs.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: testMatchingRule
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataMatchTest'
+        required: true
+      responses:
+        '200':
+          description: Test has been performed. Result is in the response body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataMatchResult'
+components:
+  schemas:
+    DataMatchTest:
+      type: object
+      description: jsonLogic predicate and json data of the evaluation test you want to perform
+      properties:
+        dataPredicate:
+          description: JsonLogic predicate that will be used to evaluate the data. The JsonLogic predicate needs to return a boolean. In addition to the existing JsonLogic operators (logic and boolean, numeric, string, array), Live Objects provides geographic operators (distance, inside, insideindex, closeto, closetoindex), context operator (ctx) to retrieve data stored via the Context APIs and miscellaneous operators ('get' to retrieve an element from an array)...e.g. '{">":[{"var":"value.temp"},{"ctx":"temperature.threshold"}]}'.
+        data:
+          description: Data to test the dataPredicate with. e.g. '{"streamId":"urn:lo:nsid:mqtt:1234","value":{"temp":100,"pressure":36575},"timestamp":"2026-02-19T08:51:06.583Z","metadata":{"connector":"mqtt","source":"urn:lo:nsid:mqtt:1234","group":{"path":"/europe","id":"CdoJOs"}}}'.
+      required:
+      - data
+      - dataPredicate
+    DataMatchResult:
+      type: object
+      properties:
+        dataPredicateValid:
+          type: boolean
+          description: indicates if the dataPredicate is valid
+        dataValid:
+          type: boolean
+          description: indicates if data is valid
+        dataPredicateResult:
+          type: boolean
+          description: the predicate result applied to data. Will be false is either dataPredicateValid or dataValid is false
+    MatchingRule:
+      type: object
+      description: Defines the dataPredicate that will be applied to all new data. When it matches, then it may trigger a FiredEvent based on linked FiringRules defined.
+      properties:
+        id:
+          type: string
+          description: id of the MatchingRule. Should be null when used for POST, and set for PUT.
+          readOnly: true
+        name:
+          type: string
+          description: name of the MatchingRule. Must be unique.
+        enabled:
+          type: boolean
+          description: activate or not the MatchingRule. Default is false.
+        dataPredicate:
+          description: the JsonLogic (http://jsonlogic.com/) pattern matching that will trigger an event for each new data that match this predicate. The JsonLogic predicate needs to return a boolean. In addition to the existing JsonLogic operators (logic and boolean, numeric, string, array), Live Objects provides geographic operators (distance, inside, insideindex, closeto, closetoindex), context operator (ctx) to retrieve data stored via the Context APIs and miscellaneous operators ('get' to retrieve an element from an array)...e.g. '{">":[{"var":"value.temp"},{"ctx":"temperature.threshold"}]}'.
+      required:
+      - dataPredicate
+      - name
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''

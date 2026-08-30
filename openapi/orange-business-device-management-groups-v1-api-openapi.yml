@@ -1,0 +1,391 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide Device management - Groups - V1 API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: Device management - Groups - V1
+  description: Group management
+paths:
+  /api/v1/deviceMgt/groups/{groupId}:
+    get:
+      tags:
+      - Device management - Groups - V1
+      summary: Get a device group
+      description: 'Managing groups of devices allows you to organize your devices in a hierarchical structure. Groups can be used to target specific subsets of devices when performing operations such as filtering triggers and actions rules, querying their data... Groups can be nested, allowing you to create a tree-like structure of groups and subgroups. <br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: getGroup
+      parameters:
+      - name: groupId
+        in: path
+        description: the Group Identifier. Expected string (max 6 characters)
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The group
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: Group not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+    put:
+      tags:
+      - Device management - Groups - V1
+      summary: Update a device group
+      description: 'Managing groups of devices allows you to organize your devices in a hierarchical structure. Groups can be used to target specific subsets of devices when performing operations such as filtering triggers and actions rules, querying their data... Groups can be nested, allowing you to create a tree-like structure of groups and subgroups. <br/><br/>Usage of this API will be reported in your access log under ''device_inventory'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      operationId: updateGroup
+      parameters:
+      - name: groupId
+        in: path
+        description: identifier to update group. Expected string (max 6 characters)
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupUpdateRequest'
+        required: true
+      responses:
+        '200':
+          description: The group newly created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: Group not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '409':
+          description: Group already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+    delete:
+      tags:
+      - Device management - Groups - V1
+      summary: Delete a device group
+      description: 'Managing groups of devices allows you to organize your devices in a hierarchical structure. Groups can be used to target specific subsets of devices when performing operations such as filtering triggers and actions rules, querying their data... Groups can be nested, allowing you to create a tree-like structure of groups and subgroups. <br/><br/>Usage of this API will be reported in your access log under ''device_inventory'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      operationId: deleteGroup
+      parameters:
+      - name: groupId
+        in: path
+        description: targeted for deletion group identifier. Expected string (max 6 characters)
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Group deleted
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: Group not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+  /api/v1/deviceMgt/groups:
+    get:
+      tags:
+      - Device management - Groups - V1
+      summary: List registered device groups
+      description: 'Managing groups of devices allows you to organize your devices in a hierarchical structure. Groups can be used to target specific subsets of devices when performing operations such as filtering triggers and actions rules, querying their data... Groups can be nested, allowing you to create a tree-like structure of groups and subgroups. <br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: listGroups
+      parameters:
+      - name: limit
+        in: query
+        description: the maximum number of items per page (optional)
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: offset
+        in: query
+        description: the requested page number (optional)
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: parentId
+        in: query
+        description: filter list by group's parent. When a parent is set, only direct children are returned (one level). Expected string (max 6 characters)
+        required: false
+        schema:
+          type: string
+      - name: groupPath
+        in: query
+        description: filter list by group's path. When a full path is set, only nodes matching exactly this path are returned.<br/> In order to return nodes matching a path and all descendants, the groupPath must end with <code>/&ast;</code> (ex. <code>/spain/&ast;</code>). <br/> In order to return direct children nodes -only- of a path, the groupPath must end with <code>/&ast;/</code> (ex. <code>/spain/&ast;/</code>). <br/>Expected string (max 255 characters)
+        required: false
+        schema:
+          type: string
+      - name: X-Total-Count
+        in: header
+        description: true if a total count must be returned in response
+        required: false
+        schema:
+          type: boolean
+          default: false
+        example: true
+      responses:
+        '200':
+          description: The list of groups
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Group'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+    post:
+      tags:
+      - Device management - Groups - V1
+      summary: Create a device group
+      description: 'Managing groups of devices allows you to organize your devices in a hierarchical structure. Groups can be used to target specific subsets of devices when performing operations such as filtering triggers and actions rules, querying their data... Groups can be nested, allowing you to create a tree-like structure of groups and subgroups. Create a new device group. Expected string (max 6 characters)<br/><br/>Usage of this API will be reported in your access log under ''device_inventory'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      operationId: createGroup
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupCreateRequest'
+        required: true
+      responses:
+        '201':
+          description: The group newly created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Group'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: the server cannot or will not process the request due to something that is perceived to be a client error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '409':
+          description: Group already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+components:
+  schemas:
+    GroupCreateRequest:
+      type: object
+      description: The group to register
+      properties:
+        parentId:
+          type: string
+          description: reference to group's parent (id). Use 'root' for a top level group.Expected string (max 6 characters)
+          example: '123456'
+        pathNode:
+          type: string
+          description: 'group''s local id in path (unique for groups in same parent).Authorized: letter (lowercase and uppercase), accented characters, number, space, dash, underscore and simple quote. A valid path must respect the following regular expression <code>[\wÀ-ÖØ-öø-ÿ'' -]{1,255}</code>.Expected string (max 255 characters)'
+          example: france
+        description:
+          type: string
+          description: group description. Expected string (max 255 characters)
+      required:
+      - pathNode
+    GroupUpdateRequest:
+      type: object
+      description: The group to register
+      properties:
+        parentId:
+          type: string
+          description: reference to group's parent (id). Expected string (max 6 characters)
+          example: '123456'
+          maxLength: 6
+          minLength: 0
+        pathNode:
+          type: string
+          description: 'group''s local id in path (unique for groups in same parent).Authorized: letter (lowercase and uppercase), accented characters, number, space, dash, underscore and simple quote. A valid path must respect the following regular expression <code>[\wÀ-ÖØ-öø-ÿ'' -]{1,255}</code>.Expected string (max 255 characters)'
+          example: france
+          maxLength: 255
+          minLength: 0
+        description:
+          type: string
+          description: group description. Expected string (max 255 characters)
+          maxLength: 255
+          minLength: 0
+      required:
+      - pathNode
+    Group:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Group identifier
+          example: IbN89a
+        pathNode:
+          type: string
+          description: Path node
+          example: group2
+        path:
+          type: string
+          description: Path
+          example: /group1/group2
+        parentId:
+          type: string
+          description: Parent group identifier
+          example: PjFg6J
+        description:
+          type: string
+          description: Group description
+          example: Moisture sensor
+        created:
+          type: string
+          format: date-time
+          description: Date/time when group was first registered
+          example: '2017-12-27T12:59:59.877Z'
+        updated:
+          type: string
+          format: date-time
+          description: Date/time when group status has been lastly updated
+          example: '2017-12-27T14:13:09.231Z'
+      required:
+      - created
+      - description
+      - id
+      - parentId
+      - path
+      - pathNode
+      - updated
+    WebErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+      required:
+      - code
+      - id
+      - message
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''

@@ -1,0 +1,1065 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide Twin operations management API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: Twin operations management
+  description: Manage twin device operations
+paths:
+  /api/v1/deviceMgt/devices/{deviceId}/twin/operations/{operationId}/status:
+    put:
+      tags:
+      - Twin operations management
+      summary: Set twin operation status for a given deviceId and operationId
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      operationId: setTwinOperationStatus
+      parameters:
+      - name: deviceId
+        in: path
+        description: A Live Objects URN 'urn:lo:nsid:{namespace}:{id}' must respect the following regular expression <code>^urn:lo:nsid:([\w\-]{1,128}):([\w\-:]{1,128})$</code> (max 269 characters)
+        required: true
+        schema:
+          type: string
+      - name: operationId
+        in: path
+        description: Identifier of specific twin operation. Expected string (max 32 characters)
+        required: true
+        schema:
+          type: string
+      - name: force
+        in: query
+        description: cancelling mode. When force is false, the DeviceTwin manager prevents operation with status not started from starting, cancel operation with status pending and let operation with status in progress finish properly. When force is true, the DeviceTwin manager aborts pending or in progress operation immediately.
+        required: false
+        schema:
+          type: boolean
+          default: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+              description: future state of the operation  --> CANCELED
+              enum:
+              - CANCELED
+        required: true
+      responses:
+        '200':
+          description: Twin operation status has been set
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceErrorResponse'
+        '403':
+          description: Delete forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceErrorResponse'
+        '404':
+          description: Operation not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceErrorResponse'
+        '409':
+          description: Invalid operation status update
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceErrorResponse'
+  /api/v1/deviceMgt/devices/{deviceId}/twin/operations:
+    get:
+      tags:
+      - Twin operations management
+      summary: List twin operations from a given deviceId
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: listTwinOperations
+      parameters:
+      - name: deviceId
+        in: path
+        description: A Live Objects URN 'urn:lo:nsid:{namespace}:{id}' must respect the following regular expression <code>^urn:lo:nsid:([\w\-]{1,128}):([\w\-:]{1,128})$</code> (max 269 characters)
+        required: true
+        schema:
+          type: string
+      - name: contextToken
+        in: query
+        description: filter on contextToken
+        required: false
+        schema:
+          type: string
+      - name: type
+        in: query
+        description: filter list of operation type
+        required: false
+        schema:
+          $ref: '#/components/schemas/TwinOperationTypeFilter'
+      - name: status
+        in: query
+        description: filter list of operation status
+        required: false
+        schema:
+          $ref: '#/components/schemas/TwinOperationStatusFilter'
+      - name: path
+        in: query
+        description: filter on path
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of twin operations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  oneOf:
+                  - $ref: '#/components/schemas/AbbreviatedTwinOperationExecuteResponse'
+                  - $ref: '#/components/schemas/AbbreviatedTwinOperationReadResponse'
+                  - $ref: '#/components/schemas/AbbreviatedTwinOperationWriteMetadataResponse'
+                  - $ref: '#/components/schemas/AbbreviatedTwinOperationWriteResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceErrorResponse'
+        '403':
+          description: Read forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceErrorResponse'
+    post:
+      tags:
+      - Twin operations management
+      summary: Create twin operation for a given deviceId
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      operationId: createTwinOperation
+      parameters:
+      - name: deviceId
+        in: path
+        description: A Live Objects URN 'urn:lo:nsid:{namespace}:{id}' must respect the following regular expression <code>^urn:lo:nsid:([\w\-]{1,128}):([\w\-:]{1,128})$</code> (max 269 characters)
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: Twin operation to create
+              oneOf:
+              - $ref: '#/components/schemas/TwinOperationExecute'
+              - $ref: '#/components/schemas/TwinOperationRead'
+              - $ref: '#/components/schemas/TwinOperationWrite'
+              - $ref: '#/components/schemas/TwinOperationWriteMetadata'
+            examples:
+              read:
+                description: This example will produce a read operation for the target object 5 instance 0 attribute 1.This operation has an extra contextToken to tag operation.
+                value:
+                  type: READ
+                  paths:
+                  - /5/0/1
+                  options:
+                    lwm2m:
+                      contentFormat:
+                        response: SENML_JSON
+                  contextToken: swagger first example
+              read composite:
+                description: This example will produce a composite read operation for the target all objects 1, object 5 instance 1, object 5 instance 0 attribute 1 and object 5 instance 0 attribute 8 instance 1
+                value:
+                  type: READ
+                  paths:
+                  - /1
+                  - /5/1
+                  - /5/0/1
+                  - /5/0/8/1
+                  options:
+                    lwm2m:
+                      contentFormat:
+                        request: SENML_CBOR
+                        response: SENML_CBOR
+              write simple, update mode:
+                description: This example will produce a simple write operation to update `/5/0/8/1` with value `33`.
+                value:
+                  type: WRITE
+                  paths:
+                  - /5/0/8/1
+                  writeMode: UPDATE
+                  values:
+                  - path: /5/0/8/1
+                    value: '33'
+                  options:
+                    lwm2m:
+                      contentFormat:
+                        request: SENML_CBOR
+              write composite, update mode:
+                description: This example will produce a composite write operation to update `/5/0/8/1` with value `33` and update `/5/0/8/2` with value `34`.
+                value:
+                  type: WRITE
+                  paths:
+                  - /5/0/8
+                  writeMode: UPDATE
+                  values:
+                  - path: /5/0/8/1
+                    value: '33'
+                  - path: /5/0/8/2
+                    value: '34'
+                  options:
+                    lwm2m:
+                      contentFormat:
+                        request: SENML_CBOR
+                        response: SENML_CBOR
+              write composite, replace mode:
+                description: 'This example will produce a composite write operation to replace `/1/0/25` multi-instances attributes with value `22` for attribute instance `0` and `23` for attribute instance `2`. Other `/1/0/25` attributes instances will be removed. <br>A specific `content format` can be set for both request and response. '
+                value:
+                  type: WRITE
+                  paths:
+                  - /1/0/25
+                  writeMode: REPLACE
+                  options:
+                    lwm2m:
+                      contentFormat:
+                        request: SENML_CBOR
+                  values:
+                  - path: /1/0/25/0
+                    value: '22'
+                  - path: /1/0/25/2
+                    value: '23'
+              write metadata:
+                description: 'This example will produce a `write-metadata` operation to update metadata (set, update, reset) on `/1/0/7`. <br>This operation is available on one and only one path per request <br>Metadata having its name and value means it will be set or updated <br>Metadata having only its name means it will be unset <br>Currently, Live Objects supports LwM2M 1.0 notification attributes: <br><ul><li>pmin : Minimum Period</li><li>pmax : Maximum Period</li><li>gt   : Greater Than</li><li>lt   : Less Than</li><li>st   : Step</li></ul>'
+                value:
+                  type: WRITE-METADATA
+                  values:
+                  - path: /1/0/7
+                    metadata:
+                    - name: pmin
+                      value: '20'
+                    - name: gt
+                      value: '50'
+                    - name: lt
+              execute:
+                description: This example will produce an execute operation for the target object 5 instance 0 attribute 2
+                value:
+                  type: EXECUTE
+                  paths:
+                  - /5/0/2
+              execute (with retry):
+                description: This example will produce an execute operation for the target object 5 instance 0 attribute 2 <br>It contains a policy allowing a maximum of 3 attempts to successfully complete this operation.
+                value:
+                  type: EXECUTE
+                  paths:
+                  - /5/0/2
+                  policy:
+                    attempts: 3
+        required: true
+      responses:
+        '201':
+          description: Twin operation created
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/TwinOperationExecuteResponse'
+                - $ref: '#/components/schemas/TwinOperationReadResponse'
+                - $ref: '#/components/schemas/TwinOperationWriteMetadataResponse'
+                - $ref: '#/components/schemas/TwinOperationWriteResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceErrorResponse'
+        '403':
+          description: Create forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceErrorResponse'
+  /api/v1/deviceMgt/devices/{deviceId}/twin/operations/{operationId}:
+    get:
+      tags:
+      - Twin operations management
+      summary: Get twin operation from a given deviceId and operationId
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: getTwinOperation
+      parameters:
+      - name: deviceId
+        in: path
+        description: A Live Objects URN 'urn:lo:nsid:{namespace}:{id}' must respect the following regular expression <code>^urn:lo:nsid:([\w\-]{1,128}):([\w\-:]{1,128})$</code> (max 269 characters)
+        required: true
+        schema:
+          type: string
+      - name: operationId
+        in: path
+        description: Identifier of specific twin operation. Expected string (max 32 characters)
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/TwinOperationExecuteResponse'
+                - $ref: '#/components/schemas/TwinOperationReadResponse'
+                - $ref: '#/components/schemas/TwinOperationWriteMetadataResponse'
+                - $ref: '#/components/schemas/TwinOperationWriteResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Read forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+components:
+  schemas:
+    TwinOperationExecuteResponse:
+      allOf:
+      - $ref: '#/components/schemas/AbstractTwinOperationResponse'
+      - type: object
+        properties:
+          type:
+            type: string
+            default: EXECUTE
+            description: 'EXECUTE operation: this operation is used to execute a target object attribute.'
+          paths:
+            type: array
+            description: paths of object
+            example:
+            - /1/0/7
+            - /1/0
+            - /1
+            - /1/0/25/4
+            items:
+              type: string
+            uniqueItems: true
+      required:
+      - created
+      - id
+      - status
+      - type
+      - updated
+    TwinOperationTypeFilter:
+      type: array
+      items:
+        type: string
+        enum:
+        - READ
+        - WRITE
+        - EXECUTE
+        - WRITE-METADATA
+        - UNKNOWN
+      properties:
+        empty:
+          type: boolean
+    TwinOperationWriteResponse:
+      allOf:
+      - $ref: '#/components/schemas/AbstractTwinOperationResponse'
+      - type: object
+        properties:
+          type:
+            type: string
+            default: WRITE
+            description: 'WRITE operation: this operation is used to write attribute(s) value(s) on device object(s). <br>A `WRITE` operation relies on `writeMode` : `UPDATE` act like a ''patch'' while `REPLACE` will override target path.'
+          paths:
+            type: array
+            description: paths of object instance
+            example:
+            - /1/0
+            items:
+              type: string
+            uniqueItems: true
+          writeMode:
+            type: string
+            description: Write mode
+            enum:
+            - UPDATE
+            - REPLACE
+            example: UPDATE
+          values:
+            type: array
+            description: list of values to write
+            example:
+            - path: /1/0/7
+              value: tutu
+            - path: /1/0/25/2
+              value: toto
+            items:
+              $ref: '#/components/schemas/TwinOperationWriteValue'
+            uniqueItems: true
+      required:
+      - created
+      - id
+      - status
+      - type
+      - updated
+      - writeMode
+    TwinOperationWriteValue:
+      type: object
+      properties:
+        path:
+          type: string
+          description: Path of attribute, or attribute instance
+          example: /1/0/3
+        value:
+          type: string
+          description: value to write for "WRITE" operations
+          example: '"tutu"'
+      required:
+      - path
+      - value
+    TwinOperationOptions:
+      type: object
+      properties:
+        lwm2m:
+          $ref: '#/components/schemas/TwinOperationOptionsLwm2m'
+    ServiceErrorResponse:
+      type: object
+      description: Generic Error in Response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+        category:
+          type: string
+          description: Error category
+          enum:
+          - PERMANENT
+          - TRANSIENT
+          - UNEXPECTED
+      required:
+      - category
+      - code
+      - id
+      - message
+    TwinOperationStatusFilter:
+      type: array
+      items:
+        type: string
+        enum:
+        - PENDING
+        - SENT
+        - RETRYING
+        - OK
+        - CANCELED
+        - EXPIRED
+        - FAILED
+        - UNKNOWN
+      properties:
+        empty:
+          type: boolean
+    TwinOperationWriteMetadataValue:
+      type: object
+      properties:
+        path:
+          type: string
+          description: Path of the object | instance on which metadata will be applied.
+          example: /1/0/7
+        metadata:
+          type: array
+          description: Set of metadata. Only provided metadata will be set | updated | unset.
+          example:
+          - name: pmin
+            value: '20'
+          - name: gt
+            value: '50'
+          - name: lt
+          items:
+            $ref: '#/components/schemas/TwinOperationMetadata'
+          uniqueItems: true
+      required:
+      - metadata
+      - path
+    AbbreviatedTwinOperationWriteResponse:
+      allOf:
+      - $ref: '#/components/schemas/AbstractAbbreviatedTwinOperationResponse'
+      - type: object
+        properties:
+          type:
+            type: string
+            default: WRITE
+            description: 'WRITE operation: this operation is used to write attribute(s) value(s) on device object(s). <br>A `WRITE` operation relies on `writeMode`: `UPDATE` act like a ''patch'' while `REPLACE` will override target path.'
+          paths:
+            type: array
+            description: paths of object instance
+            example:
+            - /1/0
+            items:
+              type: string
+            uniqueItems: true
+          writeMode:
+            type: string
+            description: Write mode
+            enum:
+            - UPDATE
+            - REPLACE
+            example: UPDATE
+          values:
+            type: array
+            description: list of the values to write (values are truncated for display purpose)
+            example:
+            - path: /1/0/7
+              truncatedValue: tutu
+            - path: /1/0/25/2
+              truncatedValue: abcdefghij...
+            items:
+              $ref: '#/components/schemas/AbbreviatedTwinOperationWriteValue'
+            uniqueItems: true
+      required:
+      - created
+      - id
+      - status
+      - type
+      - updated
+      - writeMode
+    TwinOperationWriteMetadata:
+      allOf:
+      - $ref: '#/components/schemas/AbstractTwinOperationRequest'
+      - type: object
+        properties:
+          type:
+            type: string
+            description: 'WRITE METADATA operation: this operation is used to write (set, update, unset) metadata on device object(s).'
+            example: WRITE-METADATA
+          values:
+            type: array
+            description: Path and set of metadata to write. This set must contains only one path.
+            example: '[ {"path":"/1/0/7", "metadata": [{"name" : "pmin", "value" : "20"}, {"name" : "gt", "value" : "50"}, {"name" : "lt"}]'
+            items:
+              $ref: '#/components/schemas/TwinOperationWriteMetadataValue'
+            uniqueItems: true
+      required:
+      - type
+      - values
+    TwinOperationReadResponse:
+      allOf:
+      - $ref: '#/components/schemas/AbstractTwinOperationResponse'
+      - type: object
+        properties:
+          type:
+            type: string
+            default: READ
+            description: 'READ operation: this operation is used to read attribute(s) value(s) of device object(s).'
+          paths:
+            type: array
+            description: paths of object
+            example:
+            - /1/0/7
+            - /1/0
+            - /1
+            - /1/0/25/4
+            items:
+              type: string
+            uniqueItems: true
+      required:
+      - created
+      - id
+      - status
+      - type
+      - updated
+    AbbreviatedTwinOperationReadResponse:
+      allOf:
+      - $ref: '#/components/schemas/AbstractAbbreviatedTwinOperationResponse'
+      - type: object
+        properties:
+          type:
+            type: string
+            default: READ
+            description: 'READ operation: this operation is used to read attribute(s) value(s) of device object(s).'
+          paths:
+            type: array
+            description: paths of object
+            example:
+            - /1/0/7
+            - /1/0
+            - /1
+            - /1/0/25/4
+            items:
+              type: string
+            uniqueItems: true
+      required:
+      - created
+      - id
+      - status
+      - type
+      - updated
+    TwinOperationOptionsLwm2m:
+      type: object
+      properties:
+        contentFormat:
+          $ref: '#/components/schemas/RequestedContentFormat'
+          description: ' `content format` requested by the customer for the operation (request, response)'
+          example:
+            request: SENML_CBOR
+            response: SENML_CBOR
+    TwinOperationWrite:
+      allOf:
+      - $ref: '#/components/schemas/AbstractTwinOperationRequest'
+      - type: object
+        properties:
+          type:
+            type: string
+            description: 'WRITE operation: this operation is used to write attribute(s) value(s) on device object(s). <br>A `WRITE` operation relies on `writeMode`: `UPDATE` act like a ''patch'' while `REPLACE` will override target path.'
+            example: WRITE
+          paths:
+            type: array
+            items:
+              type: string
+              description: Path of attribute, attribute instance, array of attribute instances, object instance or all the object instances of an object to replace/update. There can only be one path
+              example:
+              - /1/0
+            uniqueItems: true
+          writeMode:
+            type: string
+            description: Write mode
+            enum:
+            - UPDATE
+            - REPLACE
+            example: UPDATE
+          values:
+            type: array
+            description: Paths and value to write
+            example:
+            - path: /1/0/7
+              value: tutu
+            - path: /1/0/25/2
+              value: toto
+            items:
+              $ref: '#/components/schemas/TwinOperationWriteValue'
+            uniqueItems: true
+      required:
+      - paths
+      - type
+      - values
+      - writeMode
+    AbbreviatedTwinOperationWriteValue:
+      type: object
+      properties:
+        path:
+          type: string
+          description: Path of attribute, or attribute instance
+          example: /1/0/3
+        abbreviatedValue:
+          type: string
+          description: abbreviate of the value to write (for display purpose)
+          example: '"tutu"'
+      required:
+      - abbreviatedValue
+      - path
+    TwinOperationErrorDeviceCode:
+      type: object
+      properties:
+        value:
+          type: string
+          description: device error code value
+        reason:
+          type: string
+          description: device error code reason
+    TwinOperationExecute:
+      allOf:
+      - $ref: '#/components/schemas/AbstractTwinOperationRequest'
+      - type: object
+        properties:
+          type:
+            type: string
+            description: 'EXECUTE operation: this operation is used to execute a target object attribute.'
+            example: EXECUTE
+          paths:
+            type: array
+            items:
+              type: string
+              description: Path of attribute to execute. There can only be one path to execute
+              example:
+              - /1/0/8
+            uniqueItems: true
+      required:
+      - paths
+      - type
+    AbbreviatedTwinOperationExecuteResponse:
+      allOf:
+      - $ref: '#/components/schemas/AbstractAbbreviatedTwinOperationResponse'
+      - type: object
+        properties:
+          type:
+            type: string
+            default: EXECUTE
+            description: 'EXECUTE operation: this operation is used to execute a target object attribute.'
+          paths:
+            type: array
+            description: paths of object
+            example:
+            - /1/0/7
+            - /1/0
+            - /1
+            - /1/0/25/4
+            items:
+              type: string
+            uniqueItems: true
+      required:
+      - created
+      - id
+      - status
+      - type
+      - updated
+    TwinOperationError:
+      type: object
+      properties:
+        code:
+          type: string
+          description: operation error code
+        details:
+          type: string
+          description: operation error explanations
+        deviceCode:
+          $ref: '#/components/schemas/TwinOperationErrorDeviceCode'
+          description: operation device error
+    TwinOperationMetadata:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the metadata. (see "NOTIFICATION class attributes" from OMA LwM2M 1.0 specification)
+          example: pmin
+        value:
+          type: string
+          description: Value of the metadata. If not provided the metadata will be unset.
+          example: '10'
+      required:
+      - name
+    TwinOperationPolicy:
+      type: object
+      properties:
+        attempts:
+          type: integer
+          format: int32
+          default: 1
+          description: maximum number of attempts until operation successfully reached device (default 1 means no retry)
+          maximum: 5
+          minimum: 1
+    AbbreviatedTwinOperationWriteMetadataResponse:
+      allOf:
+      - $ref: '#/components/schemas/AbstractAbbreviatedTwinOperationResponse'
+      - type: object
+        properties:
+          type:
+            type: string
+            default: WRITE-METADATA
+            description: 'WRITE METADATA operation: this operation is used to write (set, update, unset) metadata on device object(s).'
+          values:
+            type: array
+            description: Path and set of metadata to write
+            example: '[ {"path":"/1/0/7",
+
+              "metadata": [
+
+              {"name" : "pmin", "value" : "20"},
+
+              {"name" : "gt", "value" : "50"},
+
+              {"name" : "lt"}
+
+              ]'
+            items:
+              $ref: '#/components/schemas/TwinOperationWriteMetadataValue'
+            uniqueItems: true
+      required:
+      - created
+      - id
+      - status
+      - type
+      - updated
+      - values
+    AbstractTwinOperationRequest:
+      type: object
+      discriminator:
+        propertyName: type
+      properties:
+        type:
+          type: string
+        options:
+          $ref: '#/components/schemas/TwinOperationOptions'
+          description: Operations options
+        contextToken:
+          type: string
+          description: optional operation context token.
+          example: Campaign 42 operation
+        policy:
+          $ref: '#/components/schemas/TwinOperationPolicy'
+          description: optional operation policy
+      required:
+      - type
+    AbstractAbbreviatedTwinOperationResponse:
+      type: object
+      discriminator:
+        propertyName: type
+      properties:
+        id:
+          type: string
+          description: operation unique identifier
+          example: 11fd797e674d4607830dfe2daaf15e4c
+        type:
+          type: string
+          description: twin operation among ["READ", "WRITE", "EXECUTE", "WRITE-METADATA"]
+          example: WRITE
+        contextToken:
+          type: string
+          description: optional string (Tag like)
+        status:
+          type: string
+          description: operation status can be ["PENDING", "SENT", "RETRYING", "OK", "CANCELED", "EXPIRED", "FAILED"]
+          enum:
+          - PENDING
+          - SENT
+          - RETRYING
+          - OK
+          - CANCELED
+          - EXPIRED
+          - FAILED
+          - UNKNOWN
+          example: SENT
+        options:
+          $ref: '#/components/schemas/TwinOperationOptions'
+          description: operation options
+          example:
+            lwm2m:
+              contentFormat:
+                request: SENML_CBOR
+                response: SENML_CBOR
+        error:
+          $ref: '#/components/schemas/TwinOperationError'
+          description: operation error when status is FAILED
+          example:
+            code: OPERATION_TIMEOUT
+            details: operation timeout
+        created:
+          type: string
+          format: date-time
+          description: operation creation date/time
+          example: '2021-12-06T11:32:25.055Z'
+        updated:
+          type: string
+          format: date-time
+          description: operation last status update date/time
+          example: '2021-12-06T11:32:25.055Z'
+        policy:
+          $ref: '#/components/schemas/TwinOperationPolicy'
+          description: optional operation policy
+      required:
+      - created
+      - id
+      - status
+      - type
+      - updated
+    TwinOperationRead:
+      allOf:
+      - $ref: '#/components/schemas/AbstractTwinOperationRequest'
+      - type: object
+        properties:
+          type:
+            type: string
+            description: 'READ operation: this operation is used to read attribute(s) value(s) of device object(s).'
+            example: READ
+          paths:
+            type: array
+            items:
+              type: string
+              description: Paths of attribute, attribute instance, array of attribute instances, object instance or all the object instances of an object to read
+              example:
+              - /1/0/7
+              - /1/0
+              - /1
+              - /1/0/24/4
+            uniqueItems: true
+      required:
+      - paths
+      - type
+    WebErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+      required:
+      - code
+      - id
+      - message
+    AbstractTwinOperationResponse:
+      type: object
+      discriminator:
+        propertyName: type
+      properties:
+        id:
+          type: string
+          description: operation unique identifier
+          example: 11fd797e674d4607830dfe2daaf15e4c
+        type:
+          type: string
+          description: twin operation among ["READ", "WRITE", "EXECUTE", "WRITE-METADATA"]
+          example: WRITE
+        contextToken:
+          type: string
+          description: optional string (Tag like)
+        status:
+          type: string
+          description: operation status can be ["PENDING", "SENT", "RETRYING", "OK", "CANCELED", "EXPIRED", "FAILED"]
+          enum:
+          - PENDING
+          - SENT
+          - RETRYING
+          - OK
+          - CANCELED
+          - EXPIRED
+          - FAILED
+          - UNKNOWN
+          example: SENT
+        options:
+          $ref: '#/components/schemas/TwinOperationOptions'
+          description: operation options
+          example:
+            lwm2m:
+              contentFormat:
+                request: SENML_CBOR
+                response: SENML_CBOR
+        error:
+          $ref: '#/components/schemas/TwinOperationError'
+          description: operation error when status is FAILED
+          example:
+            code: OPERATION_TIMEOUT
+            details: operation timeout
+        created:
+          type: string
+          format: date-time
+          description: operation creation date/time
+          example: '2021-12-06T11:32:25.055Z'
+        updated:
+          type: string
+          format: date-time
+          description: operation last status update date/time
+          example: '2021-12-06T11:32:25.055Z'
+        policy:
+          $ref: '#/components/schemas/TwinOperationPolicy'
+          description: optional operation policy
+      required:
+      - created
+      - id
+      - status
+      - type
+      - updated
+    TwinOperationWriteMetadataResponse:
+      allOf:
+      - $ref: '#/components/schemas/AbstractTwinOperationResponse'
+      - type: object
+        properties:
+          type:
+            type: string
+            default: WRITE-METADATA
+            description: 'WRITE METADATA operation: this operation is used to write (set, update, unset) metadata on device object(s).'
+          values:
+            type: array
+            description: Path and set of metadata to write
+            example: '[ {"path":"/1/0/7",
+
+              "metadata": [
+
+              {"name" : "pmin", "value" : "20"},
+
+              {"name" : "gt", "value" : "50"},
+
+              {"name" : "lt"}
+
+              ]'
+            items:
+              $ref: '#/components/schemas/TwinOperationWriteMetadataValue'
+            uniqueItems: true
+      required:
+      - created
+      - id
+      - status
+      - type
+      - updated
+      - values
+    RequestedContentFormat:
+      type: object
+      properties:
+        request:
+          type: string
+        response:
+          type: string
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''

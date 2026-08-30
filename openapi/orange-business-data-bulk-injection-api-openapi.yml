@@ -1,0 +1,163 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide Data bulk injection API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: Data bulk injection
+  description: APIs to inject a bulk of data
+paths:
+  /api/v0/data/bulk:
+    post:
+      tags:
+      - Data bulk injection
+      summary: Insert a bulk of new Data
+      description: 'Restricted to API keys with at least one of the following roles: DATA_W.'
+      operationId: addDataBulk
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DataBulkWeb'
+        required: true
+      responses:
+        '202':
+          description: Request has been accepted. Data processing ongoing.
+components:
+  schemas:
+    Location:
+      type: object
+      description: geographic location
+      properties:
+        lat:
+          type: number
+          format: double
+          description: Latitude value
+          example: 45.000009
+        lon:
+          type: number
+          format: double
+          description: Longitude value
+          example: -30.00001
+        alt:
+          type: number
+          format: double
+          description: Altitude value
+          example: 5.00001
+        accuracy:
+          type: number
+          format: double
+          description: Accuracy value
+          example: 10.0
+        provider:
+          type: string
+          description: Provider of the location
+          example: GPS
+      required:
+      - lat
+      - lon
+    Metadata:
+      type: object
+      properties:
+        source:
+          type: string
+          description: source of the data
+          example: urn:tenantName:FFFFFFFFFFFFFFFF!mystream
+        encoding:
+          type: string
+          description: encoding format name, that should match the 'encoding' field of the decoder that will process this datamessage.
+    DataBulkItemWeb:
+      type: object
+      description: Unitary data item in a bulk.
+      properties:
+        timestamp:
+          type: string
+          description: ISO 8601 date time
+          example: '2016-08-24T10:32:52.598Z'
+        location:
+          $ref: '#/components/schemas/Location'
+        model:
+          type: string
+          description: Model of the injected data. Data with the same model must have coherent types in each value fields. This field is required to perform an advanced search on the data. Can not contains space or dot characters.
+          example: MyModelSettingName
+        value:
+          description: Must be a JsonObject (primitive objects like string or int are not allowed). It can not contain field names starting with '$' character or containing dot '.' character and its size should not exceed 1 MiB. To use decoding capability, 'value.payload' field must be use to set encoded content as String (in case of binary content, HexBinary String representation of this content)
+          example:
+            hexaFlag001: 2F00
+            temp: 22.0
+            pressure: 36575.0
+        tags:
+          type: array
+          description: Easy way to 'tag' the data in order to ease up advanced search through all streams and models
+          example:
+          - Motor
+          - Engine
+          items:
+            type: string
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          description: 'Metadata of the stored value : may include user metadata (source) as well as additional information (protocol, server, user...)'
+          example:
+            source: urn:tenantName:FFFFFFFFFFFFFFFF!mystream
+        streamId:
+          type: string
+          description: 'StreamId in which the data will be added. Should not contains following character or space : '' \ " ; { } ( )'
+          example: urn:tenantName:FFFFFFFFFFFFFFFF!mystream
+      required:
+      - value
+    DataBulkWeb:
+      type: array
+      description: Bulk of Data to add
+      items:
+        $ref: '#/components/schemas/DataBulkItemWeb'
+      properties:
+        empty:
+          type: boolean
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''

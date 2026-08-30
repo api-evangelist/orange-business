@@ -1,0 +1,721 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide Inventory Explorer API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: Inventory Explorer
+  description: Inventory explorer management
+paths:
+  /api/v1/deviceMgt/explorer/stats:
+    post:
+      tags:
+      - Inventory Explorer
+      summary: Count and aggregate devices across the fleet.
+      description: "Provides aggregation and counting capabilities over the entire fleet inventory index.\nIt is intended for dashboards, analytics, and reporting where you need counts and distributions\nrather than individual device details.\n<br/><p><span style=\"text-decoration: underline;\">RSQL supported fields are</span>:</p>\n<ul>\n<li>\"name\": device name</li>\n<li>\"id\": device identifier</li>\n<li>\"group.path\": group path</li>\n<li>\"group.id\": group identifier</li>\n<li>\"tags\": tags</li>\n<li>\"properties.k\": properties key</li>\n<li>\"properties.v\": properties value</li>\n<li>\"properties\": properties (associated with =q= operator)</li>\n<ul>\n<li>Ex: properties=q='k==myKey and v==myValue'</li>\n<li>Ex: properties=q='k==\"my key\" and v==myValue'</li>\n</ul>\n<li>\"property.\": properties (associated with key value, the key must contain only alphanumeric characters and '_')</li>\n<ul>\n<li>Ex: property.myKey==myValue</li>\n</ul>\n<li>\"interfaces\": interface (associated with =q= operator)</li>\n<li>\"interfaces.connector\": interface connector type (Ex: sms, lora, mqtt)</li>\n<li>\"interfaces.nodeId\": interface node identifier</li>\n<li>\"interfaces.enabled\": interface state (true or false)</li>\n<li>\"interfaces.status\": interface status (REGISTERED,\n    INITIALIZING,\n    INITIALIZED,\n    REACTIVATED,\n    ONLINE,\n    ACTIVATED,\n    OFFLINE,\n    SLEEPING,\n    DEACTIVATED,\n    CONNECTIVITY_ERROR,\n    UNKNOWN)</li>\n<li>\"interfaces.definition.profile\": interface profile</li>\n<li>\"activities\": activities (associated with =q= operator)</li>\n<li>\"activities.ruleId\": activities rule identifier</li>\n<li>\"activities.state\": activities state (UNKNOWN, SILENT, ACTIVE)</li>\n<li>\"aggregatedActivityState\": aggregated activity state (UNKNOWN, SILENT, ACTIVE)</li>\n<li>\"network.lora.lostMessagesRangeLabel\": Bucket (0-10%, 10-20%, 20-30%, 30-100%) corresponding to the Lora lost messages ratio</li>\n</ul><br /><p><span style=\"text-decoration: underline;\">RSQL supported operators are</span>:</p>\n<ul>\n<li>\"==\": equality</li>\n<li>\"==<value>*\": equality with prefix</li>\n<ul>\n<li>Ex: tags==val* means search for all tags starting with val characters</li>\n</ul>\n<li>\"!=\": difference</li>\n<li>\"=q='<sub_request>'\": equality only for activity, interfaces, properties fields</li>\n<ul>\n<li>Ex: properties=q='k==myKey and v==myValue' equivalent to property.myKey==myValue</li>\n</ul>\n<li>\"=in=\": group of possible value (corresponding to several or operators)</li>\n<ul>\n<li>Ex: activity.state=in=(silent, active) equivalent to activity.state==silent or activity.state==active</li>\n</ul>\n<li>\"and\"</li>\n<li>\";\": identical to and operator</li>\n<li>\"or\"</li>\n<li>\",\": identical to or operator</li>\n</ul><br /><p><span style=\"text-decoration: underline;\">RSQL complex syntax using (), '', \"\" can be executed</span>:</p>\n<ul>\n<li>(tags==myTag or name==awesome*) and (group.path==/foo/* or properties=q='k==Version and v==\"my complete value\"' and interfaces.connector==lora)</li>\n<li>tags=='Aujourd'hui'</li>\n\"</ul><br /><p>The inventory service maintains an indexed version of the whole fleet.\nAs a consequence, a latency of a few seconds has to be expected before the current state of the fleet is available in the inventory index,\nthis latency can be longer especially when dealing with very large fleets.</p><br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_R."
+      operationId: createStats
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StatsRequest'
+            examples:
+              Interfaces connectors and status:
+                $ref: swagger/static/examples/dm/explorer/stats_interfaces_request.json
+              Location:
+                $ref: swagger/static/examples/dm/explorer/stats_location_request.json
+              Location and interfaces:
+                $ref: swagger/static/examples/dm/explorer/stats_location_interfaces_request.json
+              Properties:
+                $ref: swagger/static/examples/dm/explorer/stats_nested_filter_properties_request.json
+              Lora lost messages:
+                $ref: swagger/static/examples/dm/explorer/stats_lora_lost_messages_range_request.json
+        required: true
+      responses:
+        '200':
+          description: Stats response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatsResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceErrorResponse'
+  /api/v1/deviceMgt/explorer/search:
+    post:
+      tags:
+      - Inventory Explorer
+      summary: Search devices in the inventory index.
+      description: "Enables querying and retrieving detailed device information from the entire fleet inventory index\nwith flexible filtering capabilities. Unlike standard device management APIs, this endpoint queries an enriched,\nindexed representation of devices, optimized for complex search operations and list views.\n<br/><p><span style=\"text-decoration: underline;\">RSQL supported fields are</span>:</p>\n<ul>\n<li>\"name\": device name</li>\n<li>\"id\": device identifier</li>\n<li>\"group.path\": group path</li>\n<li>\"group.id\": group identifier</li>\n<li>\"tags\": tags</li>\n<li>\"properties.k\": properties key</li>\n<li>\"properties.v\": properties value</li>\n<li>\"properties\": properties (associated with =q= operator)</li>\n<ul>\n<li>Ex: properties=q='k==myKey and v==myValue'</li>\n<li>Ex: properties=q='k==\"my key\" and v==myValue'</li>\n</ul>\n<li>\"property.\": properties (associated with key value, the key must contain only alphanumeric characters and '_')</li>\n<ul>\n<li>Ex: property.myKey==myValue</li>\n</ul>\n<li>\"interfaces\": interface (associated with =q= operator)</li>\n<li>\"interfaces.connector\": interface connector type (Ex: sms, lora, mqtt)</li>\n<li>\"interfaces.nodeId\": interface node identifier</li>\n<li>\"interfaces.enabled\": interface state (true or false)</li>\n<li>\"interfaces.status\": interface status (REGISTERED,\n    INITIALIZING,\n    INITIALIZED,\n    REACTIVATED,\n    ONLINE,\n    ACTIVATED,\n    OFFLINE,\n    SLEEPING,\n    DEACTIVATED,\n    CONNECTIVITY_ERROR,\n    UNKNOWN)</li>\n<li>\"interfaces.definition.profile\": interface profile</li>\n<li>\"activities\": activities (associated with =q= operator)</li>\n<li>\"activities.ruleId\": activities rule identifier</li>\n<li>\"activities.state\": activities state (UNKNOWN, SILENT, ACTIVE)</li>\n<li>\"aggregatedActivityState\": aggregated activity state (UNKNOWN, SILENT, ACTIVE)</li>\n<li>\"network.lora.lostMessagesRangeLabel\": Bucket (0-10%, 10-20%, 20-30%, 30-100%) corresponding to the Lora lost messages ratio</li>\n</ul><br /><p><span style=\"text-decoration: underline;\">RSQL supported operators are</span>:</p>\n<ul>\n<li>\"==\": equality</li>\n<li>\"==<value>*\": equality with prefix</li>\n<ul>\n<li>Ex: tags==val* means search for all tags starting with val characters</li>\n</ul>\n<li>\"!=\": difference</li>\n<li>\"=q='<sub_request>'\": equality only for activity, interfaces, properties fields</li>\n<ul>\n<li>Ex: properties=q='k==myKey and v==myValue' equivalent to property.myKey==myValue</li>\n</ul>\n<li>\"=in=\": group of possible value (corresponding to several or operators)</li>\n<ul>\n<li>Ex: activity.state=in=(silent, active) equivalent to activity.state==silent or activity.state==active</li>\n</ul>\n<li>\"and\"</li>\n<li>\";\": identical to and operator</li>\n<li>\"or\"</li>\n<li>\",\": identical to or operator</li>\n</ul><br /><p><span style=\"text-decoration: underline;\">RSQL complex syntax using (), '', \"\" can be executed</span>:</p>\n<ul>\n<li>(tags==myTag or name==awesome*) and (group.path==/foo/* or properties=q='k==Version and v==\"my complete value\"' and interfaces.connector==lora)</li>\n<li>tags=='Aujourd'hui'</li>\n\"</ul><br /><p>The inventory service maintains an indexed version of the whole fleet.\nAs a consequence, a latency of a few seconds has to be expected before the current state of the fleet is available in the inventory index,\nthis latency can be longer especially when dealing with very large fleets.</p><br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_R."
+      operationId: createSearch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchRequest'
+            examples:
+              Group and interfaces:
+                $ref: swagger/static/examples/dm/explorer/search_rsql_interface_request.json
+              Tags and activity state:
+                $ref: swagger/static/examples/dm/explorer/search_rsql_tags_request.json
+              Partial search:
+                $ref: swagger/static/examples/dm/explorer/search_partial_request.json
+              Location:
+                $ref: swagger/static/examples/dm/explorer/search_geobounds_request.json
+              Lora lost messages:
+                $ref: swagger/static/examples/dm/explorer/search_lora_lost_messages_request.json
+        required: true
+      responses:
+        '200':
+          description: Search response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceErrorResponse'
+components:
+  schemas:
+    PropertiesFilters:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+    StatsOptions:
+      type: object
+      properties:
+        includeTotalKeys:
+          type: boolean
+          description: should include total keys
+        includeMissingDevicesCount:
+          type: boolean
+          description: should include missing devices count
+        includeGeoBoundsInBuckets:
+          type: boolean
+          description: should include geo bounds in bucket
+    FieldBucket:
+      type: object
+      properties:
+        key: {}
+        count:
+          type: integer
+          format: int64
+        devices:
+          type: integer
+          format: int64
+        fieldAggregation:
+          description: Field aggregation
+    ServiceErrorResponse:
+      type: object
+      description: Generic Error in Response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+        category:
+          type: string
+          description: Error category
+          enum:
+          - PERMANENT
+          - TRANSIENT
+          - UNEXPECTED
+      required:
+      - category
+      - code
+      - id
+      - message
+    InterfaceDefinition:
+      type: object
+      properties:
+        connector:
+          type: string
+          description: Interface connector
+          example: lwm2m
+        nodeId:
+          type: string
+          description: Interface node identifier
+          example: 12345A0409001C1A
+      required:
+      - connector
+    GroupBy:
+      type: object
+      properties:
+        groupBy:
+          description: group by
+        field:
+          type: string
+          enum:
+          - tags
+          - description
+          - group.path
+          - aggregatedActivityState
+          - network.lora.lostMessagesRangeLabel
+        compositeField:
+          type: string
+          enum:
+          - connectors
+        interfaces:
+          $ref: '#/components/schemas/GroupByInterfaces'
+        properties:
+          $ref: '#/components/schemas/GroupByProperties'
+        activityStates:
+          $ref: '#/components/schemas/GroupByActivityStates'
+        location:
+          $ref: '#/components/schemas/GroupByLocation'
+    NetworkInfo:
+      type: object
+      properties:
+        lora:
+          $ref: '#/components/schemas/LoraInfo'
+          description: Lora network traffic data
+    ActivityRuleFilters:
+      type: object
+      properties:
+        id:
+          type: string
+    LocationInfo:
+      type: object
+      properties:
+        lat:
+          type: number
+          format: double
+          description: 'Latitude value. The latitude must be between -90 and 90 '
+          example: 45.000009
+        lon:
+          type: number
+          format: double
+          description: Longitude value. The longitude must be between -180 and 180
+          example: -30.00001
+        alt:
+          type: number
+          format: double
+          description: Altitude value. The altitude must be between -10000 and 10000
+          example: 5.00001
+        accuracy:
+          type: number
+          format: double
+          description: Accuracy value (in meter).
+          example: 20.0
+        provider:
+          type: string
+          description: Location provider.
+          example: GPS
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Location date.
+          example: '2016-06-03T15:55:36.944Z'
+    SearchRequest:
+      type: object
+      description: Search request
+      properties:
+        query:
+          type: string
+          description: '<p>Partial search (max 256 characters)</p><p>Complementary information :</p><ul><li> case insensitive</li><li> searched among the following fields: id, name, group.path, tags, interfaces.nodeId
+
+            properties.key, properties.value</li><li> if there are multiple words, they are filtered with OR operator</li></ul>'
+        filters:
+          $ref: '#/components/schemas/SearchFilters'
+          description: search filters
+        sort:
+          type: array
+          description: '<p>List of sort by attributes (supported fields are : id, name, group.path, created, updated, lastCommunication, interfaces.status, interfaces.enabled, interfaces.lastContact, relevance, network.lora.lostMessagesRatio).</p><p>Complementary syntax to use :</p><ul><li> add ''-'' before field to sort in descending order</li><li> set id always at the end of sort list</li></ul>'
+          example:
+          - name
+          - -created
+          items:
+            type: string
+        bookmark:
+          type: array
+          description: list of bookmarks of the last search response (must respect the sort list order). When it is using, a bookmark id must always be set even if sort list is empty or "id" criteria is missing.
+          example:
+          - Auto-created device (lora / EE00EF0000000011)
+          - 1593700879802
+          items: {}
+        size:
+          type: integer
+          format: int32
+          description: Max number of devices per page
+          example: 20
+    GroupInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          description: group identifier
+          example: ABC123
+        path:
+          type: string
+          description: group path
+          example: /awesome/donkey
+    InterfacesFilters:
+      type: object
+      properties:
+        connector:
+          type: string
+        status:
+          type: string
+        definition:
+          $ref: '#/components/schemas/InterfaceDefinition'
+    StatsResponse:
+      type: object
+      description: Stats response
+      properties:
+        devices:
+          type: integer
+          format: int64
+          description: devices count after applying global filters
+        fieldAggregation:
+          $ref: '#/components/schemas/FieldAggregation'
+          description: field aggregation
+        geoAggregation:
+          $ref: '#/components/schemas/GeoAggregation'
+          description: geo aggregation
+    SearchResponse:
+      type: object
+      description: Search response
+      properties:
+        bookmark:
+          type: array
+          description: last indexes of the search corresponding to the sort order
+          example:
+          - Auto-created device (lora / EE00EF0000000011)
+          - 1593700879802
+          items: {}
+        devices:
+          type: array
+          description: devices aggregation after applying global filters
+          items:
+            $ref: '#/components/schemas/DeviceInfoClient'
+    InterfaceCapabilityInfo:
+      type: object
+      properties:
+        available:
+          type: boolean
+        version:
+          type: integer
+          format: int32
+    FieldAggregation:
+      type: object
+      description: Field aggregation
+      properties:
+        count:
+          type: integer
+          format: int64
+          description: total number of entries (interfaces,properties, or activityState) in aggregation buckets
+        devices:
+          type: integer
+          format: int64
+          description: total number of devices in aggregation buckets
+        buckets:
+          type: array
+          description: aggregation buckets
+          items:
+            $ref: '#/components/schemas/FieldBucket'
+        missing:
+          type: integer
+          format: int64
+          description: total number of devices not matching group-by clause
+        keys:
+          type: integer
+          format: int64
+          description: unique keys count
+    GeoAggregation:
+      type: object
+      description: Geo aggregation
+      properties:
+        count:
+          type: integer
+          format: int64
+          description: total number of entries (interfaces,properties, or activityState) in aggregation buckets
+        devices:
+          type: integer
+          format: int64
+          description: total number of devices in aggregation buckets
+        buckets:
+          type: array
+          description: aggregation buckets
+          items:
+            $ref: '#/components/schemas/LocationBucket'
+        missing:
+          type: integer
+          format: int64
+          description: total number of devices not matching group-by clause
+        geoBounds:
+          $ref: '#/components/schemas/GeoBounds'
+          description: geo bounds (bounding box containing all geo values)
+    SearchFilters:
+      type: object
+      properties:
+        geoBounds:
+          $ref: '#/components/schemas/GeoBounds'
+          description: Geo bounds filter
+        queryString:
+          type: string
+          description: Filtering expression using RSQL notation (max 512 characters).
+    Coordinates:
+      type: object
+      properties:
+        lat:
+          type: number
+          format: double
+          description: latitude
+          example: 52.369219
+        lon:
+          type: number
+          format: double
+          description: longitude
+          example: 4.901618
+      required:
+      - lat
+      - lon
+    GroupByProperties:
+      type: object
+      properties:
+        groupBy:
+          description: group by
+        field:
+          type: string
+          enum:
+          - key
+          - value
+        filter:
+          $ref: '#/components/schemas/PropertiesFilters'
+    DeviceInfoClient:
+      type: object
+      properties:
+        id:
+          type: string
+          description: device identifier
+          example: urn:lo:nsid:sensor:1234
+        name:
+          type: string
+          description: device name
+          example: MyDevice
+        description:
+          type: string
+          description: device description
+          example: This is my device
+        group:
+          $ref: '#/components/schemas/GroupInfo'
+          description: device group
+        tags:
+          type: array
+          description: device tags
+          example:
+          - door
+          - bell
+          items:
+            type: string
+          uniqueItems: true
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+          description: device properties
+          example:
+            horn: cucaracha
+        interfaces:
+          type: array
+          description: List of this device's interfaces (i.e. 'connectivity nodes')
+          items:
+            $ref: '#/components/schemas/DeviceInterfaceInfo'
+        location:
+          $ref: '#/components/schemas/LocationInfo'
+          description: device location
+        activities:
+          type: array
+          description: List of activities of the device according to the activity rules set for this device
+          items:
+            $ref: '#/components/schemas/ActivityInfo'
+        aggregatedActivityState:
+          type: string
+          description: Aggregated activity state for this device in (ACTIVE, SILENT, UNKNOWN) possible values
+          example: ACTIVE
+        defaultDataStreamId:
+          type: string
+          description: default data streamId
+          example: urn:lo:nsid:mysensor:001
+        lastCommunication:
+          type: string
+          format: date-time
+          description: Last communication date
+          example: '2019-01-01T00:00:00.000Z'
+        network:
+          $ref: '#/components/schemas/NetworkInfo'
+          description: network traffic data
+        created:
+          type: string
+          format: date-time
+          description: Date/time when device was first registered
+          example: '2019-01-01T00:00:00.000Z'
+        updated:
+          type: string
+          format: date-time
+          description: Date/time when device status has been lastly updated
+          example: '2019-01-01T00:00:00.000Z'
+    DeviceInterfaceInfo:
+      type: object
+      properties:
+        connector:
+          type: string
+          description: Interface connector
+          example: mqtt
+        nodeId:
+          type: string
+          description: Interface node identifier
+          example: urn:lo:nsid:sensor:1234
+        enabled:
+          type: boolean
+          description: Indicates whether the interface is enabled
+          example: true
+        status:
+          type: string
+          description: Interface status
+          example: ONLINE
+        definition:
+          description: Base definition
+        capabilities:
+          $ref: '#/components/schemas/InterfaceCapabilitiesInfo'
+          description: Interface capabilities
+        activity:
+          description: Interface activity
+        lastContact:
+          type: string
+          format: date-time
+          description: Last contact date
+          example: '2019-01-01T00:00:00.000Z'
+        created:
+          type: string
+          format: date-time
+          description: Date/time of the device creation
+          example: '2019-01-01T00:00:00.000Z'
+        updated:
+          type: string
+          format: date-time
+          description: Date/time of the device update
+          example: '2019-01-01T00:00:00.000Z'
+    LocationBucket:
+      type: object
+      description: Location bucket
+      properties:
+        geoKey:
+          $ref: '#/components/schemas/Coordinates'
+          description: location coordinate
+        geoBounds:
+          $ref: '#/components/schemas/GeoBounds'
+          description: geo bounds coordinates
+        devices:
+          type: integer
+          format: int64
+          description: location total number of devices
+        fieldAggregation:
+          $ref: '#/components/schemas/FieldAggregation'
+          description: location field sub aggregation
+    GeoBounds:
+      type: object
+      properties:
+        topLeft:
+          $ref: '#/components/schemas/Coordinates'
+          description: top-left coordinate
+        bottomRight:
+          $ref: '#/components/schemas/Coordinates'
+          description: bottom-right coordinate
+      required:
+      - bottomRight
+      - topLeft
+    GroupByLocation:
+      type: object
+      properties:
+        groupBy:
+          description: group by
+        precision:
+          type: integer
+          format: int32
+    GroupByActivityRule:
+      type: object
+      properties:
+        field:
+          type: string
+          enum:
+          - id
+    StatsFilters:
+      type: object
+      properties:
+        geoBounds:
+          $ref: '#/components/schemas/GeoBounds'
+          description: Geo bounds
+        queryString:
+          type: string
+          description: Filtering expression using RSQL notation (max 512 characters).
+    ActivityStatesFilters:
+      type: object
+      properties:
+        rule:
+          $ref: '#/components/schemas/ActivityRuleFilters'
+        states:
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+    InterfaceCapabilitiesInfo:
+      type: object
+      properties:
+        configuration:
+          $ref: '#/components/schemas/InterfaceCapabilityInfo'
+          description: Interface configuration capability
+        command:
+          $ref: '#/components/schemas/InterfaceCapabilityInfo'
+          description: Interface command capability
+        resource:
+          $ref: '#/components/schemas/InterfaceCapabilityInfo'
+          description: Interface resource capability
+        twin:
+          $ref: '#/components/schemas/InterfaceCapabilityInfo'
+          description: Interface twin capability
+    ActivityInfo:
+      type: object
+      properties:
+        ruleId:
+          type: string
+          description: Activity rule identifier
+          example: ab12
+        state:
+          type: string
+          description: Activity state of the device according to the activity rules set for this device
+          example: ACTIVE
+    GroupByInterfaces:
+      type: object
+      properties:
+        groupBy:
+          description: group by
+        field:
+          type: string
+          enum:
+          - definition.profile
+          - connector
+          - status
+        definition:
+          $ref: '#/components/schemas/GroupByInterfaceDefinition'
+        filter:
+          $ref: '#/components/schemas/InterfacesFilters'
+    GroupByInterfaceDefinition:
+      type: object
+      properties:
+        field:
+          type: string
+          enum:
+          - profile
+    LoraInfo:
+      type: object
+      properties:
+        lostMessagesRatio:
+          type: number
+          format: float
+          description: Lost messages ratio on Lora connectivity (1.0 if all messages are lost)
+          example: 0.02
+    GroupByActivityStates:
+      type: object
+      properties:
+        groupBy:
+          description: group by
+        field:
+          type: string
+          enum:
+          - state
+          - rule.id
+        rule:
+          $ref: '#/components/schemas/GroupByActivityRule'
+        filter:
+          $ref: '#/components/schemas/ActivityStatesFilters'
+    StatsRequest:
+      type: object
+      description: Stats request
+      properties:
+        groupBy:
+          $ref: '#/components/schemas/GroupBy'
+          description: group by
+        options:
+          $ref: '#/components/schemas/StatsOptions'
+          description: Statistics options
+        filters:
+          $ref: '#/components/schemas/StatsFilters'
+          description: Statistics filters
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''

@@ -1,0 +1,326 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide Deprecated - Bus management API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: Deprecated - Bus management
+  description: FIFO are now automatically managed with FifoPublish Action in Trigger & Actions
+paths:
+  /api/v0/topics/fifo:
+    get:
+      tags:
+      - Deprecated - Bus management
+      summary: Deprecated - Listing FIFO topics. Use forceRefresh=true parameter to get recent fifo statistics.
+      description: 'Use ''Triggers and Actions'' instead. <br/><br/>Restricted to API keys with at least one of the following roles: BUS_CONFIG_R.'
+      operationId: listFifoV0
+      parameters:
+      - name: size
+        in: query
+        description: the maximum number of items per page (optional, highest value is 1000)
+        required: false
+        schema:
+          type: string
+          default: '20'
+      - name: page
+        in: query
+        description: the requested page number (optional)
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      responses:
+        '200':
+          description: The FIFO list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageableFifoTopic'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '429':
+          description: Too Many Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+      deprecated: true
+    post:
+      tags:
+      - Deprecated - Bus management
+      summary: 'Deprecated - Creating a new FIFO. '
+      description: 'Use ''Triggers and Actions'' instead, actions targeting unexisting FIFOs will automatically create the corresponding FIFO.<br/><br/>Usage of this API will be reported in your access log under ''routing'' category.<br/><br/>Restricted to API keys with at least one of the following roles: BUS_CONFIG_W.'
+      operationId: createFifoV0
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FifoCreateRequest'
+        required: true
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: FIFO creation forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '409':
+          description: FIFO already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+      deprecated: true
+  /api/v0/topics/fifo/{fifoName}:
+    get:
+      tags:
+      - Deprecated - Bus management
+      summary: 'Deprecated - Getting a FIFO. '
+      description: 'Use ''Triggers and Actions'' instead. <br/><br/>Restricted to API keys with at least one of the following roles: BUS_CONFIG_R.'
+      operationId: getFifoV0
+      parameters:
+      - name: fifoName
+        in: path
+        description: name of the fifo. Fifo name must respect the following regular expression <code>[A-Za-z\d\-_~]+</code> (max 255 characters)
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: A FIFO
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FifoTopic'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: FIFO not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+      deprecated: true
+    delete:
+      tags:
+      - Deprecated - Bus management
+      summary: 'Deprecated - Deleting a FIFO. '
+      description: 'Use ''Triggers and Actions'' instead, deleting an action targeting a FIFO will automatically delete the corresponding FIFO if it is not targeted by any other action. <br/><br/>Usage of this API will be reported in your access log under ''routing'' category.<br/><br/>Restricted to API keys with at least one of the following roles: BUS_CONFIG_W.'
+      operationId: deleteFifoV0
+      parameters:
+      - name: fifoName
+        in: path
+        description: name of the fifo. Fifo name must respect the following regular expression <code>[A-Za-z\d\-_~]+</code> (max 255 characters)
+        required: true
+        schema:
+          type: string
+      - name: force
+        in: query
+        description: 'false: Live Objects prevents deleting fifo while there is at least one consumer,
+
+          true: the fifo will be deleted in any cases.'
+        required: false
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: FIFO deleted (if true)
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+      deprecated: true
+components:
+  schemas:
+    PageableFifoTopic:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int64
+          description: 'number of the current page: starts at 0.'
+          example: 0
+        size:
+          type: integer
+          format: int64
+          description: number of data per page (= maximum number of data in the associated list of data:the last page can have less data)
+          example: 1
+        totalCount:
+          type: integer
+          format: int64
+          description: total count of data in the complete list.
+          example: 1
+        data:
+          type: array
+          description: list of data in this page.
+          items:
+            $ref: '#/components/schemas/FifoTopic'
+      required:
+      - data
+      - page
+      - size
+      - totalCount
+    WebErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+      required:
+      - code
+      - id
+      - message
+    FifoTopic:
+      type: object
+      description: body of FIFO data
+      properties:
+        name:
+          type: string
+          description: Topic name of the FIFO
+          example: MyFIFOName
+        messages:
+          type: integer
+          format: int64
+          description: Number of message stored
+        messageBytes:
+          type: integer
+          format: int64
+          description: Total number of bytes stored
+        messageUnacknowledged:
+          type: integer
+          format: int64
+          description: Total number of bytes of unacknowledged messages
+        messageUnacknowledgedBytes:
+          type: integer
+          format: int64
+          description: Total number of bytes of unacknowledged messages
+        consumers:
+          type: integer
+          format: int64
+          description: Number of active consumers
+        maxLengthBytes:
+          type: integer
+          format: int64
+          description: Deprecated. Always returns -1.
+        messageTtl:
+          type: integer
+          format: int32
+          description: 'Deprecated. This value has no impact anymore.The TTL is now managed by the actionPolicy''s fifoPublish action that targets this FIFO : if ''noRetention'' is enabled, TTL is 0 else, it will be your offer''s recovery duration.'
+      required:
+      - name
+    FifoCreateRequest:
+      type: object
+      description: body for create a new fifo
+      properties:
+        name:
+          type: string
+          description: Topic name of the FIFO. Fifo name must respect the following regular expression <code>[A-Za-z\d\-_~]+</code> (max 255 characters)
+          example: MyFIFOName
+        maxLengthBytes:
+          type: integer
+          format: int64
+          description: Deprecated, the value is ignored. There is no limit on the number of messages nor on the total size of messages that can be stored in a FIFO.
+          example: 524288
+        messageTtl:
+          type: integer
+          format: int32
+          description: Deprecated, the value is ignored. The TTL is fixed and depends on your offer. You can set the TTL of message to 0 by setting noRetention=true on the corresponding actionPolicy fifoPublish action.
+          example: 604800
+      required:
+      - name
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''

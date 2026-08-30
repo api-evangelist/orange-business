@@ -1,0 +1,193 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide Deprecated - Data management data search - V0 API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: Deprecated - Data management data search - V0
+  description: use data search V1 instead
+paths:
+  /api/v0/data/search:
+    post:
+      tags:
+      - Deprecated - Data management data search - V0
+      summary: Query an Elasticsearch Domain Specific Language request
+      description: 'return the json serialization of an Elasticsearch SearchResponse for the query<br/><br/>Restricted to API keys with at least one of the following roles: DATA_R.'
+      operationId: dslQueryV0
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+              description: elasticsearch DSL request
+        required: true
+      responses:
+        '200':
+          description: json serialization of an Elasticsearch SearchResponse for the query
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonObjectForSwagger'
+  /api/v0/data/search/hits:
+    post:
+      tags:
+      - Deprecated - Data management data search - V0
+      summary: Query an Elasticsearch Domain Specific Language request and get only hits result
+      description: 'return a json array of stored data that match the query.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_R.'
+      operationId: dslQueryHitsOnlyV0
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+              description: elasticsearch DSL request
+        required: true
+      responses:
+        '200':
+          description: json array of stored data that match the query
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DataStoredWeb'
+components:
+  schemas:
+    Location:
+      type: object
+      description: geographic location
+      properties:
+        lat:
+          type: number
+          format: double
+          description: Latitude value
+          example: 45.000009
+        lon:
+          type: number
+          format: double
+          description: Longitude value
+          example: -30.00001
+        alt:
+          type: number
+          format: double
+          description: Altitude value
+          example: 5.00001
+        accuracy:
+          type: number
+          format: double
+          description: Accuracy value
+          example: 10.0
+        provider:
+          type: string
+          description: Provider of the location
+          example: GPS
+      required:
+      - lat
+      - lon
+    DataStoredWeb:
+      type: object
+      description: data stored from the dataStream
+      properties:
+        streamId:
+          type: string
+          description: streamId of the data
+          example: urn:tenantName:FFFFFFFFFFFFFFFF!mystream
+        timestamp:
+          type: string
+          description: ISO 8601 date time, timestamp of the value
+          example: '2016-08-24T10:32:52.598Z'
+        location:
+          $ref: '#/components/schemas/Location'
+        model:
+          type: string
+          description: Model of the injected data. Data with the same model have coherent types in each value fields.
+          example: MyModelSettingName
+        value:
+          description: JsonObject
+          example:
+            hexaFlag001: 2F00
+            temp: 22.0
+            pressure: 36575.0
+        tags:
+          type: array
+          description: Tags of the data. Can be used to ease up advanced search through all streams and models
+          example:
+          - Motor
+          - Engine
+          items:
+            type: string
+        extra:
+          type: object
+          additionalProperties:
+            type: string
+          description: 'Extra info of the data: extra information enriched on the collected data (for example from the device inventory) that can be used for cross model or stream queries'
+          example:
+            country: france
+            city: lyon
+            owner: john.doe@company.com
+        metadata:
+          description: 'Metadata of the stored value : may include user metadata (source) as well as additional information (protocol, server, user...)'
+          example:
+            source: urn:tenantName:FFFFFFFFFFFFFFFF!mystream
+        id:
+          type: string
+          description: System id of the data. Can be use as bookmark to paginate results.
+        created:
+          type: string
+          description: ISO 8601 date time, when the data has been stored in the system
+          example: '2016-08-25T00:00:00.008Z'
+      required:
+      - created
+      - id
+      - timestamp
+      - value
+    JsonObjectForSwagger:
+      description: JsonObject
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''

@@ -1,0 +1,228 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide Event processing - Geozone API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: Event processing - Geozone
+  description: Geozone management
+paths:
+  /api/v0/eventprocessing/geozones/{zoneId}:
+    get:
+      tags:
+      - Event processing - Geozone
+      summary: retrieve a geozone from repository
+      description: 'The Geozone repository is a database that allows storing geographical sites/zones of interest. The geozones are stored as polygons (array of geopoints coordinates in decimal degrees). Meta information like a description and tags can be stored with the geozone. The Geozone format : coordinates for polygon definition, use longitude as the first coordinate and latitude as the second coordinate, polygons are closed linestrings, with at least four coordinate pairs and specify the same position as the first and last coordinates. You can define several polygons in the same geozone, for example to define a zone with holes (first polygon is the external limit of the zone and the following polygons are holes in this zone). e.g. [[[1.780892, 48.091452], [2.301382, 48.000565], [2.281961, 47.509630], [1.252634, 47.729556], [1.780892, 48.091452]]]<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: getEventProcessingGeozone
+      parameters:
+      - name: zoneId
+        in: path
+        description: the user-defined id of the zone to retrieve
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Geozone retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeozoneContainer'
+        '404':
+          description: Unable to find specified geozone id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GeozoneContainer'
+    put:
+      tags:
+      - Event processing - Geozone
+      summary: Store a geographic zone
+      description: 'The Geozone repository is a database that allows storing geographical sites/zones of interest. The geozones are stored as polygons (array of geopoints coordinates in decimal degrees). Meta information like a description and tags can be stored with the geozone. The Geozone format : coordinates for polygon definition, use longitude as the first coordinate and latitude as the second coordinate, polygons are closed linestrings, with at least four coordinate pairs and specify the same position as the first and last coordinates. You can define several polygons in the same geozone, for example to define a zone with holes (first polygon is the external limit of the zone and the following polygons are holes in this zone). e.g. [[[1.780892, 48.091452], [2.301382, 48.000565], [2.281961, 47.509630], [1.252634, 47.729556], [1.780892, 48.091452]]]<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      operationId: saveEventProcessingGeozone
+      parameters:
+      - name: zoneId
+        in: path
+        description: the id of the zone to save
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GeozoneContainerBase'
+        required: true
+      responses:
+        '201':
+          description: Geo zone created or updated
+    delete:
+      tags:
+      - Event processing - Geozone
+      summary: delete a geographic zone
+      description: 'The Geozone repository is a database that allows storing geographical sites/zones of interest. The geozones are stored as polygons (array of geopoints coordinates in decimal degrees). Meta information like a description and tags can be stored with the geozone. The Geozone format : coordinates for polygon definition, use longitude as the first coordinate and latitude as the second coordinate, polygons are closed linestrings, with at least four coordinate pairs and specify the same position as the first and last coordinates. You can define several polygons in the same geozone, for example to define a zone with holes (first polygon is the external limit of the zone and the following polygons are holes in this zone). e.g. [[[1.780892, 48.091452], [2.301382, 48.000565], [2.281961, 47.509630], [1.252634, 47.729556], [1.780892, 48.091452]]]<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      operationId: deleteEventProcessingGeozone
+      parameters:
+      - name: zoneId
+        in: path
+        description: the id of the zone to delete
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Geo zone deleted
+  /api/v0/eventprocessing/geozones:
+    get:
+      tags:
+      - Event processing - Geozone
+      summary: retrieve paginated list of geozones
+      description: 'The Geozone repository is a database that allows storing geographical sites/zones of interest. The geozones are stored as polygons (array of geopoints coordinates in decimal degrees). Meta information like a description and tags can be stored with the geozone. The Geozone format : coordinates for polygon definition, use longitude as the first coordinate and latitude as the second coordinate, polygons are closed linestrings, with at least four coordinate pairs and specify the same position as the first and last coordinates. You can define several polygons in the same geozone, for example to define a zone with holes (first polygon is the external limit of the zone and the following polygons are holes in this zone). e.g. [[[1.780892, 48.091452], [2.301382, 48.000565], [2.281961, 47.509630], [1.252634, 47.729556], [1.780892, 48.091452]]]<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: listEventProcessingGeozones
+      parameters:
+      - name: page
+        in: query
+        description: The requested page number. Starts from 0.
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        description: The maximum number of items per page. Must be between 1 and 1000.
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      responses:
+        '200':
+          description: Geozones retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GeozoneContainer'
+components:
+  schemas:
+    Polygon:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Type of the Polygon. Only 'Polygon' is supported.
+          enum:
+          - Polygon
+        coordinates:
+          type: array
+          description: Coordinates of the closed line strings. You can define several closed line strings. The last position of a line string must be the same as the first one.
+          items:
+            type: array
+            items:
+              type: array
+              description: Position defined by longitude and latitude. Use longitude as the first coordinate and latitude as the second coordinate."
+              items:
+                type: number
+                format: double
+                description: Position defined by longitude and latitude. Use longitude as the first coordinate and latitude as the second coordinate."
+              properties:
+                empty:
+                  type: boolean
+      required:
+      - coordinates
+      - type
+    GeozoneContainerBase:
+      type: object
+      description: JSON geozone object to store
+      properties:
+        description:
+          type: string
+          description: Description of the geozone
+        properties:
+          type: object
+          additionalProperties: {}
+          description: Properties of the geozone you can add to ease managing them
+        geometry:
+          $ref: '#/components/schemas/Polygon'
+          description: Coordinates of the GeoZone
+        tags:
+          type: array
+          description: Tags of the geozone you can add to ease managing them
+          items:
+            type: string
+      required:
+      - geometry
+    GeozoneContainer:
+      type: object
+      properties:
+        description:
+          type: string
+          description: Description of the geozone
+        properties:
+          type: object
+          additionalProperties: {}
+          description: Properties of the geozone you can add to ease managing them
+        geometry:
+          $ref: '#/components/schemas/Polygon'
+          description: Coordinates of the GeoZone
+        tags:
+          type: array
+          description: Tags of the geozone you can add to ease managing them
+          items:
+            type: string
+        zoneId:
+          type: string
+          minLength: 1
+      required:
+      - geometry
+      - zoneId
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''

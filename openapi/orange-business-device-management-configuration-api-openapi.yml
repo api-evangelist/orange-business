@@ -1,0 +1,398 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide Device management - Configuration API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: Device management - Configuration
+  description: Devices configuration
+paths:
+  /api/v1/deviceMgt/devices/{deviceId}/config/parameters/{paramKey}/status:
+    put:
+      tags:
+      - Device management - Configuration
+      summary: Update the status of a specific device parameter
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      operationId: setDeviceParamUpdateStatusV1
+      parameters:
+      - name: deviceId
+        in: path
+        description: device identifier. A Live Objects URN 'urn:lo:nsid:{namespace}:{id}' must respect the following regular expression <code>^urn:lo:nsid:([\w\-]{1,128}):([\w\-:]{1,128})$</code> (max 269 characters)
+        required: true
+        schema:
+          type: string
+      - name: paramKey
+        in: path
+        description: key identifying the targeted device parameter. Expected string (max 128 characters)
+        required: true
+        schema:
+          type: string
+      - name: force
+        in: query
+        description: force the update of the parameter status
+        required: false
+        schema:
+          type: boolean
+          default: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+              description: future state of the parameter --> CANCELED
+              enum:
+              - CANCELED
+        required: true
+      responses:
+        '200':
+          description: Parameter status updated
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: Unknown device parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+  /api/v1/deviceMgt/devices/{deviceId}/config:
+    get:
+      tags:
+      - Device management - Configuration
+      summary: Get a description of the device configuration
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: getDeviceConfigurationV1
+      parameters:
+      - name: deviceId
+        in: path
+        description: device identifier. A Live Objects URN 'urn:lo:nsid:{namespace}:{id}' must respect the following regular expression <code>^urn:lo:nsid:([\w\-]{1,128}):([\w\-:]{1,128})$</code> (max 269 characters)
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The configuration of the device
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceConfig'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: Unknown device
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+    post:
+      tags:
+      - Device management - Configuration
+      summary: Set requested values for a set of device configuration parameters
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      operationId: setMultipleDeviceConfigParamsV1
+      parameters:
+      - name: deviceId
+        in: path
+        description: device identifier. A Live Objects URN 'urn:lo:nsid:{namespace}:{id}' must respect the following regular expression <code>^urn:lo:nsid:([\w\-]{1,128}):([\w\-:]{1,128})$</code> (max 269 characters)
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceParametersSetRequest'
+            examples:
+              set parameters:
+                description: set parameters
+                value:
+                  parameters:
+                    MyParamINT32:
+                      type: INT32
+                      value: -333
+                    MyParamUINT32:
+                      type: UINT32
+                      value: 123333
+                    MyParamFLOAT:
+                      type: FLOAT
+                      value: 12345.01
+                    MyParamSTRING:
+                      type: STRING
+                      value: My sentence..
+                    MyParamBINARY:
+                      type: BINARY
+                      value: Nzg3ODY4Ng==
+        required: true
+      responses:
+        '200':
+          description: nothing
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: Unknown device
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+  /api/v1/deviceMgt/devices/{deviceId}/config/parameters:
+    get:
+      tags:
+      - Device management - Configuration
+      summary: Get a description of the device configuration parameters
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: getDeviceConfigParametersV1
+      parameters:
+      - name: deviceId
+        in: path
+        description: device identifier. A Live Objects URN 'urn:lo:nsid:{namespace}:{id}' must respect the following regular expression <code>^urn:lo:nsid:([\w\-]{1,128}):([\w\-:]{1,128})$</code> (max 269 characters)
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The map of configuration parameters of the device
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/DeviceParameter'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: Unknown device
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+  /api/v1/deviceMgt/devices/{deviceId}/config/parameters/{paramKey}:
+    get:
+      tags:
+      - Device management - Configuration
+      summary: Get state of a specific device configuration parameter
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: getDeviceConfigParameterV1
+      parameters:
+      - name: deviceId
+        in: path
+        description: device identifier. A Live Objects URN 'urn:lo:nsid:{namespace}:{id}' must respect the following regular expression <code>^urn:lo:nsid:([\w\-]{1,128}):([\w\-:]{1,128})$</code> (max 269 characters)
+        required: true
+        schema:
+          type: string
+      - name: paramKey
+        in: path
+        description: config parameter identifier/key. Expected string (max 128 characters)
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Device configuration parameter details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceParameter'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: Unknown device configuration parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+components:
+  schemas:
+    WebErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+      required:
+      - code
+      - id
+      - message
+    DeviceParameter:
+      type: object
+      properties:
+        reported:
+          $ref: '#/components/schemas/DeviceParameterValue'
+          description: configuration parameter value, as reported by the device
+        requested:
+          $ref: '#/components/schemas/DeviceParameterValue'
+          description: configuration parameter value, as it should be set on the device
+        syncStatus:
+          type: string
+          description: 'configuration parameter synchronization status: NONE, PENDING, OK or FAILED'
+          enum:
+          - NONE
+          - PENDING
+          - SENT
+          - CANCELED
+          - OK
+          - FAILED
+          example: OK
+    NewDeviceParameterValue:
+      type: object
+      properties:
+        type:
+          type: string
+          description: parameter value type (INT32, UINT32, FLOAT, STRING or BINARY)
+          enum:
+          - INT32
+          - UINT32
+          - BINARY
+          - STRING
+          - FLOAT
+          - UNKNOWN
+        value:
+          description: 'configuration parameter value (number for INT32/UINT32 type, string for STRING type,float for FLOAT type, base64-encoded string for BINARY type) '
+    DeviceConfig:
+      type: object
+      properties:
+        parameters:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/DeviceParameter'
+          description: device configuration
+    DeviceParametersSetRequest:
+      type: object
+      description: 'a map of requested configuration parameter descriptions (with type: ''INT32'', ''UINT32'', ''STRING'', ''FLOAT'', or ''BINARY'')'
+      properties:
+        parameters:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/NewDeviceParameterValue'
+          description: Device configuration update. Max number of parameters is 100. Parameter name max length is 128. Parameter value must be valid according to the type and max length is 2000.
+    DeviceParameterValue:
+      type: object
+      properties:
+        type:
+          type: string
+          description: configuration parameter value type (INT32, UINT32, FLOAT, STRING or BINARY)
+          enum:
+          - INT32
+          - UINT32
+          - BINARY
+          - STRING
+          - FLOAT
+          - UNKNOWN
+        value:
+          description: 'configuration parameter value (number for INT32/UINT32 type, string for STRING type,float for FLOAT type, base64-encoded string for BINARY type) '
+        timestamp:
+          type: string
+          format: date-time
+          description: configuration parameter value associated date/time (ISO 8601)
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''

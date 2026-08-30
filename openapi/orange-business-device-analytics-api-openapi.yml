@@ -1,0 +1,906 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide Device Analytics API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: Device Analytics
+  description: Manage your device analytics rules
+paths:
+  /api/v1/device-analytics/rules/{analyticsRuleId}:
+    get:
+      tags:
+      - Device Analytics
+      summary: Retrieve an AnalyticsRule.
+      description: 'An AnalyticsRule defines a fleet of devices whose behavior will be analyzed by algorithms, generating a weekly report. This report includes general fleet behavior, detection of outliers, connectivity status...<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: getAnalyticsRule
+      parameters:
+      - name: analyticsRuleId
+        in: path
+        description: id of the AnalyticsRule to retrieve
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: AnalyticsRule successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsRule'
+        '404':
+          description: Unknown AnalyticsRule
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsRule'
+    put:
+      tags:
+      - Device Analytics
+      summary: Update an AnalyticsRule.
+      description: 'The field `id` must be provided and match the API path id.<br/><br/>Usage of this API will be reported in your access log under ''device_analytics'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      operationId: updateAnalyticsRule
+      parameters:
+      - name: analyticsRuleId
+        in: path
+        description: id of the AnalyticsRule to retrieve
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnalyticsRule'
+            examples:
+              Rule for a LoRa fleet with a filter on group:
+                description: Rule for a LoRa fleet with a filter on group
+                value:
+                  id: '1234567890'
+                  name: Lora Fleet analytics
+                  fleet:
+                    connectors:
+                    - lora
+                    groupPaths:
+                    - path: /france
+                      includeSubPath: true
+                  report:
+                    recipients:
+                      to:
+                      - jane.doe@mycompany.com
+                      cc:
+                      - john.doe@mycompany.com
+                    language: fr
+                  enabled: true
+        required: true
+      responses:
+        '200':
+          description: AnalyticsRule successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsRule'
+        '404':
+          description: Unknown AnalyticsRule
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsRule'
+    delete:
+      tags:
+      - Device Analytics
+      summary: Delete an AnalyticsRule.
+      description: 'Usage of this API will be reported in your access log under ''device_analytics'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      operationId: deleteAnalyticsRule
+      parameters:
+      - name: analyticsRuleId
+        in: path
+        description: id of the AnalyticsRule to delete
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: AnalyticsRule successfully deleted
+        '404':
+          description: Unknown AnalyticsRule
+  /api/v1/device-analytics/rules:
+    get:
+      tags:
+      - Device Analytics
+      summary: Retrieve your AnalyticsRules.
+      description: 'An AnalyticsRule defines a fleet of devices whose behavior will be analyzed by algorithms, generating a weekly report. This report includes general fleet behavior, detection of outliers, connectivity status...<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: listAnalyticsRules
+      responses:
+        '200':
+          description: list of AnalyticsRules
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AnalyticsRule'
+    post:
+      tags:
+      - Device Analytics
+      summary: Create an AnalyticsRule.
+      description: 'An AnalyticsRule defines a fleet of devices whose behavior will be analyzed by algorithms, generating a weekly report. This report includes general fleet behavior, detection of outliers, connectivity status... The field `id` must be null, it will be automatically generated<br/><br/>Usage of this API will be reported in your access log under ''device_analytics'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      operationId: createAnalyticsRule
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnalyticsRule'
+            examples:
+              Rule for a LoRa fleet:
+                description: Rule for a LoRa fleet
+                value:
+                  name: Lora Fleet analytics
+                  fleet:
+                    connectors:
+                    - lora
+                  report:
+                    recipients:
+                      to:
+                      - jane.doe@mycompany.com
+                      cc:
+                      - john.doe@mycompany.com
+                    language: en
+                  enabled: true
+        required: true
+      responses:
+        '201':
+          description: AnalyticsRule successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyticsRule'
+  /api/v1/device-analytics/rules/{ruleId}/device-analyses/statistics/days/{day}:
+    get:
+      tags:
+      - Device Analytics
+      summary: Retrieve the DeviceAnalysisStats for an AnalyticsRule and day BETA - please note that the API is currently in beta state, and therefore still subject to breaking changes.
+      description: 'Return the list of the fleet''s devices statistical analysis, with their communication rate, the status and quality of their connectivity...<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: getDevicesAnalysisStats
+      parameters:
+      - name: ruleId
+        in: path
+        description: id of the AnalyticsRule
+        required: true
+        schema:
+          type: string
+      - name: day
+        in: path
+        description: day with 'YYYY-MM-DD' format
+        required: true
+        schema:
+          type: string
+      - name: bookmarkId
+        in: query
+        description: deviceId as page bookmark (deviceId of last page of results)
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: page size, value is limited to :1000
+        required: false
+        schema:
+          type: string
+          default: '1000'
+      responses:
+        '200':
+          description: array of DeviceAnalysisStats matching the request.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeviceAnalysisStats'
+  /api/v1/device-analytics/rules/{ruleId}/device-analyses/statistics/days/{day}/devices/{deviceId}:
+    get:
+      tags:
+      - Device Analytics
+      summary: Retrieve the DeviceAnalysisStats for a specific AnalyticsRule, day and deviceId BETA - please note that the API is currently in beta state, and therefore still subject to breaking changes.
+      description: 'This daily device statistical analysis includes details regarding its communication rate, the quality of its connectivity...<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: getDeviceAnalysisStats
+      parameters:
+      - name: ruleId
+        in: path
+        description: id of the AnalyticsRule
+        required: true
+        schema:
+          type: string
+      - name: day
+        in: path
+        description: day with 'YYYY-MM-DD' format
+        required: true
+        schema:
+          type: string
+      - name: deviceId
+        in: path
+        description: deviceId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: DeviceAnalysisStats matching the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceAnalysisStats'
+  /api/v1/device-analytics/rules/{ruleId}/device-analyses/flattened:
+    get:
+      tags:
+      - Device Analytics
+      summary: Retrieve the latest flattened human readable DeviceAnalysisResult for an AnalyticsRule BETA - please note that the API is currently in beta state, and therefore still subject to breaking changes.
+      description: 'Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: getFlattenedDevicesAnalysisResult
+      parameters:
+      - name: ruleId
+        in: path
+        description: id of the AnalyticsRule
+        required: true
+        schema:
+          type: string
+      - name: bookmarkId
+        in: query
+        description: deviceId as page bookmark (deviceId of last page of results)
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: page size, value is limited to :1000
+        required: false
+        schema:
+          type: string
+          default: '1000'
+      responses:
+        '200':
+          description: array of FlattenedDeviceAnalysisResult matching the request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FlattenedDeviceAnalysisResult'
+  /api/v1/device-analytics/rules/{ruleId}/device-analyses/classifications/regular-patterns/devices:
+    get:
+      tags:
+      - Device Analytics
+      summary: Retrieve the latest regular pattern classification for all devices of an AnalyticsRule BETA - please note that the API is currently in beta state, and therefore still subject to breaking changes.
+      description: 'Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: getDevicesRegularPatternClassification
+      parameters:
+      - name: ruleId
+        in: path
+        description: id of the AnalyticsRule
+        required: true
+        schema:
+          type: string
+      - name: bookmarkId
+        in: query
+        description: deviceId as page bookmark (deviceId of last page of results)
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: page size, value is limited to :1000
+        required: false
+        schema:
+          type: string
+          default: '1000'
+      responses:
+        '200':
+          description: array of DeviceAnalysisRegularPattern matching the request.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeviceAnalysisRegularPattern'
+  /api/v1/device-analytics/rules/{ruleId}/device-analyses/classifications/regular-patterns/devices/{deviceId}:
+    get:
+      tags:
+      - Device Analytics
+      summary: Retrieve the latest regular pattern classification for a specific device BETA - please note that the API is currently in beta state, and therefore still subject to breaking changes.
+      description: 'Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: getDeviceRegularPatternClassification
+      parameters:
+      - name: ruleId
+        in: path
+        description: id of the AnalyticsRule
+        required: true
+        schema:
+          type: string
+      - name: deviceId
+        in: path
+        description: deviceId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: DeviceAnalysisRegularPattern matching the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceAnalysisRegularPattern'
+  /api/v1/device-analytics/rules/{ruleId}/device-analyses/classifications/clusters/devices:
+    get:
+      tags:
+      - Device Analytics
+      summary: Retrieve the latest cluster classification for all devices of an AnalyticsRule BETA - please note that the API is currently in beta state, and therefore still subject to breaking changes.
+      description: 'Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: getDevicesClusterClassification
+      parameters:
+      - name: ruleId
+        in: path
+        description: id of the AnalyticsRule
+        required: true
+        schema:
+          type: string
+      - name: bookmarkId
+        in: query
+        description: deviceId as page bookmark (deviceId of last page of results)
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: page size, value is limited to :1000
+        required: false
+        schema:
+          type: string
+          default: '1000'
+      responses:
+        '200':
+          description: array of DeviceAnalysisClusterClassification matching the request.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeviceAnalysisClusterClassification'
+  /api/v1/device-analytics/rules/{ruleId}/device-analyses/classifications/clusters/devices/{deviceId}:
+    get:
+      tags:
+      - Device Analytics
+      summary: Retrieve the latest cluster classification for a specific device BETA - please note that the API is currently in beta state, and therefore still subject to breaking changes.
+      description: 'Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: getDeviceClusterClassification
+      parameters:
+      - name: ruleId
+        in: path
+        description: id of the AnalyticsRule
+        required: true
+        schema:
+          type: string
+      - name: deviceId
+        in: path
+        description: deviceId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: DeviceAnalysisClusterClassification matching the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceAnalysisClusterClassification'
+components:
+  schemas:
+    AnalyticsRule:
+      type: object
+      description: defines the device analytics rule that will be performed
+      properties:
+        id:
+          type: string
+          description: id of the AnalyticsRule. Should be null when used for POST.
+        name:
+          type: string
+          description: user-defined name for the rule, must be unique and not empty.
+        fleet:
+          $ref: '#/components/schemas/Fleet'
+          description: defines the targeted devices of a this AnalyticsRule
+        report:
+          $ref: '#/components/schemas/ReportDefinition'
+          description: defines the analytics report to send by email
+        enabled:
+          type: boolean
+          description: activate or not the rule. Default is false.
+      required:
+      - fleet
+      - name
+    HistoryLoraStatistics:
+      type: object
+      properties:
+        messageCount:
+          type: integer
+          format: int64
+          description: Total number of LoRa messages received over the period.
+        snr:
+          $ref: '#/components/schemas/StatisticAggregation'
+          description: Mean 'Signal-to-Noise Ratio' over the period.
+        gatewayCount:
+          $ref: '#/components/schemas/StatisticAggregation'
+          description: Mean 'Gateway Count' over the period.
+        rssi:
+          $ref: '#/components/schemas/StatisticAggregation'
+          description: Mean 'Received Signal Strength Indication' over the period.
+        sf:
+          $ref: '#/components/schemas/StatisticAggregation'
+          description: Mean 'Spreading Factor' over the period.
+        joinRequestPerDay:
+          $ref: '#/components/schemas/StatisticAggregation'
+          description: Mean 'Join Request' messages per day over the period.
+        joinAcceptPerDay:
+          $ref: '#/components/schemas/StatisticAggregation'
+          description: Mean 'Join Accept' messages per day over the period.
+        lostMessagesPerDay:
+          $ref: '#/components/schemas/StatisticAggregation'
+          description: Mean lost messages per day over the period based on LoRaWan frame counter.
+        lostMessagesRatio:
+          type: number
+          format: double
+          description: Lost messages ratio over the period based on LoRaWan frame counter.
+        missingJoinAccept:
+          type: boolean
+          description: Unbalanced Join Request / Accept ratio over the period.
+        tooManyJoinCycles:
+          type: boolean
+          description: Too many Join cycles over the period.
+    DeviceAnalysisRegularPattern:
+      type: object
+      properties:
+        analyticsRuleId:
+          type: string
+          description: Id of the AnalyticsRule this classification belongs to.
+        deviceId:
+          type: string
+          description: Id of the device.
+        silent:
+          type: boolean
+          description: True if the device sent no messages during the analyzed period.
+        updated:
+          type: string
+          format: date-time
+          description: Last update timestamp of the classification.
+        analyzedPeriod:
+          $ref: '#/components/schemas/AnalyzedPeriod'
+          description: Period over which the classification was computed.
+        regularPattern:
+          $ref: '#/components/schemas/RegularPatternClassification'
+          description: Regular pattern classification for the device.
+        transition:
+          $ref: '#/components/schemas/ClassificationTransition'
+          description: Transition info in case of a pattern change during the last few weeks..
+    AnalyzedPeriod:
+      type: object
+      properties:
+        from:
+          type: string
+          description: Start date of the analysis period. yyyy-MM-dd format.
+        to:
+          type: string
+          description: End date of the analysis period. yyyy-MM-dd format.
+    HistoryTrafficStatistics:
+      type: object
+      properties:
+        messageCountPerDay:
+          $ref: '#/components/schemas/StatisticAggregation'
+    Fleet:
+      type: object
+      properties:
+        connectors:
+          type: array
+          description: list of connectivity that targeted devices must declare. 1 and only 1 connector must be defined.
+          items:
+            type: string
+        groupPaths:
+          type: array
+          description: list of targeted group paths
+          items:
+            $ref: '#/components/schemas/GroupPath'
+      required:
+      - connectors
+    Lwm2mStatistics:
+      type: object
+      properties:
+        historyStatistics:
+          $ref: '#/components/schemas/HistoryLwm2mStatistics'
+          description: Statistics aggregated over the analysis period.
+    DeviceAnalysisClusterClassification:
+      type: object
+      properties:
+        analyticsRuleId:
+          type: string
+          description: Id of the AnalyticsRule this classification belongs to.
+        deviceId:
+          type: string
+          description: Id of the device.
+        silent:
+          type: boolean
+          description: True if the device sent no messages during the analyzed period.
+        updated:
+          type: string
+          format: date-time
+          description: Last update timestamp of the classification.
+        analyzedPeriod:
+          $ref: '#/components/schemas/AnalyzedPeriod'
+          description: Period over which the classification was computed.
+        clusterClassification:
+          $ref: '#/components/schemas/ClusterClassification'
+          description: AI clustering analysis
+        transition:
+          $ref: '#/components/schemas/ClassificationTransition'
+          description: Transition info in case of a cluster change during the last few weeks..
+    DtlsStatistics:
+      type: object
+      properties:
+        packetCount:
+          type: integer
+          format: int64
+          description: Total number of DTLS packets received over the period.
+        lostPacketsPerDay:
+          $ref: '#/components/schemas/StatisticAggregation'
+          description: Average lost DTLS packets per day over the analysis period, based on DTLS sequence number.
+        lostPacketsRatio:
+          type: number
+          format: double
+          description: Ratio of DTLS packets lost over the analysis period, based on DTLS sequence number.
+    TrafficDayStatistics:
+      type: object
+      properties:
+        messageCount:
+          type: integer
+          format: int32
+    EmailRecipients:
+      type: object
+      properties:
+        to:
+          type: array
+          items:
+            type: string
+        cc:
+          type: array
+          items:
+            type: string
+        cci:
+          type: array
+          items:
+            type: string
+    HistoryLwm2mStatistics:
+      type: object
+      properties:
+        dtlsStatistics:
+          $ref: '#/components/schemas/DtlsStatistics'
+          description: Statistics on the DTLS protocol.
+    UndetectedCluster:
+      type: object
+      properties:
+        reason:
+          type: string
+        details:
+          type: string
+    UndetectedPattern:
+      type: object
+      properties:
+        reason:
+          type: string
+        details:
+          type: string
+    TrafficStatistics:
+      type: object
+      properties:
+        dayStatistics:
+          $ref: '#/components/schemas/TrafficDayStatistics'
+        historyStatistics:
+          $ref: '#/components/schemas/HistoryTrafficStatistics'
+    InterfacesStatus:
+      type: object
+      properties:
+        name:
+          type: string
+        status:
+          type: string
+          description: Status of the device connectivity for the day. For LoRa connectivity, it is the last connectivity state of the day. MQTT status will be 'ONLINE' if it has been ONLINE once during the day.
+    TrafficAnalysis:
+      type: object
+      properties:
+        statistics:
+          $ref: '#/components/schemas/TrafficStatistics'
+          description: Statistical aggregations of the device's traffic.
+        silent:
+          type: boolean
+          description: True if the device sent no messages during the analysis period.
+    Cluster:
+      type: object
+      properties:
+        reference:
+          type: integer
+          format: int32
+          description: Reference identifying the cluster
+        name:
+          type: string
+          description: Name of the cluster
+        likenessToCluster:
+          type: number
+          format: double
+          description: Similarity score indicating how close the device is to the cluster's centroid
+    ClusterClassification:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: True if the clustering was successful.
+        trainingRunId:
+          type: string
+          description: Model against which the device was analyzed
+        learningScore:
+          type: number
+          format: double
+          description: The score indicates how well the device's traffic was recognized by the model. It is in [0, 1] interval.
+        cluster:
+          $ref: '#/components/schemas/Cluster'
+          description: Cluster detected for the device.
+        undetected:
+          $ref: '#/components/schemas/UndetectedCluster'
+          description: Reason for not detecting for the device.
+    RegularPatternClassification:
+      type: object
+      properties:
+        success:
+          type: boolean
+        pattern:
+          $ref: '#/components/schemas/RegularPattern'
+          description: Regular pattern detected for the device.
+        score:
+          type: number
+          format: double
+          description: The score will indicate a level of confidence in the result. It is in [0, 1] interval.
+        undetected:
+          $ref: '#/components/schemas/UndetectedPattern'
+          description: Additional information for undetected patterns
+    LoraDayStatistics:
+      type: object
+      properties:
+        joinRequestCount:
+          type: integer
+          format: int32
+          description: Number of 'Join Request' messages received on the analysis day.
+        joinAcceptCount:
+          type: integer
+          format: int32
+          description: Number of 'Join Accept' messages received on the analysis day.
+    RegularPattern:
+      type: object
+      properties:
+        period:
+          type: string
+          description: Period of the pattern, use ISO-8601 period definition. E.g. 'PT12H' for a 12 hours period.
+        count:
+          type: integer
+          format: int32
+          description: Number of occurences per period.
+    ClassificationTransition:
+      type: object
+      properties:
+        description:
+          type: string
+          description: Human-readable description of the transition.
+        trend:
+          type: string
+          description: Trend direction of the transition.
+        detectionDate:
+          type: string
+          description: Date at which the transition was detected. yyyy-MM-dd format (UTC).
+    FlattenedDeviceAnalysisResult:
+      type: object
+      properties:
+        device:
+          type: string
+        analysis_status:
+          type: string
+        groupPath:
+          type: string
+        msg_per_day:
+          type: number
+          format: double
+        pattern:
+          type: string
+        pattern_analysis_end_date:
+          type: string
+        pattern_transition:
+          type: string
+        pattern_transition_trend:
+          type: string
+        pattern_transition_detection_date:
+          type: string
+        cluster:
+          type: string
+        cluster_analysis_end_date:
+          type: string
+        cluster_transition:
+          type: string
+        cluster_transition_trend:
+          type: string
+        cluster_transition_detection_date:
+          type: string
+        last_status:
+          type: string
+        detected_lost_msgs_per_day:
+          type: number
+          format: double
+        counter_loss_ratio:
+          type: number
+          format: double
+        join_request_per_day:
+          type: number
+          format: double
+        join_accept_per_day:
+          type: number
+          format: double
+        snr_mean:
+          type: number
+          format: double
+        gtw_mean:
+          type: number
+          format: double
+        rssi_mean:
+          type: number
+          format: double
+        sf_mean:
+          type: number
+          format: double
+        too_many_join_cycles:
+          type: boolean
+        missing_join_accept:
+          type: boolean
+        detected_lost_dtls_packet_per_day:
+          type: number
+          format: double
+        counter_dtls_loss_ratio:
+          type: number
+          format: double
+        statistics_analysis_end_date:
+          type: string
+        days_used_for_statistics_analysis:
+          type: integer
+          format: int32
+    GroupPath:
+      type: object
+      description: defines targeted group path
+      properties:
+        path:
+          type: string
+          description: path of the group
+          example: /europe/france
+        includeSubPath:
+          type: boolean
+          description: 'if true, all sub-paths will be targeted by this ActivityRule '
+      required:
+      - includeSubPath
+      - path
+    InterfacesAnalysis:
+      type: object
+      properties:
+        interfacesStatus:
+          type: array
+          items:
+            $ref: '#/components/schemas/InterfacesStatus'
+        lora:
+          $ref: '#/components/schemas/LoraStatistics'
+        lwm2m:
+          $ref: '#/components/schemas/Lwm2mStatistics'
+    DeviceAnalysisStats:
+      type: object
+      properties:
+        analyticsRuleId:
+          type: string
+          description: Id of the AnalyticsRule this analysis belongs to.
+        deviceId:
+          type: string
+          description: Id of the device.
+        day:
+          type: string
+          description: Day of the analysis. yyyy-MM-dd format.
+        analysisStatus:
+          type: string
+          description: Status of the analysis computation.
+        groupPath:
+          type: string
+          description: Group path of the device at the time of the analysis.
+        updated:
+          type: string
+          format: date-time
+          description: Last update timestamp of the analysis.
+        historyTimeWindowInDays:
+          type: integer
+          format: int32
+          description: The number of days the analysis is based on (e.g. to compute means)
+        trafficAnalysis:
+          $ref: '#/components/schemas/TrafficAnalysis'
+          description: Analysis of the device's data traffic.
+        interfacesAnalysis:
+          $ref: '#/components/schemas/InterfacesAnalysis'
+          description: Analysis of the device's connectivity behaviour.
+    StatisticAggregation:
+      type: object
+      properties:
+        mean:
+          type: number
+          format: double
+    ReportDefinition:
+      type: object
+      properties:
+        recipients:
+          $ref: '#/components/schemas/EmailRecipients'
+          description: email recipients to send the report to. At least one 'to' recipient is mandatory. No more than 10 recipients can be set.
+        language:
+          type: string
+          description: 'language of the report : ''fr'' or ''en''.'
+      required:
+      - language
+      - recipients
+    LoraStatistics:
+      type: object
+      properties:
+        dayStatistics:
+          $ref: '#/components/schemas/LoraDayStatistics'
+          description: Statistics related to the specific analysis day.
+        historyStatistics:
+          $ref: '#/components/schemas/HistoryLoraStatistics'
+          description: Statistics aggregated over the analysis period.
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''

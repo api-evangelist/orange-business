@@ -1,0 +1,377 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide User Profile and Access Management API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: User Profile and Access Management
+  description: manage user profile and get access list
+paths:
+  /api/v2/user/profile:
+    get:
+      tags:
+      - User Profile and Access Management
+      summary: Get connected user profile
+      description: No specific role on API key required.
+      operationId: getUserProfile
+      responses:
+        '200':
+          description: The user profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+    patch:
+      tags:
+      - User Profile and Access Management
+      summary: Update connected user profile (email and lang)
+      description: Usage of this API will be reported in your access log under 'user' category.<br/><br/>No specific role on API key required.
+      operationId: patchUserProfile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserProfilePatchRequestWeb'
+        required: true
+      responses:
+        '200':
+          description: The updated user profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '400':
+          description: An ErrorMessage
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceErrorResponse'
+  /api/v2/user/accesses:
+    get:
+      tags:
+      - User Profile and Access Management
+      summary: Get connected user accesses list (forbidden in connect-as mode)
+      description: No specific role on API key required.
+      operationId: getUserAccesses
+      parameters:
+      - name: size
+        in: query
+        description: the maximum number of items per page (optional, highest value is 1000)
+        required: false
+        schema:
+          type: string
+          default: '20'
+      - name: page
+        in: query
+        description: the requested page number (optional)
+        required: false
+        schema:
+          type: string
+          default: '0'
+      - name: sort
+        in: query
+        description: 'sorting list by attributes.  Supported fields:"lastAccess". (Option) Use minus as prefix for descending order. Example: ["-lastAccess"].'
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: The user accesses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageableV2UserAccess'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceErrorResponse'
+  /api/v2/user/accesses/current:
+    get:
+      tags:
+      - User Profile and Access Management
+      summary: Get connected user current access
+      description: No specific role on API key required.
+      operationId: getCurrentUserAccess
+      responses:
+        '200':
+          description: Current user access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAccess'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceErrorResponse'
+components:
+  schemas:
+    PageableV2UserAccess:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int64
+          description: 'number of the current page: starts at 0.'
+          example: 0
+        size:
+          type: integer
+          format: int64
+          description: number of data per page (= maximum number of data in the associated list of data:the last page can have less data)
+          example: 1
+        totalCount:
+          type: integer
+          format: int64
+          description: total count of data in the complete list.
+          example: 1
+        data:
+          type: array
+          description: list of data in this page.
+          items:
+            $ref: '#/components/schemas/UserAccess'
+      required:
+      - data
+      - page
+      - size
+      - totalCount
+    WebErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+      required:
+      - code
+      - id
+      - message
+    UserProfilePatchRequestWeb:
+      type: object
+      description: body for user profile patch request
+      properties:
+        email:
+          type: string
+          description: user email. Expected a valid email (max 254 characters)
+          example: me.name@mycompagny.mycom
+        language:
+          type: string
+          description: 'the user language. Expected language ISO 639-1 (example: "en", "fr", "sk", "ro", "es") (case insensitive, max 2 characters)'
+          example: en
+    UserProfile:
+      type: object
+      description: User profile
+      properties:
+        id:
+          type: string
+          description: identifier of user
+          example: 57FFFFFFFFFFFFFFFFFFFFFF
+        email:
+          type: string
+          description: user email
+          example: me.name@mycompagny.mycom
+        language:
+          type: string
+          description: the user language, in ISO 639-1 format
+          example: en
+        identities:
+          type: array
+          description: list of identities used by the user to be authenticated to Live Objects
+          items:
+            $ref: '#/components/schemas/UserProfileIdentity'
+        merged:
+          type: boolean
+      required:
+      - email
+      - id
+      - identities
+      - language
+    ServiceErrorResponse:
+      type: object
+      description: Generic Error in Response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+        category:
+          type: string
+          description: Error category
+          enum:
+          - PERMANENT
+          - TRANSIENT
+          - UNEXPECTED
+      required:
+      - category
+      - code
+      - id
+      - message
+    UserAccess:
+      type: object
+      description: User access
+      properties:
+        id:
+          type: string
+          description: identifier of user access
+          example: 57FFFFFFFFFFFFFFFFFFFFFF
+        tenantId:
+          type: string
+          description: tenant identifier
+        tenantName:
+          type: string
+          description: tenant name
+        tenantAccountType:
+          type: string
+          description: tenant accountType
+        state:
+          type: string
+          description: state of user access
+          example: enabled
+        permissions:
+          type: array
+          description: list of access's permissions
+          example:
+          - USER_R
+          items:
+            type: string
+          uniqueItems: true
+        permissionSet:
+          type: string
+          description: access's permissions corresponding permission set
+          enum:
+          - CUSTOMER_USERACCESS_USER
+          - CUSTOMER_USERACCESS_ADMIN
+          - CUSTOMER_DEVICE
+          - CUSTOMER_CONNECTOR
+          - CUSTOMER_APPLICATION
+          - CUSTOMIZED
+        lastAccess:
+          type: string
+          format: date-time
+          description: user tenant last access instant
+        lastAccessIdentityProvider:
+          type: string
+          description: user tenant last access identity provider name
+        portalData:
+          description: user tenant portal data
+        mainUser:
+          type: boolean
+      required:
+      - id
+      - permissionSet
+      - permissions
+      - state
+      - tenantAccountType
+      - tenantId
+      - tenantName
+    UserProfileIdentity:
+      type: object
+      description: user profile identity
+      properties:
+        provider:
+          type: string
+          description: identity provider name
+          example: LO
+        id:
+          type: string
+          description: unique identifier used by the provider to identify the physical person
+          example: jean-jacques
+        lastAuthentication:
+          type: string
+          format: date-time
+          description: last authentification instant for this provider
+          example: '2024-07-10T13:22:11.357+00:00'
+        login:
+          type: string
+          description: identity provider login
+          example: jean.jacques
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: identity provider metadata
+      required:
+      - id
+      - lastAuthentication
+      - provider
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''

@@ -1,0 +1,227 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide Event processing - Context API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: Event processing - Context
+  description: Context management
+paths:
+  /api/v0/eventprocessing/context/{contextKey}:
+    get:
+      tags:
+      - Event processing - Context
+      summary: Retrieve a context data
+      description: 'The context repository is a database that allows storing user data that can be used in the MatchingRules and StateProcessingRules when the value is not present in the data messages. The context may include thresholds definition, geographical zones, a list of device identifiers, a user preference, a group of contexts. The context has a key-value format. The key is a string and the value can be a primitive (string, numeric…​), a JSON object or an array.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: getEventProcessingContext
+      parameters:
+      - name: contextKey
+        in: path
+        description: key of the context to get
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: a context
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContextContainer'
+    put:
+      tags:
+      - Event processing - Context
+      summary: Store a context data.
+      description: 'The context repository is a database that allows storing user data that can be used in the MatchingRules and StateProcessingRules when the value is not present in the data messages. The context may include thresholds definition, geographical zones, a list of device identifiers, a user preference, a group of contexts. The context has a key-value format. The key is a string and the value can be a primitive (string, numeric…​), a JSON object or an array.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      operationId: saveEventProcessingContext
+      parameters:
+      - name: contextKey
+        in: path
+        description: context key to store
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContextContainer'
+        required: true
+      responses:
+        '200':
+          description: Context stored
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContextContainer'
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContextContainer'
+    delete:
+      tags:
+      - Event processing - Context
+      summary: Delete a context data.
+      description: 'The context repository is a database that allows storing user data that can be used in the MatchingRules and StateProcessingRules when the value is not present in the data messages. The context may include thresholds definition, geographical zones, a list of device identifiers, a user preference, a group of contexts. The context has a key-value format. The key is a string and the value can be a primitive (string, numeric…​), a JSON object or an array.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      operationId: deleteEventProcessingContext
+      parameters:
+      - name: contextKey
+        in: path
+        description: key of the context to delete
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Deleted context key
+  /api/v0/eventprocessing/context:
+    get:
+      tags:
+      - Event processing - Context
+      summary: Retrieve the list of contexts data with optional tag filtering
+      description: 'The context repository is a database that allows storing user data that can be used in the MatchingRules and StateProcessingRules when the value is not present in the data messages. The context may include thresholds definition, geographical zones, a list of device identifiers, a user preference, a group of contexts. The context has a key-value format. The key is a string and the value can be a primitive (string, numeric…​), a JSON object or an array.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: listEventProcessingContexts
+      parameters:
+      - name: page
+        in: query
+        description: The requested page number
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: size
+        in: query
+        description: The maximum number of items per page
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 20
+      - name: tags
+        in: query
+        description: Filtering tags
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: list of contexts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageableContextContainer'
+    delete:
+      tags:
+      - Event processing - Context
+      summary: Delete all context entries
+      description: 'The context repository is a database that allows storing user data that can be used in the MatchingRules and StateProcessingRules when the value is not present in the data messages. The context may include thresholds definition, geographical zones, a list of device identifiers, a user preference, a group of contexts. The context has a key-value format. The key is a string and the value can be a primitive (string, numeric…​), a JSON object or an array.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      operationId: clearEventProcessingContext
+      responses:
+        '200':
+          description: all entries deleted
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+components:
+  schemas:
+    PageableContextContainer:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int64
+          description: 'number of the current page: starts at 0.'
+          example: 0
+        size:
+          type: integer
+          format: int64
+          description: number of data per page (= maximum number of data in the associated list of data:the last page can have less data)
+          example: 1
+        totalCount:
+          type: integer
+          format: int64
+          description: total count of data in the complete list.
+          example: 1
+        data:
+          type: array
+          description: list of data in this page.
+          items:
+            $ref: '#/components/schemas/ContextContainer'
+      required:
+      - data
+      - page
+      - size
+      - totalCount
+    ContextContainer:
+      type: object
+      description: Hold context data that can be used inside matching rules and state processing functions
+      properties:
+        contextKey:
+          type: string
+          description: context key
+          minLength: 1
+        contextData:
+          description: context data
+        tags:
+          type: array
+          description: optional tags list for description and filtering
+          items:
+            type: string
+      required:
+      - contextData
+      - contextKey
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''

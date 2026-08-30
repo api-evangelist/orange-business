@@ -1,0 +1,798 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide Bootstrap Entry API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: Bootstrap Entry
+  description: Manage LwM2M bootstrap entries
+paths:
+  /api/v1/bootstrap/lwm2m/entries/{endpointName}/security:
+    put:
+      tags:
+      - Bootstrap Entry
+      summary: Update the Bootstrap security info.
+      description: 'Usage of this API will be reported in your access log under ''bootstrap'' category.<br/><br/>Restricted to API keys with at least one of the following roles: BOOTSTRAP_W.'
+      operationId: updateBootstrapSecurityInfo
+      parameters:
+      - name: endpointName
+        in: path
+        description: the endpoint client name for which the entry will be updated
+        required: true
+        schema:
+          type: string
+        example: urn:imei:000000000000000
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BootstrapSecurityInfo'
+            examples:
+              bootstrapSecurityInfo:
+                description: bootstrapSecurityInfo
+                value:
+                  mode: PSK
+                  pskInfo:
+                    identity: urn:lo:nsid:lwm2m:sensor12Stream
+                    secret: 0123456789ABCDEF0123456789ABCDEF
+        required: true
+      responses:
+        '204':
+          description: No Content
+  /api/v1/bootstrap/lwm2m/entries/{endpointName}/definition/runServers/{id}:
+    put:
+      tags:
+      - Bootstrap Entry
+      summary: Update a Run Server of a lwm2m bootstrap entry.
+      description: 'Usage of this API will be reported in your access log under ''bootstrap'' category.<br/><br/>Restricted to API keys with at least one of the following roles: BOOTSTRAP_W.'
+      operationId: updateRunServer
+      parameters:
+      - name: endpointName
+        in: path
+        description: the endpoint client name for which the entry will be updated
+        required: true
+        schema:
+          type: string
+        example: urn:imei:000000000000000
+      - name: id
+        in: path
+        description: the identifier of the Run Server that will be updated or added
+        required: true
+        schema:
+          type: string
+        example: myServer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RunServerConfigParams'
+            examples:
+              runServer:
+                description: runServer
+                value:
+                  id: LOServer
+                  security:
+                    pskInfo:
+                      identity: urn:lo:nsid:lwm2m:sensor12Stream
+                      secret: 0123456789ABCDEF0123456789ABCDEF
+        required: true
+      responses:
+        '204':
+          description: No Content
+    delete:
+      tags:
+      - Bootstrap Entry
+      summary: Delete a Run Server of a lwm2m bootstrap entry.
+      description: 'Usage of this API will be reported in your access log under ''bootstrap'' category.<br/><br/>Restricted to API keys with at least one of the following roles: BOOTSTRAP_W.'
+      operationId: deleteRunServer
+      parameters:
+      - name: endpointName
+        in: path
+        description: the endpoint client name for which the entry will be deleted
+        required: true
+        schema:
+          type: string
+        example: urn:imei:000000000000000
+      - name: id
+        in: path
+        description: the identifier of the Run Server to delete
+        required: true
+        schema:
+          type: string
+        example: myServer
+      responses:
+        '204':
+          description: No Content
+  /api/v1/bootstrap/lwm2m/entries/{endpointName}/definition/bootstrapConfigId:
+    put:
+      tags:
+      - Bootstrap Entry
+      summary: Set the bootstrapConfigId field of a bootstrap entry.
+      description: 'Usage of this API will be reported in your access log under ''bootstrap'' category.<br/><br/>Restricted to API keys with at least one of the following roles: BOOTSTRAP_W.'
+      operationId: setBootstrapConfigId
+      parameters:
+      - name: endpointName
+        in: path
+        description: the endpoint client name for which the entry will be updated
+        required: true
+        schema:
+          type: string
+        example: urn:imei:000000000000000
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+            examples:
+              bootstrapConfigId:
+                description: bootstrapConfigId
+                value: 63c17e68f98ac770eac303fb
+      responses:
+        '204':
+          description: No Content
+  /api/v1/bootstrap/lwm2m/entries:
+    get:
+      tags:
+      - Bootstrap Entry
+      summary: List lwm2m bootstrap entries.
+      description: 'Restricted to API keys with at least one of the following roles: BOOTSTRAP_R.'
+      operationId: listBootstrapEntry
+      parameters:
+      - name: limit
+        in: query
+        description: the maximum number of items per page (optional, highest value is 1000)
+        required: false
+        schema:
+          type: string
+          default: '20'
+      - name: bookmarkEndpointName
+        in: query
+        description: 'endpointName of the last document retrieved that can be used to paginate : first result will be the one following this document'
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BootstrapEntry'
+    post:
+      tags:
+      - Bootstrap Entry
+      summary: Create a lwm2m bootstrap entry.
+      description: 'Usage of this API will be reported in your access log under ''bootstrap'' category.<br/><br/>Restricted to API keys with at least one of the following roles: BOOTSTRAP_W.'
+      operationId: createBootstrapEntry
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BootstrapEntry'
+            examples:
+              entry:
+                description: entry
+                value:
+                  endpointName: urn:lo:nsid:lwm2m:sensor12Stream
+                  security:
+                    mode: PSK
+                    pskInfo:
+                      identity: urn:lo:nsid:lwm2m:sensor12Stream
+                      secret: 0123456789ABCDEF0123456789ABCDEF
+                  definition:
+                    bootstrapConfigId: 5fb4d4ae04ef3d2228ebb459
+                    runServers:
+                    - id: LOServer
+                      security:
+                        pskInfo:
+                          identity: urn:lo:nsid:lwm2m:sensor12Stream
+                          secret: 0123456789ABCDEF0123456789ABCDEF
+        required: true
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BootstrapEntry'
+  /api/v1/bootstrap/lwm2m/entries/{endpointName}/security/secrets:
+    post:
+      tags:
+      - Bootstrap Entry
+      summary: Generates bootstrap PSK random secret for each run server in configuration. A valid bootstrap configuration must exist for the targeted entry.
+      description: 'Usage of this API will be reported in your access log under ''bootstrap'' category.<br/><br/>Restricted to API keys with at least one of the following roles: BOOTSTRAP_W.'
+      operationId: renewRunServersSecrets
+      parameters:
+      - name: endpointName
+        in: path
+        description: The endpoint client name for which the entry will be updated
+        required: true
+        schema:
+          type: string
+        example: urn:imei:000000000000000
+      - name: overrideIfExists
+        in: query
+        description: Override any already existing value if set to true, leave the already existing value if set to false.
+        required: false
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '204':
+          description: No Content
+  /api/v1/bootstrap/lwm2m/entries/search:
+    post:
+      tags:
+      - Bootstrap Entry
+      summary: Search for lwm2m bootstrap entries matching specified filters. This API is rate limited based on its compute time (see development guide > Limitation table).
+      description: 'Restricted to API keys with at least one of the following roles: BOOTSTRAP_R.'
+      operationId: searchBootstrapEntry
+      parameters:
+      - name: limit
+        in: query
+        description: the maximum number of items per page (optional, highest value is 100)
+        required: false
+        schema:
+          type: string
+          default: '20'
+      - name: bookmarkEndpointName
+        in: query
+        description: 'endpointName of the last document retrieved that can be used to paginate : first result will be the one following this document'
+        required: false
+        schema:
+          type: string
+      - name: showSecuritySecrets
+        in: query
+        description: whether or not to show the secrets used to authenticate to the LwM2M Run server
+        required: false
+        schema:
+          type: boolean
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BootstrapEntrySearchRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BootstrapEntry'
+  /api/v1/bootstrap/lwm2m/entries/count:
+    post:
+      tags:
+      - Bootstrap Entry
+      summary: Count lwm2m bootstrap entries matching specified filters. This API is rate limited based on its compute time (see development guide > Limitation table).
+      description: 'Restricted to API keys with at least one of the following roles: BOOTSTRAP_R.'
+      operationId: countBootstrapEntry
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BootstrapEntryCountRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BootstrapEntryCountResult'
+  /api/v1/bootstrap/lwm2m/entries/{endpointName}:
+    get:
+      tags:
+      - Bootstrap Entry
+      summary: Get a lwm2m bootstrap entry from its endpointName.
+      description: 'Restricted to API keys with at least one of the following roles: BOOTSTRAP_R.'
+      operationId: getBootstrapEntry
+      parameters:
+      - name: endpointName
+        in: path
+        description: the endpoint client name
+        required: true
+        schema:
+          type: string
+        example: urn:imei:000000000000000
+      - name: showSecuritySecrets
+        in: query
+        description: whether or not to show the secrets used to authenticate to the LwM2M Run server
+        required: false
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BootstrapEntry'
+    delete:
+      tags:
+      - Bootstrap Entry
+      summary: Delete a lwm2m bootstrap entry from its endpointName.
+      description: 'Usage of this API will be reported in your access log under ''bootstrap'' category.<br/><br/>Restricted to API keys with at least one of the following roles: BOOTSTRAP_W.'
+      operationId: deleteBootstrapEntry
+      parameters:
+      - name: endpointName
+        in: path
+        description: the endpoint client name for which the entry will be deleted
+        required: true
+        schema:
+          type: string
+        example: urn:imei:000000000000000
+      responses:
+        '204':
+          description: No Content
+components:
+  schemas:
+    BootstrapPreSharedKeyInfo:
+      type: object
+      properties:
+        identity:
+          type: string
+          description: The PSK Identity
+          example: urn:imei:123456789012345
+          maxLength: 128
+          minLength: 0
+        secret:
+          type: string
+          description: The PSK secret. Must be encoded in hexadecimal.
+          example: 0123456789ABCDEF0123456789ABCDEF
+          maxLength: 128
+          minLength: 32
+      required:
+      - identity
+      - secret
+    BootstrapEntrySearchRequest:
+      type: object
+      properties:
+        endpointNames:
+          type: array
+          description: List of entries' endpointNames to filter on.
+          example: urn:lo:nsid:lwm2m:sensor12Stream
+          items:
+            type: string
+          maxItems: 100
+          minItems: 0
+        bootstrapConfigIds:
+          type: array
+          description: Ids of bootstrap configuration to filter on. Empty string "" filters on entries without config.
+          example: 63c18eb501e3fb673233ba1b
+          items:
+            type: string
+          maxItems: 100
+          minItems: 0
+    BootstrapConfigWriteOperationInfo:
+      type: object
+      properties:
+        path:
+          type: string
+    BootstrapSecurityInfo:
+      type: object
+      description: the new Bootstrap security info
+      properties:
+        mode:
+          type: string
+          description: The security mode used to authenticate to the LwM2M Bootstrap server
+          enum:
+          - PSK
+          example: PSK
+        pskInfo:
+          $ref: '#/components/schemas/BootstrapPreSharedKeyInfo'
+          description: The Pre-Shared Key (PSK) information
+      required:
+      - mode
+    RunSecurityInfo:
+      type: object
+      properties:
+        pskInfo:
+          $ref: '#/components/schemas/RunPreSharedKeyInfo'
+          description: The Pre-Shared Key (PSK) information.
+      required:
+      - pskInfo
+    BootstrapConfigParams:
+      type: object
+      properties:
+        bootstrapConfigId:
+          type: string
+          description: The identifier of the bootstrap config to use for the endpoint (must be defined for the Bootstrap to work).
+          example: 63c17e68f98ac770eac303fb
+        runServers:
+          type: array
+          description: The parameters for the runSevers defined in the BootstrapConfig.
+          items:
+            $ref: '#/components/schemas/RunServerConfigParams'
+          maxItems: 1
+          minItems: 0
+    EndpointSecurityObjectConfig:
+      type: object
+      properties:
+        lwm2mServerUri:
+          type: string
+          description: Uniquely identifies the LwM2M Server or LwM2M Bootstrap-Server.
+          example: coaps://myserver:5684
+        bootstrapServer:
+          type: boolean
+          description: Determines if the current instance concerns a LwM2M Bootstrap-Server (true) or a standard LwM2M Server (false).
+        securityMode:
+          type: string
+          description: 'Determines what credentials are being used by the LwM2M Client and the LwM2M Server. Must be set if and only if useLiveObjects is false. Allowed values are : 0 (PSK), 1 (RPK), 2 (CERTIFICATE), 3 (NO_SEC), 4 (CERTIFICATE_WITH_EST).'
+          example: '0'
+        publicKeyOrIdentity:
+          type: string
+          description: The LwM2M Client's certificate, public key (RPK mode) or PSK Identity (PSK mode).
+          example: urn:imei:123456789012345
+        serverPublicKey:
+          type: string
+          description: Stores the LwM2M Server's, respectively LwM2M Bootstrap-Server's, certificate, public key (RPK mode) or trust anchor.The Certificate Mode Resource determines the content of this resource.
+          example: 0123456789ABCDEF
+        secretKey:
+          type: string
+          description: The secret key (PSK mode) or private key (RPK or certificate mode).
+          example: 0123456789ABCDEF0123456789ABCDEF
+        smsSecurityMode:
+          type: integer
+          format: int32
+          description: "Determines which SMS security mode is used: \n0: Reserved for future use\n1: DTLS mode (Device terminated) PSK mode assumed\n2: Secure Packet Structure mode (Smartcard terminated)\n3: NoSec mode\n4: Reserved mode (DTLS mode with multiplexing Security Association support)\n5-203 : Reserved for future use\n204-255: Proprietary modes"
+          example: 1
+        lwm2mServerSmsNumber:
+          type: string
+          description: MSISDN used by the LwM2M Client to send messages to the LwM2M Server via the SMS binding.
+          example: '1234'
+        shortServerId:
+          type: integer
+          format: int32
+          description: This identifier is used only as a link to associate the server/security object instance.
+        clientHoldOffTime:
+          type: integer
+          format: int32
+          description: The number of seconds to wait before initiating a Client Initiated Bootstrap once the LwM2M Client has determined it should initiate this bootstrap mode
+          example: 30
+        bootstrapServerAccountTimeout:
+          type: integer
+          format: int32
+          description: The LwM2M Client MUST purge the LwM2M Bootstrap-Server Account after the timeout value given by this resource
+          example: 20
+        matchingType:
+          type: string
+          description: 'The Matching Type Resource specifies how the certificate or raw public key in in the Server Public Key is presented. Four values are currently defined:
+
+            0: Exact match. This is the default value and also corresponds to the functionality of LwM2M v1.0. Hence, if this resource is not present then the content of the Server Public Key Resource corresponds to this value.
+
+            1: SHA-256 hash [RFC6234]
+
+            2: SHA-384 hash [RFC6234]
+
+            3: SHA-512 hash [RFC6234]'
+          example: '0'
+        sni:
+          type: string
+          description: This resource holds the value of the Server Name Indication (SNI) value to be used during the TLS handshake.When this resource is present then the LwM2M Server URI acts as the address of the service while the SNI value is used formatching a presented certificate, or PSK identity.
+          example: myserver
+        certificateUsage:
+          type: string
+          description: "The Certificate Usage Resource specifies the semantic of the certificate or \nraw public key stored in the Server Public Key Resource, which is used to match \nthe certificate presented in the TLS/DTLS handshake. The currently defined values are \n0 for \"CA constraint\", 1 for \"service certificate constraint\", 2 for \"trust anchor \nassertion\", and 3 for \"domain-issued certificate\". When this resource is absent, \nvalue (3) for domain issued certificate mode is assumed. More details about the \nsemantic of each value can be found in the security consideration section of the \nLwM2M specification."
+          example: '0'
+        dtlsTlsCiphersuite:
+          type: array
+          description: When this resource is present it instructs the TLS/DTLS client to propose the indicated ciphersuite(s) in the ClientHello of the handshake. A ciphersuite is indicated as a 32-bit integer value. The IANA TLS ciphersuite registry is maintained at https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml. As an example, the TLS_PSK_WITH_AES_128_CCM_8 ciphersuite is represented with the following string "0xC0,0xA8". To form an integer value the two values are concatenated. In this example, the value is 0xc0a8 or 49320.
+          example:
+          - 49320
+          items:
+            type: integer
+            format: int64
+      required:
+      - shortServerId
+    BootstrapConfigOperationsInfo:
+      type: object
+      properties:
+        writeOperationsInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/BootstrapConfigWriteOperationInfo'
+    EndpointBootstrapConfig:
+      type: object
+      properties:
+        runServers:
+          type: array
+          description: The list of run servers configurations
+          items:
+            $ref: '#/components/schemas/EndpointRunServerConfig'
+        additionalOperationsInfo:
+          $ref: '#/components/schemas/BootstrapConfigOperationsInfo'
+    BootstrapEntry:
+      type: object
+      description: Bootstrap entry to create
+      properties:
+        endpointName:
+          type: string
+          description: The endpoint client name
+          example: urn:imei:123456789012345
+          pattern: ^[\w\-_:]{1,269}
+        security:
+          $ref: '#/components/schemas/BootstrapSecurityInfo'
+          description: The security information to authenticate to the LwM2M Bootstrap server
+        masterEntry:
+          $ref: '#/components/schemas/MasterEntryReference'
+          description: The link to the master entry if the entry was automatically create from a master entry
+        definition:
+          $ref: '#/components/schemas/BootstrapConfigParams'
+          description: The BootstrapConfig parameters for the endpoint (must be defined for the Bootstrap to work)
+        activity:
+          $ref: '#/components/schemas/BootstrapState'
+          description: Information about past Bootstrap sessions
+        created:
+          type: string
+          format: date-time
+          description: Date on which the BootstrapEntry was created
+          example: '2022-10-21T10:30:58Z'
+        updated:
+          type: string
+          format: date-time
+          description: Date on which the BootstrapEntry was last updated
+          example: '2022-10-25T17:45:02Z'
+      required:
+      - endpointName
+      - security
+    EndpointRunServerConfig:
+      type: object
+      properties:
+        security:
+          $ref: '#/components/schemas/EndpointSecurityObjectConfig'
+          description: The configuration for the `LWM2M Security` object (ObjectID=0)
+        server:
+          $ref: '#/components/schemas/EndpointServerObjectConfig'
+          description: The configuration for the `LWM2M Server` object (ObjectID=1)
+    BootstrapEntryCountResult:
+      type: object
+      properties:
+        filtered:
+          type: integer
+          format: int64
+          description: number of entries matching the search request
+        total:
+          type: integer
+          format: int64
+          description: total number of entries in your account
+    RunPreSharedKeyInfo:
+      type: object
+      properties:
+        identity:
+          type: string
+          description: The PSK Identity. If it is not defined, the Identity of the PSK used to authenticate to the LwM2M Bootstrap server is used.
+          example: urn:imei:123456789012345
+          maxLength: 128
+          minLength: 1
+        secret:
+          type: string
+          description: The PSK secret. Must be encoded in hexadecimal.
+          example: 0123456789ABCDEF0123456789ABCDEF
+          maxLength: 128
+          minLength: 32
+      required:
+      - secret
+    RunServerConfigParams:
+      type: object
+      description: the new Run Server info
+      properties:
+        id:
+          type: string
+          description: Run server unique identifier for which the following parameters will apply. Must correspond to the one defined in the BootstrapConfig Must respect the following regular expression <code>^[a-zA-Z0-9]{1,128}$</code> (max 128 characters).
+          example: server01
+          pattern: ^[a-zA-Z0-9]{1,128}$
+        security:
+          $ref: '#/components/schemas/RunSecurityInfo'
+          description: The security information to authenticate to the LwM2M Run server.
+      required:
+      - id
+    BootstrapState:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Bootstrap Status
+          enum:
+          - NEVER_REQUESTED
+          - REQUESTED
+          - FINISHED
+          - FAILED
+          example: FINISHED
+        endpointBootstrapConfig:
+          $ref: '#/components/schemas/EndpointBootstrapConfig'
+          description: The last Bootstrap configuration that was sent to the LwM2M client
+        bootstrapRequestCount:
+          type: integer
+          format: int32
+          description: The number of times a Bootstrap sequence has been initiated (a Bootstrap-Request has been received by the LwM2M server).
+          example: 1
+        lastBootstrapRequestDate:
+          type: string
+          format: date-time
+          description: The last time a Bootstrap sequence was initiated (a Bootstrap-Request has been received by the LwM2M server).
+          example: '2022-10-25T18:47:06Z'
+        bootstrapFinishCount:
+          type: integer
+          format: int32
+          description: The number of times a Bootstrap sequence has been successfully completed (a Bootstrap-Finish has been sent by the LwM2M server).
+          example: 1
+        lastBootstrapFinishDate:
+          type: string
+          format: date-time
+          description: The last time a Bootstrap sequence has been successfully completed (a Bootstrap-Finish has been sent by the LwM2M server).
+          example: '2022-10-25T18:49:10Z'
+      required:
+      - bootstrapFinishCount
+      - bootstrapRequestCount
+      - status
+    MasterEntryReference:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id of the linked master entry
+    BootstrapEntryCountRequest:
+      type: object
+      properties:
+        endpointNames:
+          type: array
+          description: List of entries' endpointNames to filter on.
+          example: urn:lo:nsid:lwm2m:sensor12Stream
+          items:
+            type: string
+          maxItems: 100
+          minItems: 0
+        bootstrapConfigIds:
+          type: array
+          description: Ids of bootstrap configuration to filter on. Empty string "" filters on entries without config.
+          example: 63c18eb501e3fb673233ba1b
+          items:
+            type: string
+          maxItems: 100
+          minItems: 0
+    EndpointServerObjectConfig:
+      type: object
+      properties:
+        shortServerId:
+          type: integer
+          format: int32
+          description: This identifier is used only as a link to associate the server/security object instance.
+          example: 1
+        lifetime:
+          type: integer
+          format: int32
+          description: Specify the lifetime of the registration in seconds
+          example: 300
+        defaultMinimumPeriod:
+          type: integer
+          format: int32
+          description: The default value the LwM2M Client should use for the Minimum Period of an Observation in the absence of this parameter being included in an Observation
+          example: 200
+        defaultMaximumPeriod:
+          type: integer
+          format: int32
+          description: The default value the LwM2M Client should use for the Maximum Period of an Observation in the absence of this parameter being included in an Observation
+          example: 20
+        disableTimeout:
+          type: integer
+          format: int32
+          description: A period to disable the Server. After this period, the LwM2M Client MUST perform registration process to the Server
+          example: 0
+        notificationStoringWhenDisabledOrOffline:
+          type: boolean
+          description: If true, the LwM2M Client stores 'Notify' operations to the LwM2M Server while the LwM2M Server account is disabled or the LwM2M Client is offline. After the LwM2M Server account is enabled or the LwM2M Client is online, the LwM2M Client reports the stored 'Notify' operations to the Server. If false, the LwM2M Client discards all the 'Notify' operations or temporarily disables the Observe function while the LwM2M Server is disabled or the LwM2M Client is offline
+          example: false
+        binding:
+          type: string
+          description: This Resource defines the transport binding configured for the LwM2M Client. If the LwM2M Client supports the binding specified in this Resource, the LwM2M Client MUST use that transport for the Current Binding Mode. Allowed BindingModes are U, T, S, N (and Q restricted to LwM2M 1.0)
+          example: U
+        apnLink:
+          type: integer
+          format: int32
+          description: If this resource is defined, it provides a link to the APN connection profile Object Instance (OMNA registered Object ID:11) to be usedto communicate with this server. The instance id must be provided.
+          example: 0
+          minimum: 0
+        registrationPriorityOrder:
+          type: integer
+          description: The LwM2M Client sequences the LwM2M Server registrations in increasing order of this value. If this value is not defined,registration attempts to this server are not impacted by other server registrations. Must be 64-bit unsigned integer.
+          example: 0
+        initialRegistrationDelayTimer:
+          type: integer
+          description: The delay before registration is attempted for this LwM2M Server based upon the completion of registration of the previous LwM2M Server in the registration order. This is only applied until the first successful registration after a successful bootstrapping sequence. Must be 64-bit unsigned integer.
+          example: 0
+        registrationFailureBlock:
+          type: boolean
+          description: When set to true and registration to this LwM2M server fails, the LwM2M Client blocks registration to other servers in the order.When set to false, the LwM2M Client proceeds with registration to the next server in the order.
+          example: true
+        bootstrapOnRegistrationFailure:
+          type: boolean
+          description: If set to true, this indicates that the LwM2M Client should re-bootstrap when either registration is explicitly rejected by the LwM2M Server or registration is considered as failing as dictated by the other resource settings. If set to false, the LwM2M Client will continue with the registration attempts as dictated by the other resource settings.
+          example: true
+        communicationRetryCount:
+          type: integer
+          description: The number of successive communication attempts before which a communication sequence is considered as failed. Must be 64-bit unsigned integer.
+          example: 0
+        communicationRetryTimer:
+          type: integer
+          description: The delay between successive communication attempts in a communication sequence. This value is multiplied by two to the power of the communication retry attempt minus one (2**(retry attempt-1)) to create an exponential back-off. Must be 64-bit unsigned integer.
+          example: 0
+        communicationSequenceDelayTimer:
+          type: integer
+          description: The delay between successive communication sequences. A communication sequence is defined as the exhaustion of the Communication Retry Count and Communication Retry Timer values. A communication sequence can be applied to server registrations or bootstrapping attempts. MAX_VALUE means do not perform another communication sequence. Must be 64-bit unsigned integer.
+          example: 0
+        communicationSequenceRetryCount:
+          type: integer
+          description: The number of successive communication sequences before which a registration attempt is considered as failed. Must be 64-bit unsigned integer.
+          example: 3
+        trigger:
+          type: boolean
+          description: Using the Trigger Resource a LwM2M Client can indicate whether it is reachable over SMS (value set to 'true') or not (value set to 'false')
+          example: true
+        preferredTransport:
+          type: string
+          description: Only a single transport binding SHALL be present. When the LwM2M client supports multiple transports, it MAY use this transport to initiate a connection. This resource can also be used to switch between multiple transports e.g. a non-IP device can switch to UDP transport to perform firmware updates.
+          enum:
+          - U
+          - T
+          - S
+          - N
+          - Q
+          example: U
+        muteSend:
+          type: boolean
+          description: "If true or the Resource is not present, the LwM2M Client Send command capability is de-activated. \nIf false, the LwM2M Client Send Command capability is activated."
+      required:
+      - binding
+      - lifetime
+      - shortServerId
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''

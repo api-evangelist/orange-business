@@ -1,0 +1,879 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide Device management - Inventory - V1 API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: Device management - Inventory - V1
+  description: Devices inventory
+paths:
+  /api/v1/deviceMgt/devices:
+    get:
+      tags:
+      - Device management - Inventory - V1
+      summary: List registered devices
+      description: '<p>The inventory service maintains an indexed version of the whole fleet.
+
+        As a consequence, a latency of a few seconds has to be expected before the current state of the fleet is available in the inventory index,
+
+        this latency can be longer especially when dealing with very large fleets.</p><br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: listDevicesV1
+      parameters:
+      - name: property.{filterName}
+        in: query
+        description: '[Cannot be tested in swagger-ui] Multiple filters, Example : devices?property.temperature=25&property.humidity=58
+
+          Max number of properties depends of your offer settings. A property name must not include following characters <code>$.NULL</code> and max length is 128. Invalid property names are : ''class'', ''_class''. Property value max length is 256.'
+        schema:
+          type: string
+          example: property_value
+      - name: limit
+        in: query
+        description: the maximum number of items per page (optional, highest value is 1000)
+        required: false
+        schema:
+          type: string
+          default: '20'
+      - name: offset
+        in: query
+        description: number of items to skip (optional & DEPRECATED if >10000, please use bookmarkId Instead)
+        required: false
+        deprecated: true
+        schema:
+          type: integer
+          format: int32
+      - name: bookmarkId
+        in: query
+        description: 'id of the last document retrieved that can be used to paginate : first result will be the one following this document id'
+        required: false
+        schema:
+          type: string
+      - name: sort
+        in: query
+        description: 'sorting list by attributes. Supported columns: id, name, created, updated, group, interfaces.status, interfaces.enabled, interfaces.lastContact). Example: ["id","-created"]. '
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+      - name: id
+        in: query
+        description: 'filter list by device identifier. Must respect the following regular expression <code>^\*?(?:[\w:|\-]|\.\*)*\*?$</code>.Expected string (max 269 characters) Example: "urn:lo:nsid:mqtt:dev-00*".'
+        required: false
+        schema:
+          type: string
+      - name: groupPath
+        in: query
+        description: filter list by device groupPath.  (with optional use of wildcard '/*' at the end of search term). Expected string (max 255 characters)
+        required: false
+        schema:
+          type: string
+      - name: groupId
+        in: query
+        description: filter list by device groupId. Expected string (max 6 characters)
+        required: false
+        schema:
+          type: string
+      - name: name
+        in: query
+        description: filter list by device name.  (with optional use of wildcard '*' at the beginning or end of search term)Expected string (max 255 characters)
+        required: false
+        schema:
+          type: string
+      - name: tags
+        in: query
+        description: filter list by device tags. Max number of tags depends on your offer settings. Tag value max length is 32.
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+      - name: connectors
+        in: query
+        description: 'list devices with interfaces of the specified connector(s). Example: "mqtt, lora".'
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+      - name: interfaces.nodeId
+        in: query
+        description: filter list by nodeId. Must respect the following regular expression <code>^\*?[\w\-_:]{1,269}\*?$</code>.Expected string (max 269 characters)
+        required: false
+        schema:
+          type: string
+      - name: interfaces.status
+        in: query
+        description: 'filter list by interface status. Supported values: REGISTERED, INITIALIZING, INITIALIZED, ONLINE, OFFLINE, SLEEPING, ACTIVATED, REACTIVATED, DEACTIVATED, CONNECTIVITY_ERROR.'
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+      - name: interfaces.enabled
+        in: query
+        description: filter list by interface enabled state.
+        required: false
+        schema:
+          type: boolean
+      - name: activityStates
+        in: query
+        description: 'filter list by activity state. Supported values: ACTIVE, SILENT, UNKNOWN'
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+      - name: filterQuery
+        in: query
+        description: 'device filter expression using RSQL notation.  Supported device properties are ''groupPath'', ''groupId'', ''tags'', ''connector'', ''properties''. Supported RSQL operators are ''=='',''!='',''=in='',''and'',''or,''. '
+        required: false
+        schema:
+          type: string
+      - name: fields
+        in: query
+        description: 'list of fields to return.  Amongst: ''id'', ''name'', ''description'', ''tags'', ''properties'', ''group'', ''interfaces'', ''activityState'', ''defaultDataStreamId'', ''created'', ''updated''), default: id, name, tags & group, deprecated values: ''config'', ''resources'''
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+      - name: X-Total-Count
+        in: header
+        description: true if a total count must be returned in response
+        required: false
+        schema:
+          type: boolean
+          default: false
+        example: true
+      responses:
+        '200':
+          description: The list of devices
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Device'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+    post:
+      tags:
+      - Device management - Inventory - V1
+      summary: Create a device
+      description: 'Please refer to the ''Device Management > Interfaces'' API notes for more information about ''interfaces.[x].definition'' content<br/><br/>Usage of this API will be reported in your access log under ''device_inventory'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      operationId: createDeviceV1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceCreateRequest'
+            examples:
+              LoRa device:
+                $ref: swagger/static/examples/dm/inventory/lora_device_request.json
+              SMS device:
+                $ref: swagger/static/examples/dm/inventory/sms_device_request.json
+              MQTT device:
+                $ref: swagger/static/examples/dm/inventory/mqtt_device_request.json
+              Device with external interface:
+                $ref: swagger/static/examples/dm/inventory/x_connector_device_request.json
+              LwM2M device:
+                $ref: swagger/static/examples/dm/inventory/lwm2m_device_request.json
+              Device without interface:
+                $ref: swagger/static/examples/dm/inventory/no_interface_device_request.json
+        required: true
+      responses:
+        '200':
+          description: The device newly created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+              examples:
+                LoRa device:
+                  $ref: swagger/static/examples/dm/inventory/lora_device_response.json
+                SMS device:
+                  $ref: swagger/static/examples/dm/inventory/sms_device_response.json
+                MQTT device:
+                  $ref: swagger/static/examples/dm/inventory/mqtt_device_response.json
+                Device with external interface:
+                  $ref: swagger/static/examples/dm/inventory/x_connector_device_response.json
+                LwM2M device:
+                  $ref: swagger/static/examples/dm/inventory/lwm2m_device_response.json
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '403':
+          description: Request forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: the server cannot or will not process the request due to something that is perceived to be a client error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '409':
+          description: Device already exists in the device manager
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+  /api/v1/deviceMgt/devices/{deviceId}:
+    get:
+      tags:
+      - Device management - Inventory - V1
+      summary: Get a device
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: getDeviceV1
+      parameters:
+      - name: deviceId
+        in: path
+        description: device identifier. A Live Objects URN 'urn:lo:nsid:{namespace}:{id}' must respect the following regular expression <code>^urn:lo:nsid:([\w\-]{1,128}):([\w\-:]{1,128})$</code> (max 269 characters)
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The requested device
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+              examples:
+                LoRa device:
+                  $ref: swagger/static/examples/dm/inventory/lora_device_response.json
+                SMS device:
+                  $ref: swagger/static/examples/dm/inventory/sms_device_response.json
+                MQTT device:
+                  $ref: swagger/static/examples/dm/inventory/mqtt_device_response.json
+                Device with external interface:
+                  $ref: swagger/static/examples/dm/inventory/x_connector_device_response.json
+                LwM2M device:
+                  $ref: swagger/static/examples/dm/inventory/lwm2m_device_response.json
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: The device was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+    delete:
+      tags:
+      - Device management - Inventory - V1
+      summary: Delete a device
+      description: 'Usage of this API will be reported in your access log under ''device_inventory'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      operationId: deleteDeviceV1
+      parameters:
+      - name: deviceId
+        in: path
+        description: Target device identifier. A Live Objects URN 'urn:lo:nsid:{namespace}:{id}' must respect the following regular expression <code>^urn:lo:nsid:([\w\-]{1,128}):([\w\-:]{1,128})$</code> (max 269 characters)
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: The device was successfully deleted
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: The device was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+    patch:
+      tags:
+      - Device management - Inventory - V1
+      summary: Update a device
+      description: 'Usage of this API will be reported in your access log under ''device_inventory'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      operationId: updateDeviceV1
+      parameters:
+      - name: deviceId
+        in: path
+        description: Targeted device identifier. A Live Objects URN 'urn:lo:nsid:{namespace}:{id}' must respect the following regular expression <code>^urn:lo:nsid:([\w\-]{1,128}):([\w\-:]{1,128})$</code> (max 269 characters)
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceUpdateRequest'
+        required: true
+      responses:
+        '200':
+          description: The device was successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: The device was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+  /api/v1/deviceMgt/devices/{deviceId}/data/streams:
+    get:
+      tags:
+      - Device management - Inventory - V1
+      summary: Get the list of device's streamIds
+      description: 'Restricted to API keys with at least one of the following roles: DATA_R.'
+      operationId: getDeviceStreamsV1
+      parameters:
+      - name: deviceId
+        in: path
+        description: Targeted device identifier. A Live Objects URN 'urn:lo:nsid:{namespace}:{id}' must respect the following regular expression <code>^urn:lo:nsid:([\w\-]{1,128}):([\w\-:]{1,128})$</code> (max 269 characters)
+        required: true
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: maximum number of return items (optional, max 100 items)
+        required: false
+        schema:
+          type: string
+          default: '10'
+          maximum: 100
+      responses:
+        '200':
+          description: The requested device streamIds and last data
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeviceStreamsResponseWeb'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+        '404':
+          description: The device was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebErrorResponse'
+components:
+  schemas:
+    DeviceInterface:
+      type: object
+      description: Full details about a device interface
+      properties:
+        connector:
+          type: string
+          description: Interface connector ID
+        nodeId:
+          type: string
+          description: Interface node ID
+        deviceId:
+          type: string
+          description: Device identifier (URN)
+        enabled:
+          type: boolean
+          description: Indicates whether the interface is enabled
+        status:
+          type: string
+          description: Interface status
+          enum:
+          - REGISTERED
+          - INITIALIZING
+          - INITIALIZED
+          - REACTIVATED
+          - ONLINE
+          - ACTIVATED
+          - OFFLINE
+          - SLEEPING
+          - DEACTIVATED
+          - CONNECTIVITY_ERROR
+          - UNKNOWN
+          - DELETED
+          example: ONLINE
+        definition:
+          description: Base definition
+        lastContact:
+          type: string
+          format: date-time
+          description: Last contact date
+        activity:
+          description: Interface activity
+        locations:
+          type: array
+          description: Last device location
+          items:
+            $ref: '#/components/schemas/ConnectorNodeLocation'
+          readOnly: true
+        created:
+          type: string
+          description: Date/time of the device creation
+          example: '2016-06-03T15:55:36.944Z'
+          readOnly: true
+        updated:
+          type: string
+          description: Date/time of the device update
+          example: '2016-06-03T15:55:36.944Z'
+          readOnly: true
+        capabilities:
+          $ref: '#/components/schemas/InterfaceCapabilities'
+          description: Interface capabilities
+    DeviceUpdateRequest:
+      type: object
+      description: an update to a device definition
+      properties:
+        id:
+          type: string
+          description: new device identifier. A Live Objects URN 'urn:lo:nsid:{namespace}:{id}' must respect the following regular expression <code>^urn:lo:nsid:([\w\-]{1,128}):([\w\-:]{1,128})$</code> (max 269 characters)
+          example: urn:lo:nsid:sensor:2327398
+        name:
+          type: string
+          description: new device human-readable name. Expected string (max 255 characters)
+          example: 'sensor #12'
+        description:
+          type: string
+          description: new device description. Expected string (max 500 characters)
+        defaultDataStreamId:
+          type: string
+          description: default data streamId. Expected not empty string. Following character are forbidden <code>"'\"\\;{}() "</code> (max 255 characters)
+          example: urn:lo:nsid:mysensor:001
+        tags:
+          type: array
+          description: new device set of tags. Max number of tags depends on your offer settings. Tag value max length is 32.
+          example:
+          - demo
+          - sensor
+          items:
+            type: string
+          uniqueItems: true
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+          description: 'map of key/value string pairs detailing device properties to update. Max number of properties depends of your offer settings. A property name must not include following characters <code>$.NULL</code> and max length is 128. Invalid property names are : ''class'', ''_class''. Property value max length is 256.'
+          example:
+            manufacturer: MyDeviceMaker, Inc.
+            hwVersion: 2.0.1.7-us_64
+        group:
+          $ref: '#/components/schemas/DeviceGroup'
+          description: new device group
+          example:
+            id: root
+        staticLocation:
+          $ref: '#/components/schemas/StaticLocation'
+          description: the static location of device
+      required:
+      - id
+    WebErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+      required:
+      - code
+      - id
+      - message
+    DeviceCreateRequest:
+      type: object
+      description: The device to register
+      properties:
+        id:
+          type: string
+          description: device unique identifier. A Live Objects URN 'urn:lo:nsid:{namespace}:{id}' must respect the following regular expression <code>^urn:lo:nsid:([\w\-]{1,128}):([\w\-:]{1,128})$</code> (max 269 characters)
+          example: urn:lo:nsid:sensor:2327398
+        name:
+          type: string
+          description: human-readable device name. Expected string (max 255 characters)
+          example: 'sensor #12'
+        description:
+          type: string
+          description: human-readable device description. Expected string (max 500 characters)
+          example: 'MyDeviceMaker sensor #12'
+        defaultDataStreamId:
+          type: string
+          description: default data streamId. Expected not empty string. Following character are forbidden <code>"'\"\\;{}() "</code> (max 255 characters)
+          example: urn:lo:nsid:sensor:2327398!measures
+        tags:
+          type: array
+          description: set of tags associated with the new device. Max number of tags depends on your offer settings. Tag value max length is 32.
+          example:
+          - demo
+          - sensor
+          items:
+            type: string
+          uniqueItems: true
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+          description: 'map of key/value string pairs detailing properties of the device. Max number of properties depends of your offer settings. A property name must not include following characters <code>$.NULL</code> and max length is 128. Invalid property names are : ''class'', ''_class''. Property value max length is 256.'
+          example:
+            manufacturer: MyDeviceMaker, Inc.
+            hwVersion: 2.0.1.7-us_64
+        interfaces:
+          type: array
+          description: list of device network interfaces
+          example:
+          - connector: lora
+            enabled: true
+            definition:
+              activationType: OTAA
+              connectivityOptions:
+                ackUl: true
+                location: false
+              connectivityPlan: orange-cs/deactivate_device
+              profile: defaultProfile
+              devEUI: 0123456789ABCDEF
+              appEUI: 1234567890ABCDEF
+              appKey: 123456789012345678901234567890ab
+          - connector: sms
+            enabled: true
+            definition:
+              msisdn: '3387654321'
+              serverPhoneNumber: '3387654321'
+              encoding: string
+          items:
+            $ref: '#/components/schemas/InterfaceCreateRequest'
+        group:
+          $ref: '#/components/schemas/DeviceGroup'
+          description: group this device belongs to. Default is 'root' group.
+        staticLocation:
+          $ref: '#/components/schemas/StaticLocation'
+          description: the static location of device
+      required:
+      - id
+    ConnectorNodeLocation:
+      type: object
+      properties:
+        lat:
+          type: number
+          format: double
+          description: Last geolocation latitude (GPS coordinate system)
+          example: 10.11212
+          readOnly: true
+        lon:
+          type: number
+          format: double
+          description: Last geolocation longitude (GPS coordinate system)
+          example: 7.44464
+          readOnly: true
+        alt:
+          type: number
+          format: double
+          description: Last geolocation altitude (meter)
+          example: 50
+          readOnly: true
+        provider:
+          type: string
+          description: Computing geolocation method
+          example: RSSI
+          readOnly: true
+        accuracy:
+          type: number
+          format: double
+          description: Last global geolocation tolerance (meter)
+          example: 100
+          readOnly: true
+        lastUpdateTs:
+          type: string
+          format: date-time
+          description: Date/time of the last location
+          example: '2016-06-14T11:09:22.125Z'
+          readOnly: true
+    DeviceStreamsResponseWeb:
+      type: object
+      properties:
+        streamId:
+          type: string
+          description: id of the stream
+          example: urn:lo:nsid:sensor:1234!measures
+        count:
+          type: integer
+          format: int32
+          description: number of messages sent by the device into this stream
+          example: 42
+        lastUpdate:
+          type: string
+          description: date of the last message sent by the device into this stream
+          example: '2018-10-30T17:26:53.012Z'
+    Device:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Device URN
+        name:
+          type: string
+          description: Human readable name
+          example: Pretty moisture sensor
+        description:
+          type: string
+          description: Device description
+          example: Moisture sensor
+        tags:
+          type: array
+          description: Device tags
+          example:
+          - sensor
+          - moisture
+          items:
+            type: string
+          uniqueItems: true
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+          description: Device properties (from device provisioning)
+        group:
+          $ref: '#/components/schemas/DeviceGroup'
+          description: Reference to a device associated group
+        config:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/DeviceParameterValue'
+          description: Device configuration (last reported parameter values)
+          example:
+            logLevel:
+              type: STRING
+              value: debug
+            frequency:
+              type: INT32
+              value: 200
+        defaultDataStreamId:
+          type: string
+          description: default data streamId
+          example: urn:lo:nsid:mysensor:001
+        created:
+          type: string
+          format: date-time
+          description: Date/time when device was first registered
+        updated:
+          type: string
+          format: date-time
+          description: Date/time when device status has been lastly updated
+        activityState:
+          type: string
+          description: Activity state of the device according to the activity rules set for this device
+          enum:
+          - NOT_MONITORED
+          - UNKNOWN
+          - SILENT
+          - ACTIVE
+        staticLocation:
+          $ref: '#/components/schemas/StaticLocation'
+          description: the static location of device
+        interfaces:
+          type: array
+          description: List of this device's interfaces (i.e. 'connectivity nodes')
+          items:
+            $ref: '#/components/schemas/DeviceInterface'
+        firmwares:
+          type: object
+          additionalProperties:
+            type: string
+            deprecated: true
+          deprecated: true
+          description: Device firmware versions
+        resources:
+          type: object
+          additionalProperties:
+            type: string
+          description: Device resource versions
+      required:
+      - created
+      - id
+    InterfaceCreateRequest:
+      type: object
+      description: The device interface to add
+      properties:
+        connector:
+          type: string
+          description: Connector ID. A connector must respect the following regular expression <code>([\w\-]{1,128})</code> (max 128 characters)
+          example: lora
+        enabled:
+          type: boolean
+          description: Indicates whether the interface is enabled
+          example: true
+        definition:
+          description: Base definition. Expected string (max 10000 characters)
+      required:
+      - connector
+      - definition
+    StaticLocation:
+      type: object
+      description: the static location of device
+      properties:
+        lat:
+          type: number
+          format: double
+          description: 'Latitude value. The latitude must be between -90 and 90 '
+          example: 45.000009
+        lon:
+          type: number
+          format: double
+          description: Longitude value. The longitude must be between -180 and 180
+          example: -30.00001
+        alt:
+          type: number
+          format: double
+          description: Altitude value. The altitude must be between -10000 and 10000
+          example: 5.00001
+    DeviceGroup:
+      type: object
+      properties:
+        id:
+          type: string
+          description: group identifier. Expected string (max 6 characters)
+          example: E89AE
+        path:
+          type: string
+          description: 'group path. Authorized: letter (lowercase and uppercase), accented characters, number, space, dash, underscore and simple quote. A valid path must respect the following regular expression <code>[\wÀ-ÖØ-öø-ÿ'' -]{1,255}</code>.Expected string (max 255 characters)'
+          example: /france/paris
+    InterfaceCapability:
+      type: object
+      properties:
+        available:
+          type: boolean
+          description: Indicates whether the capability is available for the interface
+          example: true
+          readOnly: true
+        version:
+          type: integer
+          format: int32
+          description: Capability version
+          example: 1
+          readOnly: true
+    InterfaceCapabilities:
+      type: object
+      description: Full details about an interface capabilities
+      properties:
+        configuration:
+          $ref: '#/components/schemas/InterfaceCapability'
+          description: Interface configuration capability
+          readOnly: true
+        command:
+          $ref: '#/components/schemas/InterfaceCapability'
+          description: Interface command capability
+          readOnly: true
+        resource:
+          $ref: '#/components/schemas/InterfaceCapability'
+          description: Interface resource capability
+          readOnly: true
+        twin:
+          $ref: '#/components/schemas/InterfaceCapability'
+          description: Interface twin capability
+          readOnly: true
+    DeviceParameterValue:
+      type: object
+      properties:
+        type:
+          type: string
+          description: configuration parameter value type (INT32, UINT32, FLOAT, STRING or BINARY)
+          enum:
+          - INT32
+          - UINT32
+          - BINARY
+          - STRING
+          - FLOAT
+          - UNKNOWN
+        value:
+          description: 'configuration parameter value (number for INT32/UINT32 type, string for STRING type,float for FLOAT type, base64-encoded string for BINARY type) '
+        timestamp:
+          type: string
+          format: date-time
+          description: configuration parameter value associated date/time (ISO 8601)
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''

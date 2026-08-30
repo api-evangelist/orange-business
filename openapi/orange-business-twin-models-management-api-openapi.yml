@@ -1,0 +1,334 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide Twin models management API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: Twin models management
+  description: Manage twin model
+paths:
+  /api/v1/deviceMgt/twin/model/object-definitions:
+    post:
+      tags:
+      - Twin models management
+      summary: Add a custom twin model.
+      description: "<p>\n  For LwM2M input, custom model objectDefinitionId must be between 10241 and 42800.\n</p>\n<p>\n  ⚠️ IDs between 10241 and 32768 belong to a public class of the LwM2M Object Registry,\n  so they should be used with care as the custom model will supersede the potential public model\n</p>\n<br/><br/>Usage of this API will be reported in your access log under 'twin' category.<br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_W."
+      operationId: createCustomModel
+      parameters:
+      - name: inputFormat
+        in: query
+        description: Input format used when importing the model. The only available option for now is "LWM2M"
+        required: false
+        schema:
+          type: string
+          default: LWM2M
+      - name: override
+        in: query
+        description: If TRUE then the imported definition will override the existing one (if it already exists)
+        required: false
+        schema:
+          type: boolean
+          default: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: XML file content in the OMA LwM2M format
+              required:
+              - file
+      responses:
+        '201':
+          description: Custom twin model created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TwinModelResponse'
+  /api/v1/deviceMgt/twin/model/object-definitions/{objectDefinitionId}:
+    get:
+      tags:
+      - Twin models management
+      summary: Read a twin model
+      description: 'Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      operationId: readPublicModel
+      parameters:
+      - name: objectDefinitionId
+        in: path
+        description: 'object definition identifier the model ex: urn:oma:lwm2m:ext:3442:1.1'
+        required: true
+        schema:
+          type: string
+      - name: customOnly
+        in: query
+        description: If TRUE only the custom objects are returned, else custom and public objects are returned
+        required: false
+        schema:
+          type: boolean
+          default: false
+      - name: supportedOnly
+        in: query
+        description: If TRUE only the supported objects are returned, else supported and instantiated objects are returned
+        required: false
+        schema:
+          type: boolean
+          default: false
+      - name: childrenFields
+        in: query
+        description: 'List of children''s fields to return. Amongst: ''pathSegment'', ''name'', ''description'', ''minOccurs'', ''maxOccurs'', ''type'', ''operations'', ''attributes''. Following children fields are always returned : ''objectDefinitionId'',  ''owner''.'
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+      responses:
+        '200':
+          description: The twin model
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TwinModelResponse'
+    delete:
+      tags:
+      - Twin models management
+      summary: Delete a custom twin model
+      description: 'Usage of this API will be reported in your access log under ''twin'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      operationId: deleteCustomModel
+      parameters:
+      - name: objectDefinitionId
+        in: path
+        description: 'object definition identifier the model ex: urn:oma:lwm2m:ext:3442:1.1'
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Custom Twin model deleted
+components:
+  schemas:
+    TwinModelResponse:
+      type: object
+      properties:
+        objectDefinitionId:
+          type: string
+          description: Unique identifier of the object-definition
+          example: urn:oma:lwm2m:oma:32769:1.1
+        pathSegment:
+          type: string
+          description: Part of the full path to access an instance of this element
+          example: '32769'
+        name:
+          type: string
+          description: The full original name
+          example: My object
+        description:
+          type: string
+          description: Description of the object
+          example: info ...
+        minOccurs:
+          type: integer
+          format: int32
+          description: Minimal occurrence (0 means optional, 1 means mandatory and at least 1 is required)
+          example: 0
+        maxOccurs:
+          type: integer
+          format: int32
+          description: Maximal occurrence (0 means infinite instances are allowed (unbounded), 1 means maximum 1 instance is allowed
+          example: 1
+        type:
+          type: string
+          description: '<p><span style="text-decoration: underline;">Object type supported values are :</span></p><ul><li>"OBJECT": means that this is a single object</li><li>"OBJECT_MAP": means that this object is a map of object, and that a path of such an object instance is always using a map index</li></ul><br/>'
+          enum:
+          - OBJECT
+          - OBJECT_MAP
+          example: OBJECT
+        operations:
+          type: array
+          description: List of object operations among ["READ", "WRITE"]
+          example: WRITE
+          items:
+            type: string
+            enum:
+            - READ
+            - WRITE
+        attributes:
+          type: array
+          description: List of attribute type for this object.
+          items:
+            $ref: '#/components/schemas/AttributeDefinition'
+        parent:
+          type: string
+          description: 'the objectDefinitionId of the parent object.
+
+            The parent must be another Object. In LwM2M all LwM2M objects are direct children of "root":urn:oma:lwm2m There is just 1 level of object hierarchy'
+          example: urn:oma:lwm2m
+        owner:
+          type: string
+          description: The customer identifier in case of private model
+          example: c10772fa-0577-11ec-9a03-0242ac130003
+        children:
+          type: array
+          description: List of objectDefinitionId
+          items:
+            $ref: '#/components/schemas/ObjectDefinition'
+    AttributeDefinition:
+      type: object
+      properties:
+        pathSegment:
+          type: string
+          description: Used to build a part of the full path to access an instance of this element
+          example: '1'
+        name:
+          type: string
+          description: The full original name
+          example: Maximum Defer Period
+        description:
+          type: string
+          description: Description of the attribute
+          example: Attribute description
+        minOccurs:
+          type: integer
+          format: int32
+          description: Minimal occurrence (0 means optional, 1 means mandatory and at least 1 is required)
+          example: 0
+        maxOccurs:
+          type: integer
+          format: int32
+          description: Maximal occurrence (0 means infinite instances are allowed (unbounded), 1 means maximum 1 instance is allowed
+          example: 1
+        type:
+          type: string
+          description: '<p><span style="text-decoration: underline;">Attribute type supported values are :</span></p><ul><li>"STRING": represented as UTF-8 string</li><li>"INTEGER": represented as ASCII signed integer 1, 2,4 or 8 bytes</li><li>"UNSIGNED_INTEGER": represented as ASCII unsigned integer 1, 2,4 or 8 bytes</li><li>"BOOLEAN": represented as ASCII value 0 or 1</li><li>"FLOAT": represented as a 32 or 64-bit floating point values</li><li>"BASE64": represented as a sequence of binary octets</li><li>"DATETIME": represented as a Unix Time. A signed integer representing the number of seconds since Jan 1st, 1970 in the UTC time zone</li></ul><br/>'
+          enum:
+          - STRING
+          - INTEGER
+          - UNSIGNED_INTEGER
+          - BOOLEAN
+          - FLOAT
+          - BASE_64
+          - DATE_TIME
+          example: FLOAT
+        operations:
+          type: array
+          description: List of attribute operations among ["READ", "WRITE", "EXECUTE"]
+          example: WRITE
+          items:
+            type: string
+            enum:
+            - READ
+            - WRITE
+            - EXECUTE
+        mandatory:
+          type: boolean
+    ObjectDefinition:
+      type: object
+      properties:
+        objectDefinitionId:
+          type: string
+          description: Unique identifier of the object-definition
+          example: urn:oma:lwm2m:oma:32769:1.1
+        pathSegment:
+          type: string
+          description: Part of the full path to access an instance of this element
+          example: '32769'
+        name:
+          type: string
+          description: The full original name
+          example: My object
+        description:
+          type: string
+          description: Description of the object
+          example: info ...
+        minOccurs:
+          type: integer
+          format: int32
+          description: Minimal occurrence (0 means optional, 1 means mandatory and at least 1 is required)
+          example: 0
+        maxOccurs:
+          type: integer
+          format: int32
+          description: Maximal occurrence (0 means infinite instances are allowed (unbounded), 1 means maximum 1 instance is allowed
+          example: 1
+        type:
+          type: string
+          description: '<p><span style="text-decoration: underline;">Object type supported values are :</span></p><ul><li>"OBJECT": means that this is a single object</li><li>"OBJECT_MAP": means that this object is a map of object, and that a path of such an object instance is always using a map index</li></ul><br/>'
+          enum:
+          - OBJECT
+          - OBJECT_MAP
+          example: OBJECT
+        operations:
+          type: array
+          description: List of object operations among ["READ", "WRITE"]
+          example: WRITE
+          items:
+            type: string
+            enum:
+            - READ
+            - WRITE
+        attributes:
+          type: array
+          description: List of attribute type for this object.
+          items:
+            $ref: '#/components/schemas/AttributeDefinition'
+        parent:
+          type: string
+          description: 'the objectDefinitionId of the parent object.
+
+            The parent must be another Object. In LwM2M all LwM2M objects are direct children of "root":urn:oma:lwm2m There is just 1 level of object hierarchy'
+          example: urn:oma:lwm2m
+        owner:
+          type: string
+          description: The customer identifier in case of private model
+          example: c10772fa-0577-11ec-9a03-0242ac130003
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''

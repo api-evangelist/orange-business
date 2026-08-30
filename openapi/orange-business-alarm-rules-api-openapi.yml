@@ -1,0 +1,425 @@
+openapi: 3.2.0
+info:
+  title: Live Objects REST API Guide Alarm rules API
+  description: API description for Live Objects service
+  contact:
+    name: Live Objects Support
+    url: https://liveobjects.orange-business.com/#/cms/support
+  version: 2026.7.0
+servers:
+- url: https://liveobjects.orange-business.com
+security:
+- X-API-KEY: []
+  OAuth2.0: []
+tags:
+- name: Alarm rules
+  description: Manage your alarm rules
+paths:
+  /api/v1/alarms/rules/{ruleId}:
+    get:
+      tags:
+      - Alarm rules
+      summary: Retrieve an AlarmRule.
+      description: 'Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: getAlarmRule
+      parameters:
+      - name: ruleId
+        in: path
+        description: id of the AlarmRule to retrieve
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: AlarmRule successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlarmRule'
+        '404':
+          description: Unknown AlarmRule
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlarmRule'
+    put:
+      tags:
+      - Alarm rules
+      summary: Update an AlarmRule.
+      description: 'The field `id` must be provided and match the API path id.<br/><br/>Usage of this API will be reported in your access log under ''alarming'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      operationId: updateAlarmRule
+      parameters:
+      - name: ruleId
+        in: path
+        description: id of the AlarmRule to retrieve
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlarmRule'
+            examples:
+              Rule for suspended action policy:
+                description: Rule for suspended action policy
+                value:
+                  id: '1234567890'
+                  name: Action policy suspended
+                  enabled: true
+                  type: actionPolicySuspended
+                  notifications:
+                    notificationChannelIds:
+                    - default
+        required: true
+      responses:
+        '200':
+          description: AlarmRule successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlarmRule'
+        '404':
+          description: Unknown AlarmRule
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlarmRule'
+    delete:
+      tags:
+      - Alarm rules
+      summary: Delete an AlarmRule.
+      description: 'Usage of this API will be reported in your access log under ''alarming'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      operationId: deleteAlarmRule
+      parameters:
+      - name: ruleId
+        in: path
+        description: id of the AlarmRule to delete
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: AlarmRule successfully deleted
+        '404':
+          description: Unknown AlarmRule
+  /api/v1/alarms/rules:
+    get:
+      tags:
+      - Alarm rules
+      summary: Retrieve your AlarmRules.
+      description: 'Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: listAlarmRules
+      responses:
+        '200':
+          description: list of AlarmRules
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AlarmRule'
+    post:
+      tags:
+      - Alarm rules
+      summary: Create an AlarmRule.
+      description: 'The field `id` must not be provided, it will be automatically generated<br/><br/>Usage of this API will be reported in your access log under ''alarming'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      operationId: createAlarmRule
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlarmRule'
+            examples:
+              Rule for suspended action policy:
+                description: Rule for suspended action policy
+                value:
+                  name: Action policy suspended
+                  enabled: true
+                  type: actionPolicySuspended
+                  notifications:
+                    notificationChannelIds:
+                    - default
+              Rule for message delivery success ratio supervision:
+                description: Rule for message delivery success ratio supervision
+                value:
+                  type: messageDeliverySuccessRatio
+                  name: Delivered message degradation
+                  trigger:
+                    condition:
+                      comparisonOperator: lessThanOrEqualTo
+                      threshold: 90.0
+                      evaluationWindow: P1D
+                  notifications:
+                    notificationChannelIds:
+                    - default
+        required: true
+      responses:
+        '201':
+          description: AlarmRule successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlarmRule'
+  /api/v1/alarms/rules/types/{type}/default:
+    get:
+      tags:
+      - Alarm rules
+      summary: Retrieve default AlarmRules for a type.
+      description: 'Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: getDefaultAlarmRules
+      parameters:
+      - name: type
+        in: path
+        description: the type of the default AlarmRules to retrieve
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: list of AlarmRules
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AlarmRule'
+        '404':
+          description: Unknown type
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AlarmRule'
+  /api/v1/alarms/rules/supportedValues:
+    get:
+      tags:
+      - Alarm rules
+      summary: Retrieve AlarmRules supported values.
+      description: 'Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      operationId: listAlarmRulesSupportedValues
+      responses:
+        '200':
+          description: list of AlarmRules supported values
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AlarmRuleSupportedValues'
+components:
+  schemas:
+    RangeDouble:
+      type: object
+      properties:
+        minimum:
+          type: number
+          format: double
+        maximum:
+          type: number
+          format: double
+    SupportedThreshold:
+      type: object
+      properties:
+        values:
+          type: array
+          description: the supported threshold values. Null if a range of values is supported.
+          example:
+          - 25
+          - 50
+          - 75
+          - 90
+          - 99
+          items:
+            type: number
+            format: double
+        range:
+          $ref: '#/components/schemas/RangeDouble'
+          description: the supported threshold range. Both minimum and maximum values are included in the supported range. Null if a list of values is supported.
+          example:
+            minimum: 0
+            maximum: 100
+        type:
+          type: string
+          description: the type of the threshold
+          enum:
+          - percentage
+      required:
+      - type
+    ThrottleConfigSupportedValues:
+      type: object
+      properties:
+        supportedMuteDurations:
+          type: array
+          description: the supported mute durations.
+          example:
+          - PT6H
+          - PT12H
+          - P1D
+          - P2D
+          items:
+            type: string
+    AlarmTrigger:
+      type: object
+      properties:
+        condition:
+          $ref: '#/components/schemas/TriggerCondition'
+          description: trigger condition configuration
+    TriggerSupportedValues:
+      type: object
+      properties:
+        condition:
+          $ref: '#/components/schemas/TriggerConditionSupportedValues'
+          description: the supported trigger condition values
+    AlarmRule:
+      type: object
+      description: defines an alarm configuration
+      properties:
+        id:
+          type: string
+          description: id of the AlarmRule. Should be null when used for POST.
+        enabled:
+          type: boolean
+          description: activate or not the rule
+        type:
+          type: string
+          description: specific type of the alarm
+          example: actionPolicySuspended
+        name:
+          type: string
+          description: user-defined name for the rule, must not be empty, should be unique
+        throttle:
+          $ref: '#/components/schemas/ThrottleConfig'
+          description: Configuration for throttling alarm notifications. Throttling prevents sending repeated notifications for the same alarm.
+        trigger:
+          $ref: '#/components/schemas/AlarmTrigger'
+          description: alarm trigger configuration
+        notifications:
+          $ref: '#/components/schemas/AlarmNotifications'
+          description: notification configuration
+      required:
+      - name
+      - notifications
+      - type
+    TriggerConditionSupportedValues:
+      type: object
+      properties:
+        supportedComparisonOperators:
+          type: array
+          description: the supported comparison operators
+          example:
+          - lessThanOrEqualTo
+          items:
+            type: string
+        supportedThreshold:
+          $ref: '#/components/schemas/SupportedThreshold'
+          description: the supported threshold range
+        supportedEvaluationWindows:
+          type: array
+          description: the supported evaluation windows
+          example:
+          - PT1H
+          - PT24H
+          items:
+            type: string
+    AlarmNotifications:
+      type: object
+      properties:
+        notificationChannelIds:
+          type: array
+          description: ids of notification channels that define the recipients of the alarm
+          example: default
+          items:
+            type: string
+      required:
+      - notificationChannelIds
+    ThrottleConfig:
+      type: object
+      properties:
+        muteDuration:
+          type: string
+          description: 'The duration for which notifications for the same alarm are muted after being sent.
+
+            During this period, additional notifications for the same alarm will not be sent,
+
+            even if the alarm is repeatedly triggered.
+
+            Specify the duration using the ISO 8601 duration format (e.g., ''PT1H'' for 1 hour, ''P1D'' for 1 day).
+
+            '
+          example: P7D
+    AlarmRuleSupportedValues:
+      type: object
+      description: gives the supported values for alarm configurations
+      properties:
+        type:
+          type: string
+          description: specific type of the alarm
+          example: messageDeliverySuccessRatio
+        throttle:
+          $ref: '#/components/schemas/ThrottleConfigSupportedValues'
+          description: the supported throttle values
+        trigger:
+          $ref: '#/components/schemas/TriggerSupportedValues'
+          description: the supported trigger values
+      required:
+      - type
+    TriggerCondition:
+      type: object
+      properties:
+        comparisonOperator:
+          type: string
+          description: the type of operator used for comparison
+          example: lessThanOrEqualTo
+        threshold:
+          type: number
+          format: double
+          description: the threshold value
+        evaluationWindow:
+          type: string
+          description: the time window (as an ISO 8601 duration) over which the data will be aggregated and evaluated
+          example: PT1H
+      required:
+      - comparisonOperator
+      - threshold
+  securitySchemes:
+    X-API-KEY:
+      type: apiKey
+      name: X-API-KEY
+      in: header
+    OAuth2.0:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://liveobjects.orange-business.com/api/v1/oauth2/authorize
+          tokenUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          refreshUrl: https://liveobjects.orange-business.com/api/v1/oauth2/token
+          scopes:
+            API_KEY_R: Read parameters and status of an API key.
+            API_KEY_W: Create, modify, disable an API key.
+            BOOTSTRAP_R: Read parameters and status of the LwM2M Bootstrap configurations and entries.
+            BOOTSTRAP_W: Create ans modify LwM2M Bootstrap configurations and entries.
+            BUS_CONFIG_R: Read config parameters of a FIFO queue.
+            BUS_CONFIG_W: Create, modify a FIFO queue.
+            BUS_R: Read data on the Live Objects bus. Minimum permission for the API key of an application collecting data on Live Objects in MQTT(s).
+            BUS_W: Publish data on the Live Objects bus.
+            CAMPAIGN_R: Read parameters and status of a massive deployment campaign on your Device Fleet.
+            CAMPAIGN_W: Create, modify a campaign on your Device Fleet.
+            CONNECTOR_ACCESS: Role to set on a external connector API key to allow only MQTT external connector mode
+            DATA_PROCESSING_R: Read parameters and status of an event processing rule or a Data decoder.
+            DATA_PROCESSING_W: Create, modify, disable an event processing rule or a Data decoder.
+            DATA_R: Read the data collected by the Store Service or search into this data using the Search Service.
+            DATA_W: Insert a data record to the Store Service. Minimum permission required for the API key of a device pushing data to Live Objects in HTTPS.
+            DEVICE_ACCESS: Role to set on a Device API key to allow only MQTT Device mode
+            DEVICE_R: Read parameters and status of a Device management.
+            DEVICE_W: Create, modify, disable a Device management, send command, modify config, update resource of a Device.
+            LOGS_R: Read the logs collected by the Audit Log service. This right allows users to use the Audit Log service as debugging tool.
+            SETTINGS_R: Read the tenant account custom settings.
+            SETTINGS_W: Create, modify tenant account custom settings.
+            USER_R: Read parameters and status of a user.
+            USER_W: Create, modify, disable a user.
+externalDocs:
+  description: Live Objects Developer Guide
+  url: https://liveobjects.orange-business.com/doc/html/lo_manual_v2.html
+x-examples: ''
