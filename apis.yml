@@ -96,7 +96,7 @@ apis:
   name: Orange Business Contact Everyone API
   tags:
   - Communications
-  - Multichannel
+  - Multi-Channel
   - Notification
   - Telco
   tags_raw:
@@ -131,7 +131,7 @@ apis:
   name: Orange Business Cloud Avenue API
   tags:
   - Cloud
-  - IaaS
+  - Infrastructure-as-a-Service
   - Sovereign Cloud
   - Telco
   - VMware
@@ -152,7 +152,7 @@ apis:
   name: Orange Business Evolution Platform IaaS API
   tags:
   - Cloud
-  - IaaS
+  - Infrastructure-as-a-Service
   - Sandbox
   - Telco
   tags_raw:
@@ -354,7 +354,7 @@ apis:
   name: Orange Business Live Identity Captcha API
   tags:
   - Anti-Bot
-  - Captcha
+  - CAPTCHA
   - Fraud Prevention
   - Identity
   - Telco
