@@ -2442,16 +2442,21 @@ tags_raw:
 - Voice
 kind: contract
 accessModel:
-  pricing: unknown
-  onboarding: self-serve
+  pricing: freemium
+  onboarding: approval
   trial: false
   try_now: false
   public: false
-  label: Self-serve signup
-  confidence: medium
+  label: Freemium · Requires approval
+  confidence: high
   source:
+  - plans
   - authentication
-  generated: '2026-07-22'
+  - scopes
+  - rate-limits
+  - security
+  - sandbox
+  generated: '2026-09-03'
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/orange-business.png
 access: 3rd-Party
