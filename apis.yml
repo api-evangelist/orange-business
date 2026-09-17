@@ -1055,30 +1055,6 @@ apis:
     url: https://liveobjects.orange-business.com/swagger/
   - type: Blog
     url: https://blog.liveobjects.orange-business.com/
-- aid: orange-business:orange-business-ca-certificates-api
-  name: Orange Business CA certificates API
-  description: CA certificates for MQTT client cert. authentication
-  humanURL: https://liveobjects.orange-business.com/
-  baseURL: https://liveobjects.orange-business.com/api/v1
-  tags:
-  - Cacertificates
-  tags_raw:
-  - CA certificates
-  properties:
-  - type: OpenAPI
-    url: openapi/orange-business-ca-certificates-api-openapi.yml
-  - type: Portal
-    url: https://liveobjects.orange-business.com/
-  - type: Documentation
-    url: https://developer.orange.com/apis/datavenue
-  - type: DataModel
-    url: data-model/orange-business-data-model.yml
-  - type: Webhooks
-    url: asyncapi/orange-business-webhooks.yml
-  - type: APIReference
-    url: https://liveobjects.orange-business.com/swagger/
-  - type: Blog
-    url: https://blog.liveobjects.orange-business.com/
 - aid: orange-business:orange-business-campaign-management-api
   name: Orange Business Campaign management API
   description: Management of actions on a fleet of devices
@@ -2044,6 +2020,28 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/orange-business-users-management-api-openapi.yml
+  - type: Portal
+    url: https://liveobjects.orange-business.com/
+  - type: Documentation
+    url: https://developer.orange.com/apis/datavenue
+  - type: DataModel
+    url: data-model/orange-business-data-model.yml
+  - type: Webhooks
+    url: asyncapi/orange-business-webhooks.yml
+  - type: APIReference
+    url: https://liveobjects.orange-business.com/swagger/
+  - type: Blog
+    url: https://blog.liveobjects.orange-business.com/
+- aid: orange-business:orange-business-cacertificates-api
+  name: Orange Business Cacertificates API
+  description: CA certificates for MQTT client cert. authentication
+  humanURL: https://developer.orange.com/apis/iot-managed-global-connectivity
+  baseURL: https://api.orange.com/orange-money-webpay/dev/v1
+  tags:
+  - Cacertificates
+  properties:
+  - type: OpenAPI
+    url: openapi/orange-business-cacertificates-api-openapi.yml
   - type: Portal
     url: https://liveobjects.orange-business.com/
   - type: Documentation
