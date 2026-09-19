@@ -173,6 +173,12 @@ apis:
   - Connectivity
   - Enterprise
   - Ethernet
+  - Networks
+  - Telco
+  tags_raw:
+  - Connectivity
+  - Enterprise
+  - Ethernet
   - Network
   - Telco
   humanURL: https://developer.orange.com/apis/evpl-online/
@@ -185,6 +191,11 @@ apis:
 - aid: orange-business:orange-business-evpl-monitoring-api
   name: Orange Business EVPL Monitoring API
   tags:
+  - Monitoring
+  - Networks
+  - Observability
+  - Telco
+  tags_raw:
   - Monitoring
   - Network
   - Observability
@@ -929,6 +940,8 @@ apis:
   humanURL: https://liveobjects.orange-business.com/
   baseURL: https://liveobjects.orange-business.com/api/v1
   tags:
+  - Audit Logs
+  tags_raw:
   - Audit Log
   properties:
   - type: OpenAPI
@@ -1173,6 +1186,8 @@ apis:
   humanURL: https://liveobjects.orange-business.com/
   baseURL: https://liveobjects.orange-business.com/api/v1
   tags:
+  - Decoder
+  tags_raw:
   - Decoders
   properties:
   - type: OpenAPI
