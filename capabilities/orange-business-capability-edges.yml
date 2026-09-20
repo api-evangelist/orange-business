@@ -1,0 +1,47 @@
+slug: orange-business
+provider: Orange Business
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Telecommunications
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 3
+edges:
+- tag: Check SIM swap
+  spec_file: orange-business-check-sim-swap-api-openapi.yml
+  capability_id: BC-2690
+  capability_id_l1: BC-2690
+  capability_name: Telecom Fraud Management
+  confidence: 0.75
+  evidence: 'POST /check  checkSimSwap  Check SIM swap ... schemas: CreateCheckSimSwap, CheckSimSwapInfo,
+    PhoneNumber'
+  reason: SIM-swap check for a given MSISDN is the canonical telecom anti-fraud signal (SIM-swap is named
+    explicitly in the fraud-management capability). L2 left null as it serves both detection and preventive-control
+    use.
+- tag: Api keys
+  spec_file: orange-business-api-keys-api-openapi.yml
+  capability_id: BC-4270.40
+  capability_id_l1: BC-4270
+  capability_name: Developer Identity & Credential Management
+  confidence: 0.7
+  evidence: POST /api/v0/apiKeys  createApiKey  Create an API key; schemas ApiKey, RateLimit, ScopeApplication
+  reason: Issuance and lifecycle of API credentials with scopes and rate limits for platform developers
+    — developer identity & credential management. Could also be seen as pure auth plumbing, hence moderate
+    confidence.
+- tag: Beta - Cellular networks management
+  spec_file: orange-business-beta-cellular-networks-management-api-openapi.yml
+  capability_id: BC-2640
+  capability_id_l1: BC-2640
+  capability_name: Telecom Subscriber Management
+  confidence: 0.7
+  evidence: 'searchSubscriptions  Search cellular subscriptions ... getSubscription ... schemas: Sim,
+    SimCapabilities, MobileNetwork, CellularDevice'
+  reason: Operations manage and inspect cellular subscriptions (SIM, device, mobile network, last known
+    location, traffic history) — subscriber/SIM lifecycle territory. Kept at L1 because the surface is
+    read-only lookup spanning identity, SIM and device aspects rather than one narrow sub-capability.
