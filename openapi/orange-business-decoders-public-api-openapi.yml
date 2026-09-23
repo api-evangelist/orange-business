@@ -20,7 +20,10 @@ paths:
       tags:
       - Decoders - public
       summary: Retrieve the list of all public decoders (binary, csv, js)
-      description: 'A data decoder allows you to decode your data message payload into a json format. When an encoding is defined in the device interface or in the data message, the decoder will be be applied and the data message will be updated accordingly. A public decoder is a decoder that can be used by any customer. It is maintained by Live Objects. The list of public decoders may evolve over time.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      description: 'A data decoder allows you to decode your data message payload into a json format. When an encoding is defined in the device interface or in the data message, the decoder will be be applied and the data message will be updated accordingly. A public decoder is a decoder that can be used by any customer. It is maintained by Live Objects. The list of public decoders may evolve over time.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: listAllPublicDecoders
       parameters:
       - name: tags

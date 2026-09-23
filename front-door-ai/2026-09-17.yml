@@ -1,0 +1,25 @@
+# Front Door AI Index — orange-business — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: orange-business
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.orange.com
+  final_host: www.orange.com
+  ownership: shared
+  owner: orange
+  shares_host_with:
+  - orange
+  inherited_from: null
+  verdict: silent
+  score: null
+  host_score: 0
+  density: null
+  words: 47
+  tiers:
+    agentic: 0
+    core: 0
+    model: 0
+  ambiguous: 0
+  top_terms: null

@@ -105,7 +105,10 @@ paths:
       tags:
       - Users management
       summary: Create a user
-      description: 'Usage of this API will be reported in your access log under ''user'' category.<br/><br/>Restricted to API keys with at least one of the following roles: USER_W.'
+      description: 'Usage of this API will be reported in your access log under ''user'' category.
+
+
+        Restricted to API keys with at least one of the following roles: USER_W.'
       operationId: createUserAccount
       requestBody:
         content:
@@ -187,7 +190,10 @@ paths:
       tags:
       - Users management
       summary: Update a user
-      description: 'Usage of this API will be reported in your access log under ''user'' category.<br/><br/>Restricted to API keys with at least one of the following roles: USER_W.'
+      description: 'Usage of this API will be reported in your access log under ''user'' category.
+
+
+        Restricted to API keys with at least one of the following roles: USER_W.'
       operationId: updateUser
       parameters:
       - name: userId
@@ -237,7 +243,10 @@ paths:
       tags:
       - Users management
       summary: Delete a user in a tenant account
-      description: 'Usage of this API will be reported in your access log under ''user'' category.<br/><br/>Restricted to API keys with at least one of the following roles: USER_W.'
+      description: 'Usage of this API will be reported in your access log under ''user'' category.
+
+
+        Restricted to API keys with at least one of the following roles: USER_W.'
       operationId: deleteUser
       parameters:
       - name: userId
@@ -269,26 +278,6 @@ paths:
                 $ref: '#/components/schemas/WebErrorResponse'
 components:
   schemas:
-    WebErrorResponse:
-      type: object
-      description: Error response
-      properties:
-        id:
-          type: string
-          description: Unique identifier of this error instance
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Short error description
-        details:
-          type: string
-          description: Detailed error description
-      required:
-      - code
-      - id
-      - message
     User:
       type: object
       description: body of user data
@@ -355,6 +344,105 @@ components:
       - roles
       - state
       - tenantId
+    PageableUserForList:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int64
+          description: 'number of the current page: starts at 0.'
+          example: 0
+        size:
+          type: integer
+          format: int64
+          description: number of data per page (= maximum number of data in the associated list of data:the last page can have less data)
+          example: 1
+        totalCount:
+          type: integer
+          format: int64
+          description: total count of data in the complete list.
+          example: 1
+        data:
+          type: array
+          description: list of data in this page.
+          items:
+            $ref: '#/components/schemas/UserForList'
+      required:
+      - data
+      - page
+      - size
+      - totalCount
+    WebErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+      required:
+      - code
+      - id
+      - message
+    UserUpdateCustomerDefinition:
+      type: object
+      description: body of user update
+      properties:
+        login:
+          type: string
+          description: the user login. If no external identity provider is used, LO identity is used and login must respect the following regular expression <code>[a-zA-Z0-9_-]{3,254}</code> or must be a valid email (deprecated, please use user profiles endpoints instead)
+          example: MyLoginName
+        email:
+          type: string
+          description: user email. Expected a valid email (max 254 characters) (deprecated, please use user profiles endpoints instead)
+          example: me.name@mycompagny.mycom
+        roles:
+          type: array
+          description: list of user associated roles. Basic roles are "USER_R", "USER_W", "API_KEY_R", "API_KEY_W" or any role string supplied at tenant account creation time. Expected array of role names (max all roles, role value max 255 characters). Assigned roles must be included in the roles of the authenticating API key or token.
+          example:
+          - USER_R
+          - APIKEY_R
+          items:
+            type: string
+          uniqueItems: true
+        state:
+          type: string
+          description: 'user state : disabled, enabled or suspended'
+          example: enabled
+        language:
+          type: string
+          description: 'user language. Expected language ISO 639-1 (example: "en", "fr", "sk", "ro", "es") (case insensitive, max 2 characters) (deprecated, please use user profiles endpoints instead)'
+          example: EN
+        mainUser:
+          type: boolean
+          description: Set the user as main user. Expected boolean (true/false)
+          example: true
+    ExternalIdentity:
+      type: object
+      description: user's external identity
+      properties:
+        provider:
+          type: string
+          description: the external identity provider. Expected string (max 255 characters)
+          example: SIU
+        id:
+          type: string
+          description: the external identity identifier. Expected string (max 255 characters)
+          example: 44b738a0-b280-11e7-abc4-cec278b6b50a
+        login:
+          type: string
+          description: the external identity login. Expected string (max 255 characters)
+          example: bagginsf
+      required:
+      - provider
     UserCreationCustomerDefinition:
       type: object
       description: body of user creation
@@ -382,24 +470,6 @@ components:
       required:
       - email
       - roles
-    ExternalIdentity:
-      type: object
-      description: user's external identity
-      properties:
-        provider:
-          type: string
-          description: the external identity provider. Expected string (max 255 characters)
-          example: SIU
-        id:
-          type: string
-          description: the external identity identifier. Expected string (max 255 characters)
-          example: 44b738a0-b280-11e7-abc4-cec278b6b50a
-        login:
-          type: string
-          description: the external identity login. Expected string (max 255 characters)
-          example: bagginsf
-      required:
-      - provider
     UserForList:
       type: object
       description: body of user data
@@ -468,67 +538,6 @@ components:
       - roles
       - state
       - tenantId
-    PageableUserForList:
-      type: object
-      properties:
-        page:
-          type: integer
-          format: int64
-          description: 'number of the current page: starts at 0.'
-          example: 0
-        size:
-          type: integer
-          format: int64
-          description: number of data per page (= maximum number of data in the associated list of data:the last page can have less data)
-          example: 1
-        totalCount:
-          type: integer
-          format: int64
-          description: total count of data in the complete list.
-          example: 1
-        data:
-          type: array
-          description: list of data in this page.
-          items:
-            $ref: '#/components/schemas/UserForList'
-      required:
-      - data
-      - page
-      - size
-      - totalCount
-    UserUpdateCustomerDefinition:
-      type: object
-      description: body of user update
-      properties:
-        login:
-          type: string
-          description: the user login. If no external identity provider is used, LO identity is used and login must respect the following regular expression <code>[a-zA-Z0-9_-]{3,254}</code> or must be a valid email (deprecated, please use user profiles endpoints instead)
-          example: MyLoginName
-        email:
-          type: string
-          description: user email. Expected a valid email (max 254 characters) (deprecated, please use user profiles endpoints instead)
-          example: me.name@mycompagny.mycom
-        roles:
-          type: array
-          description: list of user associated roles. Basic roles are "USER_R", "USER_W", "API_KEY_R", "API_KEY_W" or any role string supplied at tenant account creation time. Expected array of role names (max all roles, role value max 255 characters). Assigned roles must be included in the roles of the authenticating API key or token.
-          example:
-          - USER_R
-          - APIKEY_R
-          items:
-            type: string
-          uniqueItems: true
-        state:
-          type: string
-          description: 'user state : disabled, enabled or suspended'
-          example: enabled
-        language:
-          type: string
-          description: 'user language. Expected language ISO 639-1 (example: "en", "fr", "sk", "ro", "es") (case insensitive, max 2 characters) (deprecated, please use user profiles endpoints instead)'
-          example: EN
-        mainUser:
-          type: boolean
-          description: Set the user as main user. Expected boolean (true/false)
-          example: true
   securitySchemes:
     X-API-KEY:
       type: apiKey

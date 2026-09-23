@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Live Objects REST API Guide User authentication management API
+  title: Live Objects REST API Guide User authentication management…
   description: API description for Live Objects service
   contact:
     name: Live Objects Support
@@ -20,7 +20,10 @@ paths:
       tags:
       - User authentication management
       summary: Update user's email
-      description: Usage of this API will be reported in your access log under 'authentication' category.<br/><br/>No specific role on API key required.
+      description: 'Usage of this API will be reported in your access log under ''authentication'' category.
+
+
+        No specific role on API key required.'
       operationId: updateUserEmailWithToken
       requestBody:
         content:

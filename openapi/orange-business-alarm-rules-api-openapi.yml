@@ -12,14 +12,14 @@ security:
 - X-API-KEY: []
   OAuth2.0: []
 tags:
-- name: Alarm rules
+- name: Alarm Rules
   description: Manage your alarm rules
 paths:
   /api/v1/alarms/rules/{ruleId}:
     get:
       tags:
-      - Alarm rules
-      summary: Retrieve an AlarmRule.
+      - Alarm Rules
+      summary: Retrieve an AlarmRule
       description: 'Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: getAlarmRule
       parameters:
@@ -44,9 +44,15 @@ paths:
                 $ref: '#/components/schemas/AlarmRule'
     put:
       tags:
-      - Alarm rules
-      summary: Update an AlarmRule.
-      description: 'The field `id` must be provided and match the API path id.<br/><br/>Usage of this API will be reported in your access log under ''alarming'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      - Alarm Rules
+      summary: Update an AlarmRule
+      description: 'The field `id` must be provided and match the API path id.
+
+
+        Usage of this API will be reported in your access log under ''alarming'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: updateAlarmRule
       parameters:
       - name: ruleId
@@ -87,9 +93,12 @@ paths:
                 $ref: '#/components/schemas/AlarmRule'
     delete:
       tags:
-      - Alarm rules
-      summary: Delete an AlarmRule.
-      description: 'Usage of this API will be reported in your access log under ''alarming'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      - Alarm Rules
+      summary: Delete an AlarmRule
+      description: 'Usage of this API will be reported in your access log under ''alarming'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: deleteAlarmRule
       parameters:
       - name: ruleId
@@ -106,8 +115,8 @@ paths:
   /api/v1/alarms/rules:
     get:
       tags:
-      - Alarm rules
-      summary: Retrieve your AlarmRules.
+      - Alarm Rules
+      summary: Retrieve your AlarmRules
       description: 'Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: listAlarmRules
       responses:
@@ -121,9 +130,15 @@ paths:
                   $ref: '#/components/schemas/AlarmRule'
     post:
       tags:
-      - Alarm rules
-      summary: Create an AlarmRule.
-      description: 'The field `id` must not be provided, it will be automatically generated<br/><br/>Usage of this API will be reported in your access log under ''alarming'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      - Alarm Rules
+      summary: Create an AlarmRule
+      description: 'The field `id` must not be provided, it will be automatically generated
+
+
+        Usage of this API will be reported in your access log under ''alarming'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: createAlarmRule
       requestBody:
         content:
@@ -164,8 +179,8 @@ paths:
   /api/v1/alarms/rules/types/{type}/default:
     get:
       tags:
-      - Alarm rules
-      summary: Retrieve default AlarmRules for a type.
+      - Alarm Rules
+      summary: Retrieve default AlarmRules for a type
       description: 'Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: getDefaultAlarmRules
       parameters:
@@ -195,8 +210,8 @@ paths:
   /api/v1/alarms/rules/supportedValues:
     get:
       tags:
-      - Alarm rules
-      summary: Retrieve AlarmRules supported values.
+      - Alarm Rules
+      summary: Retrieve AlarmRules supported values
       description: 'Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: listAlarmRulesSupportedValues
       responses:
@@ -210,6 +225,66 @@ paths:
                   $ref: '#/components/schemas/AlarmRuleSupportedValues'
 components:
   schemas:
+    AlarmTrigger:
+      type: object
+      properties:
+        condition:
+          $ref: '#/components/schemas/TriggerCondition'
+          description: trigger condition configuration
+    ThrottleConfigSupportedValues:
+      type: object
+      properties:
+        supportedMuteDurations:
+          type: array
+          description: the supported mute durations.
+          example:
+          - PT6H
+          - PT12H
+          - P1D
+          - P2D
+          items:
+            type: string
+    AlarmNotifications:
+      type: object
+      properties:
+        notificationChannelIds:
+          type: array
+          description: ids of notification channels that define the recipients of the alarm
+          example: default
+          items:
+            type: string
+      required:
+      - notificationChannelIds
+    AlarmRule:
+      type: object
+      description: defines an alarm configuration
+      properties:
+        id:
+          type: string
+          description: id of the AlarmRule. Should be null when used for POST.
+        enabled:
+          type: boolean
+          description: activate or not the rule
+        type:
+          type: string
+          description: specific type of the alarm
+          example: actionPolicySuspended
+        name:
+          type: string
+          description: user-defined name for the rule, must not be empty, should be unique
+        throttle:
+          $ref: '#/components/schemas/ThrottleConfig'
+          description: Configuration for throttling alarm notifications. Throttling prevents sending repeated notifications for the same alarm.
+        trigger:
+          $ref: '#/components/schemas/AlarmTrigger'
+          description: alarm trigger configuration
+        notifications:
+          $ref: '#/components/schemas/AlarmNotifications'
+          description: notification configuration
+      required:
+      - name
+      - notifications
+      - type
     RangeDouble:
       type: object
       properties:
@@ -247,93 +322,30 @@ components:
           - percentage
       required:
       - type
-    ThrottleConfigSupportedValues:
+    TriggerCondition:
       type: object
       properties:
-        supportedMuteDurations:
-          type: array
-          description: the supported mute durations.
-          example:
-          - PT6H
-          - PT12H
-          - P1D
-          - P2D
-          items:
-            type: string
-    AlarmTrigger:
-      type: object
-      properties:
-        condition:
-          $ref: '#/components/schemas/TriggerCondition'
-          description: trigger condition configuration
+        comparisonOperator:
+          type: string
+          description: the type of operator used for comparison
+          example: lessThanOrEqualTo
+        threshold:
+          type: number
+          format: double
+          description: the threshold value
+        evaluationWindow:
+          type: string
+          description: the time window (as an ISO 8601 duration) over which the data will be aggregated and evaluated
+          example: PT1H
+      required:
+      - comparisonOperator
+      - threshold
     TriggerSupportedValues:
       type: object
       properties:
         condition:
           $ref: '#/components/schemas/TriggerConditionSupportedValues'
           description: the supported trigger condition values
-    AlarmRule:
-      type: object
-      description: defines an alarm configuration
-      properties:
-        id:
-          type: string
-          description: id of the AlarmRule. Should be null when used for POST.
-        enabled:
-          type: boolean
-          description: activate or not the rule
-        type:
-          type: string
-          description: specific type of the alarm
-          example: actionPolicySuspended
-        name:
-          type: string
-          description: user-defined name for the rule, must not be empty, should be unique
-        throttle:
-          $ref: '#/components/schemas/ThrottleConfig'
-          description: Configuration for throttling alarm notifications. Throttling prevents sending repeated notifications for the same alarm.
-        trigger:
-          $ref: '#/components/schemas/AlarmTrigger'
-          description: alarm trigger configuration
-        notifications:
-          $ref: '#/components/schemas/AlarmNotifications'
-          description: notification configuration
-      required:
-      - name
-      - notifications
-      - type
-    TriggerConditionSupportedValues:
-      type: object
-      properties:
-        supportedComparisonOperators:
-          type: array
-          description: the supported comparison operators
-          example:
-          - lessThanOrEqualTo
-          items:
-            type: string
-        supportedThreshold:
-          $ref: '#/components/schemas/SupportedThreshold'
-          description: the supported threshold range
-        supportedEvaluationWindows:
-          type: array
-          description: the supported evaluation windows
-          example:
-          - PT1H
-          - PT24H
-          items:
-            type: string
-    AlarmNotifications:
-      type: object
-      properties:
-        notificationChannelIds:
-          type: array
-          description: ids of notification channels that define the recipients of the alarm
-          example: default
-          items:
-            type: string
-      required:
-      - notificationChannelIds
     ThrottleConfig:
       type: object
       properties:
@@ -365,24 +377,27 @@ components:
           description: the supported trigger values
       required:
       - type
-    TriggerCondition:
+    TriggerConditionSupportedValues:
       type: object
       properties:
-        comparisonOperator:
-          type: string
-          description: the type of operator used for comparison
-          example: lessThanOrEqualTo
-        threshold:
-          type: number
-          format: double
-          description: the threshold value
-        evaluationWindow:
-          type: string
-          description: the time window (as an ISO 8601 duration) over which the data will be aggregated and evaluated
-          example: PT1H
-      required:
-      - comparisonOperator
-      - threshold
+        supportedComparisonOperators:
+          type: array
+          description: the supported comparison operators
+          example:
+          - lessThanOrEqualTo
+          items:
+            type: string
+        supportedThreshold:
+          $ref: '#/components/schemas/SupportedThreshold'
+          description: the supported threshold range
+        supportedEvaluationWindows:
+          type: array
+          description: the supported evaluation windows
+          example:
+          - PT1H
+          - PT24H
+          items:
+            type: string
   securitySchemes:
     X-API-KEY:
       type: apiKey

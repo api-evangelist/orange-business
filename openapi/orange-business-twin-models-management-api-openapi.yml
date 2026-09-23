@@ -19,8 +19,19 @@ paths:
     post:
       tags:
       - Twin models management
-      summary: Add a custom twin model.
-      description: "<p>\n  For LwM2M input, custom model objectDefinitionId must be between 10241 and 42800.\n</p>\n<p>\n  ⚠️ IDs between 10241 and 32768 belong to a public class of the LwM2M Object Registry,\n  so they should be used with care as the custom model will supersede the potential public model\n</p>\n<br/><br/>Usage of this API will be reported in your access log under 'twin' category.<br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_W."
+      summary: Add a custom twin model
+      description: 'For LwM2M input, custom model objectDefinitionId must be between 10241 and 42800.
+
+
+        ⚠️ IDs between 10241 and 32768 belong to a public class of the LwM2M Object Registry,
+
+        so they should be used with care as the custom model will supersede the potential public model
+
+
+        Usage of this API will be reported in your access log under ''twin'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DEVICE_W.'
       operationId: createCustomModel
       parameters:
       - name: inputFormat
@@ -104,7 +115,10 @@ paths:
       tags:
       - Twin models management
       summary: Delete a custom twin model
-      description: 'Usage of this API will be reported in your access log under ''twin'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      description: 'Usage of this API will be reported in your access log under ''twin'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DEVICE_W.'
       operationId: deleteCustomModel
       parameters:
       - name: objectDefinitionId

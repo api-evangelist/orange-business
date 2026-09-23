@@ -20,7 +20,10 @@ paths:
       tags:
       - Api self keys
       summary: Get API key information from current authentification
-      description: Useful to get information about the API key you are using, like current roles.<br/><br/>No specific role on API key required.
+      description: 'Useful to get information about the API key you are using, like current roles.
+
+
+        No specific role on API key required.'
       operationId: getApiKeyFromAuthentication
       responses:
         '200':
@@ -49,18 +52,6 @@ paths:
                 $ref: '#/components/schemas/WebErrorResponse'
 components:
   schemas:
-    ScopeApplication:
-      type: object
-      properties:
-        fifos:
-          type: array
-          description: List of allowed FIFOs to publish or subscribe. Expected array of string (max 100 elements, value max 255 characters)
-          example:
-          - default
-          - supplierA
-          items:
-            type: string
-          uniqueItems: true
     WebErrorResponse:
       type: object
       description: Error response
@@ -81,6 +72,67 @@ components:
       - code
       - id
       - message
+    ScopeApplication:
+      type: object
+      properties:
+        fifos:
+          type: array
+          description: List of allowed FIFOs to publish or subscribe. Expected array of string (max 100 elements, value max 255 characters)
+          example:
+          - default
+          - supplierA
+          items:
+            type: string
+          uniqueItems: true
+    RateLimit:
+      type: object
+      properties:
+        mqttBridgeWindowSize:
+          type: integer
+          format: int64
+          description: 'mqtt bridge rate limit: window size in seconds'
+          example: 1
+        mqttBridgeMaxMessages:
+          type: integer
+          format: int64
+          description: 'mqtt bridge rate limit: maximum messages allowed per time window'
+          example: 1
+        mqttDeviceWindowSize:
+          type: integer
+          format: int64
+          description: 'mqtt device rate limit: window size in seconds'
+          example: 1
+        mqttDeviceMaxMessages:
+          type: integer
+          format: int64
+          description: 'mqtt device rate limit: maximum messages allowed per time window'
+          example: 1
+        httpWindowSize:
+          type: integer
+          format: int64
+          description: 'http rate limit: window size in seconds'
+          example: 1
+        httpMaxCalls:
+          type: integer
+          format: int64
+          description: 'http rate limit: maximum api calls allowed per time window'
+          example: 1
+    ClientCertificatesConfiguration:
+      type: object
+      properties:
+        required:
+          type: boolean
+          description: Indicates if the client must use TLS client cert authentication
+          example: true
+        caCertIds:
+          type: array
+          description: List of Ca Certificate Ids used to authenticate devices. Expected array of string (max 100 elements, value max 255 characters)
+          example:
+          - 5b057d0fb8605a5e80758e42
+          items:
+            type: string
+      required:
+      - required
     ApiKey:
       type: object
       properties:
@@ -174,55 +226,6 @@ components:
           type: boolean
       required:
       - roles
-    RateLimit:
-      type: object
-      properties:
-        mqttBridgeWindowSize:
-          type: integer
-          format: int64
-          description: 'mqtt bridge rate limit: window size in seconds'
-          example: 1
-        mqttBridgeMaxMessages:
-          type: integer
-          format: int64
-          description: 'mqtt bridge rate limit: maximum messages allowed per time window'
-          example: 1
-        mqttDeviceWindowSize:
-          type: integer
-          format: int64
-          description: 'mqtt device rate limit: window size in seconds'
-          example: 1
-        mqttDeviceMaxMessages:
-          type: integer
-          format: int64
-          description: 'mqtt device rate limit: maximum messages allowed per time window'
-          example: 1
-        httpWindowSize:
-          type: integer
-          format: int64
-          description: 'http rate limit: window size in seconds'
-          example: 1
-        httpMaxCalls:
-          type: integer
-          format: int64
-          description: 'http rate limit: maximum api calls allowed per time window'
-          example: 1
-    ClientCertificatesConfiguration:
-      type: object
-      properties:
-        required:
-          type: boolean
-          description: Indicates if the client must use TLS client cert authentication
-          example: true
-        caCertIds:
-          type: array
-          description: List of Ca Certificate Ids used to authenticate devices. Expected array of string (max 100 elements, value max 255 characters)
-          example:
-          - 5b057d0fb8605a5e80758e42
-          items:
-            type: string
-      required:
-      - required
   securitySchemes:
     X-API-KEY:
       type: apiKey

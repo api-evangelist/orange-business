@@ -19,7 +19,7 @@ paths:
     put:
       tags:
       - Event processing - Activity
-      summary: Mute or reset nextAlarm of ActivityStates targeted by a specific deviceId/activityRuleId
+      summary: Mute or reset nextAlarm of ActivityStates targeted by a specific…
       description: 'Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: muteActivityRule
       requestBody:
@@ -41,7 +41,10 @@ paths:
       tags:
       - Event processing - Activity
       summary: Retrieve an ActivityRule
-      description: 'An ActivityRule will monitor device activity and trigger events when they become silent after certain amount a time.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      description: 'An ActivityRule will monitor device activity and trigger events when they become silent after certain amount a time.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: getActivityRule
       parameters:
       - name: activityRuleId
@@ -61,7 +64,13 @@ paths:
       tags:
       - Event processing - Activity
       summary: Update an ActivityRule
-      description: 'An ActivityRule will monitor device activity and trigger events when they become silent after certain amount a time.<br/><br/>Usage of this API will be reported in your access log under ''alarming'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      description: 'An ActivityRule will monitor device activity and trigger events when they become silent after certain amount a time.
+
+
+        Usage of this API will be reported in your access log under ''alarming'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: updateActivityRule
       parameters:
       - name: activityRuleId
@@ -83,7 +92,13 @@ paths:
       tags:
       - Event processing - Activity
       summary: Delete an ActivityRule
-      description: 'An ActivityRule will monitor device activity and trigger events when they become silent after certain amount a time.<br/><br/>Usage of this API will be reported in your access log under ''alarming'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      description: 'An ActivityRule will monitor device activity and trigger events when they become silent after certain amount a time.
+
+
+        Usage of this API will be reported in your access log under ''alarming'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: deleteActivityRule
       parameters:
       - name: activityRuleId
@@ -100,7 +115,10 @@ paths:
       tags:
       - Event processing - Activity
       summary: Retrieve the list of all the ActivityRules or get an ActivityRule by its name
-      description: 'An ActivityRule will monitor device activity and trigger events when they become silent after certain amount a time.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      description: 'An ActivityRule will monitor device activity and trigger events when they become silent after certain amount a time.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: listActivityRules
       parameters:
       - name: name
@@ -122,7 +140,13 @@ paths:
       tags:
       - Event processing - Activity
       summary: Create an ActivityRule
-      description: 'An ActivityRule will monitor device activity and trigger events when they become silent after certain amount a time. These activity events can then be forwarded to FIFO or HttpPush with ActionPolicy rules. Total number of ActivityRules is limited.<br/><br/>Usage of this API will be reported in your access log under ''alarming'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      description: 'An ActivityRule will monitor device activity and trigger events when they become silent after certain amount a time. These activity events can then be forwarded to FIFO or HttpPush with ActionPolicy rules. Total number of ActivityRules is limited.
+
+
+        Usage of this API will be reported in your access log under ''alarming'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: createActivityRule
       requestBody:
         content:
@@ -141,8 +165,11 @@ paths:
     get:
       tags:
       - Event processing - Activity
-      summary: Retrieve the list of all the ActivityStates linked to a specific device and/or rule
-      description: 'You can retrieve current state of a the device, as well as its last activity timestamp and next alarm timestamp.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      summary: Retrieve the list of all the ActivityStates linked to a specific device and/or…
+      description: 'You can retrieve current state of a the device, as well as its last activity timestamp and next alarm timestamp.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: getDeviceActivityStates
       parameters:
       - name: deviceId
@@ -195,37 +222,6 @@ components:
       required:
       - includeSubPath
       - path
-    ActivityStateMuteRequest:
-      type: object
-      description: request to mute or reset the nextAlarm of ActivityStates targeting specific deviceId and/or ruleId
-      properties:
-        deviceId:
-          type: string
-          description: id of the targeted device. At least one of deviceId/activityRuleId must be set.
-        activityRuleId:
-          type: string
-          description: id of the targeted activityRule. At least one of deviceId/activityRuleId must be set.
-        nextAlarmOrder:
-          type: string
-          description: 'set the order type : mute or reset (from now) the next alarm'
-          enum:
-          - MUTE
-          - RESET
-      required:
-      - nextAlarmOrder
-    SilentPolicy:
-      type: object
-      properties:
-        duration:
-          type: string
-          description: the duration (ISO 8601) after which the device will be considered as silent if it had no contact with the platform. If less than 10 minutes, this duration will be handled as a 10 minutes delay. A silent event/alarm will be sent after expiration.
-          example: PT6H
-        repeatInterval:
-          type: string
-          description: if the device previously triggered a silent alarm and still had no contact with the platform; duration (ISO 8601) after which a new silent event/alarm will be sent. If less than 10 minutes, this duration will be handled as a 10 minutes delay. If null, no further alarm will be sent until the new active/silent cycle.
-          example: P1DT12H
-      required:
-      - duration
     Targets:
       type: object
       properties:
@@ -239,34 +235,6 @@ components:
           description: list of targeted group paths. This field should not be empty if deviceIds is empty.
           items:
             $ref: '#/components/schemas/GroupPath'
-    ActivityRule:
-      type: object
-      description: defines the targets and the triggering behavior to watch for silent devices
-      properties:
-        id:
-          type: string
-          description: id of the ActivityRule. Should be null when used for POST.
-        name:
-          type: string
-          description: user-defined name for the rule, must be unique and not empty.
-        targets:
-          $ref: '#/components/schemas/Targets'
-          description: define the targeted devices of the ActivityRule.
-        silentPolicy:
-          $ref: '#/components/schemas/SilentPolicy'
-          description: defines the 'silent device' triggering behavior
-        tags:
-          type: array
-          description: list of tags that will be set on alarms triggered by this rule. e.g. 'level:HIGH'
-          items:
-            type: string
-        enabled:
-          type: boolean
-          description: activate or not the ActivityRule. Default is false.
-      required:
-      - name
-      - silentPolicy
-      - targets
     ActivityState:
       type: object
       description: defines the current activity state of a specific device and a specific activity rule
@@ -302,6 +270,65 @@ components:
       - nextAlarm
       - numberOfAlarmReminders
       - state
+    ActivityStateMuteRequest:
+      type: object
+      description: request to mute or reset the nextAlarm of ActivityStates targeting specific deviceId and/or ruleId
+      properties:
+        deviceId:
+          type: string
+          description: id of the targeted device. At least one of deviceId/activityRuleId must be set.
+        activityRuleId:
+          type: string
+          description: id of the targeted activityRule. At least one of deviceId/activityRuleId must be set.
+        nextAlarmOrder:
+          type: string
+          description: 'set the order type : mute or reset (from now) the next alarm'
+          enum:
+          - MUTE
+          - RESET
+      required:
+      - nextAlarmOrder
+    SilentPolicy:
+      type: object
+      properties:
+        duration:
+          type: string
+          description: the duration (ISO 8601) after which the device will be considered as silent if it had no contact with the platform. If less than 10 minutes, this duration will be handled as a 10 minutes delay. A silent event/alarm will be sent after expiration.
+          example: PT6H
+        repeatInterval:
+          type: string
+          description: if the device previously triggered a silent alarm and still had no contact with the platform; duration (ISO 8601) after which a new silent event/alarm will be sent. If less than 10 minutes, this duration will be handled as a 10 minutes delay. If null, no further alarm will be sent until the new active/silent cycle.
+          example: P1DT12H
+      required:
+      - duration
+    ActivityRule:
+      type: object
+      description: defines the targets and the triggering behavior to watch for silent devices
+      properties:
+        id:
+          type: string
+          description: id of the ActivityRule. Should be null when used for POST.
+        name:
+          type: string
+          description: user-defined name for the rule, must be unique and not empty.
+        targets:
+          $ref: '#/components/schemas/Targets'
+          description: define the targeted devices of the ActivityRule.
+        silentPolicy:
+          $ref: '#/components/schemas/SilentPolicy'
+          description: defines the 'silent device' triggering behavior
+        tags:
+          type: array
+          description: list of tags that will be set on alarms triggered by this rule. e.g. 'level:HIGH'
+          items:
+            type: string
+        enabled:
+          type: boolean
+          description: activate or not the ActivityRule. Default is false.
+      required:
+      - name
+      - silentPolicy
+      - targets
   securitySchemes:
     X-API-KEY:
       type: apiKey

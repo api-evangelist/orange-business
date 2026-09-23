@@ -20,7 +20,10 @@ paths:
       tags:
       - Decoders - CSV
       summary: Retrieve a CSV decoder
-      description: 'A data decoder allows you to decode your data message payload into a json format. When an encoding is defined in the device interface or in the data message, the decoder will be be applied and the data message will be updated accordingly. A CSV decoder handles payload with CSV format.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      description: 'A data decoder allows you to decode your data message payload into a json format. When an encoding is defined in the device interface or in the data message, the decoder will be be applied and the data message will be updated accordingly. A CSV decoder handles payload with CSV format.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: getCsvDecoder
       parameters:
       - name: decoderId
@@ -40,7 +43,13 @@ paths:
       tags:
       - Decoders - CSV
       summary: Update a CSV decoder
-      description: 'A data decoder allows you to decode your data message payload into a json format. When an encoding is defined in the device interface or in the data message, the decoder will be be applied and the data message will be updated accordingly. A CSV decoder handles payload with CSV format.<br/><br/>Usage of this API will be reported in your access log under ''data_decoder'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      description: 'A data decoder allows you to decode your data message payload into a json format. When an encoding is defined in the device interface or in the data message, the decoder will be be applied and the data message will be updated accordingly. A CSV decoder handles payload with CSV format.
+
+
+        Usage of this API will be reported in your access log under ''data_decoder'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: updateCsvDecoder
       parameters:
       - name: decoderId
@@ -66,7 +75,13 @@ paths:
       tags:
       - Decoders - CSV
       summary: Delete a CSV decoder
-      description: 'A data decoder allows you to decode your data message payload into a json format. When an encoding is defined in the device interface or in the data message, the decoder will be be applied and the data message will be updated accordingly. A CSV decoder handles payload with CSV format.<br/><br/>Usage of this API will be reported in your access log under ''data_decoder'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      description: 'A data decoder allows you to decode your data message payload into a json format. When an encoding is defined in the device interface or in the data message, the decoder will be be applied and the data message will be updated accordingly. A CSV decoder handles payload with CSV format.
+
+
+        Usage of this API will be reported in your access log under ''data_decoder'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: deleteCsvDecoder
       parameters:
       - name: decoderId
@@ -83,7 +98,13 @@ paths:
       tags:
       - Decoders - CSV
       summary: Activate or deactivate a CSV decoder
-      description: 'A data decoder allows you to decode your data message payload into a json format. When an encoding is defined in the device interface or in the data message, the decoder will be be applied and the data message will be updated accordingly. A CSV decoder handles payload with CSV format. A non enabled decoder will not be applied on data messages. This allows you to temporarily disable a decoder without deleting it.<br/><br/>Usage of this API will be reported in your access log under ''data_decoder'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      description: 'A data decoder allows you to decode your data message payload into a json format. When an encoding is defined in the device interface or in the data message, the decoder will be be applied and the data message will be updated accordingly. A CSV decoder handles payload with CSV format. A non enabled decoder will not be applied on data messages. This allows you to temporarily disable a decoder without deleting it.
+
+
+        Usage of this API will be reported in your access log under ''data_decoder'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: activateCsvDecoder
       parameters:
       - name: decoderId
@@ -107,7 +128,10 @@ paths:
       tags:
       - Decoders - CSV
       summary: Retrieve the list of CSV decoders filtered by tags
-      description: 'A data decoder allows you to decode your data message payload into a json format. When an encoding is defined in the device interface or in the data message, the decoder will be be applied and the data message will be updated accordingly. A CSV decoder handles payload with CSV format.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      description: 'A data decoder allows you to decode your data message payload into a json format. When an encoding is defined in the device interface or in the data message, the decoder will be be applied and the data message will be updated accordingly. A CSV decoder handles payload with CSV format.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: listCsvDecoders
       parameters:
       - name: tags
@@ -131,7 +155,13 @@ paths:
       tags:
       - Decoders - CSV
       summary: Create a CSV decoder
-      description: 'A data decoder allows you to decode your data message payload into a json format. When an encoding is defined in the device interface or in the data message, the decoder will be be applied and the data message will be updated accordingly. A CSV decoder handles payload with CSV format. The number of csv decoders is limited to 100.<br/><br/>Usage of this API will be reported in your access log under ''data_decoder'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      description: 'A data decoder allows you to decode your data message payload into a json format. When an encoding is defined in the device interface or in the data message, the decoder will be be applied and the data message will be updated accordingly. A CSV decoder handles payload with CSV format. The number of csv decoders is limited to 100.
+
+
+        Usage of this API will be reported in your access log under ''data_decoder'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: registerCsvDecoder
       requestBody:
         content:
@@ -151,7 +181,10 @@ paths:
       tags:
       - Decoders - CSV
       summary: Test a CSV decoder format with an encoded payload
-      description: 'A data decoder allows you to decode your data message payload into a json format. When an encoding is defined in the device interface or in the data message, the decoder will be be applied and the data message will be updated accordingly. A CSV decoder handles payload with CSV format. This API allows you to test the CSV decoder format with an encoded payload. It can be used for troubleshooting or for testing the decoding result before applying it on data messages. The response contains the decoded data as Json if the decoding is successful.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      description: 'A data decoder allows you to decode your data message payload into a json format. When an encoding is defined in the device interface or in the data message, the decoder will be be applied and the data message will be updated accordingly. A CSV decoder handles payload with CSV format. This API allows you to test the CSV decoder format with an encoded payload. It can be used for troubleshooting or for testing the decoding result before applying it on data messages. The response contains the decoded data as Json if the decoding is successful.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: test
       requestBody:
         content:
@@ -168,6 +201,23 @@ paths:
                 $ref: '#/components/schemas/PayloadDescriptionTestResult'
 components:
   schemas:
+    PayloadDescriptionTestResult:
+      type: object
+      properties:
+        parsingOk:
+          type: boolean
+          description: indicates if the data payload can be parsed according to the data payload description
+        decodingResult:
+          description: the decoded data
+        decodingFailureReason:
+          type: string
+          description: if decoding has failed, the reason why it failed
+        descriptionValid:
+          type: boolean
+          description: 'indicates if the payload description is valid according to the type of decoding : csv, binary, js, js-split'
+        templatingOK:
+          type: boolean
+          description: indicates if the template has been successfully applied on decoded data
     CsvPayloadDescription:
       type: object
       description: binary decoder provisioning information
@@ -220,6 +270,20 @@ components:
       - columns
       - enabled
       - encoding
+    CsvColumn:
+      type: object
+      properties:
+        name:
+          type: string
+          description: the name of the column that will be used as field name
+          example: column1
+        jsonType:
+          type: string
+          description: 'the json type of the value : STRING, NUMERIC, BOOLEAN'
+          example: NUMERIC
+      required:
+      - jsonType
+      - name
     CsvPayloadDescriptionTestRequest:
       type: object
       description: Csv format and encoded payload on which decoding shall be performed
@@ -244,49 +308,6 @@ components:
       required:
       - columns
       - csvPayload
-    PayloadDescriptionMetadata:
-      type: object
-      properties:
-        certified:
-          type: boolean
-          description: the decoder is certified for the specified encoding. Only a public decoder can be certified. The default value is false.
-          readOnly: true
-        certifiedSince:
-          type: string
-          description: date since when the decoder is certified. ISO 8601 date time.
-          example: '2019-05-15T07:55:55.555Z'
-          readOnly: true
-    PayloadDescriptionTestResult:
-      type: object
-      properties:
-        parsingOk:
-          type: boolean
-          description: indicates if the data payload can be parsed according to the data payload description
-        decodingResult:
-          description: the decoded data
-        decodingFailureReason:
-          type: string
-          description: if decoding has failed, the reason why it failed
-        descriptionValid:
-          type: boolean
-          description: 'indicates if the payload description is valid according to the type of decoding : csv, binary, js, js-split'
-        templatingOK:
-          type: boolean
-          description: indicates if the template has been successfully applied on decoded data
-    CsvColumn:
-      type: object
-      properties:
-        name:
-          type: string
-          description: the name of the column that will be used as field name
-          example: column1
-        jsonType:
-          type: string
-          description: 'the json type of the value : STRING, NUMERIC, BOOLEAN'
-          example: NUMERIC
-      required:
-      - jsonType
-      - name
     CsvOptions:
       type: object
       properties:
@@ -312,6 +333,18 @@ components:
           type: string
           description: Character used to separate data rows. If the message payload contains several rows, only the first one will be decoded. Default is line feed '\n'.
           example: \n
+    PayloadDescriptionMetadata:
+      type: object
+      properties:
+        certified:
+          type: boolean
+          description: the decoder is certified for the specified encoding. Only a public decoder can be certified. The default value is false.
+          readOnly: true
+        certifiedSince:
+          type: string
+          description: date since when the decoder is certified. ISO 8601 date time.
+          example: '2019-05-15T07:55:55.555Z'
+          readOnly: true
   securitySchemes:
     X-API-KEY:
       type: apiKey

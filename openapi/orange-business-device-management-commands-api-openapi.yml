@@ -19,7 +19,7 @@ paths:
     get:
       tags:
       - Device management - Commands
-      summary: Get the status of a specific command by its identifier. A command is an instruction sent to a device, telling it to perform a specific action, change a configuration parameter, or report information.
+      summary: Get the status of a specific command by its identifier.
       description: 'Restricted to API keys with at least one of the following roles: DEVICE_R.'
       operationId: getCommandStatusV1
       parameters:
@@ -51,7 +51,7 @@ paths:
     put:
       tags:
       - Device management - Commands
-      summary: Update the status of a specific command by its identifier. A command is an instruction sent to a device, telling it to perform a specific action, change a configuration parameter, or report information.
+      summary: Update the status of a specific command by its identifier.
       description: 'Restricted to API keys with at least one of the following roles: DEVICE_W.'
       operationId: setCommandStatusV1
       parameters:
@@ -108,7 +108,7 @@ paths:
     get:
       tags:
       - Device management - Commands
-      summary: List commands targeting a specific device by its identifier (URN).  A command is an instruction sent to a device, telling it to perform a specific action, change a configuration parameter, or report information.
+      summary: List commands targeting a specific device by its identifier (URN).
       description: 'Restricted to API keys with at least one of the following roles: DEVICE_R.'
       operationId: getDeviceCommandsV1
       parameters:
@@ -188,7 +188,7 @@ paths:
     post:
       tags:
       - Device management - Commands
-      summary: Register a new command targeting a device by its identifier (URN).  A command is an instruction sent to a device, telling it to perform a specific action, change a configuration parameter, or report information.
+      summary: Register a new command targeting a device by its identifier (URN).
       description: 'Restricted to API keys with at least one of the following roles: DEVICE_W.'
       operationId: addDeviceCommandV1
       parameters:
@@ -260,7 +260,7 @@ paths:
     get:
       tags:
       - Device management - Commands
-      summary: Get a specific command by its identifier. A command is an instruction sent to a device, telling it to perform a specific action, change a configuration parameter, or report information.
+      summary: Get a specific command by its identifier.
       description: 'Restricted to API keys with at least one of the following roles: DEVICE_R.'
       operationId: getCommandV1
       parameters:
@@ -301,7 +301,7 @@ paths:
     delete:
       tags:
       - Device management - Commands
-      summary: Delete a specific command by its identifier.  A command is an instruction sent to a device, telling it to perform a specific action, change a configuration parameter, or report information.
+      summary: Delete a specific command by its identifier.
       description: 'Restricted to API keys with at least one of the following roles: DEVICE_W.'
       operationId: deleteCommandV1
       parameters:
@@ -328,6 +328,35 @@ paths:
                 $ref: '#/components/schemas/WebErrorResponse'
 components:
   schemas:
+    WebErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+      required:
+      - code
+      - id
+      - message
+    CommandResponse:
+      type: object
+      properties:
+        value:
+          description: command response value (protocol/connector-dependant)
+          example:
+            success: true
+      required:
+      - value
     Command:
       type: object
       properties:
@@ -397,81 +426,6 @@ components:
           format: date-time
           description: command last status update date/time
           example: '2017-12-06T11:32:25.055Z'
-    WebErrorResponse:
-      type: object
-      description: Error response
-      properties:
-        id:
-          type: string
-          description: Unique identifier of this error instance
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Short error description
-        details:
-          type: string
-          description: Detailed error description
-      required:
-      - code
-      - id
-      - message
-    CommandStatusReport:
-      type: object
-      properties:
-        content:
-          type: string
-    CommandRequest:
-      type: object
-      properties:
-        connector:
-          type: string
-          description: connector/protocol to use to forward the command
-          enum:
-          - mqtt
-          - lora
-          - sms
-          - x-connector
-          example: mqtt
-        value:
-          description: 'command value (protocol/connector-dependant). The length is limited. Examples:
-
-            - For mqtt: "{ "req": "unlock", "arg": { "delay": 1000 }}" in which "req" is a supported command and "arg" the appropriate arguments
-
-            - For lora: "{ "data": "ab12cd34", "port": "42" }" in which "data" is the downlink content (in hexadecimal) and "port" the target port, between 1 and 223.
-
-            - For sms (text): "{ "payload": "Hello Live Objects!", "type": "TEXT" }" where "payload" is the text message to send
-
-            - For sms (binary):  "{ "payload": "756e6c6f636b", "type": "BINARY"}" where "payload" is the binary message to send
-
-            - For x-connector: "{ "req": "turn on", "arg": { "device": "6", "delay": "300" }" in which "req" is a supported command and "arg" the appropriate arguments
-
-            '
-      required:
-      - connector
-      - value
-    CommandResponse:
-      type: object
-      properties:
-        value:
-          description: command response value (protocol/connector-dependant)
-          example:
-            success: true
-      required:
-      - value
-    CreationCommandRequest:
-      type: object
-      description: new command request
-      properties:
-        request:
-          $ref: '#/components/schemas/CommandRequest'
-          description: command request
-        policy:
-          $ref: '#/components/schemas/CommandPolicy'
-          description: Delivery policy for this command
-      required:
-      - request
     CommandPolicy:
       type: object
       properties:
@@ -539,6 +493,52 @@ components:
         nodeId:
           type: string
           description: node id
+    CreationCommandRequest:
+      type: object
+      description: new command request
+      properties:
+        request:
+          $ref: '#/components/schemas/CommandRequest'
+          description: command request
+        policy:
+          $ref: '#/components/schemas/CommandPolicy'
+          description: Delivery policy for this command
+      required:
+      - request
+    CommandStatusReport:
+      type: object
+      properties:
+        content:
+          type: string
+    CommandRequest:
+      type: object
+      properties:
+        connector:
+          type: string
+          description: connector/protocol to use to forward the command
+          enum:
+          - mqtt
+          - lora
+          - sms
+          - x-connector
+          example: mqtt
+        value:
+          description: 'command value (protocol/connector-dependant). The length is limited. Examples:
+
+            - For mqtt: "{ "req": "unlock", "arg": { "delay": 1000 }}" in which "req" is a supported command and "arg" the appropriate arguments
+
+            - For lora: "{ "data": "ab12cd34", "port": "42" }" in which "data" is the downlink content (in hexadecimal) and "port" the target port, between 1 and 223.
+
+            - For sms (text): "{ "payload": "Hello Live Objects!", "type": "TEXT" }" where "payload" is the text message to send
+
+            - For sms (binary):  "{ "payload": "756e6c6f636b", "type": "BINARY"}" where "payload" is the binary message to send
+
+            - For x-connector: "{ "req": "turn on", "arg": { "device": "6", "delay": "300" }" in which "req" is a supported command and "arg" the appropriate arguments
+
+            '
+      required:
+      - connector
+      - value
   securitySchemes:
     X-API-KEY:
       type: apiKey

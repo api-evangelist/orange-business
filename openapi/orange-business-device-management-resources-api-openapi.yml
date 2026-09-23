@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Live Objects REST API Guide Device management - Resources API
+  title: Live Objects REST API Guide Device management - Resources…
   description: API description for Live Objects service
   contact:
     name: Live Objects Support
@@ -336,6 +336,75 @@ components:
       - code
       - id
       - message
+    UpdateDeviceResourceWithConnectorRequest:
+      type: object
+      description: The device resource version to register
+      properties:
+        requestedVersion:
+          type: string
+          description: requested resource version. Expected string (max 255 characters)
+          example: 1.2.0
+        connector:
+          type: string
+          description: 'updater connector. '
+          example: http-updater
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: 'the update metadata. Max number of metadata is 100. Metadata name max length is 255. A Metadata name must not include following characters <code>$.</code>. Invalid Metadata names are : ''class'', ''_class''. Metadata value max length is 255. Optional metadata key ''<code>secured</code>'': controls the transfer protocol for firmware download. Value ''<code>true</code>'' generates HTTPS URL, ''<code>false</code>'' or absent generates HTTP URL (default). Supported by http-updater connector only.'
+          example:
+            secured: 'true'
+    DeviceResourceMapResponse:
+      type: object
+      properties:
+        resourceName:
+          $ref: '#/components/schemas/DeviceResource'
+    UpdateDeviceResourceRequest:
+      type: object
+      description: The device resource version to register
+      properties:
+        version:
+          type: string
+          description: requested resource version. Expected string (max 255 characters)
+          example: 1.2.0
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: 'the update metadata. Max number of metadata is 100. Metadata name max length is 255. A Metadata name must not include following characters <code>$.</code>. Invalid Metadata names are : ''class'', ''_class''. Metadata value max length is 255. Optional metadata key ''<code>secured</code>'': controls the transfer protocol for firmware download. Value ''<code>true</code>'' generates HTTPS URL, ''<code>false</code>'' or absent generates HTTP URL (default). Supported by http-updater connector only.'
+          example:
+            secured: 'true'
+    DeviceResource:
+      type: object
+      description: a device resource state
+      properties:
+        reported:
+          $ref: '#/components/schemas/DeviceResourceVersionValue'
+          description: resource status as reported by the device
+        requested:
+          $ref: '#/components/schemas/DeviceResourceVersionValue'
+          description: resource status as requested by the platform
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: 'metadata associated with this device resource. Max number of metadata is 100. Metadata name max length is 255. A Metadata name must not include following characters <code>$.</code>. Invalid Metadata names are : ''class'', ''_class''. Metadata value max length is 255. Optional metadata key ''<code>secured</code>'': controls the transfer protocol for firmware download. Value ''<code>true</code>'' generates HTTPS URL, ''<code>false</code>'' or absent generates HTTP URL (default). Supported by http-updater connector only.'
+          example:
+            secured: 'true'
+    DeviceResourceVersionValue:
+      type: object
+      description: a resource version
+      properties:
+        version:
+          type: string
+          description: resource version. Expected string (max 255 characters)
+          example: v2
+        timestamp:
+          type: string
+          format: date-time
+          description: resource version associated date/time
+          example: '2020-05-19T10:30:58Z'
     DeviceResourceUpdate:
       type: object
       properties:
@@ -399,75 +468,6 @@ components:
           additionalProperties:
             type: string
           description: 'the update metadata. Max number of metadata is 100. Metadata name max length is 255. A Metadata name must not include following characters <code>$.</code>. Invalid Metadata names are : ''class'', ''_class''. Metadata value max length is 255. Optional metadata key ''<code>secured</code>'': controls the transfer protocol for firmware download. Value ''<code>true</code>'' generates HTTPS URL, ''<code>false</code>'' or absent generates HTTP URL (default). Supported by http-updater connector only.'
-          example:
-            secured: 'true'
-    UpdateDeviceResourceWithConnectorRequest:
-      type: object
-      description: The device resource version to register
-      properties:
-        requestedVersion:
-          type: string
-          description: requested resource version. Expected string (max 255 characters)
-          example: 1.2.0
-        connector:
-          type: string
-          description: 'updater connector. '
-          example: http-updater
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          description: 'the update metadata. Max number of metadata is 100. Metadata name max length is 255. A Metadata name must not include following characters <code>$.</code>. Invalid Metadata names are : ''class'', ''_class''. Metadata value max length is 255. Optional metadata key ''<code>secured</code>'': controls the transfer protocol for firmware download. Value ''<code>true</code>'' generates HTTPS URL, ''<code>false</code>'' or absent generates HTTP URL (default). Supported by http-updater connector only.'
-          example:
-            secured: 'true'
-    DeviceResourceVersionValue:
-      type: object
-      description: a resource version
-      properties:
-        version:
-          type: string
-          description: resource version. Expected string (max 255 characters)
-          example: v2
-        timestamp:
-          type: string
-          format: date-time
-          description: resource version associated date/time
-          example: '2020-05-19T10:30:58Z'
-    UpdateDeviceResourceRequest:
-      type: object
-      description: The device resource version to register
-      properties:
-        version:
-          type: string
-          description: requested resource version. Expected string (max 255 characters)
-          example: 1.2.0
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          description: 'the update metadata. Max number of metadata is 100. Metadata name max length is 255. A Metadata name must not include following characters <code>$.</code>. Invalid Metadata names are : ''class'', ''_class''. Metadata value max length is 255. Optional metadata key ''<code>secured</code>'': controls the transfer protocol for firmware download. Value ''<code>true</code>'' generates HTTPS URL, ''<code>false</code>'' or absent generates HTTP URL (default). Supported by http-updater connector only.'
-          example:
-            secured: 'true'
-    DeviceResourceMapResponse:
-      type: object
-      properties:
-        resourceName:
-          $ref: '#/components/schemas/DeviceResource'
-    DeviceResource:
-      type: object
-      description: a device resource state
-      properties:
-        reported:
-          $ref: '#/components/schemas/DeviceResourceVersionValue'
-          description: resource status as reported by the device
-        requested:
-          $ref: '#/components/schemas/DeviceResourceVersionValue'
-          description: resource status as requested by the platform
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          description: 'metadata associated with this device resource. Max number of metadata is 100. Metadata name max length is 255. A Metadata name must not include following characters <code>$.</code>. Invalid Metadata names are : ''class'', ''_class''. Metadata value max length is 255. Optional metadata key ''<code>secured</code>'': controls the transfer protocol for firmware download. Value ''<code>true</code>'' generates HTTPS URL, ''<code>false</code>'' or absent generates HTTP URL (default). Supported by http-updater connector only.'
           example:
             secured: 'true'
   securitySchemes:

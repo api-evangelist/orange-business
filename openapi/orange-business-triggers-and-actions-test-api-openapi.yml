@@ -40,7 +40,10 @@ paths:
       tags:
       - Triggers and Actions - Test
       summary: Post a FIFO message for testing purposes
-      description: 'This API aims to be used only for testing purpose. Only few calls per minute are allowed. It directly publishes a message into a FIFO, without being processed by decoders, analyzed by event processing or stored into the data storage. The message must be a JSON object (not a Json primitive or array). The test message is sent with ''no retention'' : if there is no ongoing MQTT SUB on this FIFO (refer to MQTT ''application'' mode in the dev guide), the message will be discarded.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      description: 'This API aims to be used only for testing purpose. Only few calls per minute are allowed. It directly publishes a message into a FIFO, without being processed by decoders, analyzed by event processing or stored into the data storage. The message must be a JSON object (not a Json primitive or array). The test message is sent with ''no retention'' : if there is no ongoing MQTT SUB on this FIFO (refer to MQTT ''application'' mode in the dev guide), the message will be discarded.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: testFifoMessage
       requestBody:
         content:
@@ -57,18 +60,6 @@ paths:
                 $ref: '#/components/schemas/FifoTestResult'
 components:
   schemas:
-    FifoTestRequest:
-      type: object
-      description: FIFO test message request
-      properties:
-        fifoName:
-          type: string
-          description: name of the fifo to publish in
-        payload:
-          description: Fifo message to send, must be not null and json Object serializable
-      required:
-      - fifoName
-      - payload
     FifoTestResult:
       type: object
       properties:
@@ -78,20 +69,6 @@ components:
         errorMessage:
           type: string
           description: Details about the error if any
-    HttpPushTestResult:
-      type: object
-      properties:
-        success:
-          type: boolean
-        urlBlacklisted:
-          type: boolean
-        errorMessage:
-          type: string
-        httpResponseStatusCode:
-          type: integer
-          format: int32
-        httpResponseBody:
-          type: string
     HttpPushWebhookTest:
       type: object
       description: Http push request to be tested
@@ -118,6 +95,32 @@ components:
           type: integer
           format: int64
           description: The maximum delay allowed to complete the http POST test request, in milliseconds
+    HttpPushTestResult:
+      type: object
+      properties:
+        success:
+          type: boolean
+        urlBlacklisted:
+          type: boolean
+        errorMessage:
+          type: string
+        httpResponseStatusCode:
+          type: integer
+          format: int32
+        httpResponseBody:
+          type: string
+    FifoTestRequest:
+      type: object
+      description: FIFO test message request
+      properties:
+        fifoName:
+          type: string
+          description: name of the fifo to publish in
+        payload:
+          description: Fifo message to send, must be not null and json Object serializable
+      required:
+      - fifoName
+      - payload
   securitySchemes:
     X-API-KEY:
       type: apiKey

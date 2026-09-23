@@ -12,13 +12,13 @@ security:
 - X-API-KEY: []
   OAuth2.0: []
 tags:
-- name: CA certificates
+- name: Cacertificates
   description: CA certificates for MQTT client cert. authentication
 paths:
   /api/v0/certificates/ca:
     get:
       tags:
-      - CA certificates
+      - Cacertificates
       summary: List CA certificates
       description: 'Restricted to API keys with at least one of the following roles: API_KEY_R.'
       operationId: listCertificates
@@ -33,9 +33,12 @@ paths:
                   $ref: '#/components/schemas/CaCertificate'
     post:
       tags:
-      - CA certificates
+      - Cacertificates
       summary: Upload CA certificate
-      description: 'Usage of this API will be reported in your access log under ''security'' category.<br/><br/>Restricted to API keys with at least one of the following roles: API_KEY_W.'
+      description: 'Usage of this API will be reported in your access log under ''security'' category.
+
+
+        Restricted to API keys with at least one of the following roles: API_KEY_W.'
       operationId: createCertificate
       requestBody:
         content:
@@ -59,7 +62,7 @@ paths:
   /api/v0/certificates/ca/{certificateId}:
     get:
       tags:
-      - CA certificates
+      - Cacertificates
       summary: Retrieve CA certificate
       description: 'Restricted to API keys with at least one of the following roles: API_KEY_R.'
       operationId: getCertificate
@@ -85,9 +88,12 @@ paths:
                 $ref: '#/components/schemas/CaCertificate'
     delete:
       tags:
-      - CA certificates
+      - Cacertificates
       summary: Delete CA certificate
-      description: 'Usage of this API will be reported in your access log under ''security'' category.<br/><br/>Restricted to API keys with at least one of the following roles: API_KEY_W.'
+      description: 'Usage of this API will be reported in your access log under ''security'' category.
+
+
+        Restricted to API keys with at least one of the following roles: API_KEY_W.'
       operationId: deleteCertificate
       parameters:
       - name: certificateId
@@ -103,11 +109,6 @@ paths:
           description: Unknown CA certificate
 components:
   schemas:
-    CaCertificateRef:
-      type: object
-      properties:
-        id:
-          type: string
     CaCertificateDefinition:
       type: object
       description: Root or intermediate Certification Authority (CA) certificate. Only PEM format is supported. Certificate chains are not allowed. In case that intermediates CA are used, it must be the intermediate CA certificate which signs the devices certificates.
@@ -163,6 +164,11 @@ components:
       required:
       - certificate
       - comment
+    CaCertificateRef:
+      type: object
+      properties:
+        id:
+          type: string
     CaCertificate:
       type: object
       properties:

@@ -12,14 +12,14 @@ security:
 - X-API-KEY: []
   OAuth2.0: []
 tags:
-- name: Notification channels
+- name: Notification Channels
   description: Manage notification channels
 paths:
   /api/v1/contact/notificationChannels/{notificationChannelId}:
     get:
       tags:
-      - Notification channels
-      summary: Get a notification channel.
+      - Notification Channels
+      summary: Get a notification channel
       description: 'Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: getNotificationChannel
       parameters:
@@ -38,9 +38,12 @@ paths:
                 $ref: '#/components/schemas/NotificationChannel'
     put:
       tags:
-      - Notification channels
-      summary: Update a notification channel.
-      description: 'Usage of this API will be reported in your access log under ''notification'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      - Notification Channels
+      summary: Update a notification channel
+      description: 'Usage of this API will be reported in your access log under ''notification'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: updateNotificationChannel
       parameters:
       - name: notificationChannelId
@@ -70,9 +73,12 @@ paths:
                 $ref: '#/components/schemas/ServiceErrorResponse'
     delete:
       tags:
-      - Notification channels
-      summary: Delete a notification channel.
-      description: 'Usage of this API will be reported in your access log under ''notification'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      - Notification Channels
+      summary: Delete a notification channel
+      description: 'Usage of this API will be reported in your access log under ''notification'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: deleteNotificationChannel
       parameters:
       - name: notificationChannelId
@@ -93,8 +99,8 @@ paths:
   /api/v1/contact/notificationChannels:
     get:
       tags:
-      - Notification channels
-      summary: List notification channels.
+      - Notification Channels
+      summary: List notification channels
       description: 'Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: listNotificationChannels
       responses:
@@ -108,9 +114,12 @@ paths:
                   $ref: '#/components/schemas/NotificationChannel'
     post:
       tags:
-      - Notification channels
-      summary: Create a notification channel.
-      description: 'Usage of this API will be reported in your access log under ''notification'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      - Notification Channels
+      summary: Create a notification channel
+      description: 'Usage of this API will be reported in your access log under ''notification'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: createNotificationChannel
       requestBody:
         content:
@@ -127,6 +136,36 @@ paths:
                 $ref: '#/components/schemas/NotificationChannel'
 components:
   schemas:
+    NotificationChannel:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The notification channel unique identifier. The default notification channel ID is 'default'.
+          example: 6798a90560fe8807d0d58f64
+        name:
+          type: string
+          description: User-defined name for the notification channel. Must not be null, must contain at least one non-whitespace character and at most 255 characters.
+          example: OPS Team
+        language:
+          type: string
+          description: Language to use for this notification channel. Must be either 'en' or 'fr.
+          example: en
+        emails:
+          $ref: '#/components/schemas/NotificationChannelEmailRecipients'
+        created:
+          type: string
+          format: date-time
+          description: Notification channel creation datetime.
+        updated:
+          type: string
+          format: date-time
+          description: Notification channel update datetime.
+      required:
+      - emails
+      - id
+      - language
+      - name
     NotificationChannelEmailRecipients:
       type: object
       description: Email recipients for a notification channel.
@@ -157,26 +196,6 @@ components:
           minItems: 0
       required:
       - to
-    NotificationChannelRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          description: User-defined name for the notification channel. Must not be null, must contain at least one non-whitespace character and at most 255 characters.
-          example: OPS Team
-          maxLength: 255
-          minLength: 0
-        language:
-          type: string
-          description: Language to use for this notification channel. Must be either 'en' or 'fr.
-          example: en
-          pattern: ^(en|fr)$
-        emails:
-          $ref: '#/components/schemas/NotificationChannelEmailRecipients'
-      required:
-      - emails
-      - language
-      - name
     ServiceErrorResponse:
       type: object
       description: Generic Error in Response
@@ -205,34 +224,24 @@ components:
       - code
       - id
       - message
-    NotificationChannel:
+    NotificationChannelRequest:
       type: object
       properties:
-        id:
-          type: string
-          description: The notification channel unique identifier. The default notification channel ID is 'default'.
-          example: 6798a90560fe8807d0d58f64
         name:
           type: string
           description: User-defined name for the notification channel. Must not be null, must contain at least one non-whitespace character and at most 255 characters.
           example: OPS Team
+          maxLength: 255
+          minLength: 0
         language:
           type: string
           description: Language to use for this notification channel. Must be either 'en' or 'fr.
           example: en
+          pattern: ^(en|fr)$
         emails:
           $ref: '#/components/schemas/NotificationChannelEmailRecipients'
-        created:
-          type: string
-          format: date-time
-          description: Notification channel creation datetime.
-        updated:
-          type: string
-          format: date-time
-          description: Notification channel update datetime.
       required:
       - emails
-      - id
       - language
       - name
   securitySchemes:

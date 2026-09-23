@@ -19,36 +19,27 @@ paths:
     post:
       tags:
       - Beta - Network metrics
-      summary: Get the network metrics regarding provided filters BETA - please note that the API is currently in beta state, and therefore still subject to breaking changes.
-      description: '<p>
-
-        This endpoint gives you statistics on exchanges between devices and Live Objects.
+      summary: Get the network metrics regarding provided filters BETA - please note that the…
+      description: 'This endpoint gives you statistics on exchanges between devices and Live Objects.
 
         It is very useful to monitor the health of your devices'' connections to Live Objects and investigate unexpected behavior.
 
         Connectivities available with such statistics : LwM2M.
 
-        <br/>
 
         Results are aggregated per bucket (hour, day or week).
 
-        </p>
-
-        <p>
 
         Provided temporal fields ("from", "to" and "interval") must not lead to the generation of too many buckets :
 
-        <ul>
 
-        <li>If the query does not contain a sub aggregation : 1000 buckets max</li>
+        If the query does not contain a sub aggregation : 1000 buckets max
 
-        <li>If the query contains a sub aggregation : 100 buckets max</li>
 
-        </ul>
+        If the query contains a sub aggregation : 100 buckets max
 
-        </p>
 
-        <br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_R.'
+        Restricted to API keys with at least one of the following roles: DEVICE_R.'
       operationId: getNetworkMetrics
       requestBody:
         content:
@@ -69,36 +60,25 @@ paths:
     post:
       tags:
       - Beta - Network metrics
-      summary: Get lost messages ratio regarding provided filters BETA - please note that the API is currently in beta state, and therefore still subject to breaking changes.
-      description: '<p>
-
-        This endpoint gives you lost messages ratio on exchanges between devices and Live Objects.
+      summary: Get lost messages ratio regarding provided filters BETA - please note that the…
+      description: 'This endpoint gives you lost messages ratio on exchanges between devices and Live Objects.
 
         Not all connectivities have such statistics.
 
-        <br/>
 
         Results are aggregated per bucket (hour, day or week).
 
-        <br/>
 
         Buckets having zero as ratio value are not included in the response.
 
-        </p>
-
-        <p>
 
         Provided temporal fields ("from", "to" and "interval") must not lead to the generation of too many buckets : 1000 buckets max.
 
-        </p>
-
-        <p>
 
         The lost message rate for the current day is never included in the response.
 
-        </p>
 
-        <br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_R.'
+        Restricted to API keys with at least one of the following roles: DEVICE_R.'
       operationId: getLostMessagesRatio
       requestBody:
         content:
@@ -127,6 +107,39 @@ paths:
                   $ref: '#/components/schemas/LostMessagesRatioResult'
 components:
   schemas:
+    LostMessagesRatioResult:
+      type: object
+      properties:
+        timeStart:
+          type: string
+          format: date-time
+          description: Date/time
+          example: '2019-01-01T00:00:00.000Z'
+        value:
+          type: number
+          format: double
+          description: ratio
+          example: 0.1
+    LostMessagesFilters:
+      type: object
+      properties:
+        from:
+          type: string
+          format: date-time
+          description: Date and time from which the search for lost messages begins. Use ISO-8601 normalization.
+          example: '2003-09-06T20:05:00Z'
+        to:
+          type: string
+          format: date-time
+          description: Date and time until which the search for lost messages ends. Use ISO-8601 normalization.
+          example: '2003-09-07T15:12:13Z'
+        interface:
+          $ref: '#/components/schemas/InterfaceDefinition'
+          description: Interface
+      required:
+      - from
+      - interface
+      - to
     LostMessagesRatioRequest:
       type: object
       description: Filters applying to the lost messages ratio search
@@ -137,6 +150,75 @@ components:
         timeAggregation:
           $ref: '#/components/schemas/TimeAggregation'
           description: Time aggregation
+      required:
+      - filters
+      - timeAggregation
+    SubAggregation:
+      type: object
+      description: Sub aggregation
+      properties:
+        field:
+          type: string
+          description: Aggregated results on specify field. Supported value is `messageType`
+          example: messageType
+      required:
+      - field
+    SubAggregationBucket:
+      type: object
+      properties:
+        key:
+          type: string
+          description: key of sub aggregation
+          example: UPDATE_REQUEST
+        messageCount:
+          type: integer
+          format: int64
+          description: count
+          example: 5
+    InterfaceDefinition:
+      type: object
+      properties:
+        connector:
+          type: string
+          description: Interface connector
+          example: lwm2m
+        nodeId:
+          type: string
+          description: Interface node identifier
+          example: 12345A0409001C1A
+      required:
+      - connector
+    NetworkMetricsResult:
+      type: object
+      properties:
+        timeStart:
+          type: string
+          format: date-time
+          description: Date/time
+          example: '2019-01-01T00:00:00.000Z'
+        messageCount:
+          type: integer
+          format: int64
+          description: count
+          example: 5
+        subAggregationBuckets:
+          type: array
+          description: sub aggregation buckets
+          items:
+            $ref: '#/components/schemas/SubAggregationBucket'
+    NetworkMetricsRequest:
+      type: object
+      description: Filters applying to the network metrics search
+      properties:
+        filters:
+          $ref: '#/components/schemas/NetworkMetricsFilters'
+          description: Network metrics filters
+        timeAggregation:
+          $ref: '#/components/schemas/TimeAggregation'
+          description: Time aggregation
+        subAggregation:
+          $ref: '#/components/schemas/SubAggregation'
+          description: Sub aggregation
       required:
       - filters
       - timeAggregation
@@ -191,108 +273,6 @@ components:
       - from
       - interface
       - to
-    SubAggregation:
-      type: object
-      description: Sub aggregation
-      properties:
-        field:
-          type: string
-          description: Aggregated results on specify field. Supported value is `messageType`
-          example: messageType
-      required:
-      - field
-    NetworkMetricsRequest:
-      type: object
-      description: Filters applying to the network metrics search
-      properties:
-        filters:
-          $ref: '#/components/schemas/NetworkMetricsFilters'
-          description: Network metrics filters
-        timeAggregation:
-          $ref: '#/components/schemas/TimeAggregation'
-          description: Time aggregation
-        subAggregation:
-          $ref: '#/components/schemas/SubAggregation'
-          description: Sub aggregation
-      required:
-      - filters
-      - timeAggregation
-    NetworkMetricsResult:
-      type: object
-      properties:
-        timeStart:
-          type: string
-          format: date-time
-          description: Date/time
-          example: '2019-01-01T00:00:00.000Z'
-        messageCount:
-          type: integer
-          format: int64
-          description: count
-          example: 5
-        subAggregationBuckets:
-          type: array
-          description: sub aggregation buckets
-          items:
-            $ref: '#/components/schemas/SubAggregationBucket'
-    SubAggregationBucket:
-      type: object
-      properties:
-        key:
-          type: string
-          description: key of sub aggregation
-          example: UPDATE_REQUEST
-        messageCount:
-          type: integer
-          format: int64
-          description: count
-          example: 5
-    LostMessagesFilters:
-      type: object
-      properties:
-        from:
-          type: string
-          format: date-time
-          description: Date and time from which the search for lost messages begins. Use ISO-8601 normalization.
-          example: '2003-09-06T20:05:00Z'
-        to:
-          type: string
-          format: date-time
-          description: Date and time until which the search for lost messages ends. Use ISO-8601 normalization.
-          example: '2003-09-07T15:12:13Z'
-        interface:
-          $ref: '#/components/schemas/InterfaceDefinition'
-          description: Interface
-      required:
-      - from
-      - interface
-      - to
-    LostMessagesRatioResult:
-      type: object
-      properties:
-        timeStart:
-          type: string
-          format: date-time
-          description: Date/time
-          example: '2019-01-01T00:00:00.000Z'
-        value:
-          type: number
-          format: double
-          description: ratio
-          example: 0.1
-    InterfaceDefinition:
-      type: object
-      properties:
-        connector:
-          type: string
-          description: Interface connector
-          example: lwm2m
-        nodeId:
-          type: string
-          description: Interface node identifier
-          example: 12345A0409001C1A
-      required:
-      - connector
     TimeAggregation:
       type: object
       description: Time aggregation

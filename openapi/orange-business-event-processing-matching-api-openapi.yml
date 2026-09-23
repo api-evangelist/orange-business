@@ -20,7 +20,10 @@ paths:
       tags:
       - Event processing - Matching
       summary: Retrieve a MatchingRule
-      description: 'A MatchingRule will be applied on each data message to evaluate if a ''match'' occurs. It is evaluated as a boolean result. It supports numeric, string, logic and distance operators and is based on JsonLogic. This MatchingRule should then be linked to a FiringRule to trigger an event when a match occurs.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      description: 'A MatchingRule will be applied on each data message to evaluate if a ''match'' occurs. It is evaluated as a boolean result. It supports numeric, string, logic and distance operators and is based on JsonLogic. This MatchingRule should then be linked to a FiringRule to trigger an event when a match occurs.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: getMatchingRule
       parameters:
       - name: matchingRuleId
@@ -40,7 +43,13 @@ paths:
       tags:
       - Event processing - Matching
       summary: Update a MatchingRule
-      description: 'A MatchingRule will be applied on each data message to evaluate if a ''match'' occurs. It is evaluated as a boolean result. It supports numeric, string, logic and distance operators and is based on JsonLogic. This MatchingRule should then be linked to a FiringRule to trigger an event when a match occurs.<br/><br/>Usage of this API will be reported in your access log under ''alarming'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      description: 'A MatchingRule will be applied on each data message to evaluate if a ''match'' occurs. It is evaluated as a boolean result. It supports numeric, string, logic and distance operators and is based on JsonLogic. This MatchingRule should then be linked to a FiringRule to trigger an event when a match occurs.
+
+
+        Usage of this API will be reported in your access log under ''alarming'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: updateMatchingRule
       parameters:
       - name: matchingRuleId
@@ -62,7 +71,13 @@ paths:
       tags:
       - Event processing - Matching
       summary: Delete a MatchingRule
-      description: 'A MatchingRule will be applied on each data message to evaluate if a ''match'' occurs. It is evaluated as a boolean result. It supports numeric, string, logic and distance operators and is based on JsonLogic. This MatchingRule should then be linked to a FiringRule to trigger an event when a match occurs.<br/><br/>Usage of this API will be reported in your access log under ''alarming'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      description: 'A MatchingRule will be applied on each data message to evaluate if a ''match'' occurs. It is evaluated as a boolean result. It supports numeric, string, logic and distance operators and is based on JsonLogic. This MatchingRule should then be linked to a FiringRule to trigger an event when a match occurs.
+
+
+        Usage of this API will be reported in your access log under ''alarming'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: deleteMatchingRule
       parameters:
       - name: matchingRuleId
@@ -79,7 +94,10 @@ paths:
       tags:
       - Event processing - Matching
       summary: Retrieve the list of all the MatchingRules or get a MatchingRule by its name
-      description: 'A MatchingRule will be applied on each data message to evaluate if a ''match'' occurs. It is evaluated as a boolean result. It supports numeric, string, logic and distance operators and is based on JsonLogic. This MatchingRule should then be linked to a FiringRule to trigger an event when a match occurs.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      description: 'A MatchingRule will be applied on each data message to evaluate if a ''match'' occurs. It is evaluated as a boolean result. It supports numeric, string, logic and distance operators and is based on JsonLogic. This MatchingRule should then be linked to a FiringRule to trigger an event when a match occurs.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: listMatchingRules
       parameters:
       - name: name
@@ -101,7 +119,13 @@ paths:
       tags:
       - Event processing - Matching
       summary: Create a MatchingRule
-      description: 'A MatchingRule will be applied on each data message to evaluate if a ''match'' occurs. It is evaluated as a boolean result. It supports numeric, string, logic and distance operators and is based on JsonLogic. This MatchingRule should then be linked to a FiringRule to trigger an event when a match occurs. Total number of MatchingRules is limited. Contact the commercial team or see developer guide to get more information.<br/><br/>Usage of this API will be reported in your access log under ''alarming'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      description: 'A MatchingRule will be applied on each data message to evaluate if a ''match'' occurs. It is evaluated as a boolean result. It supports numeric, string, logic and distance operators and is based on JsonLogic. This MatchingRule should then be linked to a FiringRule to trigger an event when a match occurs. Total number of MatchingRules is limited. Contact the commercial team or see developer guide to get more information.
+
+
+        Usage of this API will be reported in your access log under ''alarming'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: createMatchingRule
       requestBody:
         content:
@@ -121,7 +145,10 @@ paths:
       tags:
       - Event processing - Matching
       summary: Test a JsonLogic predicate with some data sample
-      description: 'It can be used for troubleshooting or for testing the matching result of a MatchingRule before applying it. A MatchingRule will be applied on each data message to evaluate if a ''match'' occurs. It is evaluated as a boolean result. It supports numeric, string, logic and distance operators and is based on JsonLogic. This MatchingRule should then be linked to a FiringRule to trigger an event when a match occurs.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      description: 'It can be used for troubleshooting or for testing the matching result of a MatchingRule before applying it. A MatchingRule will be applied on each data message to evaluate if a ''match'' occurs. It is evaluated as a boolean result. It supports numeric, string, logic and distance operators and is based on JsonLogic. This MatchingRule should then be linked to a FiringRule to trigger an event when a match occurs.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: testMatchingRule
       requestBody:
         content:
@@ -149,18 +176,6 @@ components:
       required:
       - data
       - dataPredicate
-    DataMatchResult:
-      type: object
-      properties:
-        dataPredicateValid:
-          type: boolean
-          description: indicates if the dataPredicate is valid
-        dataValid:
-          type: boolean
-          description: indicates if data is valid
-        dataPredicateResult:
-          type: boolean
-          description: the predicate result applied to data. Will be false is either dataPredicateValid or dataValid is false
     MatchingRule:
       type: object
       description: Defines the dataPredicate that will be applied to all new data. When it matches, then it may trigger a FiredEvent based on linked FiringRules defined.
@@ -180,6 +195,18 @@ components:
       required:
       - dataPredicate
       - name
+    DataMatchResult:
+      type: object
+      properties:
+        dataPredicateValid:
+          type: boolean
+          description: indicates if the dataPredicate is valid
+        dataValid:
+          type: boolean
+          description: indicates if data is valid
+        dataPredicateResult:
+          type: boolean
+          description: the predicate result applied to data. Will be false is either dataPredicateValid or dataValid is false
   securitySchemes:
     X-API-KEY:
       type: apiKey

@@ -19,8 +19,11 @@ paths:
     get:
       tags:
       - Deprecated - Bus management
-      summary: Deprecated - Listing FIFO topics. Use forceRefresh=true parameter to get recent fifo statistics.
-      description: 'Use ''Triggers and Actions'' instead. <br/><br/>Restricted to API keys with at least one of the following roles: BUS_CONFIG_R.'
+      summary: Deprecated - Listing FIFO topics.
+      description: 'Use ''Triggers and Actions'' instead.
+
+
+        Restricted to API keys with at least one of the following roles: BUS_CONFIG_R.'
       operationId: listFifoV0
       parameters:
       - name: size
@@ -67,8 +70,14 @@ paths:
     post:
       tags:
       - Deprecated - Bus management
-      summary: 'Deprecated - Creating a new FIFO. '
-      description: 'Use ''Triggers and Actions'' instead, actions targeting unexisting FIFOs will automatically create the corresponding FIFO.<br/><br/>Usage of this API will be reported in your access log under ''routing'' category.<br/><br/>Restricted to API keys with at least one of the following roles: BUS_CONFIG_W.'
+      summary: Deprecated - Creating a new FIFO
+      description: 'Use ''Triggers and Actions'' instead, actions targeting unexisting FIFOs will automatically create the corresponding FIFO.
+
+
+        Usage of this API will be reported in your access log under ''routing'' category.
+
+
+        Restricted to API keys with at least one of the following roles: BUS_CONFIG_W.'
       operationId: createFifoV0
       requestBody:
         content:
@@ -102,8 +111,11 @@ paths:
     get:
       tags:
       - Deprecated - Bus management
-      summary: 'Deprecated - Getting a FIFO. '
-      description: 'Use ''Triggers and Actions'' instead. <br/><br/>Restricted to API keys with at least one of the following roles: BUS_CONFIG_R.'
+      summary: Deprecated - Getting a FIFO
+      description: 'Use ''Triggers and Actions'' instead.
+
+
+        Restricted to API keys with at least one of the following roles: BUS_CONFIG_R.'
       operationId: getFifoV0
       parameters:
       - name: fifoName
@@ -141,8 +153,14 @@ paths:
     delete:
       tags:
       - Deprecated - Bus management
-      summary: 'Deprecated - Deleting a FIFO. '
-      description: 'Use ''Triggers and Actions'' instead, deleting an action targeting a FIFO will automatically delete the corresponding FIFO if it is not targeted by any other action. <br/><br/>Usage of this API will be reported in your access log under ''routing'' category.<br/><br/>Restricted to API keys with at least one of the following roles: BUS_CONFIG_W.'
+      summary: Deprecated - Deleting a FIFO
+      description: 'Use ''Triggers and Actions'' instead, deleting an action targeting a FIFO will automatically delete the corresponding FIFO if it is not targeted by any other action.
+
+
+        Usage of this API will be reported in your access log under ''routing'' category.
+
+
+        Restricted to API keys with at least one of the following roles: BUS_CONFIG_W.'
       operationId: deleteFifoV0
       parameters:
       - name: fifoName
@@ -178,54 +196,6 @@ paths:
       deprecated: true
 components:
   schemas:
-    PageableFifoTopic:
-      type: object
-      properties:
-        page:
-          type: integer
-          format: int64
-          description: 'number of the current page: starts at 0.'
-          example: 0
-        size:
-          type: integer
-          format: int64
-          description: number of data per page (= maximum number of data in the associated list of data:the last page can have less data)
-          example: 1
-        totalCount:
-          type: integer
-          format: int64
-          description: total count of data in the complete list.
-          example: 1
-        data:
-          type: array
-          description: list of data in this page.
-          items:
-            $ref: '#/components/schemas/FifoTopic'
-      required:
-      - data
-      - page
-      - size
-      - totalCount
-    WebErrorResponse:
-      type: object
-      description: Error response
-      properties:
-        id:
-          type: string
-          description: Unique identifier of this error instance
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Short error description
-        details:
-          type: string
-          description: Detailed error description
-      required:
-      - code
-      - id
-      - message
     FifoTopic:
       type: object
       description: body of FIFO data
@@ -264,6 +234,26 @@ components:
           description: 'Deprecated. This value has no impact anymore.The TTL is now managed by the actionPolicy''s fifoPublish action that targets this FIFO : if ''noRetention'' is enabled, TTL is 0 else, it will be your offer''s recovery duration.'
       required:
       - name
+    WebErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+      required:
+      - code
+      - id
+      - message
     FifoCreateRequest:
       type: object
       description: body for create a new fifo
@@ -284,6 +274,34 @@ components:
           example: 604800
       required:
       - name
+    PageableFifoTopic:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int64
+          description: 'number of the current page: starts at 0.'
+          example: 0
+        size:
+          type: integer
+          format: int64
+          description: number of data per page (= maximum number of data in the associated list of data:the last page can have less data)
+          example: 1
+        totalCount:
+          type: integer
+          format: int64
+          description: total count of data in the complete list.
+          example: 1
+        data:
+          type: array
+          description: list of data in this page.
+          items:
+            $ref: '#/components/schemas/FifoTopic'
+      required:
+      - data
+      - page
+      - size
+      - totalCount
   securitySchemes:
     X-API-KEY:
       type: apiKey

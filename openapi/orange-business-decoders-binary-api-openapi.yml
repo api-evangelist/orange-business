@@ -40,7 +40,13 @@ paths:
       tags:
       - Decoders - binary
       summary: Update a binary decoder
-      description: 'A data decoder allows you to decode your data message payload into a json format. When an encoding is defined in the device interface or in the data message, the decoder will be be applied and the data message will be updated accordingly. A binary decoder handles binary payload an uses ''Java Binary Block Parser'' DSL.<br/><br/>Usage of this API will be reported in your access log under ''data_decoder'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      description: 'A data decoder allows you to decode your data message payload into a json format. When an encoding is defined in the device interface or in the data message, the decoder will be be applied and the data message will be updated accordingly. A binary decoder handles binary payload an uses ''Java Binary Block Parser'' DSL.
+
+
+        Usage of this API will be reported in your access log under ''data_decoder'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: updateBinaryDecoder
       parameters:
       - name: decoderId
@@ -66,7 +72,13 @@ paths:
       tags:
       - Decoders - binary
       summary: Delete a binary decoder
-      description: 'A data decoder allows you to decode your data message payload into a json format. When an encoding is defined in the device interface or in the data message, the decoder will be be applied and the data message will be updated accordingly. A binary decoder handles binary payload an uses ''Java Binary Block Parser'' DSL.<br/><br/>Usage of this API will be reported in your access log under ''data_decoder'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      description: 'A data decoder allows you to decode your data message payload into a json format. When an encoding is defined in the device interface or in the data message, the decoder will be be applied and the data message will be updated accordingly. A binary decoder handles binary payload an uses ''Java Binary Block Parser'' DSL.
+
+
+        Usage of this API will be reported in your access log under ''data_decoder'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: deleteBinaryDecoder
       parameters:
       - name: decoderId
@@ -83,7 +95,13 @@ paths:
       tags:
       - Decoders - binary
       summary: Activate or deactivate a binary decoder
-      description: 'A data decoder allows you to decode your data message payload into a json format. When an encoding is defined in the device interface or in the data message, the decoder will be be applied and the data message will be updated accordingly. A binary decoder handles binary payload an uses ''Java Binary Block Parser'' DSL. A non enabled decoder will not be applied on data messages. This allows you to temporarily disable a decoder without deleting it.<br/><br/>Usage of this API will be reported in your access log under ''data_decoder'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      description: 'A data decoder allows you to decode your data message payload into a json format. When an encoding is defined in the device interface or in the data message, the decoder will be be applied and the data message will be updated accordingly. A binary decoder handles binary payload an uses ''Java Binary Block Parser'' DSL. A non enabled decoder will not be applied on data messages. This allows you to temporarily disable a decoder without deleting it.
+
+
+        Usage of this API will be reported in your access log under ''data_decoder'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: activateBinaryDecoder
       parameters:
       - name: decoderId
@@ -107,7 +125,10 @@ paths:
       tags:
       - Decoders - binary
       summary: Retrieve the list of binary decoders
-      description: 'A data decoder allows you to decode your data message payload into a json format. When an encoding is defined in the device interface or in the data message, the decoder will be be applied and the data message will be updated accordingly. A binary decoder handles binary payload an uses ''Java Binary Block Parser'' DSL.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      description: 'A data decoder allows you to decode your data message payload into a json format. When an encoding is defined in the device interface or in the data message, the decoder will be be applied and the data message will be updated accordingly. A binary decoder handles binary payload an uses ''Java Binary Block Parser'' DSL.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: listBinaryDecoders
       parameters:
       - name: tags
@@ -131,7 +152,13 @@ paths:
       tags:
       - Decoders - binary
       summary: Create a binary decoder
-      description: 'A data decoder allows you to decode your data message payload into a json format. When an encoding is defined in the device interface or in the data message, the decoder will be be applied and the data message will be updated accordingly. A binary decoder handles binary payload an uses ''Java Binary Block Parser'' DSL. The number of binary decoders is limited to 100.<br/><br/>Usage of this API will be reported in your access log under ''data_decoder'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      description: 'A data decoder allows you to decode your data message payload into a json format. When an encoding is defined in the device interface or in the data message, the decoder will be be applied and the data message will be updated accordingly. A binary decoder handles binary payload an uses ''Java Binary Block Parser'' DSL. The number of binary decoders is limited to 100.
+
+
+        Usage of this API will be reported in your access log under ''data_decoder'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: registerBinaryDecoder
       requestBody:
         content:
@@ -151,7 +178,10 @@ paths:
       tags:
       - Decoders - binary
       summary: Test a binary decoder format with an encoded payload
-      description: 'A data decoder allows you to decode your data message payload into a json format. When an encoding is defined in the device interface or in the data message, the decoder will be be applied and the data message will be updated accordingly. A binary decoder handles binary payload an uses ''Java Binary Block Parser'' DSL. This API allows you to test the binary decoder format with an encoded payload. It can be used for troubleshooting or for testing the decoding result before applying it on data messages. The response contains the decoded data as Json if the decoding is successful.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      description: 'A data decoder allows you to decode your data message payload into a json format. When an encoding is defined in the device interface or in the data message, the decoder will be be applied and the data message will be updated accordingly. A binary decoder handles binary payload an uses ''Java Binary Block Parser'' DSL. This API allows you to test the binary decoder format with an encoded payload. It can be used for troubleshooting or for testing the decoding result before applying it on data messages. The response contains the decoded data as Json if the decoding is successful.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: testBinaryDecoder
       requestBody:
         content:
@@ -168,25 +198,6 @@ paths:
                 $ref: '#/components/schemas/PayloadDescriptionTestResult'
 components:
   schemas:
-    BinaryPayloadDescriptionTestRequest:
-      type: object
-      description: Binary format and encoded payload on which decoding shall be performed
-      properties:
-        binaryPayloadStructure:
-          type: string
-          description: The Java Binary Block Parser format that will be used to decode the payload
-        binaryPayloadHexString:
-          type: string
-          description: The encoded payload to test, in Hexadecimal format
-        template:
-          type: string
-          description: 'The template to apply after the decoding, it can include mustache operations. e.g. ''{"tempF": {{#math}}{{temperature}} * 1.8 + 32{{/math}} }'''
-        mathEvalEnabled:
-          type: boolean
-          description: Applying, or not, math evaluation on templated decoded result. Default is true
-      required:
-      - binaryPayloadHexString
-      - binaryPayloadStructure
     PayloadDescriptionTestResult:
       type: object
       properties:
@@ -204,18 +215,6 @@ components:
         templatingOK:
           type: boolean
           description: indicates if the template has been successfully applied on decoded data
-    PayloadDescriptionMetadata:
-      type: object
-      properties:
-        certified:
-          type: boolean
-          description: the decoder is certified for the specified encoding. Only a public decoder can be certified. The default value is false.
-          readOnly: true
-        certifiedSince:
-          type: string
-          description: date since when the decoder is certified. ISO 8601 date time.
-          example: '2019-05-15T07:55:55.555Z'
-          readOnly: true
     BinaryPayloadDescription:
       type: object
       properties:
@@ -263,6 +262,37 @@ components:
       - enabled
       - encoding
       - format
+    PayloadDescriptionMetadata:
+      type: object
+      properties:
+        certified:
+          type: boolean
+          description: the decoder is certified for the specified encoding. Only a public decoder can be certified. The default value is false.
+          readOnly: true
+        certifiedSince:
+          type: string
+          description: date since when the decoder is certified. ISO 8601 date time.
+          example: '2019-05-15T07:55:55.555Z'
+          readOnly: true
+    BinaryPayloadDescriptionTestRequest:
+      type: object
+      description: Binary format and encoded payload on which decoding shall be performed
+      properties:
+        binaryPayloadStructure:
+          type: string
+          description: The Java Binary Block Parser format that will be used to decode the payload
+        binaryPayloadHexString:
+          type: string
+          description: The encoded payload to test, in Hexadecimal format
+        template:
+          type: string
+          description: 'The template to apply after the decoding, it can include mustache operations. e.g. ''{"tempF": {{#math}}{{temperature}} * 1.8 + 32{{/math}} }'''
+        mathEvalEnabled:
+          type: boolean
+          description: Applying, or not, math evaluation on templated decoded result. Default is true
+      required:
+      - binaryPayloadHexString
+      - binaryPayloadStructure
   securitySchemes:
     X-API-KEY:
       type: apiKey

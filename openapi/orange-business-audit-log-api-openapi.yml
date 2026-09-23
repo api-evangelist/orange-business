@@ -85,27 +85,6 @@ paths:
                   $ref: '#/components/schemas/AuditLogMessage'
 components:
   schemas:
-    Source:
-      type: object
-      properties:
-        deviceId:
-          type: string
-        nodeId:
-          type: string
-        connector:
-          type: string
-        campaignId:
-          type: string
-        actionPolicyId:
-          type: string
-        pipelineId:
-          type: string
-        eventProcessingRuleId:
-          type: string
-        gatewayId:
-          type: string
-        encoding:
-          type: string
     AuditLogMessage:
       type: object
       description: a log message that described a functional event
@@ -192,6 +171,27 @@ components:
       - subcategory
       - timestamp
       - type
+    Source:
+      type: object
+      properties:
+        deviceId:
+          type: string
+        nodeId:
+          type: string
+        connector:
+          type: string
+        campaignId:
+          type: string
+        actionPolicyId:
+          type: string
+        pipelineId:
+          type: string
+        eventProcessingRuleId:
+          type: string
+        gatewayId:
+          type: string
+        encoding:
+          type: string
   securitySchemes:
     X-API-KEY:
       type: apiKey

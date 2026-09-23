@@ -12,13 +12,13 @@ security:
 - X-API-KEY: []
   OAuth2.0: []
 tags:
-- name: User authentication
+- name: User Authentication
   description: authentication
 paths:
   /api/v0/setpwd:
     post:
       tags:
-      - User authentication
+      - User Authentication
       summary: Update user's password
       description: Usage of this API will be reported in your access log under 'authentication' category.
       operationId: updateUserPasswordWithToken
@@ -35,9 +35,12 @@ paths:
   /api/v0/resetpwd:
     post:
       tags:
-      - User authentication
+      - User Authentication
       summary: Request password reset or connection reminder
-      description: Initiates a password reset process for internal users or sends connection instructions for external identity provider (merged) users. Requires valid captcha. The user must have a known, valid account. Returns success even if user is not found to prevent enumeration attacks.<br/><br/>Usage of this API will be reported in your access log under 'authentication' category.
+      description: 'Initiates a password reset process for internal users or sends connection instructions for external identity provider (merged) users. Requires valid captcha. The user must have a known, valid account. Returns success even if user is not found to prevent enumeration attacks.
+
+
+        Usage of this API will be reported in your access log under ''authentication'' category.'
       operationId: resetUserPassword
       requestBody:
         content:
@@ -52,7 +55,7 @@ paths:
   /api/v0/auth:
     post:
       tags:
-      - User authentication
+      - User Authentication
       summary: Authenticate a user
       description: Usage of this API will be reported in your access log under 'authentication' category.
       operationId: authenticateUser
@@ -80,6 +83,46 @@ paths:
       security: []
 components:
   schemas:
+    UpdatePasswordValidationInfo:
+      type: object
+      description: body of user update password with token
+      properties:
+        captcha:
+          type: string
+          description: User-provided captcha value
+        captchaToken:
+          type: string
+          description: Captcha token
+        tokenId:
+          type: string
+          description: Token provided by email
+        password:
+          type: string
+          description: new user's password
+          example: MyP@sswr0d
+      required:
+      - captcha
+      - captchaToken
+      - password
+      - tokenId
+    PasswordAuthenticationInfo:
+      type: object
+      description: body of authentication request
+      properties:
+        email:
+          type: string
+          description: User's email
+          example: me.name@mycompagny.mycom
+        login:
+          type: string
+          description: User's login
+          example: MyLoginName
+        password:
+          type: string
+          description: User's password
+          example: MyCurrentPWD
+      required:
+      - password
     ScopeApplication:
       type: object
       properties:
@@ -92,6 +135,80 @@ components:
           items:
             type: string
           uniqueItems: true
+    ClientCertificatesConfiguration:
+      type: object
+      properties:
+        required:
+          type: boolean
+          description: Indicates if the client must use TLS client cert authentication
+          example: true
+        caCertIds:
+          type: array
+          description: List of Ca Certificate Ids used to authenticate devices. Expected array of string (max 100 elements, value max 255 characters)
+          example:
+          - 5b057d0fb8605a5e80758e42
+          items:
+            type: string
+      required:
+      - required
+    RateLimit:
+      type: object
+      properties:
+        mqttBridgeWindowSize:
+          type: integer
+          format: int64
+          description: 'mqtt bridge rate limit: window size in seconds'
+          example: 1
+        mqttBridgeMaxMessages:
+          type: integer
+          format: int64
+          description: 'mqtt bridge rate limit: maximum messages allowed per time window'
+          example: 1
+        mqttDeviceWindowSize:
+          type: integer
+          format: int64
+          description: 'mqtt device rate limit: window size in seconds'
+          example: 1
+        mqttDeviceMaxMessages:
+          type: integer
+          format: int64
+          description: 'mqtt device rate limit: maximum messages allowed per time window'
+          example: 1
+        httpWindowSize:
+          type: integer
+          format: int64
+          description: 'http rate limit: window size in seconds'
+          example: 1
+        httpMaxCalls:
+          type: integer
+          format: int64
+          description: 'http rate limit: maximum api calls allowed per time window'
+          example: 1
+    AuthResWeb:
+      type: object
+      properties:
+        apiKey:
+          $ref: '#/components/schemas/ApiKey'
+        admin:
+          type: boolean
+    ResetPasswordValidationInfo:
+      type: object
+      description: Reset password request with user login/email and captcha validation
+      properties:
+        userLogin:
+          type: string
+          description: User's login
+          example: MyLoginName
+        captcha:
+          type: string
+          description: User-provided captcha value
+        captchaToken:
+          type: string
+          description: Captcha token
+      required:
+      - captcha
+      - captchaToken
+      - userLogin
     ApiKey:
       type: object
       properties:
@@ -185,120 +302,6 @@ components:
           type: boolean
       required:
       - roles
-    AuthResWeb:
-      type: object
-      properties:
-        apiKey:
-          $ref: '#/components/schemas/ApiKey'
-        admin:
-          type: boolean
-    RateLimit:
-      type: object
-      properties:
-        mqttBridgeWindowSize:
-          type: integer
-          format: int64
-          description: 'mqtt bridge rate limit: window size in seconds'
-          example: 1
-        mqttBridgeMaxMessages:
-          type: integer
-          format: int64
-          description: 'mqtt bridge rate limit: maximum messages allowed per time window'
-          example: 1
-        mqttDeviceWindowSize:
-          type: integer
-          format: int64
-          description: 'mqtt device rate limit: window size in seconds'
-          example: 1
-        mqttDeviceMaxMessages:
-          type: integer
-          format: int64
-          description: 'mqtt device rate limit: maximum messages allowed per time window'
-          example: 1
-        httpWindowSize:
-          type: integer
-          format: int64
-          description: 'http rate limit: window size in seconds'
-          example: 1
-        httpMaxCalls:
-          type: integer
-          format: int64
-          description: 'http rate limit: maximum api calls allowed per time window'
-          example: 1
-    ClientCertificatesConfiguration:
-      type: object
-      properties:
-        required:
-          type: boolean
-          description: Indicates if the client must use TLS client cert authentication
-          example: true
-        caCertIds:
-          type: array
-          description: List of Ca Certificate Ids used to authenticate devices. Expected array of string (max 100 elements, value max 255 characters)
-          example:
-          - 5b057d0fb8605a5e80758e42
-          items:
-            type: string
-      required:
-      - required
-    PasswordAuthenticationInfo:
-      type: object
-      description: body of authentication request
-      properties:
-        email:
-          type: string
-          description: User's email
-          example: me.name@mycompagny.mycom
-        login:
-          type: string
-          description: User's login
-          example: MyLoginName
-        password:
-          type: string
-          description: User's password
-          example: MyCurrentPWD
-      required:
-      - password
-    ResetPasswordValidationInfo:
-      type: object
-      description: Reset password request with user login/email and captcha validation
-      properties:
-        userLogin:
-          type: string
-          description: User's login
-          example: MyLoginName
-        captcha:
-          type: string
-          description: User-provided captcha value
-        captchaToken:
-          type: string
-          description: Captcha token
-      required:
-      - captcha
-      - captchaToken
-      - userLogin
-    UpdatePasswordValidationInfo:
-      type: object
-      description: body of user update password with token
-      properties:
-        captcha:
-          type: string
-          description: User-provided captcha value
-        captchaToken:
-          type: string
-          description: Captcha token
-        tokenId:
-          type: string
-          description: Token provided by email
-        password:
-          type: string
-          description: new user's password
-          example: MyP@sswr0d
-      required:
-      - captcha
-      - captchaToken
-      - password
-      - tokenId
   securitySchemes:
     X-API-KEY:
       type: apiKey

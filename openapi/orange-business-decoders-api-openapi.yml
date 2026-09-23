@@ -20,7 +20,10 @@ paths:
       tags:
       - Decoders
       summary: Retrieve the list of all your private decoders (binary, csv, js)
-      description: 'A data decoder allows you to decode your data message payload into a json format. When an encoding is defined in the device interface or in the data message, the decoder will be be applied and the data message will be updated accordingly. This list contains only common fields of all type of decoders. To get a list with decoder type''s specific fields, use the dedicated API for this type of decoder.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      description: 'A data decoder allows you to decode your data message payload into a json format. When an encoding is defined in the device interface or in the data message, the decoder will be be applied and the data message will be updated accordingly. This list contains only common fields of all type of decoders. To get a list with decoder type''s specific fields, use the dedicated API for this type of decoder.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: listAllDecodersV0
       parameters:
       - name: tags

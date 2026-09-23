@@ -63,8 +63,11 @@ paths:
     patch:
       tags:
       - Gateway management for LoRa
-      summary: Update a LoRa gateway.
-      description: 'Set the location property to an empty object to remove the gateway location.<br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      summary: Update a LoRa gateway
+      description: 'Set the location property to an empty object to remove the gateway location.
+
+
+        Restricted to API keys with at least one of the following roles: DEVICE_W.'
       operationId: updateLoRaGateway
       parameters:
       - name: id
@@ -201,6 +204,33 @@ paths:
                 $ref: '#/components/schemas/WebErrorResponse'
 components:
   schemas:
+    LoraGatewayLocation:
+      type: object
+      properties:
+        lat:
+          type: number
+          format: double
+          description: Last geolocation latitude (GPS coordinate system)
+          example: 10.11212
+        lon:
+          type: number
+          format: double
+          description: Last geolocation longitude (GPS coordinate system)
+          example: 7.44464
+        alt:
+          type: number
+          format: double
+          description: Last geolocation altitude (meter)
+          example: 50
+        provider:
+          type: string
+          description: Computing geolocation method
+          example: GPS
+        lastUpdateTs:
+          type: string
+          format: date-time
+          description: Date/time of the last location
+          example: '2016-06-14T11:09:22.125Z'
     WebErrorResponse:
       type: object
       description: Error response
@@ -221,6 +251,13 @@ components:
       - code
       - id
       - message
+    GwNetworkPartner:
+      type: object
+      properties:
+        instance:
+          type: string
+          description: Partner related instance
+          example: OCP
     PageableLoraGatewayInfo:
       type: object
       properties:
@@ -249,33 +286,6 @@ components:
       - page
       - size
       - totalCount
-    LoraGatewayLocation:
-      type: object
-      properties:
-        lat:
-          type: number
-          format: double
-          description: Last geolocation latitude (GPS coordinate system)
-          example: 10.11212
-        lon:
-          type: number
-          format: double
-          description: Last geolocation longitude (GPS coordinate system)
-          example: 7.44464
-        alt:
-          type: number
-          format: double
-          description: Last geolocation altitude (meter)
-          example: 50
-        provider:
-          type: string
-          description: Computing geolocation method
-          example: GPS
-        lastUpdateTs:
-          type: string
-          format: date-time
-          description: Date/time of the last location
-          example: '2016-06-14T11:09:22.125Z'
     LoraGatewayInfo:
       type: object
       properties:
@@ -318,24 +328,13 @@ components:
         networkPartner:
           $ref: '#/components/schemas/GwNetworkPartner'
           description: Network partner
-    GwNetworkPartner:
+    GwConfig:
       type: object
       properties:
-        instance:
+        version:
           type: string
-          description: Partner related instance
-          example: OCP
-    GwSystem:
-      type: object
-      properties:
-        gpsState:
-          type: string
-          description: GPS state
-          example: UNKNOWN
-        timeSync:
-          type: string
-          description: Time synchronization
-          example: NTP
+          description: Version
+          example: 2.2.47
     LoraGatewayDefinition:
       type: object
       properties:
@@ -349,13 +348,17 @@ components:
         location:
           $ref: '#/components/schemas/LoraGatewayLocation'
           description: Gateway location
-    GwConfig:
+    GwSystem:
       type: object
       properties:
-        version:
+        gpsState:
           type: string
-          description: Version
-          example: 2.2.47
+          description: GPS state
+          example: UNKNOWN
+        timeSync:
+          type: string
+          description: Time synchronization
+          example: NTP
   securitySchemes:
     X-API-KEY:
       type: apiKey

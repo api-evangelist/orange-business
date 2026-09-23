@@ -20,7 +20,17 @@ paths:
       tags:
       - Triggers and Actions
       summary: Resume a suspended action
-      description: 'Diagnostic of an ActionPolicy will indicate if the actions are suspended or not, and the reason why.<p>When the action leads to too many failures (for example Http Push with 5xx responses, FIFO never subbed...) the platform will automatically suspend the action.<p>Once suspended, you can use the resume API to re-enable the action. Please note that if the underlying issue is not fixed, the action will be suspended again.<br/><br/>Usage of this API will be reported in your access log under ''routing'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      description: 'Diagnostic of an ActionPolicy will indicate if the actions are suspended or not, and the reason why.
+
+        When the action leads to too many failures (for example Http Push with 5xx responses, FIFO never subbed...) the platform will automatically suspend the action.
+
+        Once suspended, you can use the resume API to re-enable the action. Please note that if the underlying issue is not fixed, the action will be suspended again.
+
+
+        Usage of this API will be reported in your access log under ''routing'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: updateActionSuspension
       parameters:
       - name: policyId
@@ -55,9 +65,15 @@ paths:
       tags:
       - Triggers and Actions
       summary: Retrieve an ActionPolicy
-      description: 'Triggers and Actions APIs allow you to create action policies that will automatically trigger actions (webhook, push to FIFO, SMS, email, push to an Azure Event Hub server) when specific events or datamessages (''triggers'') are received by the platform.<br/>These triggers and actions endpoints are related to the routing & alarming notification feature.<br/>
+      description: 'Triggers and Actions APIs allow you to create action policies that will automatically trigger actions (webhook, push to FIFO, SMS, email, push to an Azure Event Hub server) when specific events or datamessages (''triggers'') are received by the platform.
 
-        Please see the dedicated sections in our developer guide for more details.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+        These triggers and actions endpoints are related to the routing & alarming notification feature.
+
+
+        Please see the dedicated sections in our developer guide for more details.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: getActionPolicyV1
       parameters:
       - name: policyId
@@ -89,9 +105,18 @@ paths:
       tags:
       - Triggers and Actions
       summary: Create or update an ActionPolicy
-      description: 'Triggers and Actions APIs allow you to create action policies that will automatically trigger actions (webhook, push to FIFO, SMS, email, push to an Azure Event Hub server) when specific events or datamessages (''triggers'') are received by the platform.<br/>These triggers and actions endpoints are related to the routing & alarming notification feature.<br/>
+      description: 'Triggers and Actions APIs allow you to create action policies that will automatically trigger actions (webhook, push to FIFO, SMS, email, push to an Azure Event Hub server) when specific events or datamessages (''triggers'') are received by the platform.
 
-        Please see the dedicated sections in our developer guide for more details.<br/><br/>Usage of this API will be reported in your access log under ''routing'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+        These triggers and actions endpoints are related to the routing & alarming notification feature.
+
+
+        Please see the dedicated sections in our developer guide for more details.
+
+
+        Usage of this API will be reported in your access log under ''routing'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: updateActionPolicyV1
       parameters:
       - name: policyId
@@ -145,9 +170,18 @@ paths:
       tags:
       - Triggers and Actions
       summary: Delete an ActionPolicy
-      description: 'Triggers and Actions APIs allow you to create action policies that will automatically trigger actions (webhook, push to FIFO, SMS, email, push to an Azure Event Hub server) when specific events or datamessages (''triggers'') are received by the platform.<br/>These triggers and actions endpoints are related to the routing & alarming notification feature.<br/>
+      description: 'Triggers and Actions APIs allow you to create action policies that will automatically trigger actions (webhook, push to FIFO, SMS, email, push to an Azure Event Hub server) when specific events or datamessages (''triggers'') are received by the platform.
 
-        Please see the dedicated sections in our developer guide for more details.<br/><br/>Usage of this API will be reported in your access log under ''routing'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+        These triggers and actions endpoints are related to the routing & alarming notification feature.
+
+
+        Please see the dedicated sections in our developer guide for more details.
+
+
+        Usage of this API will be reported in your access log under ''routing'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: deleteActionPolicyV1
       parameters:
       - name: policyId
@@ -166,9 +200,18 @@ paths:
       tags:
       - Triggers and Actions
       summary: Enable or Disable an ActionPolicy
-      description: 'Triggers and Actions APIs allow you to create action policies that will automatically trigger actions (webhook, push to FIFO, SMS, email, push to an Azure Event Hub server) when specific events or datamessages (''triggers'') are received by the platform.<br/>These triggers and actions endpoints are related to the routing & alarming notification feature.<br/>
+      description: 'Triggers and Actions APIs allow you to create action policies that will automatically trigger actions (webhook, push to FIFO, SMS, email, push to an Azure Event Hub server) when specific events or datamessages (''triggers'') are received by the platform.
 
-        Please see the dedicated sections in our developer guide for more details.You can use this API to re-enabled a suspended policy.<br/><br/>Usage of this API will be reported in your access log under ''routing'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+        These triggers and actions endpoints are related to the routing & alarming notification feature.
+
+
+        Please see the dedicated sections in our developer guide for more details.You can use this API to re-enabled a suspended policy.
+
+
+        Usage of this API will be reported in your access log under ''routing'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: setEnabledField
       parameters:
       - name: policyId
@@ -202,9 +245,15 @@ paths:
       tags:
       - Triggers and Actions
       summary: List ActionPolicies
-      description: 'Triggers and Actions APIs allow you to create action policies that will automatically trigger actions (webhook, push to FIFO, SMS, email, push to an Azure Event Hub server) when specific events or datamessages (''triggers'') are received by the platform.<br/>These triggers and actions endpoints are related to the routing & alarming notification feature.<br/>
+      description: 'Triggers and Actions APIs allow you to create action policies that will automatically trigger actions (webhook, push to FIFO, SMS, email, push to an Azure Event Hub server) when specific events or datamessages (''triggers'') are received by the platform.
 
-        Please see the dedicated sections in our developer guide for more details.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+        These triggers and actions endpoints are related to the routing & alarming notification feature.
+
+
+        Please see the dedicated sections in our developer guide for more details.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: listActionPoliciesV1
       parameters:
       - name: triggerType
@@ -239,9 +288,18 @@ paths:
       tags:
       - Triggers and Actions
       summary: Create an ActionPolicy
-      description: 'Triggers and Actions APIs allow you to create action policies that will automatically trigger actions (webhook, push to FIFO, SMS, email, push to an Azure Event Hub server) when specific events or datamessages (''triggers'') are received by the platform.<br/>These triggers and actions endpoints are related to the routing & alarming notification feature.<br/>
+      description: 'Triggers and Actions APIs allow you to create action policies that will automatically trigger actions (webhook, push to FIFO, SMS, email, push to an Azure Event Hub server) when specific events or datamessages (''triggers'') are received by the platform.
 
-        Please see the dedicated sections in our developer guide for more details.<br/><br/>Usage of this API will be reported in your access log under ''routing'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+        These triggers and actions endpoints are related to the routing & alarming notification feature.
+
+
+        Please see the dedicated sections in our developer guide for more details.
+
+
+        Usage of this API will be reported in your access log under ''routing'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: createActionPolicyV1
       requestBody:
         content:
@@ -289,8 +347,17 @@ paths:
     get:
       tags:
       - Triggers and Actions
-      summary: Retrieve the metrics of an action. BETA - please note that the API is currently in beta state, and therefore still subject to breaking changes.
-      description: 'Metrics of an ActionPolicy (success, failures, supervision, response time...), hourly or daily based.<p>Not all types of action have metrics. Metrics are not in real time, updated several times a day, and are estimated.<p>All days and hours are UTC. A maximum period of 31 days is allowed. When ''hourly'' parameter is true, then the maximum period allowed is 7 days.<p>You can retrieve additional information on errors in your Activity logs.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      summary: Retrieve the metrics of an action.
+      description: 'Metrics of an ActionPolicy (success, failures, supervision, response time...), hourly or daily based.
+
+        Not all types of action have metrics. Metrics are not in real time, updated several times a day, and are estimated.
+
+        All days and hours are UTC. A maximum period of 31 days is allowed. When ''hourly'' parameter is true, then the maximum period allowed is 7 days.
+
+        You can retrieve additional information on errors in your Activity logs.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: getMetricsByActionId
       parameters:
       - name: policyId
@@ -347,7 +414,7 @@ paths:
     get:
       tags:
       - Triggers and Actions
-      summary: Listing FIFO with their linked actions.
+      summary: Listing FIFO with their linked actions
       description: 'Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: listFifosWithActions
       parameters:
@@ -436,7 +503,14 @@ paths:
       tags:
       - Triggers and Actions
       summary: Retrieve action diagnostics
-      description: 'Diagnostic of an ActionPolicy will indicate if the actions are suspended or not, and the reason why.<p>When the action leads to too many failures (for example Http Push with 5xx responses, FIFO never subbed...) the platform will automatically suspend the action.<p>Once suspended, you can use the resume API to re-enable the action. Please note that if the underlying issue is not fixed, the action will be suspended again.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      description: 'Diagnostic of an ActionPolicy will indicate if the actions are suspended or not, and the reason why.
+
+        When the action leads to too many failures (for example Http Push with 5xx responses, FIFO never subbed...) the platform will automatically suspend the action.
+
+        Once suspended, you can use the resume API to re-enable the action. Please note that if the underlying issue is not fixed, the action will be suspended again.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: getAllDiagnosticsForTenant
       responses:
         '200':
@@ -450,7 +524,14 @@ paths:
       tags:
       - Triggers and Actions
       summary: Retrieve all action diagnostics of an action policy
-      description: 'Diagnostic of an ActionPolicy will indicate if the actions are suspended or not, and the reason why.<p>When the action leads to too many failures (for example Http Push with 5xx responses, FIFO never subbed...) the platform will automatically suspend the action.<p>Once suspended, you can use the resume API to re-enable the action. Please note that if the underlying issue is not fixed, the action will be suspended again.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      description: 'Diagnostic of an ActionPolicy will indicate if the actions are suspended or not, and the reason why.
+
+        When the action leads to too many failures (for example Http Push with 5xx responses, FIFO never subbed...) the platform will automatically suspend the action.
+
+        Once suspended, you can use the resume API to re-enable the action. Please note that if the underlying issue is not fixed, the action will be suspended again.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: getDiagnosticsByPolicyId
       parameters:
       - name: policyId
@@ -473,7 +554,14 @@ paths:
       tags:
       - Triggers and Actions
       summary: Retrieve an action diagnostic
-      description: 'Diagnostic of an ActionPolicy will indicate if the actions are suspended or not, and the reason why.<p>When the action leads to too many failures (for example Http Push with 5xx responses, FIFO never subbed...) the platform will automatically suspend the action.<p>Once suspended, you can use the resume API to re-enable the action. Please note that if the underlying issue is not fixed, the action will be suspended again.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      description: 'Diagnostic of an ActionPolicy will indicate if the actions are suspended or not, and the reason why.
+
+        When the action leads to too many failures (for example Http Push with 5xx responses, FIFO never subbed...) the platform will automatically suspend the action.
+
+        Once suspended, you can use the resume API to re-enable the action. Please note that if the underlying issue is not fixed, the action will be suspended again.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: getDiagnosticByActionId
       parameters:
       - name: policyId
@@ -503,18 +591,7 @@ paths:
                 $ref: '#/components/schemas/ActionDiagnostic'
 components:
   schemas:
-    FifoMessageCounters:
-      type: object
-      properties:
-        daily:
-          type: array
-          items:
-            $ref: '#/components/schemas/DailyFifoMessageDeliveryCounters'
-        hourly:
-          type: array
-          items:
-            $ref: '#/components/schemas/HourlyFifoMessageDeliveryCounters'
-    DeviceStatusTrigger:
+    CommandStatusTrigger:
       type: object
       properties:
         version:
@@ -526,7 +603,23 @@ components:
           maximum: 1
           minimum: 1
         filter:
-          $ref: '#/components/schemas/DeviceStatusFilter'
+          $ref: '#/components/schemas/CommandStatusFilter'
+          description: Filtering criterias. AND operator is used between filter criterias. OR operator is used in the list in each filter criteria.
+      required:
+      - version
+    DataMessageTrigger:
+      type: object
+      properties:
+        version:
+          type: integer
+          format: int32
+          description: Requested version of triggered object that will be sent through the action.
+          enum:
+          - '1'
+          maximum: 1
+          minimum: 1
+        filter:
+          $ref: '#/components/schemas/DataMessageFilter'
           description: Filtering criterias. AND operator is used between filter criterias. OR operator is used in the list in each filter criteria.
       required:
       - version
@@ -539,18 +632,25 @@ components:
         actionId:
           type: string
           description: Identifier of the action
-    HttpDeliveryCounters:
+    LoraNetworkFilter:
       type: object
       properties:
-        daily:
+        messageTypes:
           type: array
+          description: List of filtered messageTypes. Null or empty to accept all message types
           items:
-            $ref: '#/components/schemas/DailyHttpDeliveryCounters'
-        hourly:
-          type: array
-          items:
-            $ref: '#/components/schemas/HourlyHttpDeliveryCounters'
-    MatchingFiredTrigger:
+            type: string
+            enum:
+            - UNCONFIRMED_DATA_UP
+            - CONFIRMED_DATA_UP
+            - UNCONFIRMED_DATA_DOWN
+            - CONFIRMED_DATA_DOWN
+            - JOIN_REQUEST
+            - JOIN_ACCEPT
+          maxItems: 20
+          minItems: 0
+          uniqueItems: true
+    AlarmEventTrigger:
       type: object
       properties:
         version:
@@ -562,11 +662,286 @@ components:
           maximum: 1
           minimum: 1
         filter:
-          $ref: '#/components/schemas/MatchingFiredFilter'
+          $ref: '#/components/schemas/AlarmEventFilter'
+          description: Filter to apply on alarm events. If not specified, all alarm events will be targeted by the action policy
+      required:
+      - version
+    HourlyFifoSupervision:
+      type: object
+      properties:
+        day:
+          type: string
+          description: day of the counters, with yyyy-MM-dd format
+          example: '2024-01-01'
+        hour:
+          type: integer
+          format: int32
+          description: hour of the metrics (0-23)
+          example: 5
+        fillRatioPercent:
+          type: number
+          format: float
+          description: fillRatio percent sampled at this hour
+        subscribed:
+          type: boolean
+          description: true if the FIFO has been connected through MQTT SUB at least once during this hour
+        incoming:
+          type: integer
+          format: int32
+          description: number of messages pushed to FIFO during this hour
+        subMessageCount:
+          type: integer
+          format: int32
+          description: number of messages published to remote application through a MQTT SUB connection during this hour
+    ActionPolicy:
+      type: object
+      description: ActionPolicy to add
+      properties:
+        id:
+          type: string
+          description: id of the action policy. Set by LiveObjects, should be null on POST, set on PUT.
+        updated:
+          type: string
+          format: date-time
+          description: Last update timestamp of action policy. Set by LiveObjects, should be null on POST or PUT
+          readOnly: true
+        name:
+          type: string
+          description: The user-defined name of the action policy
+        enabled:
+          type: boolean
+          description: Enable or disable this action policy
+        triggers:
+          $ref: '#/components/schemas/ActionTriggers'
+          description: The trigger that will set off the specified actions. One and only one trigger must be set, except for 'deviceCreated' and 'deviceDeleted' triggers that can be simultaneously set.
+        actions:
+          $ref: '#/components/schemas/Actions'
+          description: The list of the actions that will be executed on a trigger. At least 1 action must be set.
+      required:
+      - actions
+      - triggers
+    Suspension:
+      type: object
+      properties:
+        reason:
+          type: string
+        time:
+          type: string
+          format: date-time
+    ActionTriggers:
+      type: object
+      properties:
+        deviceStatus:
+          $ref: '#/components/schemas/DeviceStatusTrigger'
+          description: Triggering for DeviceStatus event
+        deviceCreated:
+          $ref: '#/components/schemas/DeviceCreatedTrigger'
+          description: Triggering for DeviceCreated event
+        loraNetwork:
+          $ref: '#/components/schemas/LoraNetworkTrigger'
+          description: Triggering Lora network event
+        loraGatewayStatus:
+          $ref: '#/components/schemas/LoraGatewayStatusTrigger'
+          description: Triggering Lora Gateway status event
+        dataMessage:
+          $ref: '#/components/schemas/DataMessageTrigger'
+          description: Triggering for DataMessage
+        stateChange:
+          $ref: '#/components/schemas/StateChangeTrigger'
+          description: Triggering for StateChange event
+        deviceActivity:
+          $ref: '#/components/schemas/DeviceActivityTrigger'
+          description: Triggering for DeviceActivity event
+        matchingFired:
+          $ref: '#/components/schemas/MatchingFiredTrigger'
+          description: Triggering for MatchingFired event
+        commandStatus:
+          $ref: '#/components/schemas/CommandStatusTrigger'
+          description: Triggering for CommandStatus event
+        deviceDeleted:
+          $ref: '#/components/schemas/DeviceDeletedTrigger'
+          description: Triggering for DeviceDeleted event
+        connectivityManagementPlatformEvent:
+          $ref: '#/components/schemas/ConnectivityManagementPlatformTrigger'
+          description: Triggering for ConnectivityManagementPlatform event
+        alarmEvent:
+          $ref: '#/components/schemas/AlarmEventTrigger'
+          description: Triggering for Alarm event
+    Status:
+      type: object
+      properties:
+        messages:
+          type: integer
+          format: int64
+          description: Number of messages stored
+        consumers:
+          type: integer
+          format: int64
+          description: Number of active consumers
+    FifoMetrics:
+      type: object
+      properties:
+        messageDeliveryCounters:
+          $ref: '#/components/schemas/FifoMessageCounters'
+          description: counters for Fifo messages (processed, delivered, overflow...). Day and hour refer to the date when the original message has been handled in LO.
+        supervision:
+          $ref: '#/components/schemas/FifoSupervision'
+          description: supervision information regarding Fifo
+    ActionPolicyDiagnostics:
+      type: object
+      properties:
+        actionPolicyId:
+          type: string
+        actions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ActionDiagnostic'
+    HttpRequestCounters:
+      type: object
+      properties:
+        daily:
+          type: array
+          items:
+            $ref: '#/components/schemas/DailyHttpRequestCounters'
+        hourly:
+          type: array
+          items:
+            $ref: '#/components/schemas/HourlyHttpRequestCounters'
+    HttpDeliveryCounters:
+      type: object
+      properties:
+        daily:
+          type: array
+          items:
+            $ref: '#/components/schemas/DailyHttpDeliveryCounters'
+        hourly:
+          type: array
+          items:
+            $ref: '#/components/schemas/HourlyHttpDeliveryCounters'
+    FifoMessageCounters:
+      type: object
+      properties:
+        daily:
+          type: array
+          items:
+            $ref: '#/components/schemas/DailyFifoMessageDeliveryCounters'
+        hourly:
+          type: array
+          items:
+            $ref: '#/components/schemas/HourlyFifoMessageDeliveryCounters'
+    LoraGatewayStatusTrigger:
+      type: object
+      properties:
+        version:
+          type: integer
+          format: int32
+          description: Requested version of triggered object that will be sent through the action.
+          enum:
+          - '1'
+          maximum: 1
+          minimum: 1
+      required:
+      - version
+    ConnectivityManagementPlatformTrigger:
+      type: object
+      properties:
+        version:
+          type: integer
+          format: int32
+          description: Requested version of triggered object that will be sent through the action.
+          enum:
+          - '1'
+          maximum: 1
+          minimum: 1
+        filter:
+          $ref: '#/components/schemas/ConnectivityManagementPlatformFilter'
           description: Filtering criterias. AND operator is used between filter criterias. OR operator is used in the list in each filter criteria.
       required:
       - version
-    HourlyHttpDeliveryCounters:
+    DeviceActivityTrigger:
+      type: object
+      properties:
+        version:
+          type: integer
+          format: int32
+          description: Requested version of triggered object that will be sent through the action.
+          enum:
+          - '1'
+          maximum: 1
+          minimum: 1
+        filter:
+          $ref: '#/components/schemas/DeviceActivityFilter'
+          description: Filtering criterias. AND operator is used between filter criterias. OR operator is used in the list in each filter criteria.
+      required:
+      - version
+    LoraNetworkTrigger:
+      type: object
+      properties:
+        version:
+          type: integer
+          format: int32
+          description: Requested version of triggered object that will be sent through the action.
+          enum:
+          - '1'
+          maximum: 1
+          minimum: 1
+        filter:
+          $ref: '#/components/schemas/LoraNetworkFilter'
+          description: Filtering criterias. AND operator is used between filter criterias. OR operator is used in the list in each filter criteria.
+      required:
+      - version
+    StateChangeTrigger:
+      type: object
+      properties:
+        version:
+          type: integer
+          format: int32
+          description: Requested version of triggered object that will be sent through the action.
+          enum:
+          - '1'
+          maximum: 1
+          minimum: 1
+        filter:
+          $ref: '#/components/schemas/StateChangeFilter'
+          description: Filtering criterias. AND operator is used between filter criterias. OR operator is used in the list in each filter criteria.
+      required:
+      - version
+    DailyHttpRequestCounters:
+      type: object
+      properties:
+        day:
+          type: string
+          description: day of the counters, with yyyy-MM-dd format
+          example: '2024-01-01'
+        requests:
+          type: integer
+          format: int32
+          description: number of Http requests sent
+        success:
+          type: integer
+          format: int32
+          description: number of 2xx responses for the Http requests
+        clientErrors:
+          type: integer
+          format: int32
+          description: number of 4xx responses for the Http requests
+        serverErrors:
+          type: integer
+          format: int32
+          description: number of 5xx responses for the Http requests
+        networkErrors:
+          type: integer
+          format: int32
+          description: number of network errors (timeout, SSL...) for the Http requests
+        otherErrors:
+          type: integer
+          format: int32
+          description: number of other errors (3xx...) for the Http requests
+        meanSuccessResponseTimeMs:
+          type: integer
+          format: int64
+          description: mean response time of 2xx requests
+    DailyHttpDeliveryCounters:
       type: object
       properties:
         day:
@@ -605,51 +980,38 @@ components:
           type: integer
           format: int64
           description: mean delivery time of successfully delivered messages. Start time is set when the original message has been handled in LO.
-        hour:
-          type: integer
-          format: int32
-          description: hour of the counters (0-23)
-          example: 23
-    HourlyHttpRequestCounters:
+    AlarmEventFilter:
       type: object
       properties:
-        day:
-          type: string
-          description: day of the counters, with yyyy-MM-dd format
-          example: '2024-01-01'
-        requests:
-          type: integer
-          format: int32
-          description: number of Http requests sent
-        success:
-          type: integer
-          format: int32
-          description: number of 2xx responses for the Http requests
-        clientErrors:
-          type: integer
-          format: int32
-          description: number of 4xx responses for the Http requests
-        serverErrors:
-          type: integer
-          format: int32
-          description: number of 5xx responses for the Http requests
-        networkErrors:
-          type: integer
-          format: int32
-          description: number of network errors (timeout, SSL...) for the Http requests
-        otherErrors:
-          type: integer
-          format: int32
-          description: number of other errors (3xx...) for the Http requests
-        meanSuccessResponseTimeMs:
-          type: integer
-          format: int64
-          description: mean response time of 2xx requests
-        hour:
-          type: integer
-          format: int32
-          description: hour of the metrics (0-23)
-          example: 5
+        alarmRuleTypes:
+          type: array
+          description: 'List of filtered alarm rule types. Only known alarm types are accepted. Supported values: ''actionSuspended'', ''messageDeliverySuccessRatio''.'
+          enum:
+          - actionSuspended
+          - messageDeliverySuccessRatio
+          items:
+            type: string
+          maxItems: 20
+          minItems: 0
+          uniqueItems: true
+    FifoSupervision:
+      type: object
+      properties:
+        daily:
+          type: array
+          items:
+            $ref: '#/components/schemas/DailyFifoSupervision'
+        hourly:
+          type: array
+          items:
+            $ref: '#/components/schemas/HourlyFifoSupervision'
+    ActionPolicyDiagnosticsList:
+      type: array
+      items:
+        $ref: '#/components/schemas/ActionPolicyDiagnostics'
+      properties:
+        empty:
+          type: boolean
     ActionMetrics:
       type: object
       properties:
@@ -663,33 +1025,6 @@ components:
           $ref: '#/components/schemas/HttpPushMetrics'
         fifo:
           $ref: '#/components/schemas/FifoMetrics'
-    HourlyFifoSupervision:
-      type: object
-      properties:
-        day:
-          type: string
-          description: day of the counters, with yyyy-MM-dd format
-          example: '2024-01-01'
-        hour:
-          type: integer
-          format: int32
-          description: hour of the metrics (0-23)
-          example: 5
-        fillRatioPercent:
-          type: number
-          format: float
-          description: fillRatio percent sampled at this hour
-        subscribed:
-          type: boolean
-          description: true if the FIFO has been connected through MQTT SUB at least once during this hour
-        incoming:
-          type: integer
-          format: int32
-          description: number of messages pushed to FIFO during this hour
-        subMessageCount:
-          type: integer
-          format: int32
-          description: number of messages published to remote application through a MQTT SUB connection during this hour
     DataMessageFilter:
       type: object
       properties:
@@ -751,428 +1086,6 @@ components:
           maxItems: 20
           minItems: 0
           uniqueItems: true
-    HttpPushAction:
-      type: object
-      description: Action that will push the message to a Web Server
-      properties:
-        id:
-          type: string
-          description: An action id. Set by Live Objects.
-          readOnly: true
-        type:
-          type: string
-          description: 'Action type: httpPush, set by Live Objects'
-          readOnly: true
-        webhookUrl:
-          type: string
-          description: The url of the target service webhook (only ports 80, 443, 8080, 8443 and 9243 are allowed).
-        headers:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-          description: A map of headers to be passed in the http POST headers
-        signingSecret:
-          type: string
-          description: The secret used to compute the HMAC signature of the HTTP push request. The signature is then added as a header to the request, allowing the receiving server to verify its authenticity and integrity.
-          maxLength: 128
-          minLength: 20
-        signingSecretUpdated:
-          type: string
-          format: date-time
-          description: Secret update timestamp, automaticaly set by LiveObjects
-          readOnly: true
-        jsonPath:
-          type: string
-          description: The json path to extract from the considered message (or event), it will be taken as the root datacontext object when combined with a mustache template in content. e.g. 'value', 'data.metadata'.
-        content:
-          type: string
-          description: A raw string or a mustache (https://mustache.github.io/mustache.5.html) template describing the webhook body. If empty, the raw event will be used.
-        retryOnFailure:
-          type: boolean
-          description: Indicate if a retry policy should be set up in case of a http push delivery failure. Default is false.
-      required:
-      - webhookUrl
-    DeviceStatusFilter:
-      type: object
-      properties:
-        connectors:
-          type: array
-          description: List of filtered connectors ('mqtt', 'lora', 'lwm2m', 'sms', 'x-connector', 'http'). Null or empty to accept all connectors.
-          items:
-            type: string
-          maxItems: 20
-          minItems: 0
-          uniqueItems: true
-        groupPaths:
-          type: array
-          description: List of filtered group paths. Null or empty to accept all group paths
-          items:
-            $ref: '#/components/schemas/GroupPath'
-          maxItems: 20
-          minItems: 0
-          uniqueItems: true
-    FifoPublishAction:
-      type: object
-      description: Action that will forward the message to a FIFO
-      properties:
-        id:
-          type: string
-          description: An action id. Set by Live Objects.
-          readOnly: true
-        type:
-          type: string
-          description: 'Action type: fifoPublish, set by Live Objects'
-          readOnly: true
-        fifoName:
-          type: string
-          description: Target fifo to publish into. Refer to Topics API for managing these fifos
-        noRetention:
-          type: boolean
-          description: if true, the messages will be discarded if not delivered immediately (i.e. no MQTT client is connected and subbing to the fifo). This field will be automatically set to true if the targeted fifo has its messageTtl set to 0. Default value is false.
-      required:
-      - fifoName
-    FifoWithActions:
-      type: object
-      description: body of FIFO status
-      properties:
-        name:
-          type: string
-          description: Topic name of the FIFO
-          example: MyFIFOName
-        status:
-          $ref: '#/components/schemas/Status'
-          description: Status of the FIFO
-        linkedActions:
-          type: array
-          description: Actions that target this FIFO
-          items:
-            $ref: '#/components/schemas/ActionReference'
-    LoraGatewayStatusTrigger:
-      type: object
-      properties:
-        version:
-          type: integer
-          format: int32
-          description: Requested version of triggered object that will be sent through the action.
-          enum:
-          - '1'
-          maximum: 1
-          minimum: 1
-      required:
-      - version
-    ConnectivityManagementPlatformFilter:
-      type: object
-      properties:
-        eventPayloadTypes:
-          type: array
-          description: List of filtered event types.
-          items:
-            type: string
-          maxItems: 20
-          minItems: 0
-          uniqueItems: true
-    DeviceCreatedFilter:
-      type: object
-      properties:
-        connectors:
-          type: array
-          description: List of filtered connectors ('mqtt', 'lora', 'lwm2m', 'sms', 'x-connector', 'http'). Null or empty to accept all connectors.
-          items:
-            type: string
-          maxItems: 20
-          minItems: 0
-          uniqueItems: true
-        tags:
-          type: array
-          description: List of groups of tags that should be contained in message tags. There is a match if at least one group of tags is a match. A group of tags is a match if the tags of the message contains all elements of this group. <br>e.g. [["ALERT"]] will match all messages containing tag 'ALERT'.<br>e.g. [["HIGH", "ALERT"],["PROD"]] will match messages with either tag 'PROD' or both tags 'ALERT' and 'HIGH'.
-          example:
-          - - ALERT
-          items:
-            type: array
-            items:
-              type: string
-            maxItems: 20
-            minItems: 0
-            uniqueItems: true
-          maxItems: 20
-          minItems: 0
-          uniqueItems: true
-        groupPaths:
-          type: array
-          description: List of filtered group paths. Null or empty to accept all group paths
-          items:
-            $ref: '#/components/schemas/GroupPath'
-          maxItems: 20
-          minItems: 0
-          uniqueItems: true
-    DeviceDeletedFilter:
-      type: object
-      properties:
-        connectors:
-          type: array
-          description: List of filtered connectors ('mqtt', 'lora', 'lwm2m', 'sms', 'x-connector', 'http'). Null or empty to accept all connectors.
-          items:
-            type: string
-          maxItems: 20
-          minItems: 0
-          uniqueItems: true
-        tags:
-          type: array
-          description: List of groups of tags that should be contained in message tags. There is a match if at least one group of tags is a match. A group of tags is a match if the tags of the message contains all elements of this group. <br>e.g. [["ALERT"]] will match all messages containing tag 'ALERT'.<br>e.g. [["HIGH", "ALERT"],["PROD"]] will match messages with either tag 'PROD' or both tags 'ALERT' and 'HIGH'.
-          example:
-          - - ALERT
-          items:
-            type: array
-            items:
-              type: string
-            maxItems: 20
-            minItems: 0
-            uniqueItems: true
-          maxItems: 20
-          minItems: 0
-          uniqueItems: true
-        groupPaths:
-          type: array
-          description: List of filtered group paths. Null or empty to accept all group paths
-          items:
-            $ref: '#/components/schemas/GroupPath'
-          maxItems: 20
-          minItems: 0
-          uniqueItems: true
-    HttpPushMetrics:
-      type: object
-      properties:
-        httpRequestCounters:
-          $ref: '#/components/schemas/HttpRequestCounters'
-          description: counters of Http requests sent. 1 message delivery can trigger several http requests, in case of retry.
-        messageDeliveryCounters:
-          $ref: '#/components/schemas/HttpDeliveryCounters'
-          description: counters for message delivery. Day and hour refer to the date when the original message has been handled in LO.
-    AlarmEventTrigger:
-      type: object
-      properties:
-        version:
-          type: integer
-          format: int32
-          description: Requested version of triggered object that will be sent through the action.
-          enum:
-          - '1'
-          maximum: 1
-          minimum: 1
-        filter:
-          $ref: '#/components/schemas/AlarmEventFilter'
-          description: Filter to apply on alarm events. If not specified, all alarm events will be targeted by the action policy
-      required:
-      - version
-    DeviceActivityTrigger:
-      type: object
-      properties:
-        version:
-          type: integer
-          format: int32
-          description: Requested version of triggered object that will be sent through the action.
-          enum:
-          - '1'
-          maximum: 1
-          minimum: 1
-        filter:
-          $ref: '#/components/schemas/DeviceActivityFilter'
-          description: Filtering criterias. AND operator is used between filter criterias. OR operator is used in the list in each filter criteria.
-      required:
-      - version
-    CommandStatusFilter:
-      type: object
-      properties:
-        status:
-          type: array
-          description: List of command status devices. Null or empty to accept all status
-          items:
-            type: string
-            enum:
-            - PENDING
-            - PROCESSING
-            - PROCESSED
-            - CANCELED
-            - ERROR
-            - RETRYING
-            - EXPIRED
-            - UNKNOWN
-          maxItems: 20
-          minItems: 0
-          uniqueItems: true
-    FifoMetrics:
-      type: object
-      properties:
-        messageDeliveryCounters:
-          $ref: '#/components/schemas/FifoMessageCounters'
-          description: counters for Fifo messages (processed, delivered, overflow...). Day and hour refer to the date when the original message has been handled in LO.
-        supervision:
-          $ref: '#/components/schemas/FifoSupervision'
-          description: supervision information regarding Fifo
-    DeviceDeletedTrigger:
-      type: object
-      properties:
-        version:
-          type: integer
-          format: int32
-          description: Requested version of triggered object that will be sent through the action.
-          enum:
-          - '1'
-          maximum: 1
-          minimum: 1
-        filter:
-          $ref: '#/components/schemas/DeviceDeletedFilter'
-          description: Filtering criterias. AND operator is used between filter criterias. OR operator is used in the list in each filter criteria.
-      required:
-      - version
-    ActionDiagnostic:
-      type: object
-      properties:
-        tenantId:
-          type: string
-        actionId:
-          type: string
-        actionPolicyId:
-          type: string
-        actionType:
-          type: string
-          minLength: 1
-        lastSuspension:
-          $ref: '#/components/schemas/Suspension'
-        lastResumption:
-          $ref: '#/components/schemas/Resumption'
-        updated:
-          type: string
-          format: date-time
-        lastActionMetricsUpdate:
-          type: string
-          format: date-time
-        suspended:
-          type: boolean
-        id:
-          type: string
-      required:
-      - actionType
-    Actions:
-      type: object
-      properties:
-        emails:
-          type: array
-          description: A collection of email actions
-          items:
-            $ref: '#/components/schemas/EmailAction'
-        sms:
-          type: array
-          description: A collection of sms actions
-          items:
-            $ref: '#/components/schemas/SMSAction'
-        httpPush:
-          type: array
-          description: A collection of webhook actions
-          items:
-            $ref: '#/components/schemas/HttpPushAction'
-        fifoPublish:
-          type: array
-          description: A collection of fifo publish actions
-          items:
-            $ref: '#/components/schemas/FifoPublishAction'
-        azureEventHubs:
-          type: array
-          description: A collection of Azure Event Hubs actions
-          items:
-            $ref: '#/components/schemas/AzureEventHubsAction'
-    LoraNetworkTrigger:
-      type: object
-      properties:
-        version:
-          type: integer
-          format: int32
-          description: Requested version of triggered object that will be sent through the action.
-          enum:
-          - '1'
-          maximum: 1
-          minimum: 1
-        filter:
-          $ref: '#/components/schemas/LoraNetworkFilter'
-          description: Filtering criterias. AND operator is used between filter criterias. OR operator is used in the list in each filter criteria.
-      required:
-      - version
-    ActionPolicyDiagnostics:
-      type: object
-      properties:
-        actionPolicyId:
-          type: string
-        actions:
-          type: array
-          items:
-            $ref: '#/components/schemas/ActionDiagnostic'
-    ActionPolicyReference:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the action policy
-        id:
-          type: string
-          description: Identifier of the action policy
-        triggerTypes:
-          type: array
-          items:
-            type: string
-            description: Types of triggers configured in the action policy
-            enum:
-            - dataMessage
-            - stateChange
-            - deviceActivity
-            - matchingFired
-            - deviceStatus
-            - commandStatus
-            - deviceCreated
-            - deviceDeleted
-            - loraNetwork
-            - loraGatewayStatus
-            - connectivityManagementPlatformEvent
-            - alarmEvent
-    DailyFifoSupervision:
-      type: object
-      properties:
-        day:
-          type: string
-          description: day of the counters, with yyyy-MM-dd format
-          example: '2024-01-01'
-        maxFillRatioPercent:
-          type: number
-          format: float
-          description: maximum fillRatio percent reached for the day (among hourly samples)
-        subscribed:
-          type: boolean
-          description: true if the FIFO has been connected through MQTT SUB at least once during this day
-        incoming:
-          type: integer
-          format: int32
-          description: number of messages pushed to FIFO during this day
-        subMessageCount:
-          type: integer
-          format: int32
-          description: number of messages published to remote application through a MQTT SUB connection during this day
-    StateChangeTrigger:
-      type: object
-      properties:
-        version:
-          type: integer
-          format: int32
-          description: Requested version of triggered object that will be sent through the action.
-          enum:
-          - '1'
-          maximum: 1
-          minimum: 1
-        filter:
-          $ref: '#/components/schemas/StateChangeFilter'
-          description: Filtering criterias. AND operator is used between filter criterias. OR operator is used in the list in each filter criteria.
-      required:
-      - version
     DailyFifoMessageDeliveryCounters:
       type: object
       properties:
@@ -1200,54 +1113,105 @@ components:
           type: integer
           format: int64
           description: mean delivery time of successfully delivered messages. Start time is set when the original message has been handled in LO.
-    FifoSupervision:
+    ActionPolicyReference:
       type: object
       properties:
-        daily:
+        name:
+          type: string
+          description: Name of the action policy
+        id:
+          type: string
+          description: Identifier of the action policy
+        triggerTypes:
           type: array
           items:
-            $ref: '#/components/schemas/DailyFifoSupervision'
-        hourly:
+            type: string
+            description: Types of triggers configured in the action policy
+            enum:
+            - dataMessage
+            - stateChange
+            - deviceActivity
+            - matchingFired
+            - deviceStatus
+            - commandStatus
+            - deviceCreated
+            - deviceDeleted
+            - loraNetwork
+            - loraGatewayStatus
+            - connectivityManagementPlatformEvent
+            - alarmEvent
+    HttpPushMetrics:
+      type: object
+      properties:
+        httpRequestCounters:
+          $ref: '#/components/schemas/HttpRequestCounters'
+          description: counters of Http requests sent. 1 message delivery can trigger several http requests, in case of retry.
+        messageDeliveryCounters:
+          $ref: '#/components/schemas/HttpDeliveryCounters'
+          description: counters for message delivery. Day and hour refer to the date when the original message has been handled in LO.
+    DeviceStatusFilter:
+      type: object
+      properties:
+        connectors:
           type: array
+          description: List of filtered connectors ('mqtt', 'lora', 'lwm2m', 'sms', 'x-connector', 'http'). Null or empty to accept all connectors.
           items:
-            $ref: '#/components/schemas/HourlyFifoSupervision'
-    Suspension:
+            type: string
+          maxItems: 20
+          minItems: 0
+          uniqueItems: true
+        groupPaths:
+          type: array
+          description: List of filtered group paths. Null or empty to accept all group paths
+          items:
+            $ref: '#/components/schemas/GroupPath'
+          maxItems: 20
+          minItems: 0
+          uniqueItems: true
+    HourlyHttpDeliveryCounters:
       type: object
       properties:
-        reason:
+        day:
           type: string
-        time:
-          type: string
-          format: date-time
-    Status:
-      type: object
-      properties:
-        messages:
+          description: day of the counters, with yyyy-MM-dd format
+          example: '2024-01-01'
+        processed:
+          type: integer
+          format: int32
+          description: total number of messages that have been processed
+        delivered:
+          type: integer
+          format: int32
+          description: number of messages that have been successfully delivered on first try
+        deliveredWithRetry:
+          type: integer
+          format: int32
+          description: number of messages that have been successfully delivered but needed at least a retry
+        expired:
+          type: integer
+          format: int32
+          description: number of messages that have not been delivered because retry is disabled or max retry count has been reached (after 5xx, timeout...)
+        failed:
+          type: integer
+          format: int32
+          description: number of messages that have not been delivered due to a 4xx or 3xx
+        overflow:
+          type: integer
+          format: int32
+          description: number of messages that have been dropped due to queue overflow (maximum number of waiting messages reached)
+        canceled:
+          type: integer
+          format: int32
+          description: number of messages that have been canceled (e.g. action policy deleted)
+        meanDeliveryTimeMs:
           type: integer
           format: int64
-          description: Number of messages stored
-        consumers:
+          description: mean delivery time of successfully delivered messages. Start time is set when the original message has been handled in LO.
+        hour:
           type: integer
-          format: int64
-          description: Number of active consumers
-    ActionPolicyDiagnosticsList:
-      type: array
-      items:
-        $ref: '#/components/schemas/ActionPolicyDiagnostics'
-      properties:
-        empty:
-          type: boolean
-    HttpRequestCounters:
-      type: object
-      properties:
-        daily:
-          type: array
-          items:
-            $ref: '#/components/schemas/DailyHttpRequestCounters'
-        hourly:
-          type: array
-          items:
-            $ref: '#/components/schemas/HourlyHttpRequestCounters'
+          format: int32
+          description: hour of the counters (0-23)
+          example: 23
     AzureEventHubsAction:
       type: object
       description: Action that will push the message to an Azure Event Hub instance using HTTP protocol
@@ -1300,7 +1264,181 @@ components:
       required:
       - includeSubPath
       - path
-    DailyHttpRequestCounters:
+    WebErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+      required:
+      - code
+      - id
+      - message
+    StateChangeFilter:
+      type: object
+      properties:
+        ruleIds:
+          type: array
+          description: List of filtered rule Ids. Null or empty to accept all rule Ids
+          items:
+            type: string
+          maxItems: 20
+          minItems: 0
+          uniqueItems: true
+    DailyFifoSupervision:
+      type: object
+      properties:
+        day:
+          type: string
+          description: day of the counters, with yyyy-MM-dd format
+          example: '2024-01-01'
+        maxFillRatioPercent:
+          type: number
+          format: float
+          description: maximum fillRatio percent reached for the day (among hourly samples)
+        subscribed:
+          type: boolean
+          description: true if the FIFO has been connected through MQTT SUB at least once during this day
+        incoming:
+          type: integer
+          format: int32
+          description: number of messages pushed to FIFO during this day
+        subMessageCount:
+          type: integer
+          format: int32
+          description: number of messages published to remote application through a MQTT SUB connection during this day
+    FifoWithActions:
+      type: object
+      description: body of FIFO status
+      properties:
+        name:
+          type: string
+          description: Topic name of the FIFO
+          example: MyFIFOName
+        status:
+          $ref: '#/components/schemas/Status'
+          description: Status of the FIFO
+        linkedActions:
+          type: array
+          description: Actions that target this FIFO
+          items:
+            $ref: '#/components/schemas/ActionReference'
+    ActionDiagnostic:
+      type: object
+      properties:
+        tenantId:
+          type: string
+        actionId:
+          type: string
+        actionPolicyId:
+          type: string
+        actionType:
+          type: string
+          minLength: 1
+        lastSuspension:
+          $ref: '#/components/schemas/Suspension'
+        lastResumption:
+          $ref: '#/components/schemas/Resumption'
+        updated:
+          type: string
+          format: date-time
+        lastActionMetricsUpdate:
+          type: string
+          format: date-time
+        suspended:
+          type: boolean
+        id:
+          type: string
+      required:
+      - actionType
+    HttpPushAction:
+      type: object
+      description: Action that will push the message to a Web Server
+      properties:
+        id:
+          type: string
+          description: An action id. Set by Live Objects.
+          readOnly: true
+        type:
+          type: string
+          description: 'Action type: httpPush, set by Live Objects'
+          readOnly: true
+        webhookUrl:
+          type: string
+          description: The url of the target service webhook (only ports 80, 443, 8080, 8443 and 9243 are allowed).
+        headers:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+          description: A map of headers to be passed in the http POST headers
+        signingSecret:
+          type: string
+          description: The secret used to compute the HMAC signature of the HTTP push request. The signature is then added as a header to the request, allowing the receiving server to verify its authenticity and integrity.
+          maxLength: 128
+          minLength: 20
+        signingSecretUpdated:
+          type: string
+          format: date-time
+          description: Secret update timestamp, automaticaly set by LiveObjects
+          readOnly: true
+        jsonPath:
+          type: string
+          description: The json path to extract from the considered message (or event), it will be taken as the root datacontext object when combined with a mustache template in content. e.g. 'value', 'data.metadata'.
+        content:
+          type: string
+          description: A raw string or a mustache (https://mustache.github.io/mustache.5.html) template describing the webhook body. If empty, the raw event will be used.
+        retryOnFailure:
+          type: boolean
+          description: Indicate if a retry policy should be set up in case of a http push delivery failure. Default is false.
+      required:
+      - webhookUrl
+    DeviceCreatedFilter:
+      type: object
+      properties:
+        connectors:
+          type: array
+          description: List of filtered connectors ('mqtt', 'lora', 'lwm2m', 'sms', 'x-connector', 'http'). Null or empty to accept all connectors.
+          items:
+            type: string
+          maxItems: 20
+          minItems: 0
+          uniqueItems: true
+        tags:
+          type: array
+          description: List of groups of tags that should be contained in message tags. There is a match if at least one group of tags is a match. A group of tags is a match if the tags of the message contains all elements of this group. <br>e.g. [["ALERT"]] will match all messages containing tag 'ALERT'.<br>e.g. [["HIGH", "ALERT"],["PROD"]] will match messages with either tag 'PROD' or both tags 'ALERT' and 'HIGH'.
+          example:
+          - - ALERT
+          items:
+            type: array
+            items:
+              type: string
+            maxItems: 20
+            minItems: 0
+            uniqueItems: true
+          maxItems: 20
+          minItems: 0
+          uniqueItems: true
+        groupPaths:
+          type: array
+          description: List of filtered group paths. Null or empty to accept all group paths
+          items:
+            $ref: '#/components/schemas/GroupPath'
+          maxItems: 20
+          minItems: 0
+          uniqueItems: true
+    HourlyHttpRequestCounters:
       type: object
       properties:
         day:
@@ -1335,26 +1473,11 @@ components:
           type: integer
           format: int64
           description: mean response time of 2xx requests
-    WebErrorResponse:
-      type: object
-      description: Error response
-      properties:
-        id:
-          type: string
-          description: Unique identifier of this error instance
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Short error description
-        details:
-          type: string
-          description: Detailed error description
-      required:
-      - code
-      - id
-      - message
+        hour:
+          type: integer
+          format: int32
+          description: hour of the metrics (0-23)
+          example: 5
     HourlyFifoMessageDeliveryCounters:
       type: object
       properties:
@@ -1387,99 +1510,54 @@ components:
           format: int32
           description: hour of the metrics (0-23)
           example: 5
-    StateChangeFilter:
+    Actions:
       type: object
       properties:
-        ruleIds:
+        emails:
           type: array
-          description: List of filtered rule Ids. Null or empty to accept all rule Ids
+          description: A collection of email actions
+          items:
+            $ref: '#/components/schemas/EmailAction'
+        sms:
+          type: array
+          description: A collection of sms actions
+          items:
+            $ref: '#/components/schemas/SMSAction'
+        httpPush:
+          type: array
+          description: A collection of webhook actions
+          items:
+            $ref: '#/components/schemas/HttpPushAction'
+        fifoPublish:
+          type: array
+          description: A collection of fifo publish actions
+          items:
+            $ref: '#/components/schemas/FifoPublishAction'
+        azureEventHubs:
+          type: array
+          description: A collection of Azure Event Hubs actions
+          items:
+            $ref: '#/components/schemas/AzureEventHubsAction'
+    CommandStatusFilter:
+      type: object
+      properties:
+        status:
+          type: array
+          description: List of command status devices. Null or empty to accept all status
           items:
             type: string
+            enum:
+            - PENDING
+            - PROCESSING
+            - PROCESSED
+            - CANCELED
+            - ERROR
+            - RETRYING
+            - EXPIRED
+            - UNKNOWN
           maxItems: 20
           minItems: 0
           uniqueItems: true
-    ActionPolicy:
-      type: object
-      description: ActionPolicy to add
-      properties:
-        id:
-          type: string
-          description: id of the action policy. Set by LiveObjects, should be null on POST, set on PUT.
-        updated:
-          type: string
-          format: date-time
-          description: Last update timestamp of action policy. Set by LiveObjects, should be null on POST or PUT
-          readOnly: true
-        name:
-          type: string
-          description: The user-defined name of the action policy
-        enabled:
-          type: boolean
-          description: Enable or disable this action policy
-        triggers:
-          $ref: '#/components/schemas/ActionTriggers'
-          description: The trigger that will set off the specified actions. One and only one trigger must be set, except for 'deviceCreated' and 'deviceDeleted' triggers that can be simultaneously set.
-        actions:
-          $ref: '#/components/schemas/Actions'
-          description: The list of the actions that will be executed on a trigger. At least 1 action must be set.
-      required:
-      - actions
-      - triggers
-    ActionTriggers:
-      type: object
-      properties:
-        deviceStatus:
-          $ref: '#/components/schemas/DeviceStatusTrigger'
-          description: Triggering for DeviceStatus event
-        deviceCreated:
-          $ref: '#/components/schemas/DeviceCreatedTrigger'
-          description: Triggering for DeviceCreated event
-        loraNetwork:
-          $ref: '#/components/schemas/LoraNetworkTrigger'
-          description: Triggering Lora network event
-        loraGatewayStatus:
-          $ref: '#/components/schemas/LoraGatewayStatusTrigger'
-          description: Triggering Lora Gateway status event
-        dataMessage:
-          $ref: '#/components/schemas/DataMessageTrigger'
-          description: Triggering for DataMessage
-        stateChange:
-          $ref: '#/components/schemas/StateChangeTrigger'
-          description: Triggering for StateChange event
-        deviceActivity:
-          $ref: '#/components/schemas/DeviceActivityTrigger'
-          description: Triggering for DeviceActivity event
-        matchingFired:
-          $ref: '#/components/schemas/MatchingFiredTrigger'
-          description: Triggering for MatchingFired event
-        commandStatus:
-          $ref: '#/components/schemas/CommandStatusTrigger'
-          description: Triggering for CommandStatus event
-        deviceDeleted:
-          $ref: '#/components/schemas/DeviceDeletedTrigger'
-          description: Triggering for DeviceDeleted event
-        connectivityManagementPlatformEvent:
-          $ref: '#/components/schemas/ConnectivityManagementPlatformTrigger'
-          description: Triggering for ConnectivityManagementPlatform event
-        alarmEvent:
-          $ref: '#/components/schemas/AlarmEventTrigger'
-          description: Triggering for Alarm event
-    DataMessageTrigger:
-      type: object
-      properties:
-        version:
-          type: integer
-          format: int32
-          description: Requested version of triggered object that will be sent through the action.
-          enum:
-          - '1'
-          maximum: 1
-          minimum: 1
-        filter:
-          $ref: '#/components/schemas/DataMessageFilter'
-          description: Filtering criterias. AND operator is used between filter criterias. OR operator is used in the list in each filter criteria.
-      required:
-      - version
     Resumption:
       type: object
       properties:
@@ -1509,22 +1587,17 @@ components:
       required:
       - contentTemplate
       - destinationPhoneNumbers
-    ConnectivityManagementPlatformTrigger:
+    ConnectivityManagementPlatformFilter:
       type: object
       properties:
-        version:
-          type: integer
-          format: int32
-          description: Requested version of triggered object that will be sent through the action.
-          enum:
-          - '1'
-          maximum: 1
-          minimum: 1
-        filter:
-          $ref: '#/components/schemas/ConnectivityManagementPlatformFilter'
-          description: Filtering criterias. AND operator is used between filter criterias. OR operator is used in the list in each filter criteria.
-      required:
-      - version
+        eventPayloadTypes:
+          type: array
+          description: List of filtered event types.
+          items:
+            type: string
+          maxItems: 20
+          minItems: 0
+          uniqueItems: true
     DeviceCreatedTrigger:
       type: object
       properties:
@@ -1541,7 +1614,7 @@ components:
           description: Filtering criterias. AND operator is used between filter criterias. OR operator is used in the list in each filter criteria.
       required:
       - version
-    CommandStatusTrigger:
+    DeviceStatusTrigger:
       type: object
       properties:
         version:
@@ -1553,63 +1626,107 @@ components:
           maximum: 1
           minimum: 1
         filter:
-          $ref: '#/components/schemas/CommandStatusFilter'
+          $ref: '#/components/schemas/DeviceStatusFilter'
           description: Filtering criterias. AND operator is used between filter criterias. OR operator is used in the list in each filter criteria.
       required:
       - version
-    AlarmEventFilter:
+    MatchingFiredFilter:
       type: object
       properties:
-        alarmRuleTypes:
+        ruleIds:
           type: array
-          description: 'List of filtered alarm rule types. Only known alarm types are accepted. Supported values: ''actionSuspended'', ''messageDeliverySuccessRatio''.'
-          enum:
-          - actionSuspended
-          - messageDeliverySuccessRatio
+          description: List of filtered rule Ids. Null or empty to accept all rule Ids
           items:
             type: string
           maxItems: 20
           minItems: 0
           uniqueItems: true
-    DailyHttpDeliveryCounters:
+    FifoPublishAction:
+      type: object
+      description: Action that will forward the message to a FIFO
+      properties:
+        id:
+          type: string
+          description: An action id. Set by Live Objects.
+          readOnly: true
+        type:
+          type: string
+          description: 'Action type: fifoPublish, set by Live Objects'
+          readOnly: true
+        fifoName:
+          type: string
+          description: Target fifo to publish into. Refer to Topics API for managing these fifos
+        noRetention:
+          type: boolean
+          description: if true, the messages will be discarded if not delivered immediately (i.e. no MQTT client is connected and subbing to the fifo). This field will be automatically set to true if the targeted fifo has its messageTtl set to 0. Default value is false.
+      required:
+      - fifoName
+    DeviceDeletedTrigger:
       type: object
       properties:
-        day:
-          type: string
-          description: day of the counters, with yyyy-MM-dd format
-          example: '2024-01-01'
-        processed:
+        version:
           type: integer
           format: int32
-          description: total number of messages that have been processed
-        delivered:
+          description: Requested version of triggered object that will be sent through the action.
+          enum:
+          - '1'
+          maximum: 1
+          minimum: 1
+        filter:
+          $ref: '#/components/schemas/DeviceDeletedFilter'
+          description: Filtering criterias. AND operator is used between filter criterias. OR operator is used in the list in each filter criteria.
+      required:
+      - version
+    MatchingFiredTrigger:
+      type: object
+      properties:
+        version:
           type: integer
           format: int32
-          description: number of messages that have been successfully delivered on first try
-        deliveredWithRetry:
-          type: integer
-          format: int32
-          description: number of messages that have been successfully delivered but needed at least a retry
-        expired:
-          type: integer
-          format: int32
-          description: number of messages that have not been delivered because retry is disabled or max retry count has been reached (after 5xx, timeout...)
-        failed:
-          type: integer
-          format: int32
-          description: number of messages that have not been delivered due to a 4xx or 3xx
-        overflow:
-          type: integer
-          format: int32
-          description: number of messages that have been dropped due to queue overflow (maximum number of waiting messages reached)
-        canceled:
-          type: integer
-          format: int32
-          description: number of messages that have been canceled (e.g. action policy deleted)
-        meanDeliveryTimeMs:
-          type: integer
-          format: int64
-          description: mean delivery time of successfully delivered messages. Start time is set when the original message has been handled in LO.
+          description: Requested version of triggered object that will be sent through the action.
+          enum:
+          - '1'
+          maximum: 1
+          minimum: 1
+        filter:
+          $ref: '#/components/schemas/MatchingFiredFilter'
+          description: Filtering criterias. AND operator is used between filter criterias. OR operator is used in the list in each filter criteria.
+      required:
+      - version
+    DeviceDeletedFilter:
+      type: object
+      properties:
+        connectors:
+          type: array
+          description: List of filtered connectors ('mqtt', 'lora', 'lwm2m', 'sms', 'x-connector', 'http'). Null or empty to accept all connectors.
+          items:
+            type: string
+          maxItems: 20
+          minItems: 0
+          uniqueItems: true
+        tags:
+          type: array
+          description: List of groups of tags that should be contained in message tags. There is a match if at least one group of tags is a match. A group of tags is a match if the tags of the message contains all elements of this group. <br>e.g. [["ALERT"]] will match all messages containing tag 'ALERT'.<br>e.g. [["HIGH", "ALERT"],["PROD"]] will match messages with either tag 'PROD' or both tags 'ALERT' and 'HIGH'.
+          example:
+          - - ALERT
+          items:
+            type: array
+            items:
+              type: string
+            maxItems: 20
+            minItems: 0
+            uniqueItems: true
+          maxItems: 20
+          minItems: 0
+          uniqueItems: true
+        groupPaths:
+          type: array
+          description: List of filtered group paths. Null or empty to accept all group paths
+          items:
+            $ref: '#/components/schemas/GroupPath'
+          maxItems: 20
+          minItems: 0
+          uniqueItems: true
     EmailAction:
       type: object
       description: Action that will send an email
@@ -1647,35 +1764,6 @@ components:
       - contentTemplate
       - subjectTemplate
       - to
-    MatchingFiredFilter:
-      type: object
-      properties:
-        ruleIds:
-          type: array
-          description: List of filtered rule Ids. Null or empty to accept all rule Ids
-          items:
-            type: string
-          maxItems: 20
-          minItems: 0
-          uniqueItems: true
-    LoraNetworkFilter:
-      type: object
-      properties:
-        messageTypes:
-          type: array
-          description: List of filtered messageTypes. Null or empty to accept all message types
-          items:
-            type: string
-            enum:
-            - UNCONFIRMED_DATA_UP
-            - CONFIRMED_DATA_UP
-            - UNCONFIRMED_DATA_DOWN
-            - CONFIRMED_DATA_DOWN
-            - JOIN_REQUEST
-            - JOIN_ACCEPT
-          maxItems: 20
-          minItems: 0
-          uniqueItems: true
   securitySchemes:
     X-API-KEY:
       type: apiKey

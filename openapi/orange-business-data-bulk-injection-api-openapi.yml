@@ -33,47 +33,6 @@ paths:
           description: Request has been accepted. Data processing ongoing.
 components:
   schemas:
-    Location:
-      type: object
-      description: geographic location
-      properties:
-        lat:
-          type: number
-          format: double
-          description: Latitude value
-          example: 45.000009
-        lon:
-          type: number
-          format: double
-          description: Longitude value
-          example: -30.00001
-        alt:
-          type: number
-          format: double
-          description: Altitude value
-          example: 5.00001
-        accuracy:
-          type: number
-          format: double
-          description: Accuracy value
-          example: 10.0
-        provider:
-          type: string
-          description: Provider of the location
-          example: GPS
-      required:
-      - lat
-      - lon
-    Metadata:
-      type: object
-      properties:
-        source:
-          type: string
-          description: source of the data
-          example: urn:tenantName:FFFFFFFFFFFFFFFF!mystream
-        encoding:
-          type: string
-          description: encoding format name, that should match the 'encoding' field of the decoder that will process this datamessage.
     DataBulkItemWeb:
       type: object
       description: Unitary data item in a bulk.
@@ -121,6 +80,47 @@ components:
       properties:
         empty:
           type: boolean
+    Location:
+      type: object
+      description: geographic location
+      properties:
+        lat:
+          type: number
+          format: double
+          description: Latitude value
+          example: 45.000009
+        lon:
+          type: number
+          format: double
+          description: Longitude value
+          example: -30.00001
+        alt:
+          type: number
+          format: double
+          description: Altitude value
+          example: 5.00001
+        accuracy:
+          type: number
+          format: double
+          description: Accuracy value
+          example: 10.0
+        provider:
+          type: string
+          description: Provider of the location
+          example: GPS
+      required:
+      - lat
+      - lon
+    Metadata:
+      type: object
+      properties:
+        source:
+          type: string
+          description: source of the data
+          example: urn:tenantName:FFFFFFFFFFFFFFFF!mystream
+        encoding:
+          type: string
+          description: encoding format name, that should match the 'encoding' field of the decoder that will process this datamessage.
   securitySchemes:
     X-API-KEY:
       type: apiKey

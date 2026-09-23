@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Live Objects REST API Guide Device management - Connector nodes - V1 API
+  title: Live Objects REST API Guide Device management - Connector…
   description: API description for Live Objects service
   contact:
     name: Live Objects Support
@@ -20,7 +20,7 @@ paths:
       tags:
       - Device management - Connector nodes - V1
       summary: Get details of a connector node
-      description: "<p>A device can hold several nodes, each one defining a connectivity - LoRa, MQTT, LwM2M, SMS, X-Connector - of this device.</p>\n<p>The <strong>definition</strong> depends on connector.</p>\n<p><span style=\"text-decoration: underline;\">Lora definition</span>:</p>\n<ul>\n    <li>\"devEUI\": interface EUI</li>\n    <li>\"appEUI\": appEUI of the interface</li>\n    <li>\"appKey\": appKey of the interface</li>\n    <li>\"activationType\": supported value: \"OTAA\"</li>\n    <li>\"profile\": profile of the interface</li>\n    <li>\"encoding\": (Optional) encoding used in message's payload (use /decoders APIs to define your own decoder)</li>\n    <li>\"connectivityOptions\": connectivity options used for the interface </li>\n        <ul>\n            <li>\"location\": true/false </li>\n            <li>\"ackUl\": true/false</li>\n        </ul>\n    <li>\"connectivityPlan\": connectivity plan to use for the interface.\n    Should be used preferably at connectivityOptions but at least one of two shall be defined.</li>\n</ul>\n<p><span style=\"text-decoration: underline;\">SMS definition</span>:</p>\n<ul>\n    <li>\"msisdn\": interface phone number.\n    Expected phone number is an international phone number : 6..15 digits starting with country code (ex. '33')\n    and without international prefix (ex. '00').\n    Dummy examples of phone numbers:\n    </li>\n    <ul>\n        <li>Belgium:   32654332211</li>\n        <li>France:    33654332211</li>\n        <li>Spain:     34654332211</li>\n        <li>Romania:   40654332211</li>\n        <li>Slovakia: 421654332211</li>\n    </ul>\n    <li>\"serverPhoneNumber\": (Optional) server phone number</li>\n    <li>\"encoding\": (Optional) name of the decoder that will be used to decode received SMS</li>\n</ul>\n<p>\n<br/>\n\n\n\n</p>\n<p><span style=\"text-decoration: underline;\">MQTT definition</span>:</p>\n<ul>\n    <li>\"clientId\": interface client ID</li>\n    <li>\"encoding\": (Optional) encoding used in message's payload (use /decoders APIs to define your own decoder)</li>\n</ul>\n<p><span style=\"text-decoration: underline;\">X-CONNECTOR definition</span>:</p>\n<ul>\n    <li>\"nodeId\": id used by the external connector to identify the communicating device (e.g. PUB connector/v1/nodes/{nodeId}/status)</li>\n    <li>\"encoding\": (Optional) encoding used in message's payload (use /decoders APIs to define your own decoder)</li>\n</ul>\n<p><span style=\"text-decoration: underline;\">LwM2M definition</span>:</p>\n<ul>\n    <li>\"endpointName\": the endpoint client name. Must comply to the format of a nodeId.</li>\n    <li>\"security\": the security information. Mandatory in creation if node is not Bootstrap managed (must be null if it is Bootstrap managed). Updated as a whole during a PATCH.</li>\n    <ul>\n        <li>\"mode\": the security mode. Example: PSK (case sensitive)</li>\n        <li>\"pskInfo\": the pre-shared key information. Mandatory in PSK mode. Must be null in other security modes.</li>\n        <ul>\n            <li>\"identity\": the PSK identity. Its maximum size is 128 bytes.</li>\n            <li>\"secret\": the pre-shared secret key. Must be between 16 bytes and 64 bytes and encoded in hexadecimal.</li>\n        </ul>\n    </ul>\n    <li>\"bootstrap\": the bootstrap information. Optional. Updated as a whole during a PATCH.</li>\n    <ul>\n        <li>\"managed\": if true, the 'security' info will be managed by the LwM2M bootstrap operation.</li>\n    </ul>\n    <li>\"encoding\": (Optional) encoding used in message's payload (use /decoders APIs to define your own decoder)</li>\n</ul>\n<br /><p>The <strong>activity</strong> depends on connector.</p>\n<p><span style=\"text-decoration: underline;\">Lora activity</span>:</p>\n<ul>\n    <li>\"lastActivationTs\": (Optional) last activation date of the interface</li>\n    <li>\"lastDeactivationTs\": (Optional) last deactivation date of the interface</li>\n    <li>\"lastSignalLevel\": (Optional) last signal level. \" This value is a signal level computed from last uplink.</li>\n    <li>\"avgSignalLevel\": (Optional) average signal level.\n        \" This value is a signal level computed from uplinks history (PER+SNR+ESP quality indicators aggregate).\n        \" On frame counter reset, the uplinks history and average signal level are reset.</li>\n    <li>\"lastBatteryLevel\": (Optional) last battery level</li>\n    <li>\"lastBatteryLevelTs\": (Optional) date of the last battery level</li>\n    <li>\"lastDlFcnt\": (Optional) last downlink frame counter</li>\n    <li>\"lastUlFcnt\": (Optional) last uplink frame counter</li>\n</ul>\n<p><span style=\"text-decoration: underline;\">SMS activity</span>:</p>\n<ul>\n    <li>\"lastUplink\": (Optional) last uplink date of the interface</li>\n    <ul>\n        <li>\"timestamp\": date of the activity</li>\n        <li>\"serverPhoneNumber\": server phone number used</li>\n    </ul>\n    <li>\"lastDownlink\": (Optional) last downlink date of the connector node</li>\n    <ul>\n        <li>\"timestamp\": date of the activity</li>\n        <li>\"serverPhoneNumber\": server phone number used</li>\n    </ul>\n</ul>\n<p><span style=\"text-decoration: underline;\">MQTT activity</span>:</p>\n<ul>\n    <li>\"apiKeyId\": api key ID used</li>\n    <li>\"mqttVersion\": mqtt version used</li>\n    <li>\"mqttUsername\": mqtt username used</li>\n    <li>\"mqttTimeout\": mqtt timeout</li>\n    <li>\"remoteAddress\"</li>\n    <li>\"lastSessionStartTime\"</li>\n    <li>\"lastSessionEndTime\"</li>\n    <li>\"security\": security information</li>\n    <ul>\n        <li>\"secured\":true/false</li>\n        <li>\"protocol\":(Optional) security protocol used (ex: TLSv1.2)</li>\n        <li>\"cipher\": (Optional) cipher suite (ex: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256)</li>\n        <li>\"clientCertAuthentication\": (Optional) true/false</li>\n        <li>\"sniHostname\": (Optional) hostname provided by the Server Name Indication extension</li>\n    </ul>\n</ul>\n<p><span style=\"text-decoration: underline;\">LwM2M activity</span>:</p>\n<ul>\n    <li>\"lwm2mVersion\": version of LwM2M protocol used</li>\n    <li>\"remoteAddress\": last IP used to connect to LiveObjects</li>\n    <li>\"remotePort\": last port used to connect to LiveObjects</li>\n    <li>\"queueMode\": indicator of queueMode usage</li>\n    <li>\"bindings\": last bindings parameters used</li>\n    <li>\"registrationLifetime\": registration lifetime used</li>\n    <li>\"lastRegistrationDate\": last 'Register' date</li>\n    <li>\"lastDeregistrationDate\": last 'Deregister' date</li>\n    <li>\"lastUpdateDate\": last 'Update' date</li>\n    <li>\"lastBootstrapProvisioningDate\": last time the device definition was updated by the LiveObjects bootstrap server</li>\n</ul>\n</ul>\n<p><small>Note: get command are not allowed for X-Connector.</small></p><br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_R."
+      description: A device can hold several nodes, each one defining a connectivity - LoRa, MQTT, LwM2M, SMS, X-Connector - of this device.
       operationId: getNode
       parameters:
       - name: connector
@@ -75,7 +75,10 @@ paths:
       tags:
       - Device management - Connector nodes - V1
       summary: Delete a connector node
-      description: 'Usage of this API will be reported in your access log under ''device_inventory'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      description: 'Usage of this API will be reported in your access log under ''device_inventory'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DEVICE_W.'
       operationId: deleteNode
       parameters:
       - name: connector
@@ -115,7 +118,132 @@ paths:
       tags:
       - Device management - Connector nodes - V1
       summary: Update a connector node
-      description: "<p>A device can hold several nodes, each one defining a connectivity - LoRa, MQTT, LwM2M, SMS, X-Connector - of this device.</p>\n<p>The <strong>definition</strong> depends on connector.</p>\n<p><span style=\"text-decoration: underline;\">Lora definition</span>:</p>\n<ul>\n    <li>\"devEUI\": interface EUI</li>\n    <li>\"appEUI\": appEUI of the interface</li>\n    <li>\"appKey\": appKey of the interface</li>\n    <li>\"activationType\": supported value: \"OTAA\"</li>\n    <li>\"profile\": profile of the interface</li>\n    <li>\"encoding\": (Optional) encoding used in message's payload (use /decoders APIs to define your own decoder)</li>\n    <li>\"connectivityOptions\": connectivity options used for the interface </li>\n        <ul>\n            <li>\"location\": true/false </li>\n            <li>\"ackUl\": true/false</li>\n        </ul>\n    <li>\"connectivityPlan\": connectivity plan to use for the interface.\n    Should be used preferably at connectivityOptions but at least one of two shall be defined.</li>\n</ul>\n<p><span style=\"text-decoration: underline;\">SMS definition</span>:</p>\n<ul>\n    <li>\"msisdn\": interface phone number.\n    Expected phone number is an international phone number : 6..15 digits starting with country code (ex. '33')\n    and without international prefix (ex. '00').\n    Dummy examples of phone numbers:\n    </li>\n    <ul>\n        <li>Belgium:   32654332211</li>\n        <li>France:    33654332211</li>\n        <li>Spain:     34654332211</li>\n        <li>Romania:   40654332211</li>\n        <li>Slovakia: 421654332211</li>\n    </ul>\n    <li>\"serverPhoneNumber\": (Optional) server phone number</li>\n    <li>\"encoding\": (Optional) name of the decoder that will be used to decode received SMS</li>\n</ul>\n<p>\n<br/>\n\n\n\n</p>\n<p><span style=\"text-decoration: underline;\">MQTT definition</span>:</p>\n<ul>\n    <li>\"clientId\": interface client ID</li>\n    <li>\"encoding\": (Optional) encoding used in message's payload (use /decoders APIs to define your own decoder)</li>\n</ul>\n<p><span style=\"text-decoration: underline;\">X-CONNECTOR definition</span>:</p>\n<ul>\n    <li>\"nodeId\": id used by the external connector to identify the communicating device (e.g. PUB connector/v1/nodes/{nodeId}/status)</li>\n    <li>\"encoding\": (Optional) encoding used in message's payload (use /decoders APIs to define your own decoder)</li>\n</ul>\n<p><span style=\"text-decoration: underline;\">LwM2M definition</span>:</p>\n<ul>\n    <li>\"endpointName\": the endpoint client name. Must comply to the format of a nodeId.</li>\n    <li>\"security\": the security information. Mandatory in creation if node is not Bootstrap managed (must be null if it is Bootstrap managed). Updated as a whole during a PATCH.</li>\n    <ul>\n        <li>\"mode\": the security mode. Example: PSK (case sensitive)</li>\n        <li>\"pskInfo\": the pre-shared key information. Mandatory in PSK mode. Must be null in other security modes.</li>\n        <ul>\n            <li>\"identity\": the PSK identity. Its maximum size is 128 bytes.</li>\n            <li>\"secret\": the pre-shared secret key. Must be between 16 bytes and 64 bytes and encoded in hexadecimal.</li>\n        </ul>\n    </ul>\n    <li>\"bootstrap\": the bootstrap information. Optional. Updated as a whole during a PATCH.</li>\n    <ul>\n        <li>\"managed\": if true, the 'security' info will be managed by the LwM2M bootstrap operation.</li>\n    </ul>\n    <li>\"encoding\": (Optional) encoding used in message's payload (use /decoders APIs to define your own decoder)</li>\n</ul>\n<br/><br/>Usage of this API will be reported in your access log under 'device_inventory' category.<br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_W."
+      description: 'A device can hold several nodes, each one defining a connectivity - LoRa, MQTT, LwM2M, SMS, X-Connector - of this device.
+
+
+        The definition depends on connector.
+
+
+        Lora definition:
+
+
+        "devEUI": interface EUI
+
+
+        "appEUI": appEUI of the interface
+
+
+        "appKey": appKey of the interface
+
+
+        "activationType": supported value: "OTAA"
+
+
+        "profile": profile of the interface
+
+
+        "encoding": (Optional) encoding used in message''s payload (use /decoders APIs to define your own decoder)
+
+
+        "connectivityOptions": connectivity options used for the interface
+
+
+        "location": true/false
+
+
+        "ackUl": true/false
+
+
+        "connectivityPlan": connectivity plan to use for the interface.
+
+        Should be used preferably at connectivityOptions but at least one of two shall be defined.
+
+
+        SMS definition:
+
+
+        "msisdn": interface phone number.
+
+        Expected phone number is an international phone number : 6..15 digits starting with country code (ex. ''33'')
+
+        and without international prefix (ex. ''00'').
+
+        Dummy examples of phone numbers:
+
+
+        Belgium: 32654332211
+
+
+        France: 33654332211
+
+
+        Spain: 34654332211
+
+
+        Romania: 40654332211
+
+
+        Slovakia: 421654332211
+
+
+        "serverPhoneNumber": (Optional) server phone number
+
+
+        "encoding": (Optional) name of the decoder that will be used to decode received SMS
+
+
+        MQTT definition:
+
+
+        "clientId": interface client ID
+
+
+        "encoding": (Optional) encoding used in message''s payload (use /decoders APIs to define your own decoder)
+
+
+        X-CONNECTOR definition:
+
+
+        "nodeId": id used by the external connector to identify the communicating device (e.g. PUB connector/v1/nodes/{nodeId}/status)
+
+
+        "encoding": (Optional) encoding used in message''s payload (use /decoders APIs to define your own decoder)
+
+
+        LwM2M definition:
+
+
+        "endpointName": the endpoint client name. Must comply to the format of a nodeId.
+
+
+        "security": the security information. Mandatory in creation if node is not Bootstrap managed (must be null if it is Bootstrap managed). Updated as a whole during a PATCH.
+
+
+        "mode": the security mode. Example: PSK (case sensitive)
+
+
+        "pskInfo": the pre-shared key information. Mandatory in PSK mode. Must be null in other security modes.
+
+
+        "identity": the PSK identity. Its maximum size is 128 bytes.
+
+
+        "secret": the pre-shared secret key. Must be between 16 bytes and 64 bytes and encoded in hexadecimal.
+
+
+        "bootstrap": the bootstrap information. Optional. Updated as a whole during a PATCH.
+
+
+        "managed": if true, the ''security'' info will be managed by the LwM2M bootstrap operation.
+
+
+        "encoding": (Optional) encoding used in message''s payload (use /decoders APIs to define your own decoder)
+
+
+        Usage of this API will be reported in your access log under ''device_inventory'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DEVICE_W.'
       operationId: updateNode
       parameters:
       - name: connector
@@ -194,7 +322,7 @@ paths:
       tags:
       - Device management - Connector nodes - V1
       summary: List all connector nodes
-      description: "<p>A device can hold several nodes, each one defining a connectivity - LoRa, MQTT, LwM2M, SMS, X-Connector - of this device.</p>\n<p>The <strong>definition</strong> depends on connector.</p>\n<p><span style=\"text-decoration: underline;\">Lora definition</span>:</p>\n<ul>\n    <li>\"devEUI\": interface EUI</li>\n    <li>\"appEUI\": appEUI of the interface</li>\n    <li>\"appKey\": appKey of the interface</li>\n    <li>\"activationType\": supported value: \"OTAA\"</li>\n    <li>\"profile\": profile of the interface</li>\n    <li>\"encoding\": (Optional) encoding used in message's payload (use /decoders APIs to define your own decoder)</li>\n    <li>\"connectivityOptions\": connectivity options used for the interface </li>\n        <ul>\n            <li>\"location\": true/false </li>\n            <li>\"ackUl\": true/false</li>\n        </ul>\n    <li>\"connectivityPlan\": connectivity plan to use for the interface.\n    Should be used preferably at connectivityOptions but at least one of two shall be defined.</li>\n</ul>\n<p><span style=\"text-decoration: underline;\">SMS definition</span>:</p>\n<ul>\n    <li>\"msisdn\": interface phone number.\n    Expected phone number is an international phone number : 6..15 digits starting with country code (ex. '33')\n    and without international prefix (ex. '00').\n    Dummy examples of phone numbers:\n    </li>\n    <ul>\n        <li>Belgium:   32654332211</li>\n        <li>France:    33654332211</li>\n        <li>Spain:     34654332211</li>\n        <li>Romania:   40654332211</li>\n        <li>Slovakia: 421654332211</li>\n    </ul>\n    <li>\"serverPhoneNumber\": (Optional) server phone number</li>\n    <li>\"encoding\": (Optional) name of the decoder that will be used to decode received SMS</li>\n</ul>\n<p>\n<br/>\n\n\n\n</p>\n<p><span style=\"text-decoration: underline;\">MQTT definition</span>:</p>\n<ul>\n    <li>\"clientId\": interface client ID</li>\n    <li>\"encoding\": (Optional) encoding used in message's payload (use /decoders APIs to define your own decoder)</li>\n</ul>\n<p><span style=\"text-decoration: underline;\">X-CONNECTOR definition</span>:</p>\n<ul>\n    <li>\"nodeId\": id used by the external connector to identify the communicating device (e.g. PUB connector/v1/nodes/{nodeId}/status)</li>\n    <li>\"encoding\": (Optional) encoding used in message's payload (use /decoders APIs to define your own decoder)</li>\n</ul>\n<p><span style=\"text-decoration: underline;\">LwM2M definition</span>:</p>\n<ul>\n    <li>\"endpointName\": the endpoint client name. Must comply to the format of a nodeId.</li>\n    <li>\"security\": the security information. Mandatory in creation if node is not Bootstrap managed (must be null if it is Bootstrap managed). Updated as a whole during a PATCH.</li>\n    <ul>\n        <li>\"mode\": the security mode. Example: PSK (case sensitive)</li>\n        <li>\"pskInfo\": the pre-shared key information. Mandatory in PSK mode. Must be null in other security modes.</li>\n        <ul>\n            <li>\"identity\": the PSK identity. Its maximum size is 128 bytes.</li>\n            <li>\"secret\": the pre-shared secret key. Must be between 16 bytes and 64 bytes and encoded in hexadecimal.</li>\n        </ul>\n    </ul>\n    <li>\"bootstrap\": the bootstrap information. Optional. Updated as a whole during a PATCH.</li>\n    <ul>\n        <li>\"managed\": if true, the 'security' info will be managed by the LwM2M bootstrap operation.</li>\n    </ul>\n    <li>\"encoding\": (Optional) encoding used in message's payload (use /decoders APIs to define your own decoder)</li>\n</ul>\n<br /><p>The <strong>activity</strong> depends on connector.</p>\n<p><span style=\"text-decoration: underline;\">Lora activity</span>:</p>\n<ul>\n    <li>\"lastActivationTs\": (Optional) last activation date of the interface</li>\n    <li>\"lastDeactivationTs\": (Optional) last deactivation date of the interface</li>\n    <li>\"lastSignalLevel\": (Optional) last signal level. \" This value is a signal level computed from last uplink.</li>\n    <li>\"avgSignalLevel\": (Optional) average signal level.\n        \" This value is a signal level computed from uplinks history (PER+SNR+ESP quality indicators aggregate).\n        \" On frame counter reset, the uplinks history and average signal level are reset.</li>\n    <li>\"lastBatteryLevel\": (Optional) last battery level</li>\n    <li>\"lastBatteryLevelTs\": (Optional) date of the last battery level</li>\n    <li>\"lastDlFcnt\": (Optional) last downlink frame counter</li>\n    <li>\"lastUlFcnt\": (Optional) last uplink frame counter</li>\n</ul>\n<p><span style=\"text-decoration: underline;\">SMS activity</span>:</p>\n<ul>\n    <li>\"lastUplink\": (Optional) last uplink date of the interface</li>\n    <ul>\n        <li>\"timestamp\": date of the activity</li>\n        <li>\"serverPhoneNumber\": server phone number used</li>\n    </ul>\n    <li>\"lastDownlink\": (Optional) last downlink date of the connector node</li>\n    <ul>\n        <li>\"timestamp\": date of the activity</li>\n        <li>\"serverPhoneNumber\": server phone number used</li>\n    </ul>\n</ul>\n<p><span style=\"text-decoration: underline;\">MQTT activity</span>:</p>\n<ul>\n    <li>\"apiKeyId\": api key ID used</li>\n    <li>\"mqttVersion\": mqtt version used</li>\n    <li>\"mqttUsername\": mqtt username used</li>\n    <li>\"mqttTimeout\": mqtt timeout</li>\n    <li>\"remoteAddress\"</li>\n    <li>\"lastSessionStartTime\"</li>\n    <li>\"lastSessionEndTime\"</li>\n    <li>\"security\": security information</li>\n    <ul>\n        <li>\"secured\":true/false</li>\n        <li>\"protocol\":(Optional) security protocol used (ex: TLSv1.2)</li>\n        <li>\"cipher\": (Optional) cipher suite (ex: TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256)</li>\n        <li>\"clientCertAuthentication\": (Optional) true/false</li>\n        <li>\"sniHostname\": (Optional) hostname provided by the Server Name Indication extension</li>\n    </ul>\n</ul>\n<p><span style=\"text-decoration: underline;\">LwM2M activity</span>:</p>\n<ul>\n    <li>\"lwm2mVersion\": version of LwM2M protocol used</li>\n    <li>\"remoteAddress\": last IP used to connect to LiveObjects</li>\n    <li>\"remotePort\": last port used to connect to LiveObjects</li>\n    <li>\"queueMode\": indicator of queueMode usage</li>\n    <li>\"bindings\": last bindings parameters used</li>\n    <li>\"registrationLifetime\": registration lifetime used</li>\n    <li>\"lastRegistrationDate\": last 'Register' date</li>\n    <li>\"lastDeregistrationDate\": last 'Deregister' date</li>\n    <li>\"lastUpdateDate\": last 'Update' date</li>\n    <li>\"lastBootstrapProvisioningDate\": last time the device definition was updated by the LiveObjects bootstrap server</li>\n</ul>\n</ul>\n<p><small>Note: list command are not allowed for X-Connector, MQTT and LWM2M.</small></p><br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_R."
+      description: A device can hold several nodes, each one defining a connectivity - LoRa, MQTT, LwM2M, SMS, X-Connector - of this device.
       operationId: listNodes
       parameters:
       - name: connector
@@ -286,6 +414,44 @@ components:
       - code
       - id
       - message
+    ConnectorNodeLocation:
+      type: object
+      properties:
+        lat:
+          type: number
+          format: double
+          description: Last geolocation latitude (GPS coordinate system)
+          example: 10.11212
+          readOnly: true
+        lon:
+          type: number
+          format: double
+          description: Last geolocation longitude (GPS coordinate system)
+          example: 7.44464
+          readOnly: true
+        alt:
+          type: number
+          format: double
+          description: Last geolocation altitude (meter)
+          example: 50
+          readOnly: true
+        provider:
+          type: string
+          description: Computing geolocation method
+          example: RSSI
+          readOnly: true
+        accuracy:
+          type: number
+          format: double
+          description: Last global geolocation tolerance (meter)
+          example: 100
+          readOnly: true
+        lastUpdateTs:
+          type: string
+          format: date-time
+          description: Date/time of the last location
+          example: '2016-06-14T11:09:22.125Z'
+          readOnly: true
     ConnectorNode:
       type: object
       description: Full details about a connector node (=device interface)
@@ -356,44 +522,6 @@ components:
           description: New enabled state for this connector node (or null)
         definition:
           description: New interface definition
-    ConnectorNodeLocation:
-      type: object
-      properties:
-        lat:
-          type: number
-          format: double
-          description: Last geolocation latitude (GPS coordinate system)
-          example: 10.11212
-          readOnly: true
-        lon:
-          type: number
-          format: double
-          description: Last geolocation longitude (GPS coordinate system)
-          example: 7.44464
-          readOnly: true
-        alt:
-          type: number
-          format: double
-          description: Last geolocation altitude (meter)
-          example: 50
-          readOnly: true
-        provider:
-          type: string
-          description: Computing geolocation method
-          example: RSSI
-          readOnly: true
-        accuracy:
-          type: number
-          format: double
-          description: Last global geolocation tolerance (meter)
-          example: 100
-          readOnly: true
-        lastUpdateTs:
-          type: string
-          format: date-time
-          description: Date/time of the last location
-          example: '2016-06-14T11:09:22.125Z'
-          readOnly: true
   securitySchemes:
     X-API-KEY:
       type: apiKey

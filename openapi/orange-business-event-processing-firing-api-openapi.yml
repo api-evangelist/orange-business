@@ -20,7 +20,10 @@ paths:
       tags:
       - Event processing - Firing
       summary: Retrieve a FiringRule
-      description: 'A FiringRule applies to the matches triggered by one or many matching rules and defines when fired events must be generated.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      description: 'A FiringRule applies to the matches triggered by one or many matching rules and defines when fired events must be generated.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: getFiringRule
       parameters:
       - name: firingRuleId
@@ -40,7 +43,13 @@ paths:
       tags:
       - Event processing - Firing
       summary: Update a FiringRule
-      description: 'A FiringRule applies to the matches triggered by one or many matching rules and defines when fired events must be generated.<br/><br/>Usage of this API will be reported in your access log under ''alarming'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      description: 'A FiringRule applies to the matches triggered by one or many matching rules and defines when fired events must be generated.
+
+
+        Usage of this API will be reported in your access log under ''alarming'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: updateFiringRule
       parameters:
       - name: firingRuleId
@@ -62,7 +71,13 @@ paths:
       tags:
       - Event processing - Firing
       summary: Delete a FiringRule
-      description: 'A FiringRule applies to the matches triggered by one or many matching rules and defines when fired events must be generated.<br/><br/>Usage of this API will be reported in your access log under ''alarming'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      description: 'A FiringRule applies to the matches triggered by one or many matching rules and defines when fired events must be generated.
+
+
+        Usage of this API will be reported in your access log under ''alarming'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: deleteFiringRule
       parameters:
       - name: firingRuleId
@@ -79,7 +94,10 @@ paths:
       tags:
       - Event processing - Firing
       summary: Retrieve the list of all the FiringRules or get a FiringRule by its name
-      description: 'A FiringRule applies to the matches triggered by one or many matching rules and defines when fired events must be generated.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      description: 'A FiringRule applies to the matches triggered by one or many matching rules and defines when fired events must be generated.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: listFiringRules
       parameters:
       - name: name
@@ -101,7 +119,13 @@ paths:
       tags:
       - Event processing - Firing
       summary: Create a FiringRule
-      description: 'A FiringRule applies to the matches triggered by one or many matching rules and defines when fired events must be generated. Total number of FiringRules is limited. Contact the commercial team or see developer guide to get more information.<br/><br/>Usage of this API will be reported in your access log under ''alarming'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      description: 'A FiringRule applies to the matches triggered by one or many matching rules and defines when fired events must be generated. Total number of FiringRules is limited. Contact the commercial team or see developer guide to get more information.
+
+
+        Usage of this API will be reported in your access log under ''alarming'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: createFiringRule
       requestBody:
         content:
@@ -120,8 +144,11 @@ paths:
     post:
       tags:
       - Event processing - Firing
-      summary: Get FiringGuards linked to a FiringRule, and where FiringGuards selection criteria match.
-      description: 'A FiringGuard keeps a FiringRule with an already ''fired'' context from re-firing again. It applies only for ''ONCE'' and ''SLEEP'' types of FiringRule; and take into account the aggregationKeys values of data messages that triggered the previous event.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      summary: Get FiringGuards linked to a FiringRule, and where FiringGuards selection…
+      description: 'A FiringGuard keeps a FiringRule with an already ''fired'' context from re-firing again. It applies only for ''ONCE'' and ''SLEEP'' types of FiringRule; and take into account the aggregationKeys values of data messages that triggered the previous event.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: getFiringGuards
       requestBody:
         content:
@@ -143,7 +170,10 @@ paths:
       tags:
       - Event processing - Firing
       summary: Get a FiringGuard
-      description: 'A FiringGuard keeps a FiringRule with an already ''fired'' context from re-firing again. It applies only for ''ONCE'' and ''SLEEP'' types of FiringRule; and take into account the aggregationKeys values of data messages that triggered the previous event.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      description: 'A FiringGuard keeps a FiringRule with an already ''fired'' context from re-firing again. It applies only for ''ONCE'' and ''SLEEP'' types of FiringRule; and take into account the aggregationKeys values of data messages that triggered the previous event.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: getFiringGuard
       parameters:
       - name: firingGuardId
@@ -163,7 +193,10 @@ paths:
       tags:
       - Event processing - Firing
       summary: Remove a FiringGuard
-      description: 'A FiringGuard keeps a FiringRule with an already ''fired'' context from re-firing again. It applies only for ''ONCE'' and ''SLEEP'' types of FiringRule; and take into account the aggregationKeys values of data messages that triggered the previous event.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      description: 'A FiringGuard keeps a FiringRule with an already ''fired'' context from re-firing again. It applies only for ''ONCE'' and ''SLEEP'' types of FiringRule; and take into account the aggregationKeys values of data messages that triggered the previous event.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: removeFiringGuard
       parameters:
       - name: firingGuardId
@@ -179,8 +212,11 @@ paths:
     delete:
       tags:
       - Event processing - Firing
-      summary: Remove the FiringGuards linked to FiringRule, and where FiringGuards selection criteria match.
-      description: 'A FiringGuard keeps a FiringRule with an already ''fired'' context from re-firing again. It applies only for ''ONCE'' and ''SLEEP'' types of FiringRule; and take into account the aggregationKeys values of data messages that triggered the previous event.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      summary: Remove the FiringGuards linked to FiringRule, and where FiringGuards selection…
+      description: 'A FiringGuard keeps a FiringRule with an already ''fired'' context from re-firing again. It applies only for ''ONCE'' and ''SLEEP'' types of FiringRule; and take into account the aggregationKeys values of data messages that triggered the previous event.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: removeFiringGuards
       requestBody:
         content:
@@ -198,59 +234,6 @@ paths:
                 format: int32
 components:
   schemas:
-    FiringGuard:
-      type: object
-      description: Hold a FiringRule from triggering a FiredEvent if it has already been sent for the same aggregationKeys. Will exist only for FiringRule of type ONCE or SLEEP.
-      properties:
-        id:
-          type: string
-          description: id of the FiringGuard.
-        firingRuleId:
-          type: string
-          description: id of the FiringRule linked to this FiringGuard.
-        tenantId:
-          type: string
-          description: identifier of tenant account this FiringRule belongs to .
-        matchingContext:
-          $ref: '#/components/schemas/MatchingContext'
-          description: matchingContext that triggered this FringGuard.
-        guardCriteria:
-          type: array
-          description: pairs of aggregationKey/value that are hold by this FiringGuard
-          items:
-            $ref: '#/components/schemas/SelectionCriteria'
-        created:
-          type: string
-          format: date-time
-          description: creation of this FiringGuard
-        expireAt:
-          type: string
-          format: date-time
-          description: expiration of this FiringGuard
-      required:
-      - created
-      - firingRuleId
-      - guardCriteria
-      - id
-      - matchingContext
-      - tenantId
-    MatchingContext:
-      type: object
-      description: 'hold the Matching context : data, MatchingRule and timestamp of the match'
-      properties:
-        tenantId:
-          type: string
-        timestamp:
-          type: string
-        matchingRule:
-          $ref: '#/components/schemas/MatchingRule'
-          description: MatchingRule with dataPredicate that match the data
-        data:
-          $ref: '#/components/schemas/NewData'
-          description: data that triggered the match
-      required:
-      - data
-      - matchingRule
     MatchingRule:
       type: object
       description: Defines the dataPredicate that will be applied to all new data. When it matches, then it may trigger a FiredEvent based on linked FiringRules defined.
@@ -301,32 +284,6 @@ components:
       required:
       - lat
       - lon
-    NewData:
-      type: object
-      properties:
-        streamId:
-          type: string
-        timestamp:
-          type: string
-        location:
-          $ref: '#/components/schemas/Location'
-        model:
-          type: string
-        value: {}
-        tags:
-          type: array
-          items:
-            type: string
-        extra:
-          type: object
-          additionalProperties:
-            type: string
-        metadata: {}
-        created:
-          type: string
-      required:
-      - streamId
-      - timestamp
     FiringRule:
       type: object
       description: Defines if and how the matched data from MatchingRules will fire an event. You can restrict it for instance to trigger maximum 1 event per hour, or only once until you use the FiringGuard API to re-allow it. Associated to aggregationKeys, it will apply the firing type (eg 1 per hour) based on the value of these keys (eg 'streamId').
@@ -364,6 +321,96 @@ components:
       required:
       - firingType
       - name
+    NewData:
+      type: object
+      properties:
+        streamId:
+          type: string
+        timestamp:
+          type: string
+        location:
+          $ref: '#/components/schemas/Location'
+        model:
+          type: string
+        value: {}
+        tags:
+          type: array
+          items:
+            type: string
+        extra:
+          type: object
+          additionalProperties:
+            type: string
+        metadata: {}
+        created:
+          type: string
+      required:
+      - streamId
+      - timestamp
+    FiringGuard:
+      type: object
+      description: Hold a FiringRule from triggering a FiredEvent if it has already been sent for the same aggregationKeys. Will exist only for FiringRule of type ONCE or SLEEP.
+      properties:
+        id:
+          type: string
+          description: id of the FiringGuard.
+        firingRuleId:
+          type: string
+          description: id of the FiringRule linked to this FiringGuard.
+        tenantId:
+          type: string
+          description: identifier of tenant account this FiringRule belongs to .
+        matchingContext:
+          $ref: '#/components/schemas/MatchingContext'
+          description: matchingContext that triggered this FringGuard.
+        guardCriteria:
+          type: array
+          description: pairs of aggregationKey/value that are hold by this FiringGuard
+          items:
+            $ref: '#/components/schemas/SelectionCriteria'
+        created:
+          type: string
+          format: date-time
+          description: creation of this FiringGuard
+        expireAt:
+          type: string
+          format: date-time
+          description: expiration of this FiringGuard
+      required:
+      - created
+      - firingRuleId
+      - guardCriteria
+      - id
+      - matchingContext
+      - tenantId
+    SelectionCriteria:
+      type: object
+      properties:
+        keyPath:
+          type: string
+          description: json path of the field to select, defined by the FiringRule's aggregationKeys. e.g. 'streamId', 'metadata.connector'...
+        value:
+          description: value of the aggregationKey to match. e.g. 'urn:lo:mqtt:device001', 'lwm2m', ...
+      required:
+      - keyPath
+      - value
+    MatchingContext:
+      type: object
+      description: 'hold the Matching context : data, MatchingRule and timestamp of the match'
+      properties:
+        tenantId:
+          type: string
+        timestamp:
+          type: string
+        matchingRule:
+          $ref: '#/components/schemas/MatchingRule'
+          description: MatchingRule with dataPredicate that match the data
+        data:
+          $ref: '#/components/schemas/NewData'
+          description: data that triggered the match
+      required:
+      - data
+      - matchingRule
     FiringGuardMatchRequest:
       type: object
       description: search parameters to select FiringGuard to remove
@@ -379,17 +426,6 @@ components:
             $ref: '#/components/schemas/SelectionCriteria'
       required:
       - firingRuleId
-    SelectionCriteria:
-      type: object
-      properties:
-        keyPath:
-          type: string
-          description: json path of the field to select, defined by the FiringRule's aggregationKeys. e.g. 'streamId', 'metadata.connector'...
-        value:
-          description: value of the aggregationKey to match. e.g. 'urn:lo:mqtt:device001', 'lwm2m', ...
-      required:
-      - keyPath
-      - value
   securitySchemes:
     X-API-KEY:
       type: apiKey

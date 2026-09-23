@@ -12,15 +12,18 @@ security:
 - X-API-KEY: []
   OAuth2.0: []
 tags:
-- name: Api keys
+- name: API Keys
   description: API key management
 paths:
   /api/v0/apiKeys/{apiKeyId}/debugMode:
     put:
       tags:
-      - Api keys
+      - API Keys
       summary: Activate/Deactivate the debug mode on an API key
-      description: 'Usage of this API will be reported in your access log under ''api_key'' category.<br/><br/>Restricted to API keys with at least one of the following roles: API_KEY_W.'
+      description: 'Usage of this API will be reported in your access log under ''api_key'' category.
+
+
+        Restricted to API keys with at least one of the following roles: API_KEY_W.'
       operationId: setApiKeyDebugMode
       parameters:
       - name: apiKeyId
@@ -63,9 +66,12 @@ paths:
   /api/v0/apiKeys:
     get:
       tags:
-      - Api keys
+      - API Keys
       summary: List API keys information
-      description: 'List API keys information with pagination. Useful to retrieve associated roles.<br/><br/>Restricted to API keys with at least one of the following roles: API_KEY_R.'
+      description: 'List API keys information with pagination. Useful to retrieve associated roles.
+
+
+        Restricted to API keys with at least one of the following roles: API_KEY_R.'
       operationId: getApiKeys
       parameters:
       - name: size
@@ -140,9 +146,12 @@ paths:
                 $ref: '#/components/schemas/WebErrorResponse'
     post:
       tags:
-      - Api keys
+      - API Keys
       summary: Create an API key
-      description: 'Usage of this API will be reported in your access log under ''api_key'' category.<br/><br/>Restricted to API keys with at least one of the following roles: API_KEY_W.'
+      description: 'Usage of this API will be reported in your access log under ''api_key'' category.
+
+
+        Restricted to API keys with at least one of the following roles: API_KEY_W.'
       operationId: createApiKey
       requestBody:
         content:
@@ -178,9 +187,12 @@ paths:
   /api/v0/apiKeys/{apiKeyId}:
     get:
       tags:
-      - Api keys
+      - API Keys
       summary: Get API key information
-      description: 'Useful to get information about the API key, like current roles.<br/><br/>Restricted to API keys with at least one of the following roles: API_KEY_R.'
+      description: 'Useful to get information about the API key, like current roles.
+
+
+        Restricted to API keys with at least one of the following roles: API_KEY_R.'
       operationId: getApiKey
       parameters:
       - name: apiKeyId
@@ -222,9 +234,15 @@ paths:
                 $ref: '#/components/schemas/WebErrorResponse'
     post:
       tags:
-      - Api keys
+      - API Keys
       summary: Update an API key
-      description: 'Update a set of properties of the selected API key<br/><br/>Usage of this API will be reported in your access log under ''api_key'' category.<br/><br/>Restricted to API keys with at least one of the following roles: API_KEY_W.'
+      description: 'Update a set of properties of the selected API key
+
+
+        Usage of this API will be reported in your access log under ''api_key'' category.
+
+
+        Restricted to API keys with at least one of the following roles: API_KEY_W.'
       operationId: updateApiKey
       parameters:
       - name: apiKeyId
@@ -266,9 +284,12 @@ paths:
                 $ref: '#/components/schemas/WebErrorResponse'
     delete:
       tags:
-      - Api keys
+      - API Keys
       summary: Delete an API key
-      description: 'Usage of this API will be reported in your access log under ''api_key'' category.<br/><br/>Restricted to API keys with at least one of the following roles: API_KEY_W.'
+      description: 'Usage of this API will be reported in your access log under ''api_key'' category.
+
+
+        Restricted to API keys with at least one of the following roles: API_KEY_W.'
       operationId: deleteApiKey
       parameters:
       - name: apiKeyId
@@ -300,18 +321,85 @@ paths:
                 $ref: '#/components/schemas/WebErrorResponse'
 components:
   schemas:
-    ScopeApplication:
+    PageableApiKey:
       type: object
       properties:
-        fifos:
+        page:
+          type: integer
+          format: int64
+          description: 'number of the current page: starts at 0.'
+          example: 0
+        size:
+          type: integer
+          format: int64
+          description: number of data per page (= maximum number of data in the associated list of data:the last page can have less data)
+          example: 1
+        totalCount:
+          type: integer
+          format: int64
+          description: total count of data in the complete list.
+          example: 1
+        data:
           type: array
-          description: List of allowed FIFOs to publish or subscribe. Expected array of string (max 100 elements, value max 255 characters)
+          description: list of data in this page.
+          items:
+            $ref: '#/components/schemas/ApiKey'
+      required:
+      - data
+      - page
+      - size
+      - totalCount
+    ApiKeyUpdateDefinition:
+      type: object
+      description: body for update API key
+      properties:
+        from:
+          type: integer
+          format: int64
+          description: Timestamp from which the key is valid. When its value is  -1, value is reset to the 'from' value in its parent key.
+        to:
+          type: integer
+          format: int64
+          description: Timestamp until which the key is valid. When its value is -1, value is reset to the 'to' value in its parent key.
+        sessionTtl:
+          type: integer
+          format: int64
+          description: Maximum inactivity period (ms)
+          example: 300000
+        label:
+          type: string
+          description: Title of the key. Expected string (limited to 24 first characters)
+        description:
+          type: string
+          description: Short description of the key. Expected string (limited to 140 first characters)
+        active:
+          type: boolean
+          description: Status
+        roles:
+          type: array
+          description: list of API key associated Roles. Basic roles are "USER_R", "USER_W", "API_KEY_R", "API_KEY_W" or any role string supplied at tenant account creation time. Expected array of role names (max all roles, role value max 255 characters). Assigned roles must be included in the roles of the authenticating API key or token.
           example:
-          - default
-          - supplierA
+          - USER_R
+          - APIKEY_R
           items:
             type: string
           uniqueItems: true
+        debugModeEndTs:
+          type: integer
+          format: int64
+          description: Timestamp until which the debug mode will be activated
+        scope:
+          $ref: '#/components/schemas/ScopeApplication'
+          description: List of scope to apply (this list always replaces the previous one).
+          example: '"fifos" : [ "val1","val2" ]'
+        clientCert:
+          $ref: '#/components/schemas/ClientCertificatesConfiguration'
+          description: Specify usage of TLS client certificate for mqtt connection and associated CA cert ids if enabled
+        regenerateValue:
+          type: boolean
+          description: Request a random value regeneration
+      required:
+      - regenerateValue
     WebErrorResponse:
       type: object
       description: Error response
@@ -332,6 +420,67 @@ components:
       - code
       - id
       - message
+    ScopeApplication:
+      type: object
+      properties:
+        fifos:
+          type: array
+          description: List of allowed FIFOs to publish or subscribe. Expected array of string (max 100 elements, value max 255 characters)
+          example:
+          - default
+          - supplierA
+          items:
+            type: string
+          uniqueItems: true
+    ClientCertificatesConfiguration:
+      type: object
+      properties:
+        required:
+          type: boolean
+          description: Indicates if the client must use TLS client cert authentication
+          example: true
+        caCertIds:
+          type: array
+          description: List of Ca Certificate Ids used to authenticate devices. Expected array of string (max 100 elements, value max 255 characters)
+          example:
+          - 5b057d0fb8605a5e80758e42
+          items:
+            type: string
+      required:
+      - required
+    RateLimit:
+      type: object
+      properties:
+        mqttBridgeWindowSize:
+          type: integer
+          format: int64
+          description: 'mqtt bridge rate limit: window size in seconds'
+          example: 1
+        mqttBridgeMaxMessages:
+          type: integer
+          format: int64
+          description: 'mqtt bridge rate limit: maximum messages allowed per time window'
+          example: 1
+        mqttDeviceWindowSize:
+          type: integer
+          format: int64
+          description: 'mqtt device rate limit: window size in seconds'
+          example: 1
+        mqttDeviceMaxMessages:
+          type: integer
+          format: int64
+          description: 'mqtt device rate limit: maximum messages allowed per time window'
+          example: 1
+        httpWindowSize:
+          type: integer
+          format: int64
+          description: 'http rate limit: window size in seconds'
+          example: 1
+        httpMaxCalls:
+          type: integer
+          format: int64
+          description: 'http rate limit: maximum api calls allowed per time window'
+          example: 1
     ApiKeyCreationDefinition:
       type: object
       description: body for create API key
@@ -482,134 +631,6 @@ components:
           type: boolean
       required:
       - roles
-    PageableApiKey:
-      type: object
-      properties:
-        page:
-          type: integer
-          format: int64
-          description: 'number of the current page: starts at 0.'
-          example: 0
-        size:
-          type: integer
-          format: int64
-          description: number of data per page (= maximum number of data in the associated list of data:the last page can have less data)
-          example: 1
-        totalCount:
-          type: integer
-          format: int64
-          description: total count of data in the complete list.
-          example: 1
-        data:
-          type: array
-          description: list of data in this page.
-          items:
-            $ref: '#/components/schemas/ApiKey'
-      required:
-      - data
-      - page
-      - size
-      - totalCount
-    RateLimit:
-      type: object
-      properties:
-        mqttBridgeWindowSize:
-          type: integer
-          format: int64
-          description: 'mqtt bridge rate limit: window size in seconds'
-          example: 1
-        mqttBridgeMaxMessages:
-          type: integer
-          format: int64
-          description: 'mqtt bridge rate limit: maximum messages allowed per time window'
-          example: 1
-        mqttDeviceWindowSize:
-          type: integer
-          format: int64
-          description: 'mqtt device rate limit: window size in seconds'
-          example: 1
-        mqttDeviceMaxMessages:
-          type: integer
-          format: int64
-          description: 'mqtt device rate limit: maximum messages allowed per time window'
-          example: 1
-        httpWindowSize:
-          type: integer
-          format: int64
-          description: 'http rate limit: window size in seconds'
-          example: 1
-        httpMaxCalls:
-          type: integer
-          format: int64
-          description: 'http rate limit: maximum api calls allowed per time window'
-          example: 1
-    ClientCertificatesConfiguration:
-      type: object
-      properties:
-        required:
-          type: boolean
-          description: Indicates if the client must use TLS client cert authentication
-          example: true
-        caCertIds:
-          type: array
-          description: List of Ca Certificate Ids used to authenticate devices. Expected array of string (max 100 elements, value max 255 characters)
-          example:
-          - 5b057d0fb8605a5e80758e42
-          items:
-            type: string
-      required:
-      - required
-    ApiKeyUpdateDefinition:
-      type: object
-      description: body for update API key
-      properties:
-        from:
-          type: integer
-          format: int64
-          description: Timestamp from which the key is valid. When its value is  -1, value is reset to the 'from' value in its parent key.
-        to:
-          type: integer
-          format: int64
-          description: Timestamp until which the key is valid. When its value is -1, value is reset to the 'to' value in its parent key.
-        sessionTtl:
-          type: integer
-          format: int64
-          description: Maximum inactivity period (ms)
-          example: 300000
-        label:
-          type: string
-          description: Title of the key. Expected string (limited to 24 first characters)
-        description:
-          type: string
-          description: Short description of the key. Expected string (limited to 140 first characters)
-        active:
-          type: boolean
-          description: Status
-        roles:
-          type: array
-          description: list of API key associated Roles. Basic roles are "USER_R", "USER_W", "API_KEY_R", "API_KEY_W" or any role string supplied at tenant account creation time. Expected array of role names (max all roles, role value max 255 characters). Assigned roles must be included in the roles of the authenticating API key or token.
-          example:
-          - USER_R
-          - APIKEY_R
-          items:
-            type: string
-          uniqueItems: true
-        debugModeEndTs:
-          type: integer
-          format: int64
-          description: Timestamp until which the debug mode will be activated
-        scope:
-          $ref: '#/components/schemas/ScopeApplication'
-          description: List of scope to apply (this list always replaces the previous one).
-          example: '"fifos" : [ "val1","val2" ]'
-        clientCert:
-          $ref: '#/components/schemas/ClientCertificatesConfiguration'
-          description: Specify usage of TLS client certificate for mqtt connection and associated CA cert ids if enabled
-        regenerateValue:
-          type: boolean
-          description: Request a random value regeneration
-      required:
-      - regenerateValue
     DebugModeConfiguration:
       type: object
       description: body for API key debug mode

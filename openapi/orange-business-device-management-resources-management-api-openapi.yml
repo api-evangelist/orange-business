@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Live Objects REST API Guide Device management - Resources management API
+  title: Live Objects REST API Guide Device management - Resources…
   description: API description for Live Objects service
   contact:
     name: Live Objects Support
@@ -64,7 +64,10 @@ paths:
       tags:
       - Device management - Resources management
       summary: Update a resource's version
-      description: 'Usage of this API will be reported in your access log under ''device_resource'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      description: 'Usage of this API will be reported in your access log under ''device_resource'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DEVICE_W.'
       operationId: updateResourceVersion
       parameters:
       - name: resourceId
@@ -114,7 +117,10 @@ paths:
       tags:
       - Device management - Resources management
       summary: Delete a resource's version
-      description: 'Usage of this API will be reported in your access log under ''device_resource'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      description: 'Usage of this API will be reported in your access log under ''device_resource'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DEVICE_W.'
       operationId: deleteResourceVersion
       parameters:
       - name: resourceId
@@ -193,7 +199,10 @@ paths:
       tags:
       - Device management - Resources management
       summary: Update a resource
-      description: 'Usage of this API will be reported in your access log under ''device_resource'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      description: 'Usage of this API will be reported in your access log under ''device_resource'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DEVICE_W.'
       operationId: updateResource
       parameters:
       - name: resourceId
@@ -237,7 +246,10 @@ paths:
       tags:
       - Device management - Resources management
       summary: Delete a resource
-      description: 'Usage of this API will be reported in your access log under ''device_resource'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      description: 'Usage of this API will be reported in your access log under ''device_resource'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DEVICE_W.'
       operationId: deleteResource
       parameters:
       - name: resourceId
@@ -308,7 +320,10 @@ paths:
       tags:
       - Device management - Resources management
       summary: Add a resource in Resource Manager
-      description: 'Usage of this API will be reported in your access log under ''device_resource'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      description: 'Usage of this API will be reported in your access log under ''device_resource'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DEVICE_W.'
       operationId: addResource
       requestBody:
         content:
@@ -388,7 +403,10 @@ paths:
       tags:
       - Device management - Resources management
       summary: Add a new version to a resource
-      description: 'Usage of this API will be reported in your access log under ''device_resource'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      description: 'Usage of this API will be reported in your access log under ''device_resource'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DEVICE_W.'
       operationId: addResourceVersion
       parameters:
       - name: resourceId
@@ -554,119 +572,37 @@ components:
       - code
       - id
       - message
-    AddResourceVersionRequest:
+    UpdateResourceRequest:
       type: object
-      description: body of add resource version
+      description: body of resource update
       properties:
-        file:
+        label:
           type: string
-          description: the version's Base64-encoded binary. File max size is 10MB
-        checksum:
-          type: string
-          description: The Base64-encoded MD5 checksum of the version's raw file (non Base64-encoded)Expected string (max 255 characters)
+          description: the resource's label. Expected string (max 255 characters)
+          example: My resource Label
         description:
           type: string
-          description: the version's description. Expected string (max 255 characters)
-        resourceVersionId:
+          description: the resource's description. Expected string (max 255 characters)
+          example: It the last provided resource
+        connector:
           type: string
-          description: the resource version id. Expected string (max 255 characters)
-        compatibleVersions:
-          type: array
-          description: 'set of the versions from which a resource update to the version can be done. Max number of versions is 100. A version max length is 255. '
-          items:
+          description: the resource's connector. A connector must respect the following regular expression <code>([\w\-]{1,128})</code> (max 128 characters)
+        metadata:
+          type: object
+          additionalProperties:
             type: string
-          uniqueItems: true
-      required:
-      - checksum
-      - file
-      - resourceVersionId
-    ResourceVersion:
-      type: object
-      properties:
-        tenantId:
-          type: string
-        resourceId:
-          type: string
-        resourceVersionId:
-          type: string
-        description:
-          type: string
-        compatibleVersions:
-          type: array
-          items:
-            type: string
-          uniqueItems: true
-        creationTs:
-          type: integer
-          format: int64
-        updateTs:
-          type: integer
-          format: int64
-        file:
-          type: string
-        checksum:
-          type: string
-    PageableResource:
-      type: object
-      properties:
-        page:
-          type: integer
-          format: int64
-          description: 'number of the current page: starts at 0.'
-          example: 0
-        size:
-          type: integer
-          format: int64
-          description: number of data per page (= maximum number of data in the associated list of data:the last page can have less data)
-          example: 1
-        totalCount:
-          type: integer
-          format: int64
-          description: total count of data in the complete list.
-          example: 1
-        data:
-          type: array
-          description: list of data in this page.
-          items:
-            $ref: '#/components/schemas/Resource'
-      required:
-      - data
-      - page
-      - size
-      - totalCount
-    UpdateResourceVersionRequest:
-      type: object
-      description: body of resource version update
-      properties:
-        description:
-          type: string
-          description: the version's description. Expected string (max 255 characters)
-          example: 1.1.1
-        compatibleVersions:
-          type: array
-          description: 'set of the versions from which a resource update to the version can be done. Max number of versions is 100. A version max length is 255. '
+          description: 'the operation metadata. Max number of metadata is 100. Metadata name max length is 255. A Metadata name must not include following characters <code>$.</code>. Invalid Metadata names are : ''class'', ''_class''. Metadata value max length is 255. Optional metadata key ''<code>secured</code>'': controls the transfer protocol for firmware download. Value ''<code>true</code>'' generates HTTPS URL, ''<code>false</code>'' or absent generates HTTP URL (default). Supported by http-updater connector only.'
           example:
-          - 1.0.0
-          - 1.0.1
-          - '0.9'
-          items:
+            secured: 'true'
+        versionAliases:
+          type: object
+          additionalProperties:
             type: string
-          uniqueItems: true
-    MetadataResourceConnectors:
-      type: object
-      properties:
-        mandatory:
-          type: array
-          description: the mandatory connector metadata
-          items:
-            type: string
-          uniqueItems: true
-        optional:
-          type: array
-          description: the optional connector metadata
-          items:
-            type: string
-          uniqueItems: true
+          description: the resource version aliases. Max number of alias is 5. Alias name max length is 128. Alias value max length is 255.
+          example:
+            prod: '1.1'
+      required:
+      - label
     Resource:
       type: object
       description: Resource data
@@ -714,65 +650,32 @@ components:
           format: int64
           description: last update timestamp
           example: '2016-06-04T14:40:40.444Z'
-    AddResourceRequest:
+    AddResourceVersionRequest:
       type: object
-      description: body of add resource
+      description: body of add resource version
       properties:
-        resourceId:
+        file:
           type: string
-          description: the resource's id. Expected string (max 255 characters)
-          example: MyResource001
-        label:
+          description: the version's Base64-encoded binary. File max size is 10MB
+        checksum:
           type: string
-          description: the resource's label. Expected string (max 255 characters)
-          example: My resource Label
+          description: The Base64-encoded MD5 checksum of the version's raw file (non Base64-encoded)Expected string (max 255 characters)
         description:
           type: string
-          description: the resource's description. Expected string (max 255 characters)
-          example: It the last provided resource
-        connector:
+          description: the version's description. Expected string (max 255 characters)
+        resourceVersionId:
           type: string
-          description: the resource's connector. A connector must respect the following regular expression <code>([\w\-]{1,128})</code> (max 128 characters)
-        metadata:
-          type: object
-          additionalProperties:
+          description: the resource version id. Expected string (max 255 characters)
+        compatibleVersions:
+          type: array
+          description: 'set of the versions from which a resource update to the version can be done. Max number of versions is 100. A version max length is 255. '
+          items:
             type: string
-          description: 'the resource metadata. Max number of metadata is 100. Metadata name max length is 255. A Metadata name must not include following characters <code>$.</code>. Invalid Metadata names are : ''class'', ''_class''. Metadata value max length is 255. Optional metadata key ''<code>secured</code>'': controls the transfer protocol for firmware download. Value ''<code>true</code>'' generates HTTPS URL, ''<code>false</code>'' or absent generates HTTP URL (default). Supported by http-updater connector only.'
-          example:
-            secured: 'true'
+          uniqueItems: true
       required:
-      - resourceId
-    UpdateResourceRequest:
-      type: object
-      description: body of resource update
-      properties:
-        label:
-          type: string
-          description: the resource's label. Expected string (max 255 characters)
-          example: My resource Label
-        description:
-          type: string
-          description: the resource's description. Expected string (max 255 characters)
-          example: It the last provided resource
-        connector:
-          type: string
-          description: the resource's connector. A connector must respect the following regular expression <code>([\w\-]{1,128})</code> (max 128 characters)
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          description: 'the operation metadata. Max number of metadata is 100. Metadata name max length is 255. A Metadata name must not include following characters <code>$.</code>. Invalid Metadata names are : ''class'', ''_class''. Metadata value max length is 255. Optional metadata key ''<code>secured</code>'': controls the transfer protocol for firmware download. Value ''<code>true</code>'' generates HTTPS URL, ''<code>false</code>'' or absent generates HTTP URL (default). Supported by http-updater connector only.'
-          example:
-            secured: 'true'
-        versionAliases:
-          type: object
-          additionalProperties:
-            type: string
-          description: the resource version aliases. Max number of alias is 5. Alias name max length is 128. Alias value max length is 255.
-          example:
-            prod: '1.1'
-      required:
-      - label
+      - checksum
+      - file
+      - resourceVersionId
     PageableResourceVersion:
       type: object
       properties:
@@ -801,6 +704,121 @@ components:
       - page
       - size
       - totalCount
+    PageableResource:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int64
+          description: 'number of the current page: starts at 0.'
+          example: 0
+        size:
+          type: integer
+          format: int64
+          description: number of data per page (= maximum number of data in the associated list of data:the last page can have less data)
+          example: 1
+        totalCount:
+          type: integer
+          format: int64
+          description: total count of data in the complete list.
+          example: 1
+        data:
+          type: array
+          description: list of data in this page.
+          items:
+            $ref: '#/components/schemas/Resource'
+      required:
+      - data
+      - page
+      - size
+      - totalCount
+    AddResourceRequest:
+      type: object
+      description: body of add resource
+      properties:
+        resourceId:
+          type: string
+          description: the resource's id. Expected string (max 255 characters)
+          example: MyResource001
+        label:
+          type: string
+          description: the resource's label. Expected string (max 255 characters)
+          example: My resource Label
+        description:
+          type: string
+          description: the resource's description. Expected string (max 255 characters)
+          example: It the last provided resource
+        connector:
+          type: string
+          description: the resource's connector. A connector must respect the following regular expression <code>([\w\-]{1,128})</code> (max 128 characters)
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: 'the resource metadata. Max number of metadata is 100. Metadata name max length is 255. A Metadata name must not include following characters <code>$.</code>. Invalid Metadata names are : ''class'', ''_class''. Metadata value max length is 255. Optional metadata key ''<code>secured</code>'': controls the transfer protocol for firmware download. Value ''<code>true</code>'' generates HTTPS URL, ''<code>false</code>'' or absent generates HTTP URL (default). Supported by http-updater connector only.'
+          example:
+            secured: 'true'
+      required:
+      - resourceId
+    UpdateResourceVersionRequest:
+      type: object
+      description: body of resource version update
+      properties:
+        description:
+          type: string
+          description: the version's description. Expected string (max 255 characters)
+          example: 1.1.1
+        compatibleVersions:
+          type: array
+          description: 'set of the versions from which a resource update to the version can be done. Max number of versions is 100. A version max length is 255. '
+          example:
+          - 1.0.0
+          - 1.0.1
+          - '0.9'
+          items:
+            type: string
+          uniqueItems: true
+    MetadataResourceConnectors:
+      type: object
+      properties:
+        mandatory:
+          type: array
+          description: the mandatory connector metadata
+          items:
+            type: string
+          uniqueItems: true
+        optional:
+          type: array
+          description: the optional connector metadata
+          items:
+            type: string
+          uniqueItems: true
+    ResourceVersion:
+      type: object
+      properties:
+        tenantId:
+          type: string
+        resourceId:
+          type: string
+        resourceVersionId:
+          type: string
+        description:
+          type: string
+        compatibleVersions:
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+        creationTs:
+          type: integer
+          format: int64
+        updateTs:
+          type: integer
+          format: int64
+        file:
+          type: string
+        checksum:
+          type: string
   securitySchemes:
     X-API-KEY:
       type: apiKey

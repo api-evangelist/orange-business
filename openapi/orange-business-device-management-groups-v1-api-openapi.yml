@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Live Objects REST API Guide Device management - Groups - V1 API
+  title: Live Objects REST API Guide Device management - Groups - V1…
   description: API description for Live Objects service
   contact:
     name: Live Objects Support
@@ -20,7 +20,10 @@ paths:
       tags:
       - Device management - Groups - V1
       summary: Get a device group
-      description: 'Managing groups of devices allows you to organize your devices in a hierarchical structure. Groups can be used to target specific subsets of devices when performing operations such as filtering triggers and actions rules, querying their data... Groups can be nested, allowing you to create a tree-like structure of groups and subgroups. <br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      description: 'Managing groups of devices allows you to organize your devices in a hierarchical structure. Groups can be used to target specific subsets of devices when performing operations such as filtering triggers and actions rules, querying their data... Groups can be nested, allowing you to create a tree-like structure of groups and subgroups.
+
+
+        Restricted to API keys with at least one of the following roles: DEVICE_R.'
       operationId: getGroup
       parameters:
       - name: groupId
@@ -58,7 +61,13 @@ paths:
       tags:
       - Device management - Groups - V1
       summary: Update a device group
-      description: 'Managing groups of devices allows you to organize your devices in a hierarchical structure. Groups can be used to target specific subsets of devices when performing operations such as filtering triggers and actions rules, querying their data... Groups can be nested, allowing you to create a tree-like structure of groups and subgroups. <br/><br/>Usage of this API will be reported in your access log under ''device_inventory'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      description: 'Managing groups of devices allows you to organize your devices in a hierarchical structure. Groups can be used to target specific subsets of devices when performing operations such as filtering triggers and actions rules, querying their data... Groups can be nested, allowing you to create a tree-like structure of groups and subgroups.
+
+
+        Usage of this API will be reported in your access log under ''device_inventory'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DEVICE_W.'
       operationId: updateGroup
       parameters:
       - name: groupId
@@ -108,7 +117,13 @@ paths:
       tags:
       - Device management - Groups - V1
       summary: Delete a device group
-      description: 'Managing groups of devices allows you to organize your devices in a hierarchical structure. Groups can be used to target specific subsets of devices when performing operations such as filtering triggers and actions rules, querying their data... Groups can be nested, allowing you to create a tree-like structure of groups and subgroups. <br/><br/>Usage of this API will be reported in your access log under ''device_inventory'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      description: 'Managing groups of devices allows you to organize your devices in a hierarchical structure. Groups can be used to target specific subsets of devices when performing operations such as filtering triggers and actions rules, querying their data... Groups can be nested, allowing you to create a tree-like structure of groups and subgroups.
+
+
+        Usage of this API will be reported in your access log under ''device_inventory'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DEVICE_W.'
       operationId: deleteGroup
       parameters:
       - name: groupId
@@ -143,7 +158,10 @@ paths:
       tags:
       - Device management - Groups - V1
       summary: List registered device groups
-      description: 'Managing groups of devices allows you to organize your devices in a hierarchical structure. Groups can be used to target specific subsets of devices when performing operations such as filtering triggers and actions rules, querying their data... Groups can be nested, allowing you to create a tree-like structure of groups and subgroups. <br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_R.'
+      description: 'Managing groups of devices allows you to organize your devices in a hierarchical structure. Groups can be used to target specific subsets of devices when performing operations such as filtering triggers and actions rules, querying their data... Groups can be nested, allowing you to create a tree-like structure of groups and subgroups.
+
+
+        Restricted to API keys with at least one of the following roles: DEVICE_R.'
       operationId: listGroups
       parameters:
       - name: limit
@@ -207,7 +225,13 @@ paths:
       tags:
       - Device management - Groups - V1
       summary: Create a device group
-      description: 'Managing groups of devices allows you to organize your devices in a hierarchical structure. Groups can be used to target specific subsets of devices when performing operations such as filtering triggers and actions rules, querying their data... Groups can be nested, allowing you to create a tree-like structure of groups and subgroups. Create a new device group. Expected string (max 6 characters)<br/><br/>Usage of this API will be reported in your access log under ''device_inventory'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_W.'
+      description: 'Managing groups of devices allows you to organize your devices in a hierarchical structure. Groups can be used to target specific subsets of devices when performing operations such as filtering triggers and actions rules, querying their data... Groups can be nested, allowing you to create a tree-like structure of groups and subgroups. Create a new device group. Expected string (max 6 characters)
+
+
+        Usage of this API will be reported in your access log under ''device_inventory'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DEVICE_W.'
       operationId: createGroup
       requestBody:
         content:
@@ -265,6 +289,26 @@ components:
           description: group description. Expected string (max 255 characters)
       required:
       - pathNode
+    WebErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+      required:
+      - code
+      - id
+      - message
     GroupUpdateRequest:
       type: object
       description: The group to register
@@ -329,26 +373,6 @@ components:
       - path
       - pathNode
       - updated
-    WebErrorResponse:
-      type: object
-      description: Error response
-      properties:
-        id:
-          type: string
-          description: Unique identifier of this error instance
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Short error description
-        details:
-          type: string
-          description: Detailed error description
-      required:
-      - code
-      - id
-      - message
   securitySchemes:
     X-API-KEY:
       type: apiKey

@@ -20,7 +20,10 @@ paths:
       tags:
       - Event processing - Context
       summary: Retrieve a context data
-      description: 'The context repository is a database that allows storing user data that can be used in the MatchingRules and StateProcessingRules when the value is not present in the data messages. The context may include thresholds definition, geographical zones, a list of device identifiers, a user preference, a group of contexts. The context has a key-value format. The key is a string and the value can be a primitive (string, numeric…​), a JSON object or an array.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      description: 'The context repository is a database that allows storing user data that can be used in the MatchingRules and StateProcessingRules when the value is not present in the data messages. The context may include thresholds definition, geographical zones, a list of device identifiers, a user preference, a group of contexts. The context has a key-value format. The key is a string and the value can be a primitive (string, numeric…​), a JSON object or an array.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: getEventProcessingContext
       parameters:
       - name: contextKey
@@ -39,8 +42,11 @@ paths:
     put:
       tags:
       - Event processing - Context
-      summary: Store a context data.
-      description: 'The context repository is a database that allows storing user data that can be used in the MatchingRules and StateProcessingRules when the value is not present in the data messages. The context may include thresholds definition, geographical zones, a list of device identifiers, a user preference, a group of contexts. The context has a key-value format. The key is a string and the value can be a primitive (string, numeric…​), a JSON object or an array.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      summary: Store a context data
+      description: 'The context repository is a database that allows storing user data that can be used in the MatchingRules and StateProcessingRules when the value is not present in the data messages. The context may include thresholds definition, geographical zones, a list of device identifiers, a user preference, a group of contexts. The context has a key-value format. The key is a string and the value can be a primitive (string, numeric…​), a JSON object or an array.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: saveEventProcessingContext
       parameters:
       - name: contextKey
@@ -71,8 +77,11 @@ paths:
     delete:
       tags:
       - Event processing - Context
-      summary: Delete a context data.
-      description: 'The context repository is a database that allows storing user data that can be used in the MatchingRules and StateProcessingRules when the value is not present in the data messages. The context may include thresholds definition, geographical zones, a list of device identifiers, a user preference, a group of contexts. The context has a key-value format. The key is a string and the value can be a primitive (string, numeric…​), a JSON object or an array.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      summary: Delete a context data
+      description: 'The context repository is a database that allows storing user data that can be used in the MatchingRules and StateProcessingRules when the value is not present in the data messages. The context may include thresholds definition, geographical zones, a list of device identifiers, a user preference, a group of contexts. The context has a key-value format. The key is a string and the value can be a primitive (string, numeric…​), a JSON object or an array.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: deleteEventProcessingContext
       parameters:
       - name: contextKey
@@ -89,7 +98,10 @@ paths:
       tags:
       - Event processing - Context
       summary: Retrieve the list of contexts data with optional tag filtering
-      description: 'The context repository is a database that allows storing user data that can be used in the MatchingRules and StateProcessingRules when the value is not present in the data messages. The context may include thresholds definition, geographical zones, a list of device identifiers, a user preference, a group of contexts. The context has a key-value format. The key is a string and the value can be a primitive (string, numeric…​), a JSON object or an array.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      description: 'The context repository is a database that allows storing user data that can be used in the MatchingRules and StateProcessingRules when the value is not present in the data messages. The context may include thresholds definition, geographical zones, a list of device identifiers, a user preference, a group of contexts. The context has a key-value format. The key is a string and the value can be a primitive (string, numeric…​), a JSON object or an array.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: listEventProcessingContexts
       parameters:
       - name: page
@@ -127,7 +139,10 @@ paths:
       tags:
       - Event processing - Context
       summary: Delete all context entries
-      description: 'The context repository is a database that allows storing user data that can be used in the MatchingRules and StateProcessingRules when the value is not present in the data messages. The context may include thresholds definition, geographical zones, a list of device identifiers, a user preference, a group of contexts. The context has a key-value format. The key is a string and the value can be a primitive (string, numeric…​), a JSON object or an array.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      description: 'The context repository is a database that allows storing user data that can be used in the MatchingRules and StateProcessingRules when the value is not present in the data messages. The context may include thresholds definition, geographical zones, a list of device identifiers, a user preference, a group of contexts. The context has a key-value format. The key is a string and the value can be a primitive (string, numeric…​), a JSON object or an array.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: clearEventProcessingContext
       responses:
         '200':
@@ -139,6 +154,24 @@ paths:
                 format: int64
 components:
   schemas:
+    ContextContainer:
+      type: object
+      description: Hold context data that can be used inside matching rules and state processing functions
+      properties:
+        contextKey:
+          type: string
+          description: context key
+          minLength: 1
+        contextData:
+          description: context data
+        tags:
+          type: array
+          description: optional tags list for description and filtering
+          items:
+            type: string
+      required:
+      - contextData
+      - contextKey
     PageableContextContainer:
       type: object
       properties:
@@ -167,24 +200,6 @@ components:
       - page
       - size
       - totalCount
-    ContextContainer:
-      type: object
-      description: Hold context data that can be used inside matching rules and state processing functions
-      properties:
-        contextKey:
-          type: string
-          description: context key
-          minLength: 1
-        contextData:
-          description: context data
-        tags:
-          type: array
-          description: optional tags list for description and filtering
-          items:
-            type: string
-      required:
-      - contextData
-      - contextKey
   securitySchemes:
     X-API-KEY:
       type: apiKey

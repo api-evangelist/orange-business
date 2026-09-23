@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Live Objects REST API Guide Data management custom pipelines API
+  title: Live Objects REST API Guide Data management custom…
   description: API description for Live Objects service
   contact:
     name: Live Objects Support
@@ -20,7 +20,10 @@ paths:
       tags:
       - Data management custom pipelines
       summary: Retrieve a DataMessage pipeline
-      description: 'DataMessage pipelines can transform your data by calling external services in the processing flow.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      description: 'DataMessage pipelines can transform your data by calling external services in the processing flow.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: getPipeline
       parameters:
       - name: pipelineId
@@ -47,7 +50,13 @@ paths:
       tags:
       - Data management custom pipelines
       summary: Update a DataMessage pipeline
-      description: 'DataMessage pipelines can transform your data by calling external services in the processing flow.<br/><br/>Usage of this API will be reported in your access log under ''data_pipeline'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      description: 'DataMessage pipelines can transform your data by calling external services in the processing flow.
+
+
+        Usage of this API will be reported in your access log under ''data_pipeline'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: updatePipeline
       parameters:
       - name: pipelineId
@@ -73,7 +82,13 @@ paths:
       tags:
       - Data management custom pipelines
       summary: Delete a DataMessage pipeline
-      description: 'DataMessage pipelines can transform your data by calling external services in the processing flow.<br/><br/>Usage of this API will be reported in your access log under ''data_pipeline'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      description: 'DataMessage pipelines can transform your data by calling external services in the processing flow.
+
+
+        Usage of this API will be reported in your access log under ''data_pipeline'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: deletePipeline
       parameters:
       - name: pipelineId
@@ -90,7 +105,10 @@ paths:
       tags:
       - Data management custom pipelines
       summary: Retrieve the list of DataMessage pipelines, ordered by priorityLevel
-      description: 'DataMessage pipelines can transform your data by calling external services in the processing flow.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      description: 'DataMessage pipelines can transform your data by calling external services in the processing flow.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: listPipelines
       responses:
         '200':
@@ -105,7 +123,13 @@ paths:
       tags:
       - Data management custom pipelines
       summary: Create a DataMessage pipeline
-      description: 'DataMessage pipelines can transform your data by calling external services in the processing flow.<br/><br/>Usage of this API will be reported in your access log under ''data_pipeline'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      description: 'DataMessage pipelines can transform your data by calling external services in the processing flow.
+
+
+        Usage of this API will be reported in your access log under ''data_pipeline'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: postPipeline
       requestBody:
         content:
@@ -122,6 +146,29 @@ paths:
                 $ref: '#/components/schemas/Pipeline'
 components:
   schemas:
+    GroupPath:
+      type: object
+      description: defines targeted group path
+      properties:
+        path:
+          type: string
+          description: path of the group
+          example: /europe/france
+        includeSubPath:
+          type: boolean
+          description: 'if true, all sub-paths will be targeted by this ActivityRule '
+      required:
+      - includeSubPath
+      - path
+    PipelineStepDescription:
+      type: object
+      discriminator:
+        propertyName: type
+      properties:
+        type:
+          type: string
+          enum:
+          - externalTransformation
     ExternalTransformationStepDescription:
       allOf:
       - $ref: '#/components/schemas/PipelineStepDescription'
@@ -148,20 +195,40 @@ components:
             minLength: 0
       required:
       - url
-    GroupPath:
+    PipelineFilter:
       type: object
-      description: defines targeted group path
       properties:
-        path:
-          type: string
-          description: path of the group
-          example: /europe/france
-        includeSubPath:
-          type: boolean
-          description: 'if true, all sub-paths will be targeted by this ActivityRule '
-      required:
-      - includeSubPath
-      - path
+        connectors:
+          type: array
+          description: list of filtered connectors. Null or empty to accept all connectors. e.g. lora, sms, mqtt, lwm2m.
+          example:
+          - lora
+          items:
+            type: string
+          uniqueItems: true
+        encodings:
+          type: array
+          description: list of filtered datamessage's encodings. Null or empty to accept all datamessage's encodings
+          items:
+            type: string
+          uniqueItems: true
+        groupPaths:
+          type: array
+          description: list of filtered group paths. Null or empty to accept all group paths
+          items:
+            $ref: '#/components/schemas/GroupPath'
+          uniqueItems: true
+        tags:
+          type: array
+          description: list of groups of tags that should be contained in message tags. There is a match if at least one group of tags is a match. A group of tags is a match if the tags of the message contains all elements of this group.<br>e.g. [["ALERT"]] will match all messages containing tag 'ALERT'.<br>e.g. [["HIGH", "ALERT"],["PROD"]] will match messages with either tag 'PROD' or both tags 'ALERT' and 'HIGH'.
+          example:
+          - - ALERT
+          items:
+            type: array
+            items:
+              type: string
+            uniqueItems: true
+          uniqueItems: true
     Pipeline:
       type: object
       description: DataMessage Pipeline definition
@@ -217,49 +284,6 @@ components:
       - name
       - priorityLevel
       - steps
-    PipelineFilter:
-      type: object
-      properties:
-        connectors:
-          type: array
-          description: list of filtered connectors. Null or empty to accept all connectors. e.g. lora, sms, mqtt, lwm2m.
-          example:
-          - lora
-          items:
-            type: string
-          uniqueItems: true
-        encodings:
-          type: array
-          description: list of filtered datamessage's encodings. Null or empty to accept all datamessage's encodings
-          items:
-            type: string
-          uniqueItems: true
-        groupPaths:
-          type: array
-          description: list of filtered group paths. Null or empty to accept all group paths
-          items:
-            $ref: '#/components/schemas/GroupPath'
-          uniqueItems: true
-        tags:
-          type: array
-          description: list of groups of tags that should be contained in message tags. There is a match if at least one group of tags is a match. A group of tags is a match if the tags of the message contains all elements of this group.<br>e.g. [["ALERT"]] will match all messages containing tag 'ALERT'.<br>e.g. [["HIGH", "ALERT"],["PROD"]] will match messages with either tag 'PROD' or both tags 'ALERT' and 'HIGH'.
-          example:
-          - - ALERT
-          items:
-            type: array
-            items:
-              type: string
-            uniqueItems: true
-          uniqueItems: true
-    PipelineStepDescription:
-      type: object
-      discriminator:
-        propertyName: type
-      properties:
-        type:
-          type: string
-          enum:
-          - externalTransformation
   securitySchemes:
     X-API-KEY:
       type: apiKey

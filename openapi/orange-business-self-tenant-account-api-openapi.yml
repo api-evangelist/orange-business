@@ -20,7 +20,19 @@ paths:
       tags:
       - Self tenant account
       summary: Get details of your account
-      description: '<p>You will get details of your tenant account, including the offers you are subscribed to.<p><strong>Beware</strong>: The information contained in the following 3 fields is restricted to Live Objects Portal application only. It may change without notice, no backward compatibility is guaranteed to customer applications<ul><li>"offerSettings"<li>"technicalSettings"<li>"userSettings"<ul><br/><br/>No specific role on API key required.'
+      description: 'You will get details of your tenant account, including the offers you are subscribed to.
+
+        Beware: The information contained in the following 3 fields is restricted to Live Objects Portal application only. It may change without notice, no backward compatibility is guaranteed to customer applications
+
+
+        "offerSettings"
+
+        "technicalSettings"
+
+        "userSettings"
+
+
+        No specific role on API key required.'
       operationId: getMyTenant
       responses:
         '200':
@@ -49,20 +61,26 @@ paths:
                 $ref: '#/components/schemas/WebErrorResponse'
 components:
   schemas:
-    AdminInfo:
+    WebErrorResponse:
       type: object
+      description: Error response
       properties:
-        businessUnit:
-          $ref: '#/components/schemas/BusinessUnit'
-        vendor:
-          $ref: '#/components/schemas/AdminInfoVendor'
-        country:
+        id:
           type: string
-        supportVendorIds:
-          type: array
-          items:
-            type: string
-          uniqueItems: true
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+      required:
+      - code
+      - id
+      - message
     Tenant:
       type: object
       properties:
@@ -127,31 +145,20 @@ components:
           deprecated: true
         country:
           type: string
-    WebErrorResponse:
-      type: object
-      description: Error response
-      properties:
-        id:
-          type: string
-          description: Unique identifier of this error instance
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Short error description
-        details:
-          type: string
-          description: Detailed error description
-      required:
-      - code
-      - id
-      - message
-    BusinessUnit:
+    AdminInfo:
       type: object
       properties:
-        name:
+        businessUnit:
+          $ref: '#/components/schemas/BusinessUnit'
+        vendor:
+          $ref: '#/components/schemas/AdminInfoVendor'
+        country:
           type: string
+        supportVendorIds:
+          type: array
+          items:
+            type: string
+          uniqueItems: true
     AdminInfoVendor:
       type: object
       properties:
@@ -176,6 +183,11 @@ components:
           type: string
           description: version
           example: v1
+    BusinessUnit:
+      type: object
+      properties:
+        name:
+          type: string
   securitySchemes:
     X-API-KEY:
       type: apiKey

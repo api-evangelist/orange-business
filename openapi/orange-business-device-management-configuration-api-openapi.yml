@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Live Objects REST API Guide Device management - Configuration API
+  title: Live Objects REST API Guide Device management…
   description: API description for Live Objects service
   contact:
     name: Live Objects Support
@@ -305,6 +305,34 @@ components:
           - OK
           - FAILED
           example: OK
+    DeviceParameterValue:
+      type: object
+      properties:
+        type:
+          type: string
+          description: configuration parameter value type (INT32, UINT32, FLOAT, STRING or BINARY)
+          enum:
+          - INT32
+          - UINT32
+          - BINARY
+          - STRING
+          - FLOAT
+          - UNKNOWN
+        value:
+          description: 'configuration parameter value (number for INT32/UINT32 type, string for STRING type,float for FLOAT type, base64-encoded string for BINARY type) '
+        timestamp:
+          type: string
+          format: date-time
+          description: configuration parameter value associated date/time (ISO 8601)
+    DeviceParametersSetRequest:
+      type: object
+      description: 'a map of requested configuration parameter descriptions (with type: ''INT32'', ''UINT32'', ''STRING'', ''FLOAT'', or ''BINARY'')'
+      properties:
+        parameters:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/NewDeviceParameterValue'
+          description: Device configuration update. Max number of parameters is 100. Parameter name max length is 128. Parameter value must be valid according to the type and max length is 2000.
     NewDeviceParameterValue:
       type: object
       properties:
@@ -328,34 +356,6 @@ components:
           additionalProperties:
             $ref: '#/components/schemas/DeviceParameter'
           description: device configuration
-    DeviceParametersSetRequest:
-      type: object
-      description: 'a map of requested configuration parameter descriptions (with type: ''INT32'', ''UINT32'', ''STRING'', ''FLOAT'', or ''BINARY'')'
-      properties:
-        parameters:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/NewDeviceParameterValue'
-          description: Device configuration update. Max number of parameters is 100. Parameter name max length is 128. Parameter value must be valid according to the type and max length is 2000.
-    DeviceParameterValue:
-      type: object
-      properties:
-        type:
-          type: string
-          description: configuration parameter value type (INT32, UINT32, FLOAT, STRING or BINARY)
-          enum:
-          - INT32
-          - UINT32
-          - BINARY
-          - STRING
-          - FLOAT
-          - UNKNOWN
-        value:
-          description: 'configuration parameter value (number for INT32/UINT32 type, string for STRING type,float for FLOAT type, base64-encoded string for BINARY type) '
-        timestamp:
-          type: string
-          format: date-time
-          description: configuration parameter value associated date/time (ISO 8601)
   securitySchemes:
     X-API-KEY:
       type: apiKey

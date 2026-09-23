@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Live Objects REST API Guide Event processing - State processing API
+  title: Live Objects REST API Guide Event processing - State…
   description: API description for Live Objects service
   contact:
     name: Live Objects Support
@@ -20,7 +20,10 @@ paths:
       tags:
       - Event processing - State processing
       summary: Retrieve a StateProcessingRule
-      description: 'State processing service aims at detecting changes in ''device state'' computed from data messages. A state can represent any result computed from Live Objects data messages : geo-zone (''paris-area'', ''london-area'', ..), temperature status (''hot'', ''cold'', ..), availability status (''ok'' , ''ko''). Each state is identified by a key retrieved from the user-defined json-path in the data message. stateKeyPath examples : ''streamId'', ''metadata.source''...<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      description: 'State processing service aims at detecting changes in ''device state'' computed from data messages. A state can represent any result computed from Live Objects data messages : geo-zone (''paris-area'', ''london-area'', ..), temperature status (''hot'', ''cold'', ..), availability status (''ok'' , ''ko''). Each state is identified by a key retrieved from the user-defined json-path in the data message. stateKeyPath examples : ''streamId'', ''metadata.source''...
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: getStateProcessingRule
       parameters:
       - name: stateProcessingRuleId
@@ -40,7 +43,13 @@ paths:
       tags:
       - Event processing - State processing
       summary: Update a StateProcessingRule
-      description: 'State processing service aims at detecting changes in ''device state'' computed from data messages. A state can represent any result computed from Live Objects data messages : geo-zone (''paris-area'', ''london-area'', ..), temperature status (''hot'', ''cold'', ..), availability status (''ok'' , ''ko''). Each state is identified by a key retrieved from the user-defined json-path in the data message. stateKeyPath examples : ''streamId'', ''metadata.source''...<br/><br/>Usage of this API will be reported in your access log under ''alarming'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      description: 'State processing service aims at detecting changes in ''device state'' computed from data messages. A state can represent any result computed from Live Objects data messages : geo-zone (''paris-area'', ''london-area'', ..), temperature status (''hot'', ''cold'', ..), availability status (''ok'' , ''ko''). Each state is identified by a key retrieved from the user-defined json-path in the data message. stateKeyPath examples : ''streamId'', ''metadata.source''...
+
+
+        Usage of this API will be reported in your access log under ''alarming'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: updateStateProcessingRule
       parameters:
       - name: stateProcessingRuleId
@@ -62,7 +71,13 @@ paths:
       tags:
       - Event processing - State processing
       summary: Delete a StateProcessingRule
-      description: 'State processing service aims at detecting changes in ''device state'' computed from data messages. A state can represent any result computed from Live Objects data messages : geo-zone (''paris-area'', ''london-area'', ..), temperature status (''hot'', ''cold'', ..), availability status (''ok'' , ''ko''). Each state is identified by a key retrieved from the user-defined json-path in the data message. stateKeyPath examples : ''streamId'', ''metadata.source''...<br/><br/>Usage of this API will be reported in your access log under ''alarming'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      description: 'State processing service aims at detecting changes in ''device state'' computed from data messages. A state can represent any result computed from Live Objects data messages : geo-zone (''paris-area'', ''london-area'', ..), temperature status (''hot'', ''cold'', ..), availability status (''ok'' , ''ko''). Each state is identified by a key retrieved from the user-defined json-path in the data message. stateKeyPath examples : ''streamId'', ''metadata.source''...
+
+
+        Usage of this API will be reported in your access log under ''alarming'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: deleteStateProcessingRule
       parameters:
       - name: stateProcessingRuleId
@@ -78,8 +93,11 @@ paths:
     get:
       tags:
       - Event processing - State processing
-      summary: Retrieve the list of all the StateProcessingRules or get a StateProcessingRule by its name
-      description: 'State processing service aims at detecting changes in ''device state'' computed from data messages. A state can represent any result computed from Live Objects data messages : geo-zone (''paris-area'', ''london-area'', ..), temperature status (''hot'', ''cold'', ..), availability status (''ok'' , ''ko''). Each state is identified by a key retrieved from the user-defined json-path in the data message. stateKeyPath examples : ''streamId'', ''metadata.source''...<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      summary: Retrieve the list of all the StateProcessingRules or get a StateProcessingRule…
+      description: 'State processing service aims at detecting changes in ''device state'' computed from data messages. A state can represent any result computed from Live Objects data messages : geo-zone (''paris-area'', ''london-area'', ..), temperature status (''hot'', ''cold'', ..), availability status (''ok'' , ''ko''). Each state is identified by a key retrieved from the user-defined json-path in the data message. stateKeyPath examples : ''streamId'', ''metadata.source''...
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: listStateProcessingRules
       parameters:
       - name: name
@@ -101,7 +119,13 @@ paths:
       tags:
       - Event processing - State processing
       summary: Create a StateProcessingRule
-      description: 'State processing service aims at detecting changes in ''device state'' computed from data messages. A state can represent any result computed from Live Objects data messages : geo-zone (''paris-area'', ''london-area'', ..), temperature status (''hot'', ''cold'', ..), availability status (''ok'' , ''ko''). Each state is identified by a key retrieved from the user-defined json-path in the data message. stateKeyPath examples : ''streamId'', ''metadata.source''... Total number of StateProcessingRule is limited. Contact the commercial team or see developer guide to get more information.<br/><br/>Usage of this API will be reported in your access log under ''alarming'' category.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      description: 'State processing service aims at detecting changes in ''device state'' computed from data messages. A state can represent any result computed from Live Objects data messages : geo-zone (''paris-area'', ''london-area'', ..), temperature status (''hot'', ''cold'', ..), availability status (''ok'' , ''ko''). Each state is identified by a key retrieved from the user-defined json-path in the data message. stateKeyPath examples : ''streamId'', ''metadata.source''... Total number of StateProcessingRule is limited. Contact the commercial team or see developer guide to get more information.
+
+
+        Usage of this API will be reported in your access log under ''alarming'' category.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: createStateProcessingRule
       requestBody:
         content:
@@ -120,8 +144,11 @@ paths:
     post:
       tags:
       - Event processing - State processing
-      summary: test a  State Processing function
-      description: 'State processing service aims at detecting changes in ''device state'' computed from data messages. A state can represent any result computed from Live Objects data messages : geo-zone (''paris-area'', ''london-area'', ..), temperature status (''hot'', ''cold'', ..), availability status (''ok'' , ''ko''). Each state is identified by a key retrieved from the user-defined json-path in the data message. stateKeyPath examples : ''streamId'', ''metadata.source''...<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      summary: test a State Processing function
+      description: 'State processing service aims at detecting changes in ''device state'' computed from data messages. A state can represent any result computed from Live Objects data messages : geo-zone (''paris-area'', ''london-area'', ..), temperature status (''hot'', ''cold'', ..), availability status (''ok'' , ''ko''). Each state is identified by a key retrieved from the user-defined json-path in the data message. stateKeyPath examples : ''streamId'', ''metadata.source''...
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: testStateProcessingRule
       requestBody:
         content:
@@ -138,43 +165,6 @@ paths:
                 $ref: '#/components/schemas/StateProcessingFunctionTestResult'
 components:
   schemas:
-    StateProcessingRule:
-      type: object
-      description: StateProcessingRule to add
-      properties:
-        id:
-          type: string
-          description: id of the StateProcessingRule. Should be null when used for POST, and set for PUT.
-        name:
-          type: string
-          description: name of the StateProcessingRule. Must be unique.
-        enabled:
-          type: boolean
-          description: activate or not the StateProcessingRule. Default is false.
-        stateFunction:
-          description: 'the JsonLogic (http://jsonlogic.com/) state function. This is the core of the state processing logic. There are additional operators : ''currentstate'' to retrieve the current state value, ''ctx'' to retrieve values stored in Event Processing Context, ''distance'' and ''inside'' for geographic operators. This function takes as input a data message and computes a state associated whith the state key. It can return any primitive value : String, Number, Boolean. e.g. ''{"if":[{"<":[{"var":"value.temp"},0]},"cold",{"<=":[{"var":"value.temp"},100]},"normal","hot"]}'''
-        filterPredicate:
-          description: 'the JsonLogic (http://jsonlogic.com/) filter predicate applied before state function : if it does match, the stateFunction is applied, else it is not. If no filter predicate is specified, state function is applied to every data message. e.g. ''{"in":[{"var":"metadata.connector"},["mqtt","lwm2m"]]}'''
-        stateKeyPath:
-          type: string
-          description: the json path applied on dataMessage used to compute the stateKey. The state comparison is then restricted to dataMessages sharing the same stateKeyPath. e.g. 'streamId', 'metadata.source', 'metadata.group.id'
-      required:
-      - name
-      - stateFunction
-    StateProcessingFunctionTest:
-      type: object
-      description: State Processing function test request
-      properties:
-        data:
-          $ref: '#/components/schemas/NewData'
-          description: data to test the stateProcessingFunction with
-        stateProcessingFunction:
-          description: 'the JsonLogic (http://jsonlogic.com/) state function. This is the core of the state processing logic. This function takes as input a data message and computes a state associated whith the state key. It can return any primitive value : String, Number, Boolean. e.g. ''{"if":[{"<":[{"var":"value.temp"},0]},"cold",{"<=":[{"var":"value.temp"},100]},"normal","hot"]}'''
-        currentState:
-          description: simulate a current state, it can be used by the state function
-      required:
-      - data
-      - stateProcessingFunction
     StateProcessingFunctionTestResult:
       type: object
       properties:
@@ -243,6 +233,43 @@ components:
       required:
       - streamId
       - timestamp
+    StateProcessingFunctionTest:
+      type: object
+      description: State Processing function test request
+      properties:
+        data:
+          $ref: '#/components/schemas/NewData'
+          description: data to test the stateProcessingFunction with
+        stateProcessingFunction:
+          description: 'the JsonLogic (http://jsonlogic.com/) state function. This is the core of the state processing logic. This function takes as input a data message and computes a state associated whith the state key. It can return any primitive value : String, Number, Boolean. e.g. ''{"if":[{"<":[{"var":"value.temp"},0]},"cold",{"<=":[{"var":"value.temp"},100]},"normal","hot"]}'''
+        currentState:
+          description: simulate a current state, it can be used by the state function
+      required:
+      - data
+      - stateProcessingFunction
+    StateProcessingRule:
+      type: object
+      description: StateProcessingRule to add
+      properties:
+        id:
+          type: string
+          description: id of the StateProcessingRule. Should be null when used for POST, and set for PUT.
+        name:
+          type: string
+          description: name of the StateProcessingRule. Must be unique.
+        enabled:
+          type: boolean
+          description: activate or not the StateProcessingRule. Default is false.
+        stateFunction:
+          description: 'the JsonLogic (http://jsonlogic.com/) state function. This is the core of the state processing logic. There are additional operators : ''currentstate'' to retrieve the current state value, ''ctx'' to retrieve values stored in Event Processing Context, ''distance'' and ''inside'' for geographic operators. This function takes as input a data message and computes a state associated whith the state key. It can return any primitive value : String, Number, Boolean. e.g. ''{"if":[{"<":[{"var":"value.temp"},0]},"cold",{"<=":[{"var":"value.temp"},100]},"normal","hot"]}'''
+        filterPredicate:
+          description: 'the JsonLogic (http://jsonlogic.com/) filter predicate applied before state function : if it does match, the stateFunction is applied, else it is not. If no filter predicate is specified, state function is applied to every data message. e.g. ''{"in":[{"var":"metadata.connector"},["mqtt","lwm2m"]]}'''
+        stateKeyPath:
+          type: string
+          description: the json path applied on dataMessage used to compute the stateKey. The state comparison is then restricted to dataMessages sharing the same stateKeyPath. e.g. 'streamId', 'metadata.source', 'metadata.group.id'
+      required:
+      - name
+      - stateFunction
   securitySchemes:
     X-API-KEY:
       type: apiKey

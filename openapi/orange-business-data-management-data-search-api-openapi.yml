@@ -20,7 +20,10 @@ paths:
       tags:
       - Data management data search
       summary: Query an Elasticsearch Domain Specific Language request
-      description: 'return the json serialization of an Elasticsearch SearchResponse for the query<br/><br/>Restricted to API keys with at least one of the following roles: DATA_R.'
+      description: 'return the json serialization of an Elasticsearch SearchResponse for the query
+
+
+        Restricted to API keys with at least one of the following roles: DATA_R.'
       operationId: dslQueryV1
       parameters:
       - name: trackTotalHits
@@ -83,7 +86,10 @@ paths:
       tags:
       - Data management data search
       summary: Query an Elasticsearch Domain Specific Language request and get only hits result
-      description: 'return a json array of stored data that match the query.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_R.'
+      description: 'return a json array of stored data that match the query.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_R.'
       operationId: dslQueryHitsOnlyV1
       parameters:
       - name: trackTotalHits
@@ -122,37 +128,6 @@ paths:
                   $ref: '#/components/schemas/DataStoredWeb'
 components:
   schemas:
-    Location:
-      type: object
-      description: geographic location
-      properties:
-        lat:
-          type: number
-          format: double
-          description: Latitude value
-          example: 45.000009
-        lon:
-          type: number
-          format: double
-          description: Longitude value
-          example: -30.00001
-        alt:
-          type: number
-          format: double
-          description: Altitude value
-          example: 5.00001
-        accuracy:
-          type: number
-          format: double
-          description: Accuracy value
-          example: 10.0
-        provider:
-          type: string
-          description: Provider of the location
-          example: GPS
-      required:
-      - lat
-      - lon
     DataStoredWeb:
       type: object
       description: data stored from the dataStream
@@ -210,6 +185,37 @@ components:
       - id
       - timestamp
       - value
+    Location:
+      type: object
+      description: geographic location
+      properties:
+        lat:
+          type: number
+          format: double
+          description: Latitude value
+          example: 45.000009
+        lon:
+          type: number
+          format: double
+          description: Longitude value
+          example: -30.00001
+        alt:
+          type: number
+          format: double
+          description: Altitude value
+          example: 5.00001
+        accuracy:
+          type: number
+          format: double
+          description: Accuracy value
+          example: 10.0
+        provider:
+          type: string
+          description: Provider of the location
+          example: GPS
+      required:
+      - lat
+      - lon
   securitySchemes:
     X-API-KEY:
       type: apiKey

@@ -20,7 +20,10 @@ paths:
       tags:
       - Data management data store
       summary: Retrieve the data from a streamId
-      description: 'return an array of StoredDataMessage matching the request parameters. This API is very efficient to retrieve data. If you are looking for a specific device''s streamId data message, it is the API to use.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_R.'
+      description: 'return an array of StoredDataMessage matching the request parameters. This API is very efficient to retrieve data. If you are looking for a specific device''s streamId data message, it is the API to use.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_R.'
       operationId: retrieveData
       parameters:
       - name: streamId
@@ -67,7 +70,10 @@ paths:
       tags:
       - Data management data store
       summary: Insert a new Data into the stream
-      description: 'In order for the data to be enriched by decoders and pipelines functionalities, ''metadata.encoding'' field must be set.<br/><br/>Restricted to API keys with at least one of the following roles: DATA_W.'
+      description: 'In order for the data to be enriched by decoders and pipelines functionalities, ''metadata.encoding'' field must be set.
+
+
+        Restricted to API keys with at least one of the following roles: DATA_W.'
       operationId: addDataMessage
       parameters:
       - name: streamId
@@ -91,47 +97,6 @@ paths:
                 type: string
 components:
   schemas:
-    Metadata:
-      type: object
-      properties:
-        source:
-          type: string
-          description: source of the data
-          example: urn:tenantName:FFFFFFFFFFFFFFFF!mystream
-        encoding:
-          type: string
-          description: encoding format name, that should match the 'encoding' field of the decoder that will process this datamessage.
-    Location:
-      type: object
-      description: geographic location
-      properties:
-        lat:
-          type: number
-          format: double
-          description: Latitude value
-          example: 45.000009
-        lon:
-          type: number
-          format: double
-          description: Longitude value
-          example: -30.00001
-        alt:
-          type: number
-          format: double
-          description: Altitude value
-          example: 5.00001
-        accuracy:
-          type: number
-          format: double
-          description: Accuracy value
-          example: 10.0
-        provider:
-          type: string
-          description: Provider of the location
-          example: GPS
-      required:
-      - lat
-      - lon
     DataWeb:
       type: object
       description: DataMessage to add
@@ -167,6 +132,47 @@ components:
             source: urn:tenantName:FFFFFFFFFFFFFFFF!mystream
       required:
       - value
+    Location:
+      type: object
+      description: geographic location
+      properties:
+        lat:
+          type: number
+          format: double
+          description: Latitude value
+          example: 45.000009
+        lon:
+          type: number
+          format: double
+          description: Longitude value
+          example: -30.00001
+        alt:
+          type: number
+          format: double
+          description: Altitude value
+          example: 5.00001
+        accuracy:
+          type: number
+          format: double
+          description: Accuracy value
+          example: 10.0
+        provider:
+          type: string
+          description: Provider of the location
+          example: GPS
+      required:
+      - lat
+      - lon
+    Metadata:
+      type: object
+      properties:
+        source:
+          type: string
+          description: source of the data
+          example: urn:tenantName:FFFFFFFFFFFFFFFF!mystream
+        encoding:
+          type: string
+          description: encoding format name, that should match the 'encoding' field of the decoder that will process this datamessage.
     DataStoredWeb:
       type: object
       description: data stored from the dataStream

@@ -19,8 +19,11 @@ paths:
     put:
       tags:
       - Bootstrap Master Entry
-      summary: Set the name of a bootstrap master entry.
-      description: 'Usage of this API will be reported in your access log under ''bootstrap'' category.<br/><br/>Restricted to API keys with at least one of the following roles: BOOTSTRAP_W.'
+      summary: Set the name of a bootstrap master entry
+      description: 'Usage of this API will be reported in your access log under ''bootstrap'' category.
+
+
+        Restricted to API keys with at least one of the following roles: BOOTSTRAP_W.'
       operationId: setMasterEntryName
       parameters:
       - name: masterEntryId
@@ -45,8 +48,11 @@ paths:
     put:
       tags:
       - Bootstrap Master Entry
-      summary: Set the bootstrapConfigId field of a bootstrap master entry.
-      description: 'Usage of this API will be reported in your access log under ''bootstrap'' category.<br/><br/>Restricted to API keys with at least one of the following roles: BOOTSTRAP_W.'
+      summary: Set the bootstrapConfigId field of a bootstrap master entry
+      description: 'Usage of this API will be reported in your access log under ''bootstrap'' category.
+
+
+        Restricted to API keys with at least one of the following roles: BOOTSTRAP_W.'
       operationId: setMasterEntryBootstrapConfigId
       parameters:
       - name: masterEntryId
@@ -71,7 +77,7 @@ paths:
     get:
       tags:
       - Bootstrap Master Entry
-      summary: List LwM2M bootstrap master entries.
+      summary: List LwM2M bootstrap master entries
       description: 'Restricted to API keys with at least one of the following roles: BOOTSTRAP_R.'
       operationId: listBootstrapMasterEntries
       responses:
@@ -86,8 +92,11 @@ paths:
     post:
       tags:
       - Bootstrap Master Entry
-      summary: Create a LwM2M bootstrap master entry.
-      description: 'Usage of this API will be reported in your access log under ''bootstrap'' category.<br/><br/>Restricted to API keys with at least one of the following roles: BOOTSTRAP_W.'
+      summary: Create a LwM2M bootstrap master entry
+      description: 'Usage of this API will be reported in your access log under ''bootstrap'' category.
+
+
+        Restricted to API keys with at least one of the following roles: BOOTSTRAP_W.'
       operationId: createBootstrapMasterEntry
       requestBody:
         content:
@@ -106,7 +115,7 @@ paths:
     get:
       tags:
       - Bootstrap Master Entry
-      summary: Get a LwM2M bootstrap master entry from its id.
+      summary: Get a LwM2M bootstrap master entry from its id
       description: 'Restricted to API keys with at least one of the following roles: BOOTSTRAP_R.'
       operationId: getBootstrapMasterEntry
       parameters:
@@ -132,8 +141,11 @@ paths:
     delete:
       tags:
       - Bootstrap Master Entry
-      summary: Delete a LwM2M bootstrap master entry from its id.
-      description: 'Usage of this API will be reported in your access log under ''bootstrap'' category.<br/><br/>Restricted to API keys with at least one of the following roles: BOOTSTRAP_W.'
+      summary: Delete a LwM2M bootstrap master entry from its id
+      description: 'Usage of this API will be reported in your access log under ''bootstrap'' category.
+
+
+        Restricted to API keys with at least one of the following roles: BOOTSTRAP_W.'
       operationId: deleteBootstrapMasterEntry
       parameters:
       - name: masterEntryId
@@ -147,6 +159,59 @@ paths:
           description: No Content
 components:
   schemas:
+    BootstrapMasterEntryDefinition:
+      type: object
+      properties:
+        bootstrapConfigId:
+          type: string
+          description: The identifier of the bootstrap config to use (must be defined for the Bootstrap to work).
+          example: 63c17e68f98ac770eac303fb
+    BootstrapMasterEntrySummary:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id of the the bootstrap master entry
+          example: mQeAYP
+        name:
+          type: string
+          description: User-defined name of the bootstrap master entry
+          example: My bootstrap master entry
+        definition:
+          $ref: '#/components/schemas/BootstrapMasterEntryDefinition'
+          description: The bootstrap master entry parameters
+        activity:
+          $ref: '#/components/schemas/BootstrapMasterEntryActivity'
+          description: Information about past Bootstrap sessions
+      required:
+      - definition
+      - id
+      - name
+    BootstrapMasterEntryRequestSecurityInfo:
+      type: object
+      properties:
+        mode:
+          type: string
+          description: The security mode used to authenticate to the LwM2M Bootstrap server
+          enum:
+          - PSK
+          example: PSK
+      required:
+      - mode
+    BootstrapMasterEntrySecurityInfo:
+      type: object
+      properties:
+        mode:
+          type: string
+          description: The security mode used to authenticate to the LwM2M Bootstrap server
+          enum:
+          - PSK
+          example: PSK
+        pskInfo:
+          $ref: '#/components/schemas/BootstrapMasterEntryPreSharedKeyInfo'
+          description: The master Pre-Shared Key (PSK) information
+      required:
+      - mode
     BootstrapMasterEntry:
       type: object
       properties:
@@ -184,27 +249,15 @@ components:
       - name
       - security
       - updated
-    BootstrapMasterEntryDefinition:
+    BootstrapMasterEntryPreSharedKeyInfo:
       type: object
       properties:
-        bootstrapConfigId:
+        secret:
           type: string
-          description: The identifier of the bootstrap config to use (must be defined for the Bootstrap to work).
-          example: 63c17e68f98ac770eac303fb
-    BootstrapMasterEntrySecurityInfo:
-      type: object
-      properties:
-        mode:
-          type: string
-          description: The security mode used to authenticate to the LwM2M Bootstrap server
-          enum:
-          - PSK
-          example: PSK
-        pskInfo:
-          $ref: '#/components/schemas/BootstrapMasterEntryPreSharedKeyInfo'
-          description: The master Pre-Shared Key (PSK) information
+          description: The PSK master secret. Encoded in hexadecimal.
+          example: 0123456789ABCDEF0123456789ABCDEF
       required:
-      - mode
+      - secret
     BootstrapMasterEntryRequest:
       type: object
       description: Bootstrap master entry creation request
@@ -249,47 +302,6 @@ components:
       required:
       - bootstrapFinishCount
       - bootstrapRequestCount
-    BootstrapMasterEntryRequestSecurityInfo:
-      type: object
-      properties:
-        mode:
-          type: string
-          description: The security mode used to authenticate to the LwM2M Bootstrap server
-          enum:
-          - PSK
-          example: PSK
-      required:
-      - mode
-    BootstrapMasterEntryPreSharedKeyInfo:
-      type: object
-      properties:
-        secret:
-          type: string
-          description: The PSK master secret. Encoded in hexadecimal.
-          example: 0123456789ABCDEF0123456789ABCDEF
-      required:
-      - secret
-    BootstrapMasterEntrySummary:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The id of the the bootstrap master entry
-          example: mQeAYP
-        name:
-          type: string
-          description: User-defined name of the bootstrap master entry
-          example: My bootstrap master entry
-        definition:
-          $ref: '#/components/schemas/BootstrapMasterEntryDefinition'
-          description: The bootstrap master entry parameters
-        activity:
-          $ref: '#/components/schemas/BootstrapMasterEntryActivity'
-          description: Information about past Bootstrap sessions
-      required:
-      - definition
-      - id
-      - name
   securitySchemes:
     X-API-KEY:
       type: apiKey

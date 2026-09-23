@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Live Objects REST API Guide Device management - Connector nodes - LoRa specific API
+  title: Live Objects REST API Guide Device management - Connector…
   description: API description for Live Objects service
   contact:
     name: Live Objects Support
@@ -20,9 +20,10 @@ paths:
       tags:
       - Device management - Connector nodes - LoRa specific
       summary: Get LoRa device profile IDs available on your fleet
-      description: '<p>(Deprecated) Replaced by the new device profiles API.</p>
+      description: '(Deprecated) Replaced by the new device profiles API.
 
-        <br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_R.'
+
+        Restricted to API keys with at least one of the following roles: DEVICE_R.'
       operationId: listLoRaDeviceProfileIds
       responses:
         '200':
@@ -53,15 +54,13 @@ paths:
       tags:
       - Device management - Connector nodes - LoRa specific
       summary: List LoRa device manufacturers
-      description: '<p>A device manufacturer represents a vendor that produces LoRa devices.</p>
+      description: 'A device manufacturer represents a vendor that produces LoRa devices.
 
-        <br/>
 
-        <p>This endpoint returns the list of available LoRa device manufacturers for your fleet.</p>
+        This endpoint returns the list of available LoRa device manufacturers for your fleet.
 
-        <br/>
 
-        <br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_R.'
+        Restricted to API keys with at least one of the following roles: DEVICE_R.'
       operationId: listLoRaDeviceManufacturers
       responses:
         '200':
@@ -91,35 +90,33 @@ paths:
       tags:
       - Device management - Connector nodes - LoRa specific
       summary: List LoRa device profiles
-      description: '<p>A device profile defines the interface capabilities and boot parameters that are needed by the network for access service.
+      description: 'A device profile defines the interface capabilities and boot parameters that are needed by the network for access service.
 
-        These information elements shall be provided by the manufacturer.</p>
+        These information elements shall be provided by the manufacturer.
 
-        <br/>
 
-        <p>LoRa device profiles can include details such as:</p>
+        LoRa device profiles can include details such as:
 
-        <ul>
 
-        <li>Device type and capabilities</li>
+        Device type and capabilities
 
-        <li>Communication parameters (frequency, spreading factor, bandwidth)</li>
 
-        <li>Security settings</li>
+        Communication parameters (frequency, spreading factor, bandwidth)
 
-        <li>Data transmission intervals</li>
 
-        </ul>
+        Security settings
 
-        <p>These profiles help manage and identify devices within a LoRa network, ensuring proper communication and functionality.</p>
 
-        <br/>
+        Data transmission intervals
 
-        <p>This endpoint returns the list of available LoRa device profiles for your fleet.</p>
 
-        <br/>
+        These profiles help manage and identify devices within a LoRa network, ensuring proper communication and functionality.
 
-        <br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_R.'
+
+        This endpoint returns the list of available LoRa device profiles for your fleet.
+
+
+        Restricted to API keys with at least one of the following roles: DEVICE_R.'
       operationId: listLoRaDeviceProfiles
       parameters:
       - name: manufacturerName
@@ -162,37 +159,35 @@ paths:
       tags:
       - Device management - Connector nodes - LoRa specific
       summary: List LoRa connectivity plans available for your fleet
-      description: '<p>A connectivity plan defines the interface capabilities and parameters that are needed by the network for access service.
+      description: 'A connectivity plan defines the interface capabilities and parameters that are needed by the network for access service.
 
-        These information elements shall be provided by the manufacturer.</p>
+        These information elements shall be provided by the manufacturer.
 
-        <br/>
 
-        <p>In case there is at least one inconsistency between your provided list of parameters of connectivity and your "lora" offer settings, then
+        In case there is at least one inconsistency between your provided list of parameters of connectivity and your "lora" offer settings, then
 
-        no result will be returned by this service. Else the content of the result matches provided parameters (case insensitive).</p>
+        no result will be returned by this service. Else the content of the result matches provided parameters (case insensitive).
 
-        <p>Depending on your "lora" offer settings, test connectivity plans can be excluded from the result.</p>
 
-        <br/>
+        Depending on your "lora" offer settings, test connectivity plans can be excluded from the result.
 
-        <p>Available parameters:
 
-        <ul>
+        Available parameters:
 
-        <li>id: identifier of the connectivity plan (e.g. "id":"12345678")</li>
 
-        <li>name: name of the connectivity plan (e.g. "name":"my_connectivity_plan")</li>
+        id: identifier of the connectivity plan (e.g. "id":"12345678")
 
-        <li>parameters.ackUl: does the connectivity plan has the ''acknowledged  uplink frame'' option (e.g. "parameters.ackUl":true)</li>
 
-        <li>parameters.location: does the connectivity plan has the ''location'' option (e.g. "parameters.location":false)</li>
+        name: name of the connectivity plan (e.g. "name":"my_connectivity_plan")
 
-        </ul>
 
-        </p>
+        parameters.ackUl: does the connectivity plan has the ''acknowledged uplink frame'' option (e.g. "parameters.ackUl":true)
 
-        <br/><br/>Restricted to API keys with at least one of the following roles: DEVICE_R.'
+
+        parameters.location: does the connectivity plan has the ''location'' option (e.g. "parameters.location":false)
+
+
+        Restricted to API keys with at least one of the following roles: DEVICE_R.'
       operationId: listLoRaConnectivityPlans
       parameters:
       - name: parameters
@@ -273,13 +268,6 @@ components:
             sfMax: 12
             sfMin: 7
             nbTransMin: 1
-    Manufacturer:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Commercial name of the device manufacturer
-          example: Adeunis
     LoraDeviceProfile:
       type: object
       properties:
@@ -302,6 +290,13 @@ components:
           - EU863-870 (EU868)
           items:
             type: string
+    Manufacturer:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Commercial name of the device manufacturer
+          example: Adeunis
   securitySchemes:
     X-API-KEY:
       type: apiKey

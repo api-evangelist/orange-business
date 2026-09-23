@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Live Objects REST API Guide User Profile and Access Management API
+  title: Live Objects REST API Guide User Profile and Access…
   description: API description for Live Objects service
   contact:
     name: Live Objects Support
@@ -39,7 +39,10 @@ paths:
       tags:
       - User Profile and Access Management
       summary: Update connected user profile (email and lang)
-      description: Usage of this API will be reported in your access log under 'user' category.<br/><br/>No specific role on API key required.
+      description: 'Usage of this API will be reported in your access log under ''user'' category.
+
+
+        No specific role on API key required.'
       operationId: patchUserProfile
       requestBody:
         content:
@@ -131,34 +134,18 @@ paths:
                 $ref: '#/components/schemas/ServiceErrorResponse'
 components:
   schemas:
-    PageableV2UserAccess:
+    UserProfilePatchRequestWeb:
       type: object
+      description: body for user profile patch request
       properties:
-        page:
-          type: integer
-          format: int64
-          description: 'number of the current page: starts at 0.'
-          example: 0
-        size:
-          type: integer
-          format: int64
-          description: number of data per page (= maximum number of data in the associated list of data:the last page can have less data)
-          example: 1
-        totalCount:
-          type: integer
-          format: int64
-          description: total count of data in the complete list.
-          example: 1
-        data:
-          type: array
-          description: list of data in this page.
-          items:
-            $ref: '#/components/schemas/UserAccess'
-      required:
-      - data
-      - page
-      - size
-      - totalCount
+        email:
+          type: string
+          description: user email. Expected a valid email (max 254 characters)
+          example: me.name@mycompagny.mycom
+        language:
+          type: string
+          description: 'the user language. Expected language ISO 639-1 (example: "en", "fr", "sk", "ro", "es") (case insensitive, max 2 characters)'
+          example: en
     WebErrorResponse:
       type: object
       description: Error response
@@ -179,46 +166,6 @@ components:
       - code
       - id
       - message
-    UserProfilePatchRequestWeb:
-      type: object
-      description: body for user profile patch request
-      properties:
-        email:
-          type: string
-          description: user email. Expected a valid email (max 254 characters)
-          example: me.name@mycompagny.mycom
-        language:
-          type: string
-          description: 'the user language. Expected language ISO 639-1 (example: "en", "fr", "sk", "ro", "es") (case insensitive, max 2 characters)'
-          example: en
-    UserProfile:
-      type: object
-      description: User profile
-      properties:
-        id:
-          type: string
-          description: identifier of user
-          example: 57FFFFFFFFFFFFFFFFFFFFFF
-        email:
-          type: string
-          description: user email
-          example: me.name@mycompagny.mycom
-        language:
-          type: string
-          description: the user language, in ISO 639-1 format
-          example: en
-        identities:
-          type: array
-          description: list of identities used by the user to be authenticated to Live Objects
-          items:
-            $ref: '#/components/schemas/UserProfileIdentity'
-        merged:
-          type: boolean
-      required:
-      - email
-      - id
-      - identities
-      - language
     ServiceErrorResponse:
       type: object
       description: Generic Error in Response
@@ -247,6 +194,62 @@ components:
       - code
       - id
       - message
+    PageableV2UserAccess:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int64
+          description: 'number of the current page: starts at 0.'
+          example: 0
+        size:
+          type: integer
+          format: int64
+          description: number of data per page (= maximum number of data in the associated list of data:the last page can have less data)
+          example: 1
+        totalCount:
+          type: integer
+          format: int64
+          description: total count of data in the complete list.
+          example: 1
+        data:
+          type: array
+          description: list of data in this page.
+          items:
+            $ref: '#/components/schemas/UserAccess'
+      required:
+      - data
+      - page
+      - size
+      - totalCount
+    UserProfile:
+      type: object
+      description: User profile
+      properties:
+        id:
+          type: string
+          description: identifier of user
+          example: 57FFFFFFFFFFFFFFFFFFFFFF
+        email:
+          type: string
+          description: user email
+          example: me.name@mycompagny.mycom
+        language:
+          type: string
+          description: the user language, in ISO 639-1 format
+          example: en
+        identities:
+          type: array
+          description: list of identities used by the user to be authenticated to Live Objects
+          items:
+            $ref: '#/components/schemas/UserProfileIdentity'
+        merged:
+          type: boolean
+      required:
+      - email
+      - id
+      - identities
+      - language
     UserAccess:
       type: object
       description: User access

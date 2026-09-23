@@ -20,7 +20,10 @@ paths:
       tags:
       - Event processing - Geozone
       summary: retrieve a geozone from repository
-      description: 'The Geozone repository is a database that allows storing geographical sites/zones of interest. The geozones are stored as polygons (array of geopoints coordinates in decimal degrees). Meta information like a description and tags can be stored with the geozone. The Geozone format : coordinates for polygon definition, use longitude as the first coordinate and latitude as the second coordinate, polygons are closed linestrings, with at least four coordinate pairs and specify the same position as the first and last coordinates. You can define several polygons in the same geozone, for example to define a zone with holes (first polygon is the external limit of the zone and the following polygons are holes in this zone). e.g. [[[1.780892, 48.091452], [2.301382, 48.000565], [2.281961, 47.509630], [1.252634, 47.729556], [1.780892, 48.091452]]]<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      description: 'The Geozone repository is a database that allows storing geographical sites/zones of interest. The geozones are stored as polygons (array of geopoints coordinates in decimal degrees). Meta information like a description and tags can be stored with the geozone. The Geozone format : coordinates for polygon definition, use longitude as the first coordinate and latitude as the second coordinate, polygons are closed linestrings, with at least four coordinate pairs and specify the same position as the first and last coordinates. You can define several polygons in the same geozone, for example to define a zone with holes (first polygon is the external limit of the zone and the following polygons are holes in this zone). e.g. [[[1.780892, 48.091452], [2.301382, 48.000565], [2.281961, 47.509630], [1.252634, 47.729556], [1.780892, 48.091452]]]
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: getEventProcessingGeozone
       parameters:
       - name: zoneId
@@ -46,7 +49,10 @@ paths:
       tags:
       - Event processing - Geozone
       summary: Store a geographic zone
-      description: 'The Geozone repository is a database that allows storing geographical sites/zones of interest. The geozones are stored as polygons (array of geopoints coordinates in decimal degrees). Meta information like a description and tags can be stored with the geozone. The Geozone format : coordinates for polygon definition, use longitude as the first coordinate and latitude as the second coordinate, polygons are closed linestrings, with at least four coordinate pairs and specify the same position as the first and last coordinates. You can define several polygons in the same geozone, for example to define a zone with holes (first polygon is the external limit of the zone and the following polygons are holes in this zone). e.g. [[[1.780892, 48.091452], [2.301382, 48.000565], [2.281961, 47.509630], [1.252634, 47.729556], [1.780892, 48.091452]]]<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      description: 'The Geozone repository is a database that allows storing geographical sites/zones of interest. The geozones are stored as polygons (array of geopoints coordinates in decimal degrees). Meta information like a description and tags can be stored with the geozone. The Geozone format : coordinates for polygon definition, use longitude as the first coordinate and latitude as the second coordinate, polygons are closed linestrings, with at least four coordinate pairs and specify the same position as the first and last coordinates. You can define several polygons in the same geozone, for example to define a zone with holes (first polygon is the external limit of the zone and the following polygons are holes in this zone). e.g. [[[1.780892, 48.091452], [2.301382, 48.000565], [2.281961, 47.509630], [1.252634, 47.729556], [1.780892, 48.091452]]]
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: saveEventProcessingGeozone
       parameters:
       - name: zoneId
@@ -68,7 +74,10 @@ paths:
       tags:
       - Event processing - Geozone
       summary: delete a geographic zone
-      description: 'The Geozone repository is a database that allows storing geographical sites/zones of interest. The geozones are stored as polygons (array of geopoints coordinates in decimal degrees). Meta information like a description and tags can be stored with the geozone. The Geozone format : coordinates for polygon definition, use longitude as the first coordinate and latitude as the second coordinate, polygons are closed linestrings, with at least four coordinate pairs and specify the same position as the first and last coordinates. You can define several polygons in the same geozone, for example to define a zone with holes (first polygon is the external limit of the zone and the following polygons are holes in this zone). e.g. [[[1.780892, 48.091452], [2.301382, 48.000565], [2.281961, 47.509630], [1.252634, 47.729556], [1.780892, 48.091452]]]<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
+      description: 'The Geozone repository is a database that allows storing geographical sites/zones of interest. The geozones are stored as polygons (array of geopoints coordinates in decimal degrees). Meta information like a description and tags can be stored with the geozone. The Geozone format : coordinates for polygon definition, use longitude as the first coordinate and latitude as the second coordinate, polygons are closed linestrings, with at least four coordinate pairs and specify the same position as the first and last coordinates. You can define several polygons in the same geozone, for example to define a zone with holes (first polygon is the external limit of the zone and the following polygons are holes in this zone). e.g. [[[1.780892, 48.091452], [2.301382, 48.000565], [2.281961, 47.509630], [1.252634, 47.729556], [1.780892, 48.091452]]]
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_W.'
       operationId: deleteEventProcessingGeozone
       parameters:
       - name: zoneId
@@ -85,7 +94,10 @@ paths:
       tags:
       - Event processing - Geozone
       summary: retrieve paginated list of geozones
-      description: 'The Geozone repository is a database that allows storing geographical sites/zones of interest. The geozones are stored as polygons (array of geopoints coordinates in decimal degrees). Meta information like a description and tags can be stored with the geozone. The Geozone format : coordinates for polygon definition, use longitude as the first coordinate and latitude as the second coordinate, polygons are closed linestrings, with at least four coordinate pairs and specify the same position as the first and last coordinates. You can define several polygons in the same geozone, for example to define a zone with holes (first polygon is the external limit of the zone and the following polygons are holes in this zone). e.g. [[[1.780892, 48.091452], [2.301382, 48.000565], [2.281961, 47.509630], [1.252634, 47.729556], [1.780892, 48.091452]]]<br/><br/>Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
+      description: 'The Geozone repository is a database that allows storing geographical sites/zones of interest. The geozones are stored as polygons (array of geopoints coordinates in decimal degrees). Meta information like a description and tags can be stored with the geozone. The Geozone format : coordinates for polygon definition, use longitude as the first coordinate and latitude as the second coordinate, polygons are closed linestrings, with at least four coordinate pairs and specify the same position as the first and last coordinates. You can define several polygons in the same geozone, for example to define a zone with holes (first polygon is the external limit of the zone and the following polygons are holes in this zone). e.g. [[[1.780892, 48.091452], [2.301382, 48.000565], [2.281961, 47.509630], [1.252634, 47.729556], [1.780892, 48.091452]]]
+
+
+        Restricted to API keys with at least one of the following roles: DATA_PROCESSING_R.'
       operationId: listEventProcessingGeozones
       parameters:
       - name: page
