@@ -136,36 +136,6 @@ paths:
                 $ref: '#/components/schemas/NotificationChannel'
 components:
   schemas:
-    NotificationChannel:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The notification channel unique identifier. The default notification channel ID is 'default'.
-          example: 6798a90560fe8807d0d58f64
-        name:
-          type: string
-          description: User-defined name for the notification channel. Must not be null, must contain at least one non-whitespace character and at most 255 characters.
-          example: OPS Team
-        language:
-          type: string
-          description: Language to use for this notification channel. Must be either 'en' or 'fr.
-          example: en
-        emails:
-          $ref: '#/components/schemas/NotificationChannelEmailRecipients'
-        created:
-          type: string
-          format: date-time
-          description: Notification channel creation datetime.
-        updated:
-          type: string
-          format: date-time
-          description: Notification channel update datetime.
-      required:
-      - emails
-      - id
-      - language
-      - name
     NotificationChannelEmailRecipients:
       type: object
       description: Email recipients for a notification channel.
@@ -196,6 +166,36 @@ components:
           minItems: 0
       required:
       - to
+    NotificationChannel:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The notification channel unique identifier. The default notification channel ID is 'default'.
+          example: 6798a90560fe8807d0d58f64
+        name:
+          type: string
+          description: User-defined name for the notification channel. Must not be null, must contain at least one non-whitespace character and at most 255 characters.
+          example: OPS Team
+        language:
+          type: string
+          description: Language to use for this notification channel. Must be either 'en' or 'fr.
+          example: en
+        emails:
+          $ref: '#/components/schemas/NotificationChannelEmailRecipients'
+        created:
+          type: string
+          format: date-time
+          description: Notification channel creation datetime.
+        updated:
+          type: string
+          format: date-time
+          description: Notification channel update datetime.
+      required:
+      - emails
+      - id
+      - language
+      - name
     ServiceErrorResponse:
       type: object
       description: Generic Error in Response

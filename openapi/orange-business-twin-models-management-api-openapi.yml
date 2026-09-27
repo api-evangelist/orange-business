@@ -132,6 +132,66 @@ paths:
           description: Custom Twin model deleted
 components:
   schemas:
+    ObjectDefinition:
+      type: object
+      properties:
+        objectDefinitionId:
+          type: string
+          description: Unique identifier of the object-definition
+          example: urn:oma:lwm2m:oma:32769:1.1
+        pathSegment:
+          type: string
+          description: Part of the full path to access an instance of this element
+          example: '32769'
+        name:
+          type: string
+          description: The full original name
+          example: My object
+        description:
+          type: string
+          description: Description of the object
+          example: info ...
+        minOccurs:
+          type: integer
+          format: int32
+          description: Minimal occurrence (0 means optional, 1 means mandatory and at least 1 is required)
+          example: 0
+        maxOccurs:
+          type: integer
+          format: int32
+          description: Maximal occurrence (0 means infinite instances are allowed (unbounded), 1 means maximum 1 instance is allowed
+          example: 1
+        type:
+          type: string
+          description: '<p><span style="text-decoration: underline;">Object type supported values are :</span></p><ul><li>"OBJECT": means that this is a single object</li><li>"OBJECT_MAP": means that this object is a map of object, and that a path of such an object instance is always using a map index</li></ul><br/>'
+          enum:
+          - OBJECT
+          - OBJECT_MAP
+          example: OBJECT
+        operations:
+          type: array
+          description: List of object operations among ["READ", "WRITE"]
+          example: WRITE
+          items:
+            type: string
+            enum:
+            - READ
+            - WRITE
+        attributes:
+          type: array
+          description: List of attribute type for this object.
+          items:
+            $ref: '#/components/schemas/AttributeDefinition'
+        parent:
+          type: string
+          description: 'the objectDefinitionId of the parent object.
+
+            The parent must be another Object. In LwM2M all LwM2M objects are direct children of "root":urn:oma:lwm2m There is just 1 level of object hierarchy'
+          example: urn:oma:lwm2m
+        owner:
+          type: string
+          description: The customer identifier in case of private model
+          example: c10772fa-0577-11ec-9a03-0242ac130003
     TwinModelResponse:
       type: object
       properties:
@@ -246,66 +306,6 @@ components:
             - EXECUTE
         mandatory:
           type: boolean
-    ObjectDefinition:
-      type: object
-      properties:
-        objectDefinitionId:
-          type: string
-          description: Unique identifier of the object-definition
-          example: urn:oma:lwm2m:oma:32769:1.1
-        pathSegment:
-          type: string
-          description: Part of the full path to access an instance of this element
-          example: '32769'
-        name:
-          type: string
-          description: The full original name
-          example: My object
-        description:
-          type: string
-          description: Description of the object
-          example: info ...
-        minOccurs:
-          type: integer
-          format: int32
-          description: Minimal occurrence (0 means optional, 1 means mandatory and at least 1 is required)
-          example: 0
-        maxOccurs:
-          type: integer
-          format: int32
-          description: Maximal occurrence (0 means infinite instances are allowed (unbounded), 1 means maximum 1 instance is allowed
-          example: 1
-        type:
-          type: string
-          description: '<p><span style="text-decoration: underline;">Object type supported values are :</span></p><ul><li>"OBJECT": means that this is a single object</li><li>"OBJECT_MAP": means that this object is a map of object, and that a path of such an object instance is always using a map index</li></ul><br/>'
-          enum:
-          - OBJECT
-          - OBJECT_MAP
-          example: OBJECT
-        operations:
-          type: array
-          description: List of object operations among ["READ", "WRITE"]
-          example: WRITE
-          items:
-            type: string
-            enum:
-            - READ
-            - WRITE
-        attributes:
-          type: array
-          description: List of attribute type for this object.
-          items:
-            $ref: '#/components/schemas/AttributeDefinition'
-        parent:
-          type: string
-          description: 'the objectDefinitionId of the parent object.
-
-            The parent must be another Object. In LwM2M all LwM2M objects are direct children of "root":urn:oma:lwm2m There is just 1 level of object hierarchy'
-          example: urn:oma:lwm2m
-        owner:
-          type: string
-          description: The customer identifier in case of private model
-          example: c10772fa-0577-11ec-9a03-0242ac130003
   securitySchemes:
     X-API-KEY:
       type: apiKey

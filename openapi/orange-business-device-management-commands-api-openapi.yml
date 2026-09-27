@@ -328,6 +328,72 @@ paths:
                 $ref: '#/components/schemas/WebErrorResponse'
 components:
   schemas:
+    CommandRequest:
+      type: object
+      properties:
+        connector:
+          type: string
+          description: connector/protocol to use to forward the command
+          enum:
+          - mqtt
+          - lora
+          - sms
+          - x-connector
+          example: mqtt
+        value:
+          description: 'command value (protocol/connector-dependant). The length is limited. Examples:
+
+            - For mqtt: "{ "req": "unlock", "arg": { "delay": 1000 }}" in which "req" is a supported command and "arg" the appropriate arguments
+
+            - For lora: "{ "data": "ab12cd34", "port": "42" }" in which "data" is the downlink content (in hexadecimal) and "port" the target port, between 1 and 223.
+
+            - For sms (text): "{ "payload": "Hello Live Objects!", "type": "TEXT" }" where "payload" is the text message to send
+
+            - For sms (binary):  "{ "payload": "756e6c6f636b", "type": "BINARY"}" where "payload" is the binary message to send
+
+            - For x-connector: "{ "req": "turn on", "arg": { "device": "6", "delay": "300" }" in which "req" is a supported command and "arg" the appropriate arguments
+
+            '
+      required:
+      - connector
+      - value
+    CommandHistory:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: timestamp of the entry
+          example: '2017-12-06T11:38:22.481Z'
+        status:
+          type: string
+          description: command status at the timestamp
+          enum:
+          - PENDING
+          - PROCESSING
+          - PROCESSED
+          - CANCELED
+          - ERROR
+          - RETRYING
+          - EXPIRED
+          - UNKNOWN
+          example: PROCESSING
+        deliveryStatus:
+          type: string
+          description: command delivery status at the timestamp
+          enum:
+          - SENDING
+          - SENT
+          - DELIVERED
+          - REPLIED
+          example: SENT
+        errorCode:
+          type: string
+          description: error code in case of ERROR status
+          example: INVALID_COMMAND_REQUEST
+        nodeId:
+          type: string
+          description: node id
     WebErrorResponse:
       type: object
       description: Error response
@@ -348,15 +414,36 @@ components:
       - code
       - id
       - message
-    CommandResponse:
+    CommandPolicy:
       type: object
       properties:
-        value:
-          description: command response value (protocol/connector-dependant)
-          example:
-            success: true
-      required:
-      - value
+        expirationInSeconds:
+          type: integer
+          format: int64
+          description: Expiration in seconds since command creation date. Min value is 5 seconds. For default, and max value, cf. developer guide.
+          example: 604800
+          maximum: 9223372036854775
+          minimum: 5
+        ackTimeoutInSeconds:
+          type: integer
+          format: int64
+          description: Ack timeout in seconds since command was sent. Default is no ack timeout. Min value is 10 seconds
+          example: 120
+        ackMode:
+          type: string
+          description: Ack mode for this command. NONE (or AUTO) ack means that the command is automatically acknowledged (set to 'PROCESSED' status) as the command is sent to the device. NETWORK ack requires a reception acknowledge. APPLICATIVE (or DEVICE) ack requires a command response from the device to change its status. Default ack mode is connectivity dependant.
+          enum:
+          - NONE
+          - NETWORK
+          - APPLICATIVE
+          example: APPLICATIVE
+        attempts:
+          type: integer
+          format: int32
+          description: Number of attempts in case of ERROR. Default to 1
+          example: 3
+          maximum: 5
+          minimum: 1
     Command:
       type: object
       properties:
@@ -426,73 +513,20 @@ components:
           format: date-time
           description: command last status update date/time
           example: '2017-12-06T11:32:25.055Z'
-    CommandPolicy:
+    CommandStatusReport:
       type: object
       properties:
-        expirationInSeconds:
-          type: integer
-          format: int64
-          description: Expiration in seconds since command creation date. Min value is 5 seconds. For default, and max value, cf. developer guide.
-          example: 604800
-          maximum: 9223372036854775
-          minimum: 5
-        ackTimeoutInSeconds:
-          type: integer
-          format: int64
-          description: Ack timeout in seconds since command was sent. Default is no ack timeout. Min value is 10 seconds
-          example: 120
-        ackMode:
+        content:
           type: string
-          description: Ack mode for this command. NONE (or AUTO) ack means that the command is automatically acknowledged (set to 'PROCESSED' status) as the command is sent to the device. NETWORK ack requires a reception acknowledge. APPLICATIVE (or DEVICE) ack requires a command response from the device to change its status. Default ack mode is connectivity dependant.
-          enum:
-          - NONE
-          - NETWORK
-          - APPLICATIVE
-          example: APPLICATIVE
-        attempts:
-          type: integer
-          format: int32
-          description: Number of attempts in case of ERROR. Default to 1
-          example: 3
-          maximum: 5
-          minimum: 1
-    CommandHistory:
+    CommandResponse:
       type: object
       properties:
-        timestamp:
-          type: string
-          format: date-time
-          description: timestamp of the entry
-          example: '2017-12-06T11:38:22.481Z'
-        status:
-          type: string
-          description: command status at the timestamp
-          enum:
-          - PENDING
-          - PROCESSING
-          - PROCESSED
-          - CANCELED
-          - ERROR
-          - RETRYING
-          - EXPIRED
-          - UNKNOWN
-          example: PROCESSING
-        deliveryStatus:
-          type: string
-          description: command delivery status at the timestamp
-          enum:
-          - SENDING
-          - SENT
-          - DELIVERED
-          - REPLIED
-          example: SENT
-        errorCode:
-          type: string
-          description: error code in case of ERROR status
-          example: INVALID_COMMAND_REQUEST
-        nodeId:
-          type: string
-          description: node id
+        value:
+          description: command response value (protocol/connector-dependant)
+          example:
+            success: true
+      required:
+      - value
     CreationCommandRequest:
       type: object
       description: new command request
@@ -505,40 +539,6 @@ components:
           description: Delivery policy for this command
       required:
       - request
-    CommandStatusReport:
-      type: object
-      properties:
-        content:
-          type: string
-    CommandRequest:
-      type: object
-      properties:
-        connector:
-          type: string
-          description: connector/protocol to use to forward the command
-          enum:
-          - mqtt
-          - lora
-          - sms
-          - x-connector
-          example: mqtt
-        value:
-          description: 'command value (protocol/connector-dependant). The length is limited. Examples:
-
-            - For mqtt: "{ "req": "unlock", "arg": { "delay": 1000 }}" in which "req" is a supported command and "arg" the appropriate arguments
-
-            - For lora: "{ "data": "ab12cd34", "port": "42" }" in which "data" is the downlink content (in hexadecimal) and "port" the target port, between 1 and 223.
-
-            - For sms (text): "{ "payload": "Hello Live Objects!", "type": "TEXT" }" where "payload" is the text message to send
-
-            - For sms (binary):  "{ "payload": "756e6c6f636b", "type": "BINARY"}" where "payload" is the binary message to send
-
-            - For x-connector: "{ "req": "turn on", "arg": { "device": "6", "delay": "300" }" in which "req" is a supported command and "arg" the appropriate arguments
-
-            '
-      required:
-      - connector
-      - value
   securitySchemes:
     X-API-KEY:
       type: apiKey

@@ -552,6 +552,49 @@ paths:
                 $ref: '#/components/schemas/WebErrorResponse'
 components:
   schemas:
+    MetadataResourceConnectors:
+      type: object
+      properties:
+        mandatory:
+          type: array
+          description: the mandatory connector metadata
+          items:
+            type: string
+          uniqueItems: true
+        optional:
+          type: array
+          description: the optional connector metadata
+          items:
+            type: string
+          uniqueItems: true
+    AddResourceRequest:
+      type: object
+      description: body of add resource
+      properties:
+        resourceId:
+          type: string
+          description: the resource's id. Expected string (max 255 characters)
+          example: MyResource001
+        label:
+          type: string
+          description: the resource's label. Expected string (max 255 characters)
+          example: My resource Label
+        description:
+          type: string
+          description: the resource's description. Expected string (max 255 characters)
+          example: It the last provided resource
+        connector:
+          type: string
+          description: the resource's connector. A connector must respect the following regular expression <code>([\w\-]{1,128})</code> (max 128 characters)
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: 'the resource metadata. Max number of metadata is 100. Metadata name max length is 255. A Metadata name must not include following characters <code>$.</code>. Invalid Metadata names are : ''class'', ''_class''. Metadata value max length is 255. Optional metadata key ''<code>secured</code>'': controls the transfer protocol for firmware download. Value ''<code>true</code>'' generates HTTPS URL, ''<code>false</code>'' or absent generates HTTP URL (default). Supported by http-updater connector only.'
+          example:
+            secured: 'true'
+      required:
+      - resourceId
     WebErrorResponse:
       type: object
       description: Error response
@@ -572,6 +615,32 @@ components:
       - code
       - id
       - message
+    ResourceVersion:
+      type: object
+      properties:
+        tenantId:
+          type: string
+        resourceId:
+          type: string
+        resourceVersionId:
+          type: string
+        description:
+          type: string
+        compatibleVersions:
+          type: array
+          items:
+            type: string
+          uniqueItems: true
+        creationTs:
+          type: integer
+          format: int64
+        updateTs:
+          type: integer
+          format: int64
+        file:
+          type: string
+        checksum:
+          type: string
     UpdateResourceRequest:
       type: object
       description: body of resource update
@@ -603,6 +672,88 @@ components:
             prod: '1.1'
       required:
       - label
+    PageableResourceVersion:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int64
+          description: 'number of the current page: starts at 0.'
+          example: 0
+        size:
+          type: integer
+          format: int64
+          description: number of data per page (= maximum number of data in the associated list of data:the last page can have less data)
+          example: 1
+        totalCount:
+          type: integer
+          format: int64
+          description: total count of data in the complete list.
+          example: 1
+        data:
+          type: array
+          description: list of data in this page.
+          items:
+            $ref: '#/components/schemas/ResourceVersion'
+      required:
+      - data
+      - page
+      - size
+      - totalCount
+    AddResourceVersionRequest:
+      type: object
+      description: body of add resource version
+      properties:
+        file:
+          type: string
+          description: the version's Base64-encoded binary. File max size is 10MB
+        checksum:
+          type: string
+          description: The Base64-encoded MD5 checksum of the version's raw file (non Base64-encoded)Expected string (max 255 characters)
+        description:
+          type: string
+          description: the version's description. Expected string (max 255 characters)
+        resourceVersionId:
+          type: string
+          description: the resource version id. Expected string (max 255 characters)
+        compatibleVersions:
+          type: array
+          description: 'set of the versions from which a resource update to the version can be done. Max number of versions is 100. A version max length is 255. '
+          items:
+            type: string
+          uniqueItems: true
+      required:
+      - checksum
+      - file
+      - resourceVersionId
+    PageableResource:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int64
+          description: 'number of the current page: starts at 0.'
+          example: 0
+        size:
+          type: integer
+          format: int64
+          description: number of data per page (= maximum number of data in the associated list of data:the last page can have less data)
+          example: 1
+        totalCount:
+          type: integer
+          format: int64
+          description: total count of data in the complete list.
+          example: 1
+        data:
+          type: array
+          description: list of data in this page.
+          items:
+            $ref: '#/components/schemas/Resource'
+      required:
+      - data
+      - page
+      - size
+      - totalCount
     Resource:
       type: object
       description: Resource data
@@ -650,116 +801,6 @@ components:
           format: int64
           description: last update timestamp
           example: '2016-06-04T14:40:40.444Z'
-    AddResourceVersionRequest:
-      type: object
-      description: body of add resource version
-      properties:
-        file:
-          type: string
-          description: the version's Base64-encoded binary. File max size is 10MB
-        checksum:
-          type: string
-          description: The Base64-encoded MD5 checksum of the version's raw file (non Base64-encoded)Expected string (max 255 characters)
-        description:
-          type: string
-          description: the version's description. Expected string (max 255 characters)
-        resourceVersionId:
-          type: string
-          description: the resource version id. Expected string (max 255 characters)
-        compatibleVersions:
-          type: array
-          description: 'set of the versions from which a resource update to the version can be done. Max number of versions is 100. A version max length is 255. '
-          items:
-            type: string
-          uniqueItems: true
-      required:
-      - checksum
-      - file
-      - resourceVersionId
-    PageableResourceVersion:
-      type: object
-      properties:
-        page:
-          type: integer
-          format: int64
-          description: 'number of the current page: starts at 0.'
-          example: 0
-        size:
-          type: integer
-          format: int64
-          description: number of data per page (= maximum number of data in the associated list of data:the last page can have less data)
-          example: 1
-        totalCount:
-          type: integer
-          format: int64
-          description: total count of data in the complete list.
-          example: 1
-        data:
-          type: array
-          description: list of data in this page.
-          items:
-            $ref: '#/components/schemas/ResourceVersion'
-      required:
-      - data
-      - page
-      - size
-      - totalCount
-    PageableResource:
-      type: object
-      properties:
-        page:
-          type: integer
-          format: int64
-          description: 'number of the current page: starts at 0.'
-          example: 0
-        size:
-          type: integer
-          format: int64
-          description: number of data per page (= maximum number of data in the associated list of data:the last page can have less data)
-          example: 1
-        totalCount:
-          type: integer
-          format: int64
-          description: total count of data in the complete list.
-          example: 1
-        data:
-          type: array
-          description: list of data in this page.
-          items:
-            $ref: '#/components/schemas/Resource'
-      required:
-      - data
-      - page
-      - size
-      - totalCount
-    AddResourceRequest:
-      type: object
-      description: body of add resource
-      properties:
-        resourceId:
-          type: string
-          description: the resource's id. Expected string (max 255 characters)
-          example: MyResource001
-        label:
-          type: string
-          description: the resource's label. Expected string (max 255 characters)
-          example: My resource Label
-        description:
-          type: string
-          description: the resource's description. Expected string (max 255 characters)
-          example: It the last provided resource
-        connector:
-          type: string
-          description: the resource's connector. A connector must respect the following regular expression <code>([\w\-]{1,128})</code> (max 128 characters)
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          description: 'the resource metadata. Max number of metadata is 100. Metadata name max length is 255. A Metadata name must not include following characters <code>$.</code>. Invalid Metadata names are : ''class'', ''_class''. Metadata value max length is 255. Optional metadata key ''<code>secured</code>'': controls the transfer protocol for firmware download. Value ''<code>true</code>'' generates HTTPS URL, ''<code>false</code>'' or absent generates HTTP URL (default). Supported by http-updater connector only.'
-          example:
-            secured: 'true'
-      required:
-      - resourceId
     UpdateResourceVersionRequest:
       type: object
       description: body of resource version update
@@ -778,47 +819,6 @@ components:
           items:
             type: string
           uniqueItems: true
-    MetadataResourceConnectors:
-      type: object
-      properties:
-        mandatory:
-          type: array
-          description: the mandatory connector metadata
-          items:
-            type: string
-          uniqueItems: true
-        optional:
-          type: array
-          description: the optional connector metadata
-          items:
-            type: string
-          uniqueItems: true
-    ResourceVersion:
-      type: object
-      properties:
-        tenantId:
-          type: string
-        resourceId:
-          type: string
-        resourceVersionId:
-          type: string
-        description:
-          type: string
-        compatibleVersions:
-          type: array
-          items:
-            type: string
-          uniqueItems: true
-        creationTs:
-          type: integer
-          format: int64
-        updateTs:
-          type: integer
-          format: int64
-        file:
-          type: string
-        checksum:
-          type: string
   securitySchemes:
     X-API-KEY:
       type: apiKey

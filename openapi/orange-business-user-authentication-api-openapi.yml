@@ -83,28 +83,6 @@ paths:
       security: []
 components:
   schemas:
-    UpdatePasswordValidationInfo:
-      type: object
-      description: body of user update password with token
-      properties:
-        captcha:
-          type: string
-          description: User-provided captcha value
-        captchaToken:
-          type: string
-          description: Captcha token
-        tokenId:
-          type: string
-          description: Token provided by email
-        password:
-          type: string
-          description: new user's password
-          example: MyP@sswr0d
-      required:
-      - captcha
-      - captchaToken
-      - password
-      - tokenId
     PasswordAuthenticationInfo:
       type: object
       description: body of authentication request
@@ -123,74 +101,6 @@ components:
           example: MyCurrentPWD
       required:
       - password
-    ScopeApplication:
-      type: object
-      properties:
-        fifos:
-          type: array
-          description: List of allowed FIFOs to publish or subscribe. Expected array of string (max 100 elements, value max 255 characters)
-          example:
-          - default
-          - supplierA
-          items:
-            type: string
-          uniqueItems: true
-    ClientCertificatesConfiguration:
-      type: object
-      properties:
-        required:
-          type: boolean
-          description: Indicates if the client must use TLS client cert authentication
-          example: true
-        caCertIds:
-          type: array
-          description: List of Ca Certificate Ids used to authenticate devices. Expected array of string (max 100 elements, value max 255 characters)
-          example:
-          - 5b057d0fb8605a5e80758e42
-          items:
-            type: string
-      required:
-      - required
-    RateLimit:
-      type: object
-      properties:
-        mqttBridgeWindowSize:
-          type: integer
-          format: int64
-          description: 'mqtt bridge rate limit: window size in seconds'
-          example: 1
-        mqttBridgeMaxMessages:
-          type: integer
-          format: int64
-          description: 'mqtt bridge rate limit: maximum messages allowed per time window'
-          example: 1
-        mqttDeviceWindowSize:
-          type: integer
-          format: int64
-          description: 'mqtt device rate limit: window size in seconds'
-          example: 1
-        mqttDeviceMaxMessages:
-          type: integer
-          format: int64
-          description: 'mqtt device rate limit: maximum messages allowed per time window'
-          example: 1
-        httpWindowSize:
-          type: integer
-          format: int64
-          description: 'http rate limit: window size in seconds'
-          example: 1
-        httpMaxCalls:
-          type: integer
-          format: int64
-          description: 'http rate limit: maximum api calls allowed per time window'
-          example: 1
-    AuthResWeb:
-      type: object
-      properties:
-        apiKey:
-          $ref: '#/components/schemas/ApiKey'
-        admin:
-          type: boolean
     ResetPasswordValidationInfo:
       type: object
       description: Reset password request with user login/email and captcha validation
@@ -302,6 +212,96 @@ components:
           type: boolean
       required:
       - roles
+    ScopeApplication:
+      type: object
+      properties:
+        fifos:
+          type: array
+          description: List of allowed FIFOs to publish or subscribe. Expected array of string (max 100 elements, value max 255 characters)
+          example:
+          - default
+          - supplierA
+          items:
+            type: string
+          uniqueItems: true
+    RateLimit:
+      type: object
+      properties:
+        mqttBridgeWindowSize:
+          type: integer
+          format: int64
+          description: 'mqtt bridge rate limit: window size in seconds'
+          example: 1
+        mqttBridgeMaxMessages:
+          type: integer
+          format: int64
+          description: 'mqtt bridge rate limit: maximum messages allowed per time window'
+          example: 1
+        mqttDeviceWindowSize:
+          type: integer
+          format: int64
+          description: 'mqtt device rate limit: window size in seconds'
+          example: 1
+        mqttDeviceMaxMessages:
+          type: integer
+          format: int64
+          description: 'mqtt device rate limit: maximum messages allowed per time window'
+          example: 1
+        httpWindowSize:
+          type: integer
+          format: int64
+          description: 'http rate limit: window size in seconds'
+          example: 1
+        httpMaxCalls:
+          type: integer
+          format: int64
+          description: 'http rate limit: maximum api calls allowed per time window'
+          example: 1
+    UpdatePasswordValidationInfo:
+      type: object
+      description: body of user update password with token
+      properties:
+        captcha:
+          type: string
+          description: User-provided captcha value
+        captchaToken:
+          type: string
+          description: Captcha token
+        tokenId:
+          type: string
+          description: Token provided by email
+        password:
+          type: string
+          description: new user's password
+          example: MyP@sswr0d
+      required:
+      - captcha
+      - captchaToken
+      - password
+      - tokenId
+    ClientCertificatesConfiguration:
+      type: object
+      properties:
+        required:
+          type: boolean
+          description: Indicates if the client must use TLS client cert authentication
+          example: true
+        caCertIds:
+          type: array
+          description: List of Ca Certificate Ids used to authenticate devices. Expected array of string (max 100 elements, value max 255 characters)
+          example:
+          - 5b057d0fb8605a5e80758e42
+          items:
+            type: string
+      required:
+      - required
+    AuthResWeb:
+      type: object
+      properties:
+        apiKey:
+          $ref: '#/components/schemas/ApiKey'
+        admin:
+          type: boolean
   securitySchemes:
     X-API-KEY:
       type: apiKey

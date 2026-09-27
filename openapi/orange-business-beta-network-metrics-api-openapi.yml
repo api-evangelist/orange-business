@@ -107,49 +107,19 @@ paths:
                   $ref: '#/components/schemas/LostMessagesRatioResult'
 components:
   schemas:
-    LostMessagesRatioResult:
+    NetworkMetricsRequest:
       type: object
-      properties:
-        timeStart:
-          type: string
-          format: date-time
-          description: Date/time
-          example: '2019-01-01T00:00:00.000Z'
-        value:
-          type: number
-          format: double
-          description: ratio
-          example: 0.1
-    LostMessagesFilters:
-      type: object
-      properties:
-        from:
-          type: string
-          format: date-time
-          description: Date and time from which the search for lost messages begins. Use ISO-8601 normalization.
-          example: '2003-09-06T20:05:00Z'
-        to:
-          type: string
-          format: date-time
-          description: Date and time until which the search for lost messages ends. Use ISO-8601 normalization.
-          example: '2003-09-07T15:12:13Z'
-        interface:
-          $ref: '#/components/schemas/InterfaceDefinition'
-          description: Interface
-      required:
-      - from
-      - interface
-      - to
-    LostMessagesRatioRequest:
-      type: object
-      description: Filters applying to the lost messages ratio search
+      description: Filters applying to the network metrics search
       properties:
         filters:
-          $ref: '#/components/schemas/LostMessagesFilters'
-          description: Lost messages filters
+          $ref: '#/components/schemas/NetworkMetricsFilters'
+          description: Network metrics filters
         timeAggregation:
           $ref: '#/components/schemas/TimeAggregation'
           description: Time aggregation
+        subAggregation:
+          $ref: '#/components/schemas/SubAggregation'
+          description: Sub aggregation
       required:
       - filters
       - timeAggregation
@@ -163,18 +133,6 @@ components:
           example: messageType
       required:
       - field
-    SubAggregationBucket:
-      type: object
-      properties:
-        key:
-          type: string
-          description: key of sub aggregation
-          example: UPDATE_REQUEST
-        messageCount:
-          type: integer
-          format: int64
-          description: count
-          example: 5
     InterfaceDefinition:
       type: object
       properties:
@@ -188,6 +146,32 @@ components:
           example: 12345A0409001C1A
       required:
       - connector
+    TimeAggregation:
+      type: object
+      description: Time aggregation
+      properties:
+        interval:
+          type: string
+          description: Interval of the aggregated results.Available values are `15m`, `hour`, `day`, `week`
+          example: hour
+        timezone:
+          type: string
+          description: Timezone applied to the aggregated result on the filtered period. This field matches ISO 8601 UTC offset (e.g. +01:00)
+          example: +01:00
+      required:
+      - interval
+    SubAggregationBucket:
+      type: object
+      properties:
+        key:
+          type: string
+          description: key of sub aggregation
+          example: UPDATE_REQUEST
+        messageCount:
+          type: integer
+          format: int64
+          description: count
+          example: 5
     NetworkMetricsResult:
       type: object
       properties:
@@ -206,19 +190,29 @@ components:
           description: sub aggregation buckets
           items:
             $ref: '#/components/schemas/SubAggregationBucket'
-    NetworkMetricsRequest:
+    LostMessagesRatioResult:
       type: object
-      description: Filters applying to the network metrics search
+      properties:
+        timeStart:
+          type: string
+          format: date-time
+          description: Date/time
+          example: '2019-01-01T00:00:00.000Z'
+        value:
+          type: number
+          format: double
+          description: ratio
+          example: 0.1
+    LostMessagesRatioRequest:
+      type: object
+      description: Filters applying to the lost messages ratio search
       properties:
         filters:
-          $ref: '#/components/schemas/NetworkMetricsFilters'
-          description: Network metrics filters
+          $ref: '#/components/schemas/LostMessagesFilters'
+          description: Lost messages filters
         timeAggregation:
           $ref: '#/components/schemas/TimeAggregation'
           description: Time aggregation
-        subAggregation:
-          $ref: '#/components/schemas/SubAggregation'
-          description: Sub aggregation
       required:
       - filters
       - timeAggregation
@@ -273,20 +267,26 @@ components:
       - from
       - interface
       - to
-    TimeAggregation:
+    LostMessagesFilters:
       type: object
-      description: Time aggregation
       properties:
-        interval:
+        from:
           type: string
-          description: Interval of the aggregated results.Available values are `15m`, `hour`, `day`, `week`
-          example: hour
-        timezone:
+          format: date-time
+          description: Date and time from which the search for lost messages begins. Use ISO-8601 normalization.
+          example: '2003-09-06T20:05:00Z'
+        to:
           type: string
-          description: Timezone applied to the aggregated result on the filtered period. This field matches ISO 8601 UTC offset (e.g. +01:00)
-          example: +01:00
+          format: date-time
+          description: Date and time until which the search for lost messages ends. Use ISO-8601 normalization.
+          example: '2003-09-07T15:12:13Z'
+        interface:
+          $ref: '#/components/schemas/InterfaceDefinition'
+          description: Interface
       required:
-      - interval
+      - from
+      - interface
+      - to
   securitySchemes:
     X-API-KEY:
       type: apiKey

@@ -169,57 +169,6 @@ components:
       - code
       - id
       - message
-    TwinDataRuleRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          description: name of data rule
-          example: my twin data rule
-        type:
-          type: string
-          description: type of data rule, must be "passthrough"
-          example: passthrough
-        paths:
-          type: array
-          description: paths used as data new filter, must be ["/"]
-          example:
-          - /
-          items:
-            type: string
-          uniqueItems: true
-      required:
-      - name
-      - paths
-      - type
-    ServiceErrorResponse:
-      type: object
-      description: Generic Error in Response
-      properties:
-        id:
-          type: string
-          description: Unique identifier of this error instance
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Short error description
-        details:
-          type: string
-          description: Detailed error description
-        category:
-          type: string
-          description: Error category
-          enum:
-          - PERMANENT
-          - TRANSIENT
-          - UNEXPECTED
-      required:
-      - category
-      - code
-      - id
-      - message
     TwinDataRule:
       type: object
       properties:
@@ -254,6 +203,57 @@ components:
       required:
       - created
       - id
+      - name
+      - paths
+      - type
+    ServiceErrorResponse:
+      type: object
+      description: Generic Error in Response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+        category:
+          type: string
+          description: Error category
+          enum:
+          - PERMANENT
+          - TRANSIENT
+          - UNEXPECTED
+      required:
+      - category
+      - code
+      - id
+      - message
+    TwinDataRuleRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: name of data rule
+          example: my twin data rule
+        type:
+          type: string
+          description: type of data rule, must be "passthrough"
+          example: passthrough
+        paths:
+          type: array
+          description: paths used as data new filter, must be ["/"]
+          example:
+          - /
+          items:
+            type: string
+          uniqueItems: true
+      required:
       - name
       - paths
       - type

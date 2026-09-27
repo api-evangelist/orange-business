@@ -148,45 +148,6 @@ components:
         deviceCode:
           $ref: '#/components/schemas/DeviceErrorCode'
           description: device error response code, if any
-    DeviceErrorCode:
-      type: object
-      properties:
-        value:
-          type: string
-          description: device error code value
-          example: '404'
-        reason:
-          type: string
-          description: device error code reason
-          example: NOT_FOUND
-    TwinObservationCreateRequest:
-      type: object
-      description: Twin observation to create
-      properties:
-        paths:
-          type: array
-          description: Paths of attribute, attribute instance, object instance or all the object instances of an object to observe
-          example:
-          - /1
-          - /3/0
-          - /3442/0/110
-          - /3442/0/1110/0
-          items:
-            type: string
-            maxLength: 255
-            minLength: 0
-          maxItems: 100
-          minItems: 0
-          uniqueItems: true
-        name:
-          type: string
-          description: User-defined name for the observation, must not be null, must contain at least one non-whitespace character and at most 255 characters
-          example: myObservation
-          maxLength: 255
-          minLength: 0
-      required:
-      - name
-      - paths
     TwinObservation:
       type: object
       properties:
@@ -232,6 +193,45 @@ components:
       - name
       - paths
       - status
+    DeviceErrorCode:
+      type: object
+      properties:
+        value:
+          type: string
+          description: device error code value
+          example: '404'
+        reason:
+          type: string
+          description: device error code reason
+          example: NOT_FOUND
+    TwinObservationCreateRequest:
+      type: object
+      description: Twin observation to create
+      properties:
+        paths:
+          type: array
+          description: Paths of attribute, attribute instance, object instance or all the object instances of an object to observe
+          example:
+          - /1
+          - /3/0
+          - /3442/0/110
+          - /3442/0/1110/0
+          items:
+            type: string
+            maxLength: 255
+            minLength: 0
+          maxItems: 100
+          minItems: 0
+          uniqueItems: true
+        name:
+          type: string
+          description: User-defined name for the observation, must not be null, must contain at least one non-whitespace character and at most 255 characters
+          example: myObservation
+          maxLength: 255
+          minLength: 0
+      required:
+      - name
+      - paths
   securitySchemes:
     X-API-KEY:
       type: apiKey

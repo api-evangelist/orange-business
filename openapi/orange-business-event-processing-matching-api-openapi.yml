@@ -165,6 +165,18 @@ paths:
                 $ref: '#/components/schemas/DataMatchResult'
 components:
   schemas:
+    DataMatchResult:
+      type: object
+      properties:
+        dataPredicateValid:
+          type: boolean
+          description: indicates if the dataPredicate is valid
+        dataValid:
+          type: boolean
+          description: indicates if data is valid
+        dataPredicateResult:
+          type: boolean
+          description: the predicate result applied to data. Will be false is either dataPredicateValid or dataValid is false
     DataMatchTest:
       type: object
       description: jsonLogic predicate and json data of the evaluation test you want to perform
@@ -195,18 +207,6 @@ components:
       required:
       - dataPredicate
       - name
-    DataMatchResult:
-      type: object
-      properties:
-        dataPredicateValid:
-          type: boolean
-          description: indicates if the dataPredicate is valid
-        dataValid:
-          type: boolean
-          description: indicates if data is valid
-        dataPredicateResult:
-          type: boolean
-          description: the predicate result applied to data. Will be false is either dataPredicateValid or dataValid is false
   securitySchemes:
     X-API-KEY:
       type: apiKey

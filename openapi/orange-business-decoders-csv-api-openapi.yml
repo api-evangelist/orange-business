@@ -201,23 +201,6 @@ paths:
                 $ref: '#/components/schemas/PayloadDescriptionTestResult'
 components:
   schemas:
-    PayloadDescriptionTestResult:
-      type: object
-      properties:
-        parsingOk:
-          type: boolean
-          description: indicates if the data payload can be parsed according to the data payload description
-        decodingResult:
-          description: the decoded data
-        decodingFailureReason:
-          type: string
-          description: if decoding has failed, the reason why it failed
-        descriptionValid:
-          type: boolean
-          description: 'indicates if the payload description is valid according to the type of decoding : csv, binary, js, js-split'
-        templatingOK:
-          type: boolean
-          description: indicates if the template has been successfully applied on decoded data
     CsvPayloadDescription:
       type: object
       description: binary decoder provisioning information
@@ -270,20 +253,6 @@ components:
       - columns
       - enabled
       - encoding
-    CsvColumn:
-      type: object
-      properties:
-        name:
-          type: string
-          description: the name of the column that will be used as field name
-          example: column1
-        jsonType:
-          type: string
-          description: 'the json type of the value : STRING, NUMERIC, BOOLEAN'
-          example: NUMERIC
-      required:
-      - jsonType
-      - name
     CsvPayloadDescriptionTestRequest:
       type: object
       description: Csv format and encoded payload on which decoding shall be performed
@@ -308,6 +277,37 @@ components:
       required:
       - columns
       - csvPayload
+    PayloadDescriptionTestResult:
+      type: object
+      properties:
+        parsingOk:
+          type: boolean
+          description: indicates if the data payload can be parsed according to the data payload description
+        decodingResult:
+          description: the decoded data
+        decodingFailureReason:
+          type: string
+          description: if decoding has failed, the reason why it failed
+        descriptionValid:
+          type: boolean
+          description: 'indicates if the payload description is valid according to the type of decoding : csv, binary, js, js-split'
+        templatingOK:
+          type: boolean
+          description: indicates if the template has been successfully applied on decoded data
+    CsvColumn:
+      type: object
+      properties:
+        name:
+          type: string
+          description: the name of the column that will be used as field name
+          example: column1
+        jsonType:
+          type: string
+          description: 'the json type of the value : STRING, NUMERIC, BOOLEAN'
+          example: NUMERIC
+      required:
+      - jsonType
+      - name
     CsvOptions:
       type: object
       properties:

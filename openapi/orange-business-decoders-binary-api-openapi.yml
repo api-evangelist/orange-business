@@ -198,23 +198,6 @@ paths:
                 $ref: '#/components/schemas/PayloadDescriptionTestResult'
 components:
   schemas:
-    PayloadDescriptionTestResult:
-      type: object
-      properties:
-        parsingOk:
-          type: boolean
-          description: indicates if the data payload can be parsed according to the data payload description
-        decodingResult:
-          description: the decoded data
-        decodingFailureReason:
-          type: string
-          description: if decoding has failed, the reason why it failed
-        descriptionValid:
-          type: boolean
-          description: 'indicates if the payload description is valid according to the type of decoding : csv, binary, js, js-split'
-        templatingOK:
-          type: boolean
-          description: indicates if the template has been successfully applied on decoded data
     BinaryPayloadDescription:
       type: object
       properties:
@@ -262,18 +245,6 @@ components:
       - enabled
       - encoding
       - format
-    PayloadDescriptionMetadata:
-      type: object
-      properties:
-        certified:
-          type: boolean
-          description: the decoder is certified for the specified encoding. Only a public decoder can be certified. The default value is false.
-          readOnly: true
-        certifiedSince:
-          type: string
-          description: date since when the decoder is certified. ISO 8601 date time.
-          example: '2019-05-15T07:55:55.555Z'
-          readOnly: true
     BinaryPayloadDescriptionTestRequest:
       type: object
       description: Binary format and encoded payload on which decoding shall be performed
@@ -293,6 +264,35 @@ components:
       required:
       - binaryPayloadHexString
       - binaryPayloadStructure
+    PayloadDescriptionTestResult:
+      type: object
+      properties:
+        parsingOk:
+          type: boolean
+          description: indicates if the data payload can be parsed according to the data payload description
+        decodingResult:
+          description: the decoded data
+        decodingFailureReason:
+          type: string
+          description: if decoding has failed, the reason why it failed
+        descriptionValid:
+          type: boolean
+          description: 'indicates if the payload description is valid according to the type of decoding : csv, binary, js, js-split'
+        templatingOK:
+          type: boolean
+          description: indicates if the template has been successfully applied on decoded data
+    PayloadDescriptionMetadata:
+      type: object
+      properties:
+        certified:
+          type: boolean
+          description: the decoder is certified for the specified encoding. Only a public decoder can be certified. The default value is false.
+          readOnly: true
+        certifiedSince:
+          type: string
+          description: date since when the decoder is certified. ISO 8601 date time.
+          example: '2019-05-15T07:55:55.555Z'
+          readOnly: true
   securitySchemes:
     X-API-KEY:
       type: apiKey

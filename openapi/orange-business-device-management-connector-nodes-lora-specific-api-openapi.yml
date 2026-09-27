@@ -226,26 +226,6 @@ components:
           type: string
           description: Commercial name of the device manufacturer
           example: Adeunis
-    WebErrorResponse:
-      type: object
-      description: Error response
-      properties:
-        id:
-          type: string
-          description: Unique identifier of this error instance
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Short error description
-        details:
-          type: string
-          description: Detailed error description
-      required:
-      - code
-      - id
-      - message
     LoraNetworkSubscriptionDetail:
       type: object
       properties:
@@ -268,6 +248,26 @@ components:
             sfMax: 12
             sfMin: 7
             nbTransMin: 1
+    WebErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+      required:
+      - code
+      - id
+      - message
     LoraDeviceProfile:
       type: object
       properties:

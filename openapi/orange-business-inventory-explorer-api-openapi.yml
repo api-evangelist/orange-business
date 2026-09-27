@@ -417,14 +417,15 @@ paths:
                 $ref: '#/components/schemas/ServiceErrorResponse'
 components:
   schemas:
-    LoraInfo:
+    InterfacesFilters:
       type: object
       properties:
-        lostMessagesRatio:
-          type: number
-          format: float
-          description: Lost messages ratio on Lora connectivity (1.0 if all messages are lost)
-          example: 0.02
+        connector:
+          type: string
+        status:
+          type: string
+        definition:
+          $ref: '#/components/schemas/InterfaceDefinition'
     GroupInfo:
       type: object
       properties:
@@ -436,19 +437,14 @@ components:
           type: string
           description: group path
           example: /awesome/donkey
-    StatsRequest:
+    InterfaceCapabilityInfo:
       type: object
-      description: Stats request
       properties:
-        groupBy:
-          $ref: '#/components/schemas/GroupBy'
-          description: group by
-        options:
-          $ref: '#/components/schemas/StatsOptions'
-          description: Statistics options
-        filters:
-          $ref: '#/components/schemas/StatsFilters'
-          description: Statistics filters
+        available:
+          type: boolean
+        version:
+          type: integer
+          format: int32
     GroupByActivityStates:
       type: object
       properties:
@@ -463,64 +459,16 @@ components:
           $ref: '#/components/schemas/GroupByActivityRule'
         filter:
           $ref: '#/components/schemas/ActivityStatesFilters'
-    GeoBounds:
+    ActivityStatesFilters:
       type: object
       properties:
-        topLeft:
-          $ref: '#/components/schemas/Coordinates'
-          description: top-left coordinate
-        bottomRight:
-          $ref: '#/components/schemas/Coordinates'
-          description: bottom-right coordinate
-      required:
-      - bottomRight
-      - topLeft
-    StatsFilters:
-      type: object
-      properties:
-        geoBounds:
-          $ref: '#/components/schemas/GeoBounds'
-          description: Geo bounds
-        queryString:
-          type: string
-          description: Filtering expression using RSQL notation (max 512 characters).
-    InterfaceDefinition:
-      type: object
-      properties:
-        connector:
-          type: string
-          description: Interface connector
-          example: lwm2m
-        nodeId:
-          type: string
-          description: Interface node identifier
-          example: 12345A0409001C1A
-      required:
-      - connector
-    GeoAggregation:
-      type: object
-      description: Geo aggregation
-      properties:
-        count:
-          type: integer
-          format: int64
-          description: total number of entries (interfaces,properties, or activityState) in aggregation buckets
-        devices:
-          type: integer
-          format: int64
-          description: total number of devices in aggregation buckets
-        buckets:
+        rule:
+          $ref: '#/components/schemas/ActivityRuleFilters'
+        states:
           type: array
-          description: aggregation buckets
           items:
-            $ref: '#/components/schemas/LocationBucket'
-        missing:
-          type: integer
-          format: int64
-          description: total number of devices not matching group-by clause
-        geoBounds:
-          $ref: '#/components/schemas/GeoBounds'
-          description: geo bounds (bounding box containing all geo values)
+            type: string
+          uniqueItems: true
     StatsResponse:
       type: object
       description: Stats response
@@ -535,142 +483,44 @@ components:
         geoAggregation:
           $ref: '#/components/schemas/GeoAggregation'
           description: geo aggregation
-    InterfacesFilters:
-      type: object
-      properties:
-        connector:
-          type: string
-        status:
-          type: string
-        definition:
-          $ref: '#/components/schemas/InterfaceDefinition'
-    GroupByLocation:
-      type: object
-      properties:
-        groupBy:
-          description: group by
-        precision:
-          type: integer
-          format: int32
-    FieldBucket:
-      type: object
-      properties:
-        key: {}
-        count:
-          type: integer
-          format: int64
-        devices:
-          type: integer
-          format: int64
-        fieldAggregation:
-          description: Field aggregation
-    GroupByProperties:
-      type: object
-      properties:
-        groupBy:
-          description: group by
-        field:
-          type: string
-          enum:
-          - key
-          - value
-        filter:
-          $ref: '#/components/schemas/PropertiesFilters'
     NetworkInfo:
       type: object
       properties:
         lora:
           $ref: '#/components/schemas/LoraInfo'
           description: Lora network traffic data
-    ActivityRuleFilters:
+    InterfaceCapabilitiesInfo:
       type: object
       properties:
-        id:
-          type: string
-    GroupByActivityRule:
+        configuration:
+          $ref: '#/components/schemas/InterfaceCapabilityInfo'
+          description: Interface configuration capability
+        command:
+          $ref: '#/components/schemas/InterfaceCapabilityInfo'
+          description: Interface command capability
+        resource:
+          $ref: '#/components/schemas/InterfaceCapabilityInfo'
+          description: Interface resource capability
+        twin:
+          $ref: '#/components/schemas/InterfaceCapabilityInfo'
+          description: Interface twin capability
+    LocationBucket:
       type: object
+      description: Location bucket
       properties:
-        field:
-          type: string
-          enum:
-          - id
-    SearchRequest:
-      type: object
-      description: Search request
-      properties:
-        query:
-          type: string
-          description: '<p>Partial search (max 256 characters)</p><p>Complementary information :</p><ul><li> case insensitive</li><li> searched among the following fields: id, name, group.path, tags, interfaces.nodeId
-
-            properties.key, properties.value</li><li> if there are multiple words, they are filtered with OR operator</li></ul>'
-        filters:
-          $ref: '#/components/schemas/SearchFilters'
-          description: search filters
-        sort:
-          type: array
-          description: '<p>List of sort by attributes (supported fields are : id, name, group.path, created, updated, lastCommunication, interfaces.status, interfaces.enabled, interfaces.lastContact, relevance, network.lora.lostMessagesRatio).</p><p>Complementary syntax to use :</p><ul><li> add ''-'' before field to sort in descending order</li><li> set id always at the end of sort list</li></ul>'
-          example:
-          - name
-          - -created
-          items:
-            type: string
-        bookmark:
-          type: array
-          description: list of bookmarks of the last search response (must respect the sort list order). When it is using, a bookmark id must always be set even if sort list is empty or "id" criteria is missing.
-          example:
-          - Auto-created device (lora / EE00EF0000000011)
-          - 1593700879802
-          items: {}
-        size:
-          type: integer
-          format: int32
-          description: Max number of devices per page
-          example: 20
-    ServiceErrorResponse:
-      type: object
-      description: Generic Error in Response
-      properties:
-        id:
-          type: string
-          description: Unique identifier of this error instance
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Short error description
-        details:
-          type: string
-          description: Detailed error description
-        category:
-          type: string
-          description: Error category
-          enum:
-          - PERMANENT
-          - TRANSIENT
-          - UNEXPECTED
-      required:
-      - category
-      - code
-      - id
-      - message
-    InterfaceCapabilityInfo:
-      type: object
-      properties:
-        available:
-          type: boolean
-        version:
-          type: integer
-          format: int32
-    SearchFilters:
-      type: object
-      properties:
+        geoKey:
+          $ref: '#/components/schemas/Coordinates'
+          description: location coordinate
         geoBounds:
           $ref: '#/components/schemas/GeoBounds'
-          description: Geo bounds filter
-        queryString:
-          type: string
-          description: Filtering expression using RSQL notation (max 512 characters).
+          description: geo bounds coordinates
+        devices:
+          type: integer
+          format: int64
+          description: location total number of devices
+        fieldAggregation:
+          $ref: '#/components/schemas/FieldAggregation'
+          description: location field sub aggregation
     GroupBy:
       type: object
       properties:
@@ -696,89 +546,6 @@ components:
           $ref: '#/components/schemas/GroupByActivityStates'
         location:
           $ref: '#/components/schemas/GroupByLocation'
-    GroupByInterfaces:
-      type: object
-      properties:
-        groupBy:
-          description: group by
-        field:
-          type: string
-          enum:
-          - definition.profile
-          - connector
-          - status
-        definition:
-          $ref: '#/components/schemas/GroupByInterfaceDefinition'
-        filter:
-          $ref: '#/components/schemas/InterfacesFilters'
-    ActivityInfo:
-      type: object
-      properties:
-        ruleId:
-          type: string
-          description: Activity rule identifier
-          example: ab12
-        state:
-          type: string
-          description: Activity state of the device according to the activity rules set for this device
-          example: ACTIVE
-    LocationInfo:
-      type: object
-      properties:
-        lat:
-          type: number
-          format: double
-          description: 'Latitude value. The latitude must be between -90 and 90 '
-          example: 45.000009
-        lon:
-          type: number
-          format: double
-          description: Longitude value. The longitude must be between -180 and 180
-          example: -30.00001
-        alt:
-          type: number
-          format: double
-          description: Altitude value. The altitude must be between -10000 and 10000
-          example: 5.00001
-        accuracy:
-          type: number
-          format: double
-          description: Accuracy value (in meter).
-          example: 20.0
-        provider:
-          type: string
-          description: Location provider.
-          example: GPS
-        lastUpdate:
-          type: string
-          format: date-time
-          description: Location date.
-          example: '2016-06-03T15:55:36.944Z'
-    FieldAggregation:
-      type: object
-      description: Field aggregation
-      properties:
-        count:
-          type: integer
-          format: int64
-          description: total number of entries (interfaces,properties, or activityState) in aggregation buckets
-        devices:
-          type: integer
-          format: int64
-          description: total number of devices in aggregation buckets
-        buckets:
-          type: array
-          description: aggregation buckets
-          items:
-            $ref: '#/components/schemas/FieldBucket'
-        missing:
-          type: integer
-          format: int64
-          description: total number of devices not matching group-by clause
-        keys:
-          type: integer
-          format: int64
-          description: unique keys count
     GroupByInterfaceDefinition:
       type: object
       properties:
@@ -786,34 +553,40 @@ components:
           type: string
           enum:
           - profile
-    StatsOptions:
+    SearchResponse:
+      type: object
+      description: Search response
+      properties:
+        bookmark:
+          type: array
+          description: last indexes of the search corresponding to the sort order
+          example:
+          - Auto-created device (lora / EE00EF0000000011)
+          - 1593700879802
+          items: {}
+        devices:
+          type: array
+          description: devices aggregation after applying global filters
+          items:
+            $ref: '#/components/schemas/DeviceInfoClient'
+    StatsFilters:
       type: object
       properties:
-        includeTotalKeys:
-          type: boolean
-          description: should include total keys
-        includeMissingDevicesCount:
-          type: boolean
-          description: should include missing devices count
-        includeGeoBoundsInBuckets:
-          type: boolean
-          description: should include geo bounds in bucket
-    Coordinates:
+        geoBounds:
+          $ref: '#/components/schemas/GeoBounds'
+          description: Geo bounds
+        queryString:
+          type: string
+          description: Filtering expression using RSQL notation (max 512 characters).
+    SearchFilters:
       type: object
       properties:
-        lat:
-          type: number
-          format: double
-          description: latitude
-          example: 52.369219
-        lon:
-          type: number
-          format: double
-          description: longitude
-          example: 4.901618
-      required:
-      - lat
-      - lon
+        geoBounds:
+          $ref: '#/components/schemas/GeoBounds'
+          description: Geo bounds filter
+        queryString:
+          type: string
+          description: Filtering expression using RSQL notation (max 512 characters).
     DeviceInfoClient:
       type: object
       properties:
@@ -887,22 +660,113 @@ components:
           format: date-time
           description: Date/time when device status has been lastly updated
           example: '2019-01-01T00:00:00.000Z'
-    SearchResponse:
+    GroupByLocation:
       type: object
-      description: Search response
       properties:
-        bookmark:
-          type: array
-          description: last indexes of the search corresponding to the sort order
-          example:
-          - Auto-created device (lora / EE00EF0000000011)
-          - 1593700879802
-          items: {}
+        groupBy:
+          description: group by
+        precision:
+          type: integer
+          format: int32
+    StatsRequest:
+      type: object
+      description: Stats request
+      properties:
+        groupBy:
+          $ref: '#/components/schemas/GroupBy'
+          description: group by
+        options:
+          $ref: '#/components/schemas/StatsOptions'
+          description: Statistics options
+        filters:
+          $ref: '#/components/schemas/StatsFilters'
+          description: Statistics filters
+    FieldBucket:
+      type: object
+      properties:
+        key: {}
+        count:
+          type: integer
+          format: int64
         devices:
-          type: array
-          description: devices aggregation after applying global filters
-          items:
-            $ref: '#/components/schemas/DeviceInfoClient'
+          type: integer
+          format: int64
+        fieldAggregation:
+          description: Field aggregation
+    PropertiesFilters:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+    LocationInfo:
+      type: object
+      properties:
+        lat:
+          type: number
+          format: double
+          description: 'Latitude value. The latitude must be between -90 and 90 '
+          example: 45.000009
+        lon:
+          type: number
+          format: double
+          description: Longitude value. The longitude must be between -180 and 180
+          example: -30.00001
+        alt:
+          type: number
+          format: double
+          description: Altitude value. The altitude must be between -10000 and 10000
+          example: 5.00001
+        accuracy:
+          type: number
+          format: double
+          description: Accuracy value (in meter).
+          example: 20.0
+        provider:
+          type: string
+          description: Location provider.
+          example: GPS
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Location date.
+          example: '2016-06-03T15:55:36.944Z'
+    ServiceErrorResponse:
+      type: object
+      description: Generic Error in Response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+        category:
+          type: string
+          description: Error category
+          enum:
+          - PERMANENT
+          - TRANSIENT
+          - UNEXPECTED
+      required:
+      - category
+      - code
+      - id
+      - message
+    GroupByActivityRule:
+      type: object
+      properties:
+        field:
+          type: string
+          enum:
+          - id
     DeviceInterfaceInfo:
       type: object
       properties:
@@ -944,55 +808,191 @@ components:
           format: date-time
           description: Date/time of the device update
           example: '2019-01-01T00:00:00.000Z'
-    InterfaceCapabilitiesInfo:
+    StatsOptions:
       type: object
       properties:
-        configuration:
-          $ref: '#/components/schemas/InterfaceCapabilityInfo'
-          description: Interface configuration capability
-        command:
-          $ref: '#/components/schemas/InterfaceCapabilityInfo'
-          description: Interface command capability
-        resource:
-          $ref: '#/components/schemas/InterfaceCapabilityInfo'
-          description: Interface resource capability
-        twin:
-          $ref: '#/components/schemas/InterfaceCapabilityInfo'
-          description: Interface twin capability
-    ActivityStatesFilters:
+        includeTotalKeys:
+          type: boolean
+          description: should include total keys
+        includeMissingDevicesCount:
+          type: boolean
+          description: should include missing devices count
+        includeGeoBoundsInBuckets:
+          type: boolean
+          description: should include geo bounds in bucket
+    LoraInfo:
       type: object
       properties:
-        rule:
-          $ref: '#/components/schemas/ActivityRuleFilters'
-        states:
-          type: array
-          items:
-            type: string
-          uniqueItems: true
-    LocationBucket:
+        lostMessagesRatio:
+          type: number
+          format: float
+          description: Lost messages ratio on Lora connectivity (1.0 if all messages are lost)
+          example: 0.02
+    ActivityRuleFilters:
       type: object
-      description: Location bucket
       properties:
-        geoKey:
-          $ref: '#/components/schemas/Coordinates'
-          description: location coordinate
-        geoBounds:
-          $ref: '#/components/schemas/GeoBounds'
-          description: geo bounds coordinates
+        id:
+          type: string
+    FieldAggregation:
+      type: object
+      description: Field aggregation
+      properties:
+        count:
+          type: integer
+          format: int64
+          description: total number of entries (interfaces,properties, or activityState) in aggregation buckets
         devices:
           type: integer
           format: int64
-          description: location total number of devices
-        fieldAggregation:
-          $ref: '#/components/schemas/FieldAggregation'
-          description: location field sub aggregation
-    PropertiesFilters:
+          description: total number of devices in aggregation buckets
+        buckets:
+          type: array
+          description: aggregation buckets
+          items:
+            $ref: '#/components/schemas/FieldBucket'
+        missing:
+          type: integer
+          format: int64
+          description: total number of devices not matching group-by clause
+        keys:
+          type: integer
+          format: int64
+          description: unique keys count
+    SearchRequest:
+      type: object
+      description: Search request
+      properties:
+        query:
+          type: string
+          description: '<p>Partial search (max 256 characters)</p><p>Complementary information :</p><ul><li> case insensitive</li><li> searched among the following fields: id, name, group.path, tags, interfaces.nodeId
+
+            properties.key, properties.value</li><li> if there are multiple words, they are filtered with OR operator</li></ul>'
+        filters:
+          $ref: '#/components/schemas/SearchFilters'
+          description: search filters
+        sort:
+          type: array
+          description: '<p>List of sort by attributes (supported fields are : id, name, group.path, created, updated, lastCommunication, interfaces.status, interfaces.enabled, interfaces.lastContact, relevance, network.lora.lostMessagesRatio).</p><p>Complementary syntax to use :</p><ul><li> add ''-'' before field to sort in descending order</li><li> set id always at the end of sort list</li></ul>'
+          example:
+          - name
+          - -created
+          items:
+            type: string
+        bookmark:
+          type: array
+          description: list of bookmarks of the last search response (must respect the sort list order). When it is using, a bookmark id must always be set even if sort list is empty or "id" criteria is missing.
+          example:
+          - Auto-created device (lora / EE00EF0000000011)
+          - 1593700879802
+          items: {}
+        size:
+          type: integer
+          format: int32
+          description: Max number of devices per page
+          example: 20
+    InterfaceDefinition:
       type: object
       properties:
-        key:
+        connector:
           type: string
-        value:
+          description: Interface connector
+          example: lwm2m
+        nodeId:
           type: string
+          description: Interface node identifier
+          example: 12345A0409001C1A
+      required:
+      - connector
+    GroupByProperties:
+      type: object
+      properties:
+        groupBy:
+          description: group by
+        field:
+          type: string
+          enum:
+          - key
+          - value
+        filter:
+          $ref: '#/components/schemas/PropertiesFilters'
+    ActivityInfo:
+      type: object
+      properties:
+        ruleId:
+          type: string
+          description: Activity rule identifier
+          example: ab12
+        state:
+          type: string
+          description: Activity state of the device according to the activity rules set for this device
+          example: ACTIVE
+    Coordinates:
+      type: object
+      properties:
+        lat:
+          type: number
+          format: double
+          description: latitude
+          example: 52.369219
+        lon:
+          type: number
+          format: double
+          description: longitude
+          example: 4.901618
+      required:
+      - lat
+      - lon
+    GeoAggregation:
+      type: object
+      description: Geo aggregation
+      properties:
+        count:
+          type: integer
+          format: int64
+          description: total number of entries (interfaces,properties, or activityState) in aggregation buckets
+        devices:
+          type: integer
+          format: int64
+          description: total number of devices in aggregation buckets
+        buckets:
+          type: array
+          description: aggregation buckets
+          items:
+            $ref: '#/components/schemas/LocationBucket'
+        missing:
+          type: integer
+          format: int64
+          description: total number of devices not matching group-by clause
+        geoBounds:
+          $ref: '#/components/schemas/GeoBounds'
+          description: geo bounds (bounding box containing all geo values)
+    GroupByInterfaces:
+      type: object
+      properties:
+        groupBy:
+          description: group by
+        field:
+          type: string
+          enum:
+          - definition.profile
+          - connector
+          - status
+        definition:
+          $ref: '#/components/schemas/GroupByInterfaceDefinition'
+        filter:
+          $ref: '#/components/schemas/InterfacesFilters'
+    GeoBounds:
+      type: object
+      properties:
+        topLeft:
+          $ref: '#/components/schemas/Coordinates'
+          description: top-left coordinate
+        bottomRight:
+          $ref: '#/components/schemas/Coordinates'
+          description: bottom-right coordinate
+      required:
+      - bottomRight
+      - topLeft
   securitySchemes:
     X-API-KEY:
       type: apiKey

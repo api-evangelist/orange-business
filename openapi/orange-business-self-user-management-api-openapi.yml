@@ -280,6 +280,24 @@ components:
       - roles
       - state
       - tenantId
+    ExternalIdentity:
+      type: object
+      description: user's external identity
+      properties:
+        provider:
+          type: string
+          description: the external identity provider. Expected string (max 255 characters)
+          example: SIU
+        id:
+          type: string
+          description: the external identity identifier. Expected string (max 255 characters)
+          example: 44b738a0-b280-11e7-abc4-cec278b6b50a
+        login:
+          type: string
+          description: the external identity login. Expected string (max 255 characters)
+          example: bagginsf
+      required:
+      - provider
     WebErrorResponse:
       type: object
       description: Error response
@@ -300,6 +318,27 @@ components:
       - code
       - id
       - message
+    DiscoverActivationDefinition:
+      type: object
+      description: Trial activation definition
+      properties:
+        password:
+          type: string
+          description: Main user's password
+          example: MynewPWD
+        tokenId:
+          type: string
+          description: Token provided by email
+        company:
+          type: string
+          description: Main user's company
+        login:
+          type: string
+          description: Main user's email
+      required:
+      - login
+      - password
+      - tokenId
     UpdateUserPasswordInfo:
       type: object
       description: body of user update password
@@ -327,45 +366,6 @@ components:
       - newPassword
       - oldPassword
       - tokenId
-    DiscoverActivationDefinition:
-      type: object
-      description: Trial activation definition
-      properties:
-        password:
-          type: string
-          description: Main user's password
-          example: MynewPWD
-        tokenId:
-          type: string
-          description: Token provided by email
-        company:
-          type: string
-          description: Main user's company
-        login:
-          type: string
-          description: Main user's email
-      required:
-      - login
-      - password
-      - tokenId
-    ExternalIdentity:
-      type: object
-      description: user's external identity
-      properties:
-        provider:
-          type: string
-          description: the external identity provider. Expected string (max 255 characters)
-          example: SIU
-        id:
-          type: string
-          description: the external identity identifier. Expected string (max 255 characters)
-          example: 44b738a0-b280-11e7-abc4-cec278b6b50a
-        login:
-          type: string
-          description: the external identity login. Expected string (max 255 characters)
-          example: bagginsf
-      required:
-      - provider
   securitySchemes:
     X-API-KEY:
       type: apiKey

@@ -134,18 +134,64 @@ paths:
                 $ref: '#/components/schemas/ServiceErrorResponse'
 components:
   schemas:
-    UserProfilePatchRequestWeb:
+    UserProfileIdentity:
       type: object
-      description: body for user profile patch request
+      description: user profile identity
       properties:
-        email:
+        provider:
           type: string
-          description: user email. Expected a valid email (max 254 characters)
-          example: me.name@mycompagny.mycom
-        language:
+          description: identity provider name
+          example: LO
+        id:
           type: string
-          description: 'the user language. Expected language ISO 639-1 (example: "en", "fr", "sk", "ro", "es") (case insensitive, max 2 characters)'
-          example: en
+          description: unique identifier used by the provider to identify the physical person
+          example: jean-jacques
+        lastAuthentication:
+          type: string
+          format: date-time
+          description: last authentification instant for this provider
+          example: '2024-07-10T13:22:11.357+00:00'
+        login:
+          type: string
+          description: identity provider login
+          example: jean.jacques
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: identity provider metadata
+      required:
+      - id
+      - lastAuthentication
+      - provider
+    PageableV2UserAccess:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int64
+          description: 'number of the current page: starts at 0.'
+          example: 0
+        size:
+          type: integer
+          format: int64
+          description: number of data per page (= maximum number of data in the associated list of data:the last page can have less data)
+          example: 1
+        totalCount:
+          type: integer
+          format: int64
+          description: total count of data in the complete list.
+          example: 1
+        data:
+          type: array
+          description: list of data in this page.
+          items:
+            $ref: '#/components/schemas/UserAccess'
+      required:
+      - data
+      - page
+      - size
+      - totalCount
     WebErrorResponse:
       type: object
       description: Error response
@@ -194,34 +240,6 @@ components:
       - code
       - id
       - message
-    PageableV2UserAccess:
-      type: object
-      properties:
-        page:
-          type: integer
-          format: int64
-          description: 'number of the current page: starts at 0.'
-          example: 0
-        size:
-          type: integer
-          format: int64
-          description: number of data per page (= maximum number of data in the associated list of data:the last page can have less data)
-          example: 1
-        totalCount:
-          type: integer
-          format: int64
-          description: total count of data in the complete list.
-          example: 1
-        data:
-          type: array
-          description: list of data in this page.
-          items:
-            $ref: '#/components/schemas/UserAccess'
-      required:
-      - data
-      - page
-      - size
-      - totalCount
     UserProfile:
       type: object
       description: User profile
@@ -250,6 +268,18 @@ components:
       - id
       - identities
       - language
+    UserProfilePatchRequestWeb:
+      type: object
+      description: body for user profile patch request
+      properties:
+        email:
+          type: string
+          description: user email. Expected a valid email (max 254 characters)
+          example: me.name@mycompagny.mycom
+        language:
+          type: string
+          description: 'the user language. Expected language ISO 639-1 (example: "en", "fr", "sk", "ro", "es") (case insensitive, max 2 characters)'
+          example: en
     UserAccess:
       type: object
       description: User access
@@ -308,36 +338,6 @@ components:
       - tenantAccountType
       - tenantId
       - tenantName
-    UserProfileIdentity:
-      type: object
-      description: user profile identity
-      properties:
-        provider:
-          type: string
-          description: identity provider name
-          example: LO
-        id:
-          type: string
-          description: unique identifier used by the provider to identify the physical person
-          example: jean-jacques
-        lastAuthentication:
-          type: string
-          format: date-time
-          description: last authentification instant for this provider
-          example: '2024-07-10T13:22:11.357+00:00'
-        login:
-          type: string
-          description: identity provider login
-          example: jean.jacques
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          description: identity provider metadata
-      required:
-      - id
-      - lastAuthentication
-      - provider
   securitySchemes:
     X-API-KEY:
       type: apiKey

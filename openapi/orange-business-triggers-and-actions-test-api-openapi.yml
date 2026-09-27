@@ -60,6 +60,32 @@ paths:
                 $ref: '#/components/schemas/FifoTestResult'
 components:
   schemas:
+    FifoTestRequest:
+      type: object
+      description: FIFO test message request
+      properties:
+        fifoName:
+          type: string
+          description: name of the fifo to publish in
+        payload:
+          description: Fifo message to send, must be not null and json Object serializable
+      required:
+      - fifoName
+      - payload
+    HttpPushTestResult:
+      type: object
+      properties:
+        success:
+          type: boolean
+        urlBlacklisted:
+          type: boolean
+        errorMessage:
+          type: string
+        httpResponseStatusCode:
+          type: integer
+          format: int32
+        httpResponseBody:
+          type: string
     FifoTestResult:
       type: object
       properties:
@@ -95,32 +121,6 @@ components:
           type: integer
           format: int64
           description: The maximum delay allowed to complete the http POST test request, in milliseconds
-    HttpPushTestResult:
-      type: object
-      properties:
-        success:
-          type: boolean
-        urlBlacklisted:
-          type: boolean
-        errorMessage:
-          type: string
-        httpResponseStatusCode:
-          type: integer
-          format: int32
-        httpResponseBody:
-          type: string
-    FifoTestRequest:
-      type: object
-      description: FIFO test message request
-      properties:
-        fifoName:
-          type: string
-          description: name of the fifo to publish in
-        payload:
-          description: Fifo message to send, must be not null and json Object serializable
-      required:
-      - fifoName
-      - payload
   securitySchemes:
     X-API-KEY:
       type: apiKey

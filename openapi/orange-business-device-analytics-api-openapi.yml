@@ -429,58 +429,122 @@ paths:
                 $ref: '#/components/schemas/DeviceAnalysisClusterClassification'
 components:
   schemas:
-    LoraStatistics:
+    EmailRecipients:
       type: object
       properties:
-        dayStatistics:
-          $ref: '#/components/schemas/LoraDayStatistics'
-          description: Statistics related to the specific analysis day.
-        historyStatistics:
-          $ref: '#/components/schemas/HistoryLoraStatistics'
-          description: Statistics aggregated over the analysis period.
-    HistoryLoraStatistics:
+        to:
+          type: array
+          items:
+            type: string
+        cc:
+          type: array
+          items:
+            type: string
+        cci:
+          type: array
+          items:
+            type: string
+    RegularPattern:
       type: object
       properties:
-        messageCount:
+        period:
+          type: string
+          description: Period of the pattern, use ISO-8601 period definition. E.g. 'PT12H' for a 12 hours period.
+        count:
+          type: integer
+          format: int32
+          description: Number of occurences per period.
+    DtlsStatistics:
+      type: object
+      properties:
+        packetCount:
           type: integer
           format: int64
-          description: Total number of LoRa messages received over the period.
-        snr:
+          description: Total number of DTLS packets received over the period.
+        lostPacketsPerDay:
           $ref: '#/components/schemas/StatisticAggregation'
-          description: Mean 'Signal-to-Noise Ratio' over the period.
-        gatewayCount:
-          $ref: '#/components/schemas/StatisticAggregation'
-          description: Mean 'Gateway Count' over the period.
-        rssi:
-          $ref: '#/components/schemas/StatisticAggregation'
-          description: Mean 'Received Signal Strength Indication' over the period.
-        sf:
-          $ref: '#/components/schemas/StatisticAggregation'
-          description: Mean 'Spreading Factor' over the period.
-        joinRequestPerDay:
-          $ref: '#/components/schemas/StatisticAggregation'
-          description: Mean 'Join Request' messages per day over the period.
-        joinAcceptPerDay:
-          $ref: '#/components/schemas/StatisticAggregation'
-          description: Mean 'Join Accept' messages per day over the period.
-        lostMessagesPerDay:
-          $ref: '#/components/schemas/StatisticAggregation'
-          description: Mean lost messages per day over the period based on LoRaWan frame counter.
-        lostMessagesRatio:
+          description: Average lost DTLS packets per day over the analysis period, based on DTLS sequence number.
+        lostPacketsRatio:
           type: number
           format: double
-          description: Lost messages ratio over the period based on LoRaWan frame counter.
-        missingJoinAccept:
-          type: boolean
-          description: Unbalanced Join Request / Accept ratio over the period.
-        tooManyJoinCycles:
-          type: boolean
-          description: Too many Join cycles over the period.
-    HistoryTrafficStatistics:
+          description: Ratio of DTLS packets lost over the analysis period, based on DTLS sequence number.
+    DeviceAnalysisStats:
       type: object
       properties:
-        messageCountPerDay:
-          $ref: '#/components/schemas/StatisticAggregation'
+        analyticsRuleId:
+          type: string
+          description: Id of the AnalyticsRule this analysis belongs to.
+        deviceId:
+          type: string
+          description: Id of the device.
+        day:
+          type: string
+          description: Day of the analysis. yyyy-MM-dd format.
+        analysisStatus:
+          type: string
+          description: Status of the analysis computation.
+        groupPath:
+          type: string
+          description: Group path of the device at the time of the analysis.
+        updated:
+          type: string
+          format: date-time
+          description: Last update timestamp of the analysis.
+        historyTimeWindowInDays:
+          type: integer
+          format: int32
+          description: The number of days the analysis is based on (e.g. to compute means)
+        trafficAnalysis:
+          $ref: '#/components/schemas/TrafficAnalysis'
+          description: Analysis of the device's data traffic.
+        interfacesAnalysis:
+          $ref: '#/components/schemas/InterfacesAnalysis'
+          description: Analysis of the device's connectivity behaviour.
+    GroupPath:
+      type: object
+      description: defines targeted group path
+      properties:
+        path:
+          type: string
+          description: path of the group
+          example: /europe/france
+        includeSubPath:
+          type: boolean
+          description: 'if true, all sub-paths will be targeted by this ActivityRule '
+      required:
+      - includeSubPath
+      - path
+    Lwm2mStatistics:
+      type: object
+      properties:
+        historyStatistics:
+          $ref: '#/components/schemas/HistoryLwm2mStatistics'
+          description: Statistics aggregated over the analysis period.
+    UndetectedPattern:
+      type: object
+      properties:
+        reason:
+          type: string
+        details:
+          type: string
+    ReportDefinition:
+      type: object
+      properties:
+        recipients:
+          $ref: '#/components/schemas/EmailRecipients'
+          description: email recipients to send the report to. At least one 'to' recipient is mandatory. No more than 10 recipients can be set.
+        language:
+          type: string
+          description: 'language of the report : ''fr'' or ''en''.'
+      required:
+      - language
+      - recipients
+    HistoryLwm2mStatistics:
+      type: object
+      properties:
+        dtlsStatistics:
+          $ref: '#/components/schemas/DtlsStatistics'
+          description: Statistics on the DTLS protocol.
     StatisticAggregation:
       type: object
       properties:
@@ -498,72 +562,46 @@ components:
           $ref: '#/components/schemas/LoraStatistics'
         lwm2m:
           $ref: '#/components/schemas/Lwm2mStatistics'
-    AnalyzedPeriod:
+    ClassificationTransition:
       type: object
       properties:
-        from:
+        description:
           type: string
-          description: Start date of the analysis period. yyyy-MM-dd format.
-        to:
+          description: Human-readable description of the transition.
+        trend:
           type: string
-          description: End date of the analysis period. yyyy-MM-dd format.
-    LoraDayStatistics:
-      type: object
-      properties:
-        joinRequestCount:
-          type: integer
-          format: int32
-          description: Number of 'Join Request' messages received on the analysis day.
-        joinAcceptCount:
-          type: integer
-          format: int32
-          description: Number of 'Join Accept' messages received on the analysis day.
-    EmailRecipients:
-      type: object
-      properties:
-        to:
-          type: array
-          items:
-            type: string
-        cc:
-          type: array
-          items:
-            type: string
-        cci:
-          type: array
-          items:
-            type: string
-    HistoryLwm2mStatistics:
-      type: object
-      properties:
-        dtlsStatistics:
-          $ref: '#/components/schemas/DtlsStatistics'
-          description: Statistics on the DTLS protocol.
-    DeviceAnalysisRegularPattern:
-      type: object
-      properties:
-        analyticsRuleId:
+          description: Trend direction of the transition.
+        detectionDate:
           type: string
-          description: Id of the AnalyticsRule this classification belongs to.
-        deviceId:
-          type: string
-          description: Id of the device.
-        silent:
+          description: Date at which the transition was detected. yyyy-MM-dd format (UTC).
+    RegularPatternClassification:
+      type: object
+      properties:
+        success:
           type: boolean
-          description: True if the device sent no messages during the analyzed period.
-        updated:
-          type: string
-          format: date-time
-          description: Last update timestamp of the classification.
-        analyzedPeriod:
-          $ref: '#/components/schemas/AnalyzedPeriod'
-          description: Period over which the classification was computed.
-        regularPattern:
-          $ref: '#/components/schemas/RegularPatternClassification'
-          description: Regular pattern classification for the device.
-        transition:
-          $ref: '#/components/schemas/ClassificationTransition'
-          description: Transition info in case of a pattern change during the last few weeks..
+        pattern:
+          $ref: '#/components/schemas/RegularPattern'
+          description: Regular pattern detected for the device.
+        score:
+          type: number
+          format: double
+          description: The score will indicate a level of confidence in the result. It is in [0, 1] interval.
+        undetected:
+          $ref: '#/components/schemas/UndetectedPattern'
+          description: Additional information for undetected patterns
+    TrafficStatistics:
+      type: object
+      properties:
+        dayStatistics:
+          $ref: '#/components/schemas/TrafficDayStatistics'
+        historyStatistics:
+          $ref: '#/components/schemas/HistoryTrafficStatistics'
+    TrafficDayStatistics:
+      type: object
+      properties:
+        messageCount:
+          type: integer
+          format: int32
     FlattenedDeviceAnalysisResult:
       type: object
       properties:
@@ -637,6 +675,100 @@ components:
         days_used_for_statistics_analysis:
           type: integer
           format: int32
+    TrafficAnalysis:
+      type: object
+      properties:
+        statistics:
+          $ref: '#/components/schemas/TrafficStatistics'
+          description: Statistical aggregations of the device's traffic.
+        silent:
+          type: boolean
+          description: True if the device sent no messages during the analysis period.
+    HistoryLoraStatistics:
+      type: object
+      properties:
+        messageCount:
+          type: integer
+          format: int64
+          description: Total number of LoRa messages received over the period.
+        snr:
+          $ref: '#/components/schemas/StatisticAggregation'
+          description: Mean 'Signal-to-Noise Ratio' over the period.
+        gatewayCount:
+          $ref: '#/components/schemas/StatisticAggregation'
+          description: Mean 'Gateway Count' over the period.
+        rssi:
+          $ref: '#/components/schemas/StatisticAggregation'
+          description: Mean 'Received Signal Strength Indication' over the period.
+        sf:
+          $ref: '#/components/schemas/StatisticAggregation'
+          description: Mean 'Spreading Factor' over the period.
+        joinRequestPerDay:
+          $ref: '#/components/schemas/StatisticAggregation'
+          description: Mean 'Join Request' messages per day over the period.
+        joinAcceptPerDay:
+          $ref: '#/components/schemas/StatisticAggregation'
+          description: Mean 'Join Accept' messages per day over the period.
+        lostMessagesPerDay:
+          $ref: '#/components/schemas/StatisticAggregation'
+          description: Mean lost messages per day over the period based on LoRaWan frame counter.
+        lostMessagesRatio:
+          type: number
+          format: double
+          description: Lost messages ratio over the period based on LoRaWan frame counter.
+        missingJoinAccept:
+          type: boolean
+          description: Unbalanced Join Request / Accept ratio over the period.
+        tooManyJoinCycles:
+          type: boolean
+          description: Too many Join cycles over the period.
+    DeviceAnalysisRegularPattern:
+      type: object
+      properties:
+        analyticsRuleId:
+          type: string
+          description: Id of the AnalyticsRule this classification belongs to.
+        deviceId:
+          type: string
+          description: Id of the device.
+        silent:
+          type: boolean
+          description: True if the device sent no messages during the analyzed period.
+        updated:
+          type: string
+          format: date-time
+          description: Last update timestamp of the classification.
+        analyzedPeriod:
+          $ref: '#/components/schemas/AnalyzedPeriod'
+          description: Period over which the classification was computed.
+        regularPattern:
+          $ref: '#/components/schemas/RegularPatternClassification'
+          description: Regular pattern classification for the device.
+        transition:
+          $ref: '#/components/schemas/ClassificationTransition'
+          description: Transition info in case of a pattern change during the last few weeks..
+    AnalyticsRule:
+      type: object
+      description: defines the device analytics rule that will be performed
+      properties:
+        id:
+          type: string
+          description: id of the AnalyticsRule. Should be null when used for POST.
+        name:
+          type: string
+          description: user-defined name for the rule, must be unique and not empty.
+        fleet:
+          $ref: '#/components/schemas/Fleet'
+          description: defines the targeted devices of a this AnalyticsRule
+        report:
+          $ref: '#/components/schemas/ReportDefinition'
+          description: defines the analytics report to send by email
+        enabled:
+          type: boolean
+          description: activate or not the rule. Default is false.
+      required:
+      - fleet
+      - name
     DeviceAnalysisClusterClassification:
       type: object
       properties:
@@ -662,56 +794,6 @@ components:
         transition:
           $ref: '#/components/schemas/ClassificationTransition'
           description: Transition info in case of a cluster change during the last few weeks..
-    UndetectedPattern:
-      type: object
-      properties:
-        reason:
-          type: string
-        details:
-          type: string
-    RegularPatternClassification:
-      type: object
-      properties:
-        success:
-          type: boolean
-        pattern:
-          $ref: '#/components/schemas/RegularPattern'
-          description: Regular pattern detected for the device.
-        score:
-          type: number
-          format: double
-          description: The score will indicate a level of confidence in the result. It is in [0, 1] interval.
-        undetected:
-          $ref: '#/components/schemas/UndetectedPattern'
-          description: Additional information for undetected patterns
-    AnalyticsRule:
-      type: object
-      description: defines the device analytics rule that will be performed
-      properties:
-        id:
-          type: string
-          description: id of the AnalyticsRule. Should be null when used for POST.
-        name:
-          type: string
-          description: user-defined name for the rule, must be unique and not empty.
-        fleet:
-          $ref: '#/components/schemas/Fleet'
-          description: defines the targeted devices of a this AnalyticsRule
-        report:
-          $ref: '#/components/schemas/ReportDefinition'
-          description: defines the analytics report to send by email
-        enabled:
-          type: boolean
-          description: activate or not the rule. Default is false.
-      required:
-      - fleet
-      - name
-    TrafficDayStatistics:
-      type: object
-      properties:
-        messageCount:
-          type: integer
-          format: int32
     UndetectedCluster:
       type: object
       properties:
@@ -719,83 +801,6 @@ components:
           type: string
         details:
           type: string
-    Cluster:
-      type: object
-      properties:
-        reference:
-          type: integer
-          format: int32
-          description: Reference identifying the cluster
-        name:
-          type: string
-          description: Name of the cluster
-        likenessToCluster:
-          type: number
-          format: double
-          description: Similarity score indicating how close the device is to the cluster's centroid
-    RegularPattern:
-      type: object
-      properties:
-        period:
-          type: string
-          description: Period of the pattern, use ISO-8601 period definition. E.g. 'PT12H' for a 12 hours period.
-        count:
-          type: integer
-          format: int32
-          description: Number of occurences per period.
-    Fleet:
-      type: object
-      properties:
-        connectors:
-          type: array
-          description: list of connectivity that targeted devices must declare. 1 and only 1 connector must be defined.
-          items:
-            type: string
-        groupPaths:
-          type: array
-          description: list of targeted group paths
-          items:
-            $ref: '#/components/schemas/GroupPath'
-      required:
-      - connectors
-    DeviceAnalysisStats:
-      type: object
-      properties:
-        analyticsRuleId:
-          type: string
-          description: Id of the AnalyticsRule this analysis belongs to.
-        deviceId:
-          type: string
-          description: Id of the device.
-        day:
-          type: string
-          description: Day of the analysis. yyyy-MM-dd format.
-        analysisStatus:
-          type: string
-          description: Status of the analysis computation.
-        groupPath:
-          type: string
-          description: Group path of the device at the time of the analysis.
-        updated:
-          type: string
-          format: date-time
-          description: Last update timestamp of the analysis.
-        historyTimeWindowInDays:
-          type: integer
-          format: int32
-          description: The number of days the analysis is based on (e.g. to compute means)
-        trafficAnalysis:
-          $ref: '#/components/schemas/TrafficAnalysis'
-          description: Analysis of the device's data traffic.
-        interfacesAnalysis:
-          $ref: '#/components/schemas/InterfacesAnalysis'
-          description: Analysis of the device's connectivity behaviour.
-    Lwm2mStatistics:
-      type: object
-      properties:
-        historyStatistics:
-          $ref: '#/components/schemas/HistoryLwm2mStatistics'
-          description: Statistics aggregated over the analysis period.
     InterfacesStatus:
       type: object
       properties:
@@ -804,36 +809,6 @@ components:
         status:
           type: string
           description: Status of the device connectivity for the day. For LoRa connectivity, it is the last connectivity state of the day. MQTT status will be 'ONLINE' if it has been ONLINE once during the day.
-    TrafficStatistics:
-      type: object
-      properties:
-        dayStatistics:
-          $ref: '#/components/schemas/TrafficDayStatistics'
-        historyStatistics:
-          $ref: '#/components/schemas/HistoryTrafficStatistics'
-    GroupPath:
-      type: object
-      description: defines targeted group path
-      properties:
-        path:
-          type: string
-          description: path of the group
-          example: /europe/france
-        includeSubPath:
-          type: boolean
-          description: 'if true, all sub-paths will be targeted by this ActivityRule '
-      required:
-      - includeSubPath
-      - path
-    TrafficAnalysis:
-      type: object
-      properties:
-        statistics:
-          $ref: '#/components/schemas/TrafficStatistics'
-          description: Statistical aggregations of the device's traffic.
-        silent:
-          type: boolean
-          description: True if the device sent no messages during the analysis period.
     ClusterClassification:
       type: object
       properties:
@@ -853,44 +828,69 @@ components:
         undetected:
           $ref: '#/components/schemas/UndetectedCluster'
           description: Reason for not detecting for the device.
-    DtlsStatistics:
+    LoraStatistics:
       type: object
       properties:
-        packetCount:
+        dayStatistics:
+          $ref: '#/components/schemas/LoraDayStatistics'
+          description: Statistics related to the specific analysis day.
+        historyStatistics:
+          $ref: '#/components/schemas/HistoryLoraStatistics'
+          description: Statistics aggregated over the analysis period.
+    Cluster:
+      type: object
+      properties:
+        reference:
           type: integer
-          format: int64
-          description: Total number of DTLS packets received over the period.
-        lostPacketsPerDay:
-          $ref: '#/components/schemas/StatisticAggregation'
-          description: Average lost DTLS packets per day over the analysis period, based on DTLS sequence number.
-        lostPacketsRatio:
+          format: int32
+          description: Reference identifying the cluster
+        name:
+          type: string
+          description: Name of the cluster
+        likenessToCluster:
           type: number
           format: double
-          description: Ratio of DTLS packets lost over the analysis period, based on DTLS sequence number.
-    ClassificationTransition:
+          description: Similarity score indicating how close the device is to the cluster's centroid
+    AnalyzedPeriod:
       type: object
       properties:
-        description:
+        from:
           type: string
-          description: Human-readable description of the transition.
-        trend:
+          description: Start date of the analysis period. yyyy-MM-dd format.
+        to:
           type: string
-          description: Trend direction of the transition.
-        detectionDate:
-          type: string
-          description: Date at which the transition was detected. yyyy-MM-dd format (UTC).
-    ReportDefinition:
+          description: End date of the analysis period. yyyy-MM-dd format.
+    HistoryTrafficStatistics:
       type: object
       properties:
-        recipients:
-          $ref: '#/components/schemas/EmailRecipients'
-          description: email recipients to send the report to. At least one 'to' recipient is mandatory. No more than 10 recipients can be set.
-        language:
-          type: string
-          description: 'language of the report : ''fr'' or ''en''.'
+        messageCountPerDay:
+          $ref: '#/components/schemas/StatisticAggregation'
+    LoraDayStatistics:
+      type: object
+      properties:
+        joinRequestCount:
+          type: integer
+          format: int32
+          description: Number of 'Join Request' messages received on the analysis day.
+        joinAcceptCount:
+          type: integer
+          format: int32
+          description: Number of 'Join Accept' messages received on the analysis day.
+    Fleet:
+      type: object
+      properties:
+        connectors:
+          type: array
+          description: list of connectivity that targeted devices must declare. 1 and only 1 connector must be defined.
+          items:
+            type: string
+        groupPaths:
+          type: array
+          description: list of targeted group paths
+          items:
+            $ref: '#/components/schemas/GroupPath'
       required:
-      - language
-      - recipients
+      - connectors
   securitySchemes:
     X-API-KEY:
       type: apiKey

@@ -22,6 +22,11 @@ apis:
   - Connectivity
   - IoT
   - SIM
+  - Telecommunications
+  tags_raw:
+  - Connectivity
+  - IoT
+  - SIM
   - Telco
   humanURL: https://developer.orange.com/apis/iot-managed-global-connectivity
   properties:
@@ -34,6 +39,12 @@ apis:
 - aid: orange-business:orange-business-orange-money-webpay-api
   name: Orange Business Orange Money WebPay API
   tags:
+  - Africa
+  - Mobile Money
+  - Orange Money
+  - Payments
+  - Telecommunications
+  tags_raw:
   - Africa
   - Mobile Money
   - Orange Money
@@ -54,6 +65,10 @@ apis:
   tags:
   - Carrier Billing
   - Payments
+  - Telecommunications
+  tags_raw:
+  - Carrier Billing
+  - Payments
   - Telco
   humanURL: https://developer.orange.com/apis/pay-with-orange-bill
   properties:
@@ -65,6 +80,12 @@ apis:
 - aid: orange-business:orange-business-sms-mea-api
   name: Orange Business SMS Middle East and Africa API
   tags:
+  - Africa
+  - Messaging
+  - Middle East
+  - SMS
+  - Telecommunications
+  tags_raw:
   - Africa
   - Messaging
   - Middle East
@@ -82,6 +103,11 @@ apis:
   name: Orange Business Voice as a Service API
   tags:
   - Communications
+  - Telecommunications
+  - Voice
+  - VoIP
+  tags_raw:
+  - Communications
   - Telco
   - Voice
   - VoIP
@@ -98,7 +124,7 @@ apis:
   - Communications
   - Multi-Channel
   - Notification
-  - Telco
+  - Telecommunications
   tags_raw:
   - Communications
   - Multichannel
@@ -118,6 +144,12 @@ apis:
   - Communications
   - Enterprise
   - SIP Trunking
+  - Telecommunications
+  - Voice
+  tags_raw:
+  - Communications
+  - Enterprise
+  - SIP Trunking
   - Telco
   - Voice
   humanURL: https://developer.orange.com/apis/businesstalk
@@ -133,7 +165,7 @@ apis:
   - Cloud
   - Infrastructure-as-a-Service
   - Sovereign Cloud
-  - Telco
+  - Telecommunications
   - VMware
   tags_raw:
   - Cloud
@@ -154,7 +186,7 @@ apis:
   - Cloud
   - Infrastructure-as-a-Service
   - Sandbox
-  - Telco
+  - Telecommunications
   tags_raw:
   - Cloud
   - IaaS
@@ -174,7 +206,7 @@ apis:
   - Enterprise
   - Ethernet
   - Networks
-  - Telco
+  - Telecommunications
   tags_raw:
   - Connectivity
   - Enterprise
@@ -194,7 +226,7 @@ apis:
   - Monitoring
   - Networks
   - Observability
-  - Telco
+  - Telecommunications
   tags_raw:
   - Monitoring
   - Network
@@ -213,6 +245,11 @@ apis:
   - CDN
   - Content Delivery
   - Performance
+  - Telecommunications
+  tags_raw:
+  - CDN
+  - Content Delivery
+  - Performance
   - Telco
   humanURL: https://developer.orange.com/apis/content-delivery-boost
   properties:
@@ -228,7 +265,7 @@ apis:
   - Customers
   - Inventory
   - Orange Business Services
-  - Telco
+  - Telecommunications
   tags_raw:
   - B2B
   - Customer
@@ -249,6 +286,12 @@ apis:
   - Ordering
   - Orange Business Services
   - TM Forum
+  - Telecommunications
+  tags_raw:
+  - B2B
+  - Ordering
+  - Orange Business Services
+  - TM Forum
   - Telco
   humanURL: https://developer.orange.com/apis/orange-business-services-ordering
   properties:
@@ -263,6 +306,11 @@ apis:
   - B2B
   - Order Tracking
   - Orange Business Services
+  - Telecommunications
+  tags_raw:
+  - B2B
+  - Order Tracking
+  - Orange Business Services
   - Telco
   humanURL: https://developer.orange.com/apis/order-tracking-documentation
   properties:
@@ -274,6 +322,11 @@ apis:
 - aid: orange-business:orange-business-billing-api
   name: Orange Business Billing API
   tags:
+  - B2B
+  - Billing
+  - Orange Business Services
+  - Telecommunications
+  tags_raw:
   - B2B
   - Billing
   - Orange Business Services
@@ -293,6 +346,13 @@ apis:
   - ITSM
   - Orange Business Services
   - TM Forum
+  - Telecommunications
+  tags_raw:
+  - B2B
+  - Incident Management
+  - ITSM
+  - Orange Business Services
+  - TM Forum
   - Telco
   humanURL: https://developer.orange.com/apis/orange-business-services-incident
   properties:
@@ -307,6 +367,11 @@ apis:
   - API Marketplace
   - B2B
   - Catalogue
+  - Telecommunications
+  tags_raw:
+  - API Marketplace
+  - B2B
+  - Catalogue
   - Telco
   humanURL: https://developer.orange.com/apis/api-place
   properties:
@@ -318,6 +383,12 @@ apis:
 - aid: orange-business:orange-business-operator-eligibility-fr-api
   name: Orange Business Operator Eligibility (France) API
   tags:
+  - B2B
+  - Broadband
+  - Eligibility
+  - France
+  - Telecommunications
+  tags_raw:
   - B2B
   - Broadband
   - Eligibility
@@ -338,6 +409,13 @@ apis:
   - Eligibility
   - Fibre
   - France
+  - Telecommunications
+  tags_raw:
+  - B2B
+  - Broadband
+  - Eligibility
+  - Fibre
+  - France
   - Telco
   humanURL: https://developer.orange.com/apis/rip-operator-eligibility-fr
   properties:
@@ -349,6 +427,12 @@ apis:
 - aid: orange-business:orange-business-live-identity-verify-api
   name: Orange Business Live Identity Verify API
   tags:
+  - Biometrics
+  - Fraud Prevention
+  - Identity
+  - KYC
+  - Telecommunications
+  tags_raw:
   - Biometrics
   - Fraud Prevention
   - Identity
@@ -368,7 +452,7 @@ apis:
   - CAPTCHA
   - Fraud Prevention
   - Identity
-  - Telco
+  - Telecommunications
   tags_raw:
   - Anti-Bot
   - Captcha
@@ -385,6 +469,12 @@ apis:
 - aid: orange-business:orange-business-messagingpro-cameroon-api
   name: Orange Business Messaging Pro Cameroon API
   tags:
+  - Africa
+  - Cameroon
+  - Messaging
+  - SMS
+  - Telecommunications
+  tags_raw:
   - Africa
   - Cameroon
   - Messaging
@@ -2110,7 +2200,7 @@ tags:
 - SD-WAN
 - SMS
 - SASE
-- Telco
+- Telecommunications
 - Voice
 tags_raw:
 - 5G

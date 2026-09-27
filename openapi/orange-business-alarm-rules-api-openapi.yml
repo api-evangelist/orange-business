@@ -225,66 +225,24 @@ paths:
                   $ref: '#/components/schemas/AlarmRuleSupportedValues'
 components:
   schemas:
-    AlarmTrigger:
+    TriggerCondition:
       type: object
       properties:
-        condition:
-          $ref: '#/components/schemas/TriggerCondition'
-          description: trigger condition configuration
-    ThrottleConfigSupportedValues:
-      type: object
-      properties:
-        supportedMuteDurations:
-          type: array
-          description: the supported mute durations.
-          example:
-          - PT6H
-          - PT12H
-          - P1D
-          - P2D
-          items:
-            type: string
-    AlarmNotifications:
-      type: object
-      properties:
-        notificationChannelIds:
-          type: array
-          description: ids of notification channels that define the recipients of the alarm
-          example: default
-          items:
-            type: string
+        comparisonOperator:
+          type: string
+          description: the type of operator used for comparison
+          example: lessThanOrEqualTo
+        threshold:
+          type: number
+          format: double
+          description: the threshold value
+        evaluationWindow:
+          type: string
+          description: the time window (as an ISO 8601 duration) over which the data will be aggregated and evaluated
+          example: PT1H
       required:
-      - notificationChannelIds
-    AlarmRule:
-      type: object
-      description: defines an alarm configuration
-      properties:
-        id:
-          type: string
-          description: id of the AlarmRule. Should be null when used for POST.
-        enabled:
-          type: boolean
-          description: activate or not the rule
-        type:
-          type: string
-          description: specific type of the alarm
-          example: actionPolicySuspended
-        name:
-          type: string
-          description: user-defined name for the rule, must not be empty, should be unique
-        throttle:
-          $ref: '#/components/schemas/ThrottleConfig'
-          description: Configuration for throttling alarm notifications. Throttling prevents sending repeated notifications for the same alarm.
-        trigger:
-          $ref: '#/components/schemas/AlarmTrigger'
-          description: alarm trigger configuration
-        notifications:
-          $ref: '#/components/schemas/AlarmNotifications'
-          description: notification configuration
-      required:
-      - name
-      - notifications
-      - type
+      - comparisonOperator
+      - threshold
     RangeDouble:
       type: object
       properties:
@@ -322,45 +280,49 @@ components:
           - percentage
       required:
       - type
-    TriggerCondition:
+    AlarmRule:
       type: object
+      description: defines an alarm configuration
       properties:
-        comparisonOperator:
+        id:
           type: string
-          description: the type of operator used for comparison
-          example: lessThanOrEqualTo
-        threshold:
-          type: number
-          format: double
-          description: the threshold value
-        evaluationWindow:
+          description: id of the AlarmRule. Should be null when used for POST.
+        enabled:
+          type: boolean
+          description: activate or not the rule
+        type:
           type: string
-          description: the time window (as an ISO 8601 duration) over which the data will be aggregated and evaluated
-          example: PT1H
+          description: specific type of the alarm
+          example: actionPolicySuspended
+        name:
+          type: string
+          description: user-defined name for the rule, must not be empty, should be unique
+        throttle:
+          $ref: '#/components/schemas/ThrottleConfig'
+          description: Configuration for throttling alarm notifications. Throttling prevents sending repeated notifications for the same alarm.
+        trigger:
+          $ref: '#/components/schemas/AlarmTrigger'
+          description: alarm trigger configuration
+        notifications:
+          $ref: '#/components/schemas/AlarmNotifications'
+          description: notification configuration
       required:
-      - comparisonOperator
-      - threshold
-    TriggerSupportedValues:
+      - name
+      - notifications
+      - type
+    ThrottleConfigSupportedValues:
       type: object
       properties:
-        condition:
-          $ref: '#/components/schemas/TriggerConditionSupportedValues'
-          description: the supported trigger condition values
-    ThrottleConfig:
-      type: object
-      properties:
-        muteDuration:
-          type: string
-          description: 'The duration for which notifications for the same alarm are muted after being sent.
-
-            During this period, additional notifications for the same alarm will not be sent,
-
-            even if the alarm is repeatedly triggered.
-
-            Specify the duration using the ISO 8601 duration format (e.g., ''PT1H'' for 1 hour, ''P1D'' for 1 day).
-
-            '
-          example: P7D
+        supportedMuteDurations:
+          type: array
+          description: the supported mute durations.
+          example:
+          - PT6H
+          - PT12H
+          - P1D
+          - P2D
+          items:
+            type: string
     AlarmRuleSupportedValues:
       type: object
       description: gives the supported values for alarm configurations
@@ -377,6 +339,17 @@ components:
           description: the supported trigger values
       required:
       - type
+    AlarmNotifications:
+      type: object
+      properties:
+        notificationChannelIds:
+          type: array
+          description: ids of notification channels that define the recipients of the alarm
+          example: default
+          items:
+            type: string
+      required:
+      - notificationChannelIds
     TriggerConditionSupportedValues:
       type: object
       properties:
@@ -398,6 +371,33 @@ components:
           - PT24H
           items:
             type: string
+    TriggerSupportedValues:
+      type: object
+      properties:
+        condition:
+          $ref: '#/components/schemas/TriggerConditionSupportedValues'
+          description: the supported trigger condition values
+    ThrottleConfig:
+      type: object
+      properties:
+        muteDuration:
+          type: string
+          description: 'The duration for which notifications for the same alarm are muted after being sent.
+
+            During this period, additional notifications for the same alarm will not be sent,
+
+            even if the alarm is repeatedly triggered.
+
+            Specify the duration using the ISO 8601 duration format (e.g., ''PT1H'' for 1 hour, ''P1D'' for 1 day).
+
+            '
+          example: P7D
+    AlarmTrigger:
+      type: object
+      properties:
+        condition:
+          $ref: '#/components/schemas/TriggerCondition'
+          description: trigger condition configuration
   securitySchemes:
     X-API-KEY:
       type: apiKey
