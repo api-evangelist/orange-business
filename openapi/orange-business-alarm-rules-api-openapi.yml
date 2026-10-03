@@ -225,6 +225,82 @@ paths:
                   $ref: '#/components/schemas/AlarmRuleSupportedValues'
 components:
   schemas:
+    TriggerSupportedValues:
+      type: object
+      properties:
+        condition:
+          $ref: '#/components/schemas/TriggerConditionSupportedValues'
+          description: the supported trigger condition values
+    AlarmTrigger:
+      type: object
+      properties:
+        condition:
+          $ref: '#/components/schemas/TriggerCondition'
+          description: trigger condition configuration
+    AlarmNotifications:
+      type: object
+      properties:
+        notificationChannelIds:
+          type: array
+          description: ids of notification channels that define the recipients of the alarm
+          example: default
+          items:
+            type: string
+      required:
+      - notificationChannelIds
+    ThrottleConfig:
+      type: object
+      properties:
+        muteDuration:
+          type: string
+          description: 'The duration for which notifications for the same alarm are muted after being sent.
+
+            During this period, additional notifications for the same alarm will not be sent,
+
+            even if the alarm is repeatedly triggered.
+
+            Specify the duration using the ISO 8601 duration format (e.g., ''PT1H'' for 1 hour, ''P1D'' for 1 day).
+
+            '
+          example: P7D
+    AlarmRuleSupportedValues:
+      type: object
+      description: gives the supported values for alarm configurations
+      properties:
+        type:
+          type: string
+          description: specific type of the alarm
+          example: messageDeliverySuccessRatio
+        throttle:
+          $ref: '#/components/schemas/ThrottleConfigSupportedValues'
+          description: the supported throttle values
+        trigger:
+          $ref: '#/components/schemas/TriggerSupportedValues'
+          description: the supported trigger values
+      required:
+      - type
+    ThrottleConfigSupportedValues:
+      type: object
+      properties:
+        supportedMuteDurations:
+          type: array
+          description: the supported mute durations.
+          example:
+          - PT6H
+          - PT12H
+          - P1D
+          - P2D
+          items:
+            type: string
+    RangeDouble:
+      type: object
+      properties:
+        minimum:
+          type: number
+          format: double
+        maximum:
+          type: number
+          format: double
     TriggerCondition:
       type: object
       properties:
@@ -243,15 +319,6 @@ components:
       required:
       - comparisonOperator
       - threshold
-    RangeDouble:
-      type: object
-      properties:
-        minimum:
-          type: number
-          format: double
-        maximum:
-          type: number
-          format: double
     SupportedThreshold:
       type: object
       properties:
@@ -280,6 +347,27 @@ components:
           - percentage
       required:
       - type
+    TriggerConditionSupportedValues:
+      type: object
+      properties:
+        supportedComparisonOperators:
+          type: array
+          description: the supported comparison operators
+          example:
+          - lessThanOrEqualTo
+          items:
+            type: string
+        supportedThreshold:
+          $ref: '#/components/schemas/SupportedThreshold'
+          description: the supported threshold range
+        supportedEvaluationWindows:
+          type: array
+          description: the supported evaluation windows
+          example:
+          - PT1H
+          - PT24H
+          items:
+            type: string
     AlarmRule:
       type: object
       description: defines an alarm configuration
@@ -310,94 +398,6 @@ components:
       - name
       - notifications
       - type
-    ThrottleConfigSupportedValues:
-      type: object
-      properties:
-        supportedMuteDurations:
-          type: array
-          description: the supported mute durations.
-          example:
-          - PT6H
-          - PT12H
-          - P1D
-          - P2D
-          items:
-            type: string
-    AlarmRuleSupportedValues:
-      type: object
-      description: gives the supported values for alarm configurations
-      properties:
-        type:
-          type: string
-          description: specific type of the alarm
-          example: messageDeliverySuccessRatio
-        throttle:
-          $ref: '#/components/schemas/ThrottleConfigSupportedValues'
-          description: the supported throttle values
-        trigger:
-          $ref: '#/components/schemas/TriggerSupportedValues'
-          description: the supported trigger values
-      required:
-      - type
-    AlarmNotifications:
-      type: object
-      properties:
-        notificationChannelIds:
-          type: array
-          description: ids of notification channels that define the recipients of the alarm
-          example: default
-          items:
-            type: string
-      required:
-      - notificationChannelIds
-    TriggerConditionSupportedValues:
-      type: object
-      properties:
-        supportedComparisonOperators:
-          type: array
-          description: the supported comparison operators
-          example:
-          - lessThanOrEqualTo
-          items:
-            type: string
-        supportedThreshold:
-          $ref: '#/components/schemas/SupportedThreshold'
-          description: the supported threshold range
-        supportedEvaluationWindows:
-          type: array
-          description: the supported evaluation windows
-          example:
-          - PT1H
-          - PT24H
-          items:
-            type: string
-    TriggerSupportedValues:
-      type: object
-      properties:
-        condition:
-          $ref: '#/components/schemas/TriggerConditionSupportedValues'
-          description: the supported trigger condition values
-    ThrottleConfig:
-      type: object
-      properties:
-        muteDuration:
-          type: string
-          description: 'The duration for which notifications for the same alarm are muted after being sent.
-
-            During this period, additional notifications for the same alarm will not be sent,
-
-            even if the alarm is repeatedly triggered.
-
-            Specify the duration using the ISO 8601 duration format (e.g., ''PT1H'' for 1 hour, ''P1D'' for 1 day).
-
-            '
-          example: P7D
-    AlarmTrigger:
-      type: object
-      properties:
-        condition:
-          $ref: '#/components/schemas/TriggerCondition'
-          description: trigger condition configuration
   securitySchemes:
     X-API-KEY:
       type: apiKey

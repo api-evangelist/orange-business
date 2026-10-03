@@ -261,6 +261,121 @@ paths:
                   $ref: '#/components/schemas/ProviderResponse'
 components:
   schemas:
+    SimCapabilities:
+      type: object
+      properties:
+        smartSim:
+          type: boolean
+          description: Status of Smart SIM
+          example: true
+    Provider:
+      type: object
+      description: Customer Cellular-Network provider
+      properties:
+        type:
+          type: string
+          description: 'Provider type. Allowed values: [malima] (case insensitive)'
+          example: malima
+        configuration:
+          $ref: '#/components/schemas/ProviderConfiguration'
+          description: Provider customer account configuration
+          example:
+            cen: cen111
+            instanceId: OFR
+        accountName:
+          type: string
+          description: Provider account name
+          example: MyAccountName
+        link:
+          type: string
+          description: link to access portal M2M
+          example: https://m2mexpress.fr.orange-business.com/mac/customer/fleet/details.do?subId=06361404&category=SIM
+    SearchSubscriptionsRequest:
+      type: object
+      description: Search subscriptions request
+      properties:
+        type:
+          type: string
+          description: 'Search type of the subscription, allowed types : "msisdn", "imei" or "deviceId"'
+          example: msisdn
+        value:
+          type: string
+          description: Search value of the subscription (max 269 characters)
+          example: '337000003543020'
+      required:
+      - type
+      - value
+    GetLocationResponse:
+      type: object
+      description: Cellular-Network get location
+      properties:
+        lat:
+          type: number
+          format: double
+          description: 'Latitude value. The latitude must be between -180 and 180 '
+          example: 45.000009
+        lon:
+          type: number
+          format: double
+          description: Longitude value. The longitude must be between -90 and 90
+          example: -30.00001
+        accuracy:
+          type: number
+          format: double
+          description: Accuracy value (in meter).
+          example: 20.0
+        provider:
+          type: string
+          description: Location provider.
+          example: network
+        lastUpdateTs:
+          type: string
+          format: date-time
+          description: Location date.
+          example: '2016-06-03T15:55:36.944Z'
+        link:
+          type: string
+          description: link to access portal M2M
+          example: https://m2mexpress.fr.orange-business.com/mac/customer/fleet/deviceinfo/localization-details.do?subId=06361404&category=SIM
+    TrafficData:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: Start date of the traffic data bucket
+          example: '2021-02-03T10:45:35+01:00'
+        smsIn:
+          type: integer
+          format: int64
+          description: Number of SMS received by the device
+          example: 5
+        smsOut:
+          type: integer
+          format: int64
+          description: Number of SMS sent by the device
+          example: 5
+        dataIn:
+          type: integer
+          format: int64
+          description: Volume in bytes of data received by the device
+          example: 1096
+        dataOut:
+          type: integer
+          format: int64
+          description: Volume in bytes of data sent by the device
+          example: 1096
+    MobileNetwork:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Code of mobile network
+          example: 208-01
+        value:
+          type: string
+          description: Value of mobile network
+          example: Orange
     MobileCountry:
       type: object
       properties:
@@ -272,6 +387,97 @@ components:
           type: string
           description: Value of mobile country
           example: France
+    ProviderConfiguration:
+      description: Provider customer account configuration
+    WebErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+      required:
+      - code
+      - id
+      - message
+    SubscriptionResponse:
+      type: object
+      description: Subscription Response
+      properties:
+        id:
+          type: string
+          description: Subscription unique identifier
+          example: '06361404'
+        msisdn:
+          type: string
+          description: Number uniquely identifying a subscription in a Global System for Mobile communications
+          example: '337000003543020'
+        imsi:
+          type: string
+          description: International Mobile Subscriber Identity
+          example: '208017401123509'
+        sim:
+          $ref: '#/components/schemas/Sim'
+          description: Sim
+        provider:
+          $ref: '#/components/schemas/Provider'
+          description: Provider
+        device:
+          $ref: '#/components/schemas/CellularDevice'
+          description: Device
+    CellularDevice:
+      type: object
+      properties:
+        imei:
+          type: string
+          description: International Mobile Equipment Identity
+          example: '352753093029773'
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Last update date of device
+          example: '2021-02-03T10:45:35+01:00'
+    Network:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Status of network attachment
+          enum:
+          - ONLINE
+          - OFFLINE
+          example: ONLINE, OFFLINE
+        radio:
+          type: string
+          description: Radio type of network attachment
+          example: 3G, 4G
+        lastUpdate:
+          type: string
+          format: date-time
+          description: Last update date of network attachment
+          example: '2021-02-03T10:45:35+01:00'
+        mobileCountry:
+          $ref: '#/components/schemas/MobileCountry'
+          description: Mobile country
+        mobileNetwork:
+          $ref: '#/components/schemas/MobileNetwork'
+          description: Mobile network
+        lastInteraction:
+          type: string
+          description: Last interaction of network attachment
+          enum:
+          - DATA
+          - SMS
+          example: DATA, SMS
     Sim:
       type: object
       properties:
@@ -308,58 +514,6 @@ components:
         capabilities:
           $ref: '#/components/schemas/SimCapabilities'
           description: List of SIM capabilities
-    WebErrorResponse:
-      type: object
-      description: Error response
-      properties:
-        id:
-          type: string
-          description: Unique identifier of this error instance
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Short error description
-        details:
-          type: string
-          description: Detailed error description
-      required:
-      - code
-      - id
-      - message
-    Network:
-      type: object
-      properties:
-        status:
-          type: string
-          description: Status of network attachment
-          enum:
-          - ONLINE
-          - OFFLINE
-          example: ONLINE, OFFLINE
-        radio:
-          type: string
-          description: Radio type of network attachment
-          example: 3G, 4G
-        lastUpdate:
-          type: string
-          format: date-time
-          description: Last update date of network attachment
-          example: '2021-02-03T10:45:35+01:00'
-        mobileCountry:
-          $ref: '#/components/schemas/MobileCountry'
-          description: Mobile country
-        mobileNetwork:
-          $ref: '#/components/schemas/MobileNetwork'
-          description: Mobile network
-        lastInteraction:
-          type: string
-          description: Last interaction of network attachment
-          enum:
-          - DATA
-          - SMS
-          example: DATA, SMS
     GetSubscriptionResponse:
       type: object
       description: Cellular-Network get subscription
@@ -387,148 +541,6 @@ components:
         device:
           $ref: '#/components/schemas/CellularDevice'
           description: Device
-    TrafficData:
-      type: object
-      properties:
-        timestamp:
-          type: string
-          format: date-time
-          description: Start date of the traffic data bucket
-          example: '2021-02-03T10:45:35+01:00'
-        smsIn:
-          type: integer
-          format: int64
-          description: Number of SMS received by the device
-          example: 5
-        smsOut:
-          type: integer
-          format: int64
-          description: Number of SMS sent by the device
-          example: 5
-        dataIn:
-          type: integer
-          format: int64
-          description: Volume in bytes of data received by the device
-          example: 1096
-        dataOut:
-          type: integer
-          format: int64
-          description: Volume in bytes of data sent by the device
-          example: 1096
-    SubscriptionResponse:
-      type: object
-      description: Subscription Response
-      properties:
-        id:
-          type: string
-          description: Subscription unique identifier
-          example: '06361404'
-        msisdn:
-          type: string
-          description: Number uniquely identifying a subscription in a Global System for Mobile communications
-          example: '337000003543020'
-        imsi:
-          type: string
-          description: International Mobile Subscriber Identity
-          example: '208017401123509'
-        sim:
-          $ref: '#/components/schemas/Sim'
-          description: Sim
-        provider:
-          $ref: '#/components/schemas/Provider'
-          description: Provider
-        device:
-          $ref: '#/components/schemas/CellularDevice'
-          description: Device
-    MobileNetwork:
-      type: object
-      properties:
-        code:
-          type: string
-          description: Code of mobile network
-          example: 208-01
-        value:
-          type: string
-          description: Value of mobile network
-          example: Orange
-    SearchSubscriptionsRequest:
-      type: object
-      description: Search subscriptions request
-      properties:
-        type:
-          type: string
-          description: 'Search type of the subscription, allowed types : "msisdn", "imei" or "deviceId"'
-          example: msisdn
-        value:
-          type: string
-          description: Search value of the subscription (max 269 characters)
-          example: '337000003543020'
-      required:
-      - type
-      - value
-    SimCapabilities:
-      type: object
-      properties:
-        smartSim:
-          type: boolean
-          description: Status of Smart SIM
-          example: true
-    Provider:
-      type: object
-      description: Customer Cellular-Network provider
-      properties:
-        type:
-          type: string
-          description: 'Provider type. Allowed values: [malima] (case insensitive)'
-          example: malima
-        configuration:
-          $ref: '#/components/schemas/ProviderConfiguration'
-          description: Provider customer account configuration
-          example:
-            cen: cen111
-            instanceId: OFR
-        accountName:
-          type: string
-          description: Provider account name
-          example: MyAccountName
-        link:
-          type: string
-          description: link to access portal M2M
-          example: https://m2mexpress.fr.orange-business.com/mac/customer/fleet/details.do?subId=06361404&category=SIM
-    GetLocationResponse:
-      type: object
-      description: Cellular-Network get location
-      properties:
-        lat:
-          type: number
-          format: double
-          description: 'Latitude value. The latitude must be between -180 and 180 '
-          example: 45.000009
-        lon:
-          type: number
-          format: double
-          description: Longitude value. The longitude must be between -90 and 90
-          example: -30.00001
-        accuracy:
-          type: number
-          format: double
-          description: Accuracy value (in meter).
-          example: 20.0
-        provider:
-          type: string
-          description: Location provider.
-          example: network
-        lastUpdateTs:
-          type: string
-          format: date-time
-          description: Location date.
-          example: '2016-06-03T15:55:36.944Z'
-        link:
-          type: string
-          description: link to access portal M2M
-          example: https://m2mexpress.fr.orange-business.com/mac/customer/fleet/deviceinfo/localization-details.do?subId=06361404&category=SIM
-    ProviderConfiguration:
-      description: Provider customer account configuration
     ProviderResponse:
       type: object
       description: Customer Cellular-Network provider
@@ -551,18 +563,6 @@ components:
           type: string
           description: Provider account name
           example: MyAccountName
-    CellularDevice:
-      type: object
-      properties:
-        imei:
-          type: string
-          description: International Mobile Equipment Identity
-          example: '352753093029773'
-        lastUpdate:
-          type: string
-          format: date-time
-          description: Last update date of device
-          example: '2021-02-03T10:45:35+01:00'
   securitySchemes:
     X-API-KEY:
       type: apiKey

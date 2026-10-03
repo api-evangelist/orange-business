@@ -166,6 +166,34 @@ components:
           minItems: 0
       required:
       - to
+    ServiceErrorResponse:
+      type: object
+      description: Generic Error in Response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+        category:
+          type: string
+          description: Error category
+          enum:
+          - PERMANENT
+          - TRANSIENT
+          - UNEXPECTED
+      required:
+      - category
+      - code
+      - id
+      - message
     NotificationChannel:
       type: object
       properties:
@@ -196,34 +224,6 @@ components:
       - id
       - language
       - name
-    ServiceErrorResponse:
-      type: object
-      description: Generic Error in Response
-      properties:
-        id:
-          type: string
-          description: Unique identifier of this error instance
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Short error description
-        details:
-          type: string
-          description: Detailed error description
-        category:
-          type: string
-          description: Error category
-          enum:
-          - PERMANENT
-          - TRANSIENT
-          - UNEXPECTED
-      required:
-      - category
-      - code
-      - id
-      - message
     NotificationChannelRequest:
       type: object
       properties:

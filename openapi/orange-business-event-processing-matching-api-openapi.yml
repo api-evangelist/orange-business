@@ -165,6 +165,17 @@ paths:
                 $ref: '#/components/schemas/DataMatchResult'
 components:
   schemas:
+    DataMatchTest:
+      type: object
+      description: jsonLogic predicate and json data of the evaluation test you want to perform
+      properties:
+        dataPredicate:
+          description: JsonLogic predicate that will be used to evaluate the data. The JsonLogic predicate needs to return a boolean. In addition to the existing JsonLogic operators (logic and boolean, numeric, string, array), Live Objects provides geographic operators (distance, inside, insideindex, closeto, closetoindex), context operator (ctx) to retrieve data stored via the Context APIs and miscellaneous operators ('get' to retrieve an element from an array)...e.g. '{">":[{"var":"value.temp"},{"ctx":"temperature.threshold"}]}'.
+        data:
+          description: Data to test the dataPredicate with. e.g. '{"streamId":"urn:lo:nsid:mqtt:1234","value":{"temp":100,"pressure":36575},"timestamp":"2026-02-19T08:51:06.583Z","metadata":{"connector":"mqtt","source":"urn:lo:nsid:mqtt:1234","group":{"path":"/europe","id":"CdoJOs"}}}'.
+      required:
+      - data
+      - dataPredicate
     DataMatchResult:
       type: object
       properties:
@@ -177,17 +188,6 @@ components:
         dataPredicateResult:
           type: boolean
           description: the predicate result applied to data. Will be false is either dataPredicateValid or dataValid is false
-    DataMatchTest:
-      type: object
-      description: jsonLogic predicate and json data of the evaluation test you want to perform
-      properties:
-        dataPredicate:
-          description: JsonLogic predicate that will be used to evaluate the data. The JsonLogic predicate needs to return a boolean. In addition to the existing JsonLogic operators (logic and boolean, numeric, string, array), Live Objects provides geographic operators (distance, inside, insideindex, closeto, closetoindex), context operator (ctx) to retrieve data stored via the Context APIs and miscellaneous operators ('get' to retrieve an element from an array)...e.g. '{">":[{"var":"value.temp"},{"ctx":"temperature.threshold"}]}'.
-        data:
-          description: Data to test the dataPredicate with. e.g. '{"streamId":"urn:lo:nsid:mqtt:1234","value":{"temp":100,"pressure":36575},"timestamp":"2026-02-19T08:51:06.583Z","metadata":{"connector":"mqtt","source":"urn:lo:nsid:mqtt:1234","group":{"path":"/europe","id":"CdoJOs"}}}'.
-      required:
-      - data
-      - dataPredicate
     MatchingRule:
       type: object
       description: Defines the dataPredicate that will be applied to all new data. When it matches, then it may trigger a FiredEvent based on linked FiringRules defined.

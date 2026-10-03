@@ -274,6 +274,531 @@ paths:
                 $ref: '#/components/schemas/PageableCampaignPerTarget'
 components:
   schemas:
+    CampaignCommandOperationV1:
+      allOf:
+      - $ref: '#/components/schemas/CampaignOperation'
+      - type: object
+        properties:
+          definition:
+            $ref: '#/components/schemas/CampaignCommandV1Definition'
+            description: Definition of a command operation
+            example:
+              event: reboot
+      required:
+      - action
+      - definition
+    CampaignTwinWriteOperation:
+      allOf:
+      - $ref: '#/components/schemas/CampaignOperation'
+      - type: object
+        properties:
+          definition:
+            $ref: '#/components/schemas/CampaignTwinWriteDefinition'
+            description: Definition of a twin WRITE operation
+      required:
+      - action
+      - definition
+    CampaignTwinWriteMetadataOperation:
+      allOf:
+      - $ref: '#/components/schemas/CampaignOperation'
+      - type: object
+        properties:
+          definition:
+            $ref: '#/components/schemas/CampaignTwinWriteMetadataDefinition'
+            description: Definition of a twin WRITE-METADATA operation
+      required:
+      - action
+      - definition
+    CampaignTwinOperationOptionsLwm2m:
+      type: object
+      properties:
+        contentFormat:
+          $ref: '#/components/schemas/CampaignRequestedContentFormat'
+          description: ' `content format` requested by the customer for the operation (request, response)'
+          example:
+            request: SENML_CBOR
+            response: SENML_CBOR
+    DefinitionRequest:
+      type: object
+      properties:
+        connector:
+          type: string
+          description: connector/protocol to use to forward the command
+          enum:
+          - mqtt
+          - lora
+          - sms
+          - x-connector
+          example: mqtt
+        value:
+          description: command value (protocol/connector-dependant). The length is limited.
+          example:
+            req: reboot
+            arg:
+              delay: 1000
+      required:
+      - connector
+      - value
+    DeviceSelector:
+      type: object
+      properties:
+        idList:
+          type: array
+          description: List of device IDs in the form urn:lo:nsid:${assetNamespace}:${assetId}
+          example:
+          - urn:lo:nsid:myNamespace:myDeviceId
+          items:
+            type: string
+        filterQuery:
+          type: string
+          description: Filtering expression using RSQL notation. Supported device properties are 'groupPath', 'groupId', 'tags', 'properties'. Supported RSQL operators are '==','!=','=in=','=out=','=re=','=lt=','=le=','=gt=','=ge=','and','or'
+          example: tags=in=(FUT,TEST1)
+    CampaignTwinExecuteDefinition:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'EXECUTE operation: this operation is used to execute a target object attribute.'
+          enum:
+          - READ
+          - WRITE
+          - EXECUTE
+          - WRITE-METADATA
+          - UNKNOWN
+          example: EXECUTE
+        options:
+          $ref: '#/components/schemas/CampaignTwinOperationOptions'
+          description: Operations options
+        policy:
+          $ref: '#/components/schemas/CampaignTwinOperationPolicy'
+          description: Operation policy
+        paths:
+          type: array
+          items:
+            type: string
+            description: Path of attribute to execute. There can only be one path to execute
+            example: /1/0/8
+          uniqueItems: true
+      required:
+      - type
+    TwinClearObservationsDefinition: {}
+    CampaignOperationState:
+      type: object
+      properties:
+        started:
+          type: string
+          format: date-time
+          description: Date when the operation was started
+          example: '2017-07-19T09:23:11Z'
+        updated:
+          type: string
+          format: date-time
+          description: Date when the operation status was updated for the last time
+          example: '2017-07-19T09:23:11Z'
+        ended:
+          type: string
+          format: date-time
+          description: Date when the operation was finished
+          example: '2017-07-19T09:23:11Z'
+        action:
+          type: string
+          description: Type of operation
+          enum:
+          - configure
+          - command
+          - resource
+          - resource-update
+          - twin-operation
+          - twin-add-observation
+          - twin-clear-observations
+          example: configure
+        error:
+          $ref: '#/components/schemas/CampaignOperationStateError'
+          description: Optional error associated to the current underlying operation
+        operationStatus:
+          type: string
+          description: Current status returned by the underlying operation
+          example: processed
+        operationId:
+          type: string
+          description: Optional identifier associated to the current underlying operation (e.g. commandId,...)
+          example: command-1234
+        currentRetry:
+          type: integer
+          format: int32
+          description: Optional current number of retries made for the operation
+          example: 2
+      required:
+      - action
+    CampaignTwinAddObservationOperation:
+      allOf:
+      - $ref: '#/components/schemas/CampaignOperation'
+      - type: object
+        properties:
+          definition:
+            $ref: '#/components/schemas/TwinAddObservationDefinition'
+      required:
+      - action
+    CampaignStatsPerStatus:
+      type: object
+      description: Statistics about devices with a given status
+      properties:
+        notStarted:
+          type: integer
+          format: int32
+          description: Number of devices with status 'not started'
+        pending:
+          type: integer
+          format: int32
+          description: Number of devices with status 'pending'
+        inProgress:
+          type: integer
+          format: int32
+          description: Number of devices with status 'in progress'
+        success:
+          type: integer
+          format: int32
+          description: Number of devices with status 'success'
+        failure:
+          type: integer
+          format: int32
+          description: Number of devices with status 'failure'
+        canceled:
+          type: integer
+          format: int32
+          description: Number of devices with status 'canceled'
+      required:
+      - canceled
+      - failure
+      - inProgress
+      - notStarted
+      - pending
+      - success
+    CampaignTwinOperationWriteValue:
+      type: object
+      properties:
+        path:
+          type: string
+          description: Path of attribute, or attribute instance
+          example: /1/0/3
+        value:
+          type: string
+          description: value to write for "WRITE" operations
+          example: '"tutu"'
+      required:
+      - path
+      - value
+    CampaignPerTarget:
+      type: object
+      properties:
+        device:
+          type: string
+          description: Device identifier
+          example: lo:nsid:sensor:4525121
+        status:
+          type: string
+          description: Global status of the sequence of operations
+          enum:
+          - notStarted
+          - pending
+          - inProgress
+          - success
+          - failure
+          example: success
+        created:
+          type: string
+          format: date-time
+          description: Date from when the campaign was created
+          example: '2017-07-19T09:23:11Z'
+        updated:
+          type: string
+          format: date-time
+          description: Date from when the campaign was last time updated
+          example: '2017-07-19T09:23:11Z'
+        operations:
+          type: array
+          description: State of every operation of the campaign for this device
+          items:
+            $ref: '#/components/schemas/CampaignOperationState'
+      required:
+      - created
+      - device
+      - operations
+      - status
+      - updated
+    CampaignTwinOperationPolicy:
+      type: object
+      properties:
+        attempts:
+          type: integer
+          format: int32
+          default: 1
+          description: maximum number of attempts until operation successfully reached device (default 1 means no retry)
+          maximum: 5
+          minimum: 1
+    CampaignPlanning:
+      type: object
+      properties:
+        startDate:
+          type: string
+          format: date-time
+          description: Date from when the campaign starts
+        endDate:
+          type: string
+          format: date-time
+          description: Date when the campaign is finished
+      required:
+      - endDate
+      - startDate
+    CampaignOperation:
+      type: object
+      discriminator:
+        propertyName: action
+      properties:
+        action:
+          type: string
+          description: Type of operation
+          example: configure
+        version:
+          type: integer
+          format: int32
+          description: Version of operation (default:0)
+          example: 1
+      required:
+      - action
+    CampaignTwinClearObservationsOperation:
+      allOf:
+      - $ref: '#/components/schemas/CampaignOperation'
+      - type: object
+        properties:
+          definition:
+            $ref: '#/components/schemas/TwinClearObservationsDefinition'
+      required:
+      - action
+    TwinAddObservationDefinition:
+      type: object
+      properties:
+        paths:
+          type: array
+          description: Paths of attribute, attribute instance, object instance or all the object instances of an object to observe
+          example:
+          - /1
+          - /3/0
+          - /3442/0/110
+          - /3442/0/1110/0
+          items:
+            type: string
+            maxLength: 255
+            minLength: 0
+          maxItems: 100
+          minItems: 0
+          uniqueItems: true
+        name:
+          type: string
+          description: User-defined name for the observation, must not be null, must contain at least one non-whitespace character and at most 255 characters
+          example: myObservation
+          maxLength: 255
+          minLength: 0
+      required:
+      - name
+      - paths
+    CampaignCommandV1Definition:
+      type: object
+      properties:
+        request:
+          $ref: '#/components/schemas/DefinitionRequest'
+          description: command request
+        policy:
+          $ref: '#/components/schemas/DefinitionPolicy'
+          description: Delivery policy for this command
+        maxRetry:
+          type: integer
+          format: int32
+          description: max operation retry
+          example: 2
+      required:
+      - request
+    CampaignTwinOperationOptions:
+      type: object
+      properties:
+        lwm2m:
+          $ref: '#/components/schemas/CampaignTwinOperationOptionsLwm2m'
+    CampaignTwinOperationMetadata:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the metadata. (see "NOTIFICATION class attributes" from OMA LwM2M 1.0 specification)
+          example: pmin
+        value:
+          type: string
+          description: Value of the metadata. If not provided the metadata will be unset.
+          example: '10'
+      required:
+      - name
+    CampaignTwinOperationWriteMetadataValue:
+      type: object
+      properties:
+        path:
+          type: string
+          description: Path of the object | instance on which metadata will be applied.
+          example: /1/0/7
+        metadata:
+          type: array
+          description: Set of metadata. Only provided metadata will be set | updated | unset.
+          example:
+          - name: pmin
+            value: '20'
+          - name: gt
+            value: '50'
+          - name: lt
+          items:
+            $ref: '#/components/schemas/CampaignTwinOperationMetadata'
+          uniqueItems: true
+      required:
+      - metadata
+      - path
+    CampaignTwinReadOperation:
+      allOf:
+      - $ref: '#/components/schemas/CampaignOperation'
+      - type: object
+        properties:
+          definition:
+            $ref: '#/components/schemas/CampaignTwinReadDefinition'
+            description: Definition of a twin READ operation
+      required:
+      - action
+      - definition
+    CampaignTwinWriteDefinition:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'WRITE operation: this operation is used to write attribute(s) value(s) on device object(s). <br>A `WRITE` operation relies on `writeMode`: `UPDATE` act like a ''patch'' while `REPLACE` will override target path.'
+          enum:
+          - READ
+          - WRITE
+          - EXECUTE
+          - WRITE-METADATA
+          - UNKNOWN
+          example: WRITE
+        options:
+          $ref: '#/components/schemas/CampaignTwinOperationOptions'
+          description: Operations options
+        policy:
+          $ref: '#/components/schemas/CampaignTwinOperationPolicy'
+          description: Operation policy
+        paths:
+          type: array
+          items:
+            type: string
+            description: Paths of attribute, attribute instance, array of attribute instances, object instance or all the object instances of an object to replace/update. There can only be one path
+            example: /1/0
+          uniqueItems: true
+        writeMode:
+          type: string
+          description: Write mode
+          enum:
+          - UPDATE
+          - REPLACE
+          example: UPDATE
+        values:
+          type: array
+          description: Paths and value to write
+          example:
+          - path: /1/0/7
+            value: tutu
+          - path: /1/0/25/2
+            value: toto
+          items:
+            $ref: '#/components/schemas/CampaignTwinOperationWriteValue'
+          uniqueItems: true
+      required:
+      - type
+      - values
+      - writeMode
+    CampaignConfigureDefinition:
+      type: object
+      properties:
+        assetParameters:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/AssetParameterValue'
+          description: Device parameters to update
+          example:
+            myParam:
+              type: INT32
+              valueInt32: 123
+        maxRetry:
+          type: integer
+          format: int32
+          description: max operation retry
+          example: 2
+      required:
+      - assetParameters
+    CampaignRequestedContentFormat:
+      type: object
+      properties:
+        request:
+          type: string
+        response:
+          type: string
+    CampaignResourceUpdateDefinition:
+      type: object
+      properties:
+        resourceId:
+          type: string
+          description: Resource id
+          example: webkit-ocr
+        connector:
+          type: string
+          description: Resource update connector
+          example: lwm2m-updater
+        requestedVersion:
+          type: string
+          description: Resource update requested version
+          example: v2
+        maxRetry:
+          type: integer
+          format: int32
+          description: max operation retry
+          example: 2
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: the update operation metadata
+      required:
+      - requestedVersion
+      - resourceId
+    PageableCampaign:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int64
+          description: 'number of the current page: starts at 0.'
+          example: 0
+        size:
+          type: integer
+          format: int64
+          description: number of data per page (= maximum number of data in the associated list of data:the last page can have less data)
+          example: 1
+        totalCount:
+          type: integer
+          format: int64
+          description: total count of data in the complete list.
+          example: 1
+        data:
+          type: array
+          description: list of data in this page.
+          items:
+            $ref: '#/components/schemas/Campaign'
+      required:
+      - data
+      - page
+      - size
+      - totalCount
     CampaignOptions:
       type: object
       properties:
@@ -300,22 +825,6 @@ components:
           type: string
           description: Optional device originated error details associated to the current underlying operation
           example: Invalid firmware CRC
-    CampaignOperation:
-      type: object
-      discriminator:
-        propertyName: action
-      properties:
-        action:
-          type: string
-          description: Type of operation
-          example: configure
-        version:
-          type: integer
-          format: int32
-          description: Version of operation (default:0)
-          example: 1
-      required:
-      - action
     PageableCampaignPerTarget:
       type: object
       properties:
@@ -344,53 +853,6 @@ components:
       - page
       - size
       - totalCount
-    CampaignTwinWriteMetadataOperation:
-      allOf:
-      - $ref: '#/components/schemas/CampaignOperation'
-      - type: object
-        properties:
-          definition:
-            $ref: '#/components/schemas/CampaignTwinWriteMetadataDefinition'
-            description: Definition of a twin WRITE-METADATA operation
-      required:
-      - action
-      - definition
-    CampaignTwinWriteMetadataDefinition:
-      type: object
-      properties:
-        type:
-          type: string
-          description: 'WRITE METADATA operation: this operation is used to write (set, update, unset) metadata on device object(s).'
-          enum:
-          - READ
-          - WRITE
-          - EXECUTE
-          - WRITE-METADATA
-          - UNKNOWN
-          example: WRITE-METADATA
-        options:
-          $ref: '#/components/schemas/CampaignTwinOperationOptions'
-          description: Operations options
-        policy:
-          $ref: '#/components/schemas/CampaignTwinOperationPolicy'
-          description: Operation policy
-        values:
-          type: array
-          description: Path and set of metadata to write. This set must contains only one path.
-          example:
-          - path: /1/0/7
-            metadata:
-            - name: pmin
-              value: '20'
-            - name: gt
-              value: '50'
-            - name: lt
-          items:
-            $ref: '#/components/schemas/CampaignTwinOperationWriteMetadataValue'
-          uniqueItems: true
-      required:
-      - type
-      - values
     Campaign:
       type: object
       properties:
@@ -486,227 +948,31 @@ components:
       - operations
       - planning
       - target
-    CampaignTwinWriteOperation:
+    CampaignConfigureOperation:
       allOf:
       - $ref: '#/components/schemas/CampaignOperation'
       - type: object
         properties:
           definition:
-            $ref: '#/components/schemas/CampaignTwinWriteDefinition'
-            description: Definition of a twin WRITE operation
-      required:
-      - action
-      - definition
-    CampaignCommandOperationV1:
-      allOf:
-      - $ref: '#/components/schemas/CampaignOperation'
-      - type: object
-        properties:
-          definition:
-            $ref: '#/components/schemas/CampaignCommandV1Definition'
-            description: Definition of a command operation
+            $ref: '#/components/schemas/CampaignConfigureDefinition'
+            description: Definition of a configure operation
             example:
-              event: reboot
+              assetParameters:
+                myParam:
+                  type: INT32
+                  valueInt32: 123
       required:
       - action
       - definition
-    PageableCampaign:
-      type: object
-      properties:
-        page:
-          type: integer
-          format: int64
-          description: 'number of the current page: starts at 0.'
-          example: 0
-        size:
-          type: integer
-          format: int64
-          description: number of data per page (= maximum number of data in the associated list of data:the last page can have less data)
-          example: 1
-        totalCount:
-          type: integer
-          format: int64
-          description: total count of data in the complete list.
-          example: 1
-        data:
-          type: array
-          description: list of data in this page.
-          items:
-            $ref: '#/components/schemas/Campaign'
-      required:
-      - data
-      - page
-      - size
-      - totalCount
-    CampaignPlanning:
-      type: object
-      properties:
-        startDate:
-          type: string
-          format: date-time
-          description: Date from when the campaign starts
-        endDate:
-          type: string
-          format: date-time
-          description: Date when the campaign is finished
-      required:
-      - endDate
-      - startDate
-    CampaignTwinReadDefinition:
-      type: object
-      properties:
-        type:
-          type: string
-          description: 'READ operation: this operation is used to read attribute(s) value(s) of device object(s).'
-          enum:
-          - READ
-          - WRITE
-          - EXECUTE
-          - WRITE-METADATA
-          - UNKNOWN
-          example: READ
-        options:
-          $ref: '#/components/schemas/CampaignTwinOperationOptions'
-          description: Operations options
-        policy:
-          $ref: '#/components/schemas/CampaignTwinOperationPolicy'
-          description: Operation policy
-        paths:
-          type: array
-          items:
-            type: string
-            description: Paths of attribute, attribute instance, array of attribute instances, object instance or all the object instances of an object to read
-            example: /1/0/7
-          uniqueItems: true
-      required:
-      - type
-    CampaignOperationState:
-      type: object
-      properties:
-        started:
-          type: string
-          format: date-time
-          description: Date when the operation was started
-          example: '2017-07-19T09:23:11Z'
-        updated:
-          type: string
-          format: date-time
-          description: Date when the operation status was updated for the last time
-          example: '2017-07-19T09:23:11Z'
-        ended:
-          type: string
-          format: date-time
-          description: Date when the operation was finished
-          example: '2017-07-19T09:23:11Z'
-        action:
-          type: string
-          description: Type of operation
-          enum:
-          - configure
-          - command
-          - resource
-          - resource-update
-          - twin-operation
-          - twin-add-observation
-          - twin-clear-observations
-          example: configure
-        error:
-          $ref: '#/components/schemas/CampaignOperationStateError'
-          description: Optional error associated to the current underlying operation
-        operationStatus:
-          type: string
-          description: Current status returned by the underlying operation
-          example: processed
-        operationId:
-          type: string
-          description: Optional identifier associated to the current underlying operation (e.g. commandId,...)
-          example: command-1234
-        currentRetry:
-          type: integer
-          format: int32
-          description: Optional current number of retries made for the operation
-          example: 2
-      required:
-      - action
-    CampaignResourceUpdateDefinition:
-      type: object
-      properties:
-        resourceId:
-          type: string
-          description: Resource id
-          example: webkit-ocr
-        connector:
-          type: string
-          description: Resource update connector
-          example: lwm2m-updater
-        requestedVersion:
-          type: string
-          description: Resource update requested version
-          example: v2
-        maxRetry:
-          type: integer
-          format: int32
-          description: max operation retry
-          example: 2
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          description: the update operation metadata
-      required:
-      - requestedVersion
-      - resourceId
-    CampaignTwinAddObservationOperation:
+    CampaignResourceUpdateOperation:
       allOf:
       - $ref: '#/components/schemas/CampaignOperation'
       - type: object
         properties:
           definition:
-            $ref: '#/components/schemas/TwinAddObservationDefinition'
+            $ref: '#/components/schemas/CampaignResourceUpdateDefinition'
       required:
       - action
-    CampaignTwinExecuteDefinition:
-      type: object
-      properties:
-        type:
-          type: string
-          description: 'EXECUTE operation: this operation is used to execute a target object attribute.'
-          enum:
-          - READ
-          - WRITE
-          - EXECUTE
-          - WRITE-METADATA
-          - UNKNOWN
-          example: EXECUTE
-        options:
-          $ref: '#/components/schemas/CampaignTwinOperationOptions'
-          description: Operations options
-        policy:
-          $ref: '#/components/schemas/CampaignTwinOperationPolicy'
-          description: Operation policy
-        paths:
-          type: array
-          items:
-            type: string
-            description: Path of attribute to execute. There can only be one path to execute
-            example: /1/0/8
-          uniqueItems: true
-      required:
-      - type
-    CampaignTwinOperationWriteValue:
-      type: object
-      properties:
-        path:
-          type: string
-          description: Path of attribute, or attribute instance
-          example: /1/0/3
-        value:
-          type: string
-          description: value to write for "WRITE" operations
-          example: '"tutu"'
-      required:
-      - path
-      - value
     AssetParameterValue:
       type: object
       properties:
@@ -733,200 +999,6 @@ components:
         valueFloat:
           type: number
           format: double
-    CampaignPerTarget:
-      type: object
-      properties:
-        device:
-          type: string
-          description: Device identifier
-          example: lo:nsid:sensor:4525121
-        status:
-          type: string
-          description: Global status of the sequence of operations
-          enum:
-          - notStarted
-          - pending
-          - inProgress
-          - success
-          - failure
-          example: success
-        created:
-          type: string
-          format: date-time
-          description: Date from when the campaign was created
-          example: '2017-07-19T09:23:11Z'
-        updated:
-          type: string
-          format: date-time
-          description: Date from when the campaign was last time updated
-          example: '2017-07-19T09:23:11Z'
-        operations:
-          type: array
-          description: State of every operation of the campaign for this device
-          items:
-            $ref: '#/components/schemas/CampaignOperationState'
-      required:
-      - created
-      - device
-      - operations
-      - status
-      - updated
-    DefinitionPolicy:
-      type: object
-      properties:
-        expirationInSeconds:
-          type: integer
-          format: int64
-          description: Expiration in seconds since command creation date. Default is no expiry. Min value is 5 seconds
-          example: 120
-          maximum: 9223372036854775
-          minimum: 5
-        ackTimeoutInSeconds:
-          type: integer
-          format: int64
-          description: Ack timeout in seconds since command was sent. Default is no ack timeout. Min value is 10 seconds
-          example: 120
-        ackMode:
-          type: string
-          description: Ack mode for this command. NONE ack means that the command is automatically acknowledged (set to 'PROCESSED' status) as the command is sent to the device. NETWORK ack requires a reception acknowledge. APPLICATIVE ack requires a command response from the device to change its status. Default ack mode is connectivity dependant.
-          enum:
-          - NONE
-          - NETWORK
-          - APPLICATIVE
-          example: APPLICATIVE
-    CampaignTwinOperationOptionsLwm2m:
-      type: object
-      properties:
-        contentFormat:
-          $ref: '#/components/schemas/CampaignRequestedContentFormat'
-          description: ' `content format` requested by the customer for the operation (request, response)'
-          example:
-            request: SENML_CBOR
-            response: SENML_CBOR
-    CampaignTwinOperationPolicy:
-      type: object
-      properties:
-        attempts:
-          type: integer
-          format: int32
-          default: 1
-          description: maximum number of attempts until operation successfully reached device (default 1 means no retry)
-          maximum: 5
-          minimum: 1
-    CampaignStatsPerStatus:
-      type: object
-      description: Statistics about devices with a given status
-      properties:
-        notStarted:
-          type: integer
-          format: int32
-          description: Number of devices with status 'not started'
-        pending:
-          type: integer
-          format: int32
-          description: Number of devices with status 'pending'
-        inProgress:
-          type: integer
-          format: int32
-          description: Number of devices with status 'in progress'
-        success:
-          type: integer
-          format: int32
-          description: Number of devices with status 'success'
-        failure:
-          type: integer
-          format: int32
-          description: Number of devices with status 'failure'
-        canceled:
-          type: integer
-          format: int32
-          description: Number of devices with status 'canceled'
-      required:
-      - canceled
-      - failure
-      - inProgress
-      - notStarted
-      - pending
-      - success
-    CampaignTwinWriteDefinition:
-      type: object
-      properties:
-        type:
-          type: string
-          description: 'WRITE operation: this operation is used to write attribute(s) value(s) on device object(s). <br>A `WRITE` operation relies on `writeMode`: `UPDATE` act like a ''patch'' while `REPLACE` will override target path.'
-          enum:
-          - READ
-          - WRITE
-          - EXECUTE
-          - WRITE-METADATA
-          - UNKNOWN
-          example: WRITE
-        options:
-          $ref: '#/components/schemas/CampaignTwinOperationOptions'
-          description: Operations options
-        policy:
-          $ref: '#/components/schemas/CampaignTwinOperationPolicy'
-          description: Operation policy
-        paths:
-          type: array
-          items:
-            type: string
-            description: Paths of attribute, attribute instance, array of attribute instances, object instance or all the object instances of an object to replace/update. There can only be one path
-            example: /1/0
-          uniqueItems: true
-        writeMode:
-          type: string
-          description: Write mode
-          enum:
-          - UPDATE
-          - REPLACE
-          example: UPDATE
-        values:
-          type: array
-          description: Paths and value to write
-          example:
-          - path: /1/0/7
-            value: tutu
-          - path: /1/0/25/2
-            value: toto
-          items:
-            $ref: '#/components/schemas/CampaignTwinOperationWriteValue'
-          uniqueItems: true
-      required:
-      - type
-      - values
-      - writeMode
-    CampaignTwinOperationMetadata:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the metadata. (see "NOTIFICATION class attributes" from OMA LwM2M 1.0 specification)
-          example: pmin
-        value:
-          type: string
-          description: Value of the metadata. If not provided the metadata will be unset.
-          example: '10'
-      required:
-      - name
-    CampaignResourceUpdateOperation:
-      allOf:
-      - $ref: '#/components/schemas/CampaignOperation'
-      - type: object
-        properties:
-          definition:
-            $ref: '#/components/schemas/CampaignResourceUpdateDefinition'
-      required:
-      - action
-    CampaignTwinClearObservationsOperation:
-      allOf:
-      - $ref: '#/components/schemas/CampaignOperation'
-      - type: object
-        properties:
-          definition:
-            $ref: '#/components/schemas/TwinClearObservationsDefinition'
-      required:
-      - action
     CampaignDefinition:
       type: object
       properties:
@@ -1003,133 +1075,6 @@ components:
       - operations
       - planning
       - targets
-    CampaignConfigureDefinition:
-      type: object
-      properties:
-        assetParameters:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/AssetParameterValue'
-          description: Device parameters to update
-          example:
-            myParam:
-              type: INT32
-              valueInt32: 123
-        maxRetry:
-          type: integer
-          format: int32
-          description: max operation retry
-          example: 2
-      required:
-      - assetParameters
-    DeviceSelector:
-      type: object
-      properties:
-        idList:
-          type: array
-          description: List of device IDs in the form urn:lo:nsid:${assetNamespace}:${assetId}
-          example:
-          - urn:lo:nsid:myNamespace:myDeviceId
-          items:
-            type: string
-        filterQuery:
-          type: string
-          description: Filtering expression using RSQL notation. Supported device properties are 'groupPath', 'groupId', 'tags', 'properties'. Supported RSQL operators are '==','!=','=in=','=out=','=re=','=lt=','=le=','=gt=','=ge=','and','or'
-          example: tags=in=(FUT,TEST1)
-    CampaignResourceDefinition:
-      type: object
-      properties:
-        resourceId:
-          type: string
-          description: Resource id
-          example: webkit-ocr
-        targetVersion:
-          type: string
-          description: Resource target version
-          example: v2
-        maxRetry:
-          type: integer
-          format: int32
-          description: max operation retry
-          example: 2
-        metadata:
-          type: object
-          additionalProperties:
-            type: string
-          description: the update operation metadata
-      required:
-      - resourceId
-      - targetVersion
-    CampaignTwinReadOperation:
-      allOf:
-      - $ref: '#/components/schemas/CampaignOperation'
-      - type: object
-        properties:
-          definition:
-            $ref: '#/components/schemas/CampaignTwinReadDefinition'
-            description: Definition of a twin READ operation
-      required:
-      - action
-      - definition
-    CampaignCommandV1Definition:
-      type: object
-      properties:
-        request:
-          $ref: '#/components/schemas/DefinitionRequest'
-          description: command request
-        policy:
-          $ref: '#/components/schemas/DefinitionPolicy'
-          description: Delivery policy for this command
-        maxRetry:
-          type: integer
-          format: int32
-          description: max operation retry
-          example: 2
-      required:
-      - request
-    CampaignConfigureOperation:
-      allOf:
-      - $ref: '#/components/schemas/CampaignOperation'
-      - type: object
-        properties:
-          definition:
-            $ref: '#/components/schemas/CampaignConfigureDefinition'
-            description: Definition of a configure operation
-            example:
-              assetParameters:
-                myParam:
-                  type: INT32
-                  valueInt32: 123
-      required:
-      - action
-      - definition
-    CampaignTwinOperationOptions:
-      type: object
-      properties:
-        lwm2m:
-          $ref: '#/components/schemas/CampaignTwinOperationOptionsLwm2m'
-    CampaignTwinOperationWriteMetadataValue:
-      type: object
-      properties:
-        path:
-          type: string
-          description: Path of the object | instance on which metadata will be applied.
-          example: /1/0/7
-        metadata:
-          type: array
-          description: Set of metadata. Only provided metadata will be set | updated | unset.
-          example:
-          - name: pmin
-            value: '20'
-          - name: gt
-            value: '50'
-          - name: lt
-          items:
-            $ref: '#/components/schemas/CampaignTwinOperationMetadata'
-          uniqueItems: true
-      required:
-      - metadata
-      - path
     CampaignTwinExecuteOperation:
       allOf:
       - $ref: '#/components/schemas/CampaignOperation'
@@ -1141,40 +1086,6 @@ components:
       required:
       - action
       - definition
-    TwinAddObservationDefinition:
-      type: object
-      properties:
-        paths:
-          type: array
-          description: Paths of attribute, attribute instance, object instance or all the object instances of an object to observe
-          example:
-          - /1
-          - /3/0
-          - /3442/0/110
-          - /3442/0/1110/0
-          items:
-            type: string
-            maxLength: 255
-            minLength: 0
-          maxItems: 100
-          minItems: 0
-          uniqueItems: true
-        name:
-          type: string
-          description: User-defined name for the observation, must not be null, must contain at least one non-whitespace character and at most 255 characters
-          example: myObservation
-          maxLength: 255
-          minLength: 0
-      required:
-      - name
-      - paths
-    CampaignRequestedContentFormat:
-      type: object
-      properties:
-        request:
-          type: string
-        response:
-          type: string
     CampaignUpdating:
       type: object
       properties:
@@ -1223,28 +1134,34 @@ components:
           description: Campaign options
           example:
             dynamicallyAddEligibleDevice: false
-    TwinClearObservationsDefinition: {}
-    DefinitionRequest:
+    CampaignTwinReadDefinition:
       type: object
       properties:
-        connector:
+        type:
           type: string
-          description: connector/protocol to use to forward the command
+          description: 'READ operation: this operation is used to read attribute(s) value(s) of device object(s).'
           enum:
-          - mqtt
-          - lora
-          - sms
-          - x-connector
-          example: mqtt
-        value:
-          description: command value (protocol/connector-dependant). The length is limited.
-          example:
-            req: reboot
-            arg:
-              delay: 1000
+          - READ
+          - WRITE
+          - EXECUTE
+          - WRITE-METADATA
+          - UNKNOWN
+          example: READ
+        options:
+          $ref: '#/components/schemas/CampaignTwinOperationOptions'
+          description: Operations options
+        policy:
+          $ref: '#/components/schemas/CampaignTwinOperationPolicy'
+          description: Operation policy
+        paths:
+          type: array
+          items:
+            type: string
+            description: Paths of attribute, attribute instance, array of attribute instances, object instance or all the object instances of an object to read
+            example: /1/0/7
+          uniqueItems: true
       required:
-      - connector
-      - value
+      - type
     CampaignResourceOperation:
       allOf:
       - $ref: '#/components/schemas/CampaignOperation'
@@ -1254,6 +1171,89 @@ components:
             $ref: '#/components/schemas/CampaignResourceDefinition'
       required:
       - action
+    CampaignResourceDefinition:
+      type: object
+      properties:
+        resourceId:
+          type: string
+          description: Resource id
+          example: webkit-ocr
+        targetVersion:
+          type: string
+          description: Resource target version
+          example: v2
+        maxRetry:
+          type: integer
+          format: int32
+          description: max operation retry
+          example: 2
+        metadata:
+          type: object
+          additionalProperties:
+            type: string
+          description: the update operation metadata
+      required:
+      - resourceId
+      - targetVersion
+    CampaignTwinWriteMetadataDefinition:
+      type: object
+      properties:
+        type:
+          type: string
+          description: 'WRITE METADATA operation: this operation is used to write (set, update, unset) metadata on device object(s).'
+          enum:
+          - READ
+          - WRITE
+          - EXECUTE
+          - WRITE-METADATA
+          - UNKNOWN
+          example: WRITE-METADATA
+        options:
+          $ref: '#/components/schemas/CampaignTwinOperationOptions'
+          description: Operations options
+        policy:
+          $ref: '#/components/schemas/CampaignTwinOperationPolicy'
+          description: Operation policy
+        values:
+          type: array
+          description: Path and set of metadata to write. This set must contains only one path.
+          example:
+          - path: /1/0/7
+            metadata:
+            - name: pmin
+              value: '20'
+            - name: gt
+              value: '50'
+            - name: lt
+          items:
+            $ref: '#/components/schemas/CampaignTwinOperationWriteMetadataValue'
+          uniqueItems: true
+      required:
+      - type
+      - values
+    DefinitionPolicy:
+      type: object
+      properties:
+        expirationInSeconds:
+          type: integer
+          format: int64
+          description: Expiration in seconds since command creation date. Default is no expiry. Min value is 5 seconds
+          example: 120
+          maximum: 9223372036854775
+          minimum: 5
+        ackTimeoutInSeconds:
+          type: integer
+          format: int64
+          description: Ack timeout in seconds since command was sent. Default is no ack timeout. Min value is 10 seconds
+          example: 120
+        ackMode:
+          type: string
+          description: Ack mode for this command. NONE ack means that the command is automatically acknowledged (set to 'PROCESSED' status) as the command is sent to the device. NETWORK ack requires a reception acknowledge. APPLICATIVE ack requires a command response from the device to change its status. Default ack mode is connectivity dependant.
+          enum:
+          - NONE
+          - NETWORK
+          - APPLICATIVE
+          example: APPLICATIVE
   securitySchemes:
     X-API-KEY:
       type: apiKey

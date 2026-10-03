@@ -214,6 +214,51 @@ paths:
                 $ref: '#/components/schemas/WebErrorResponse'
 components:
   schemas:
+    UpdateUserPasswordInfo:
+      type: object
+      description: body of user update password
+      properties:
+        oldPassword:
+          type: string
+          description: old password string
+          example: MyCurrentPWD
+        newPassword:
+          type: string
+          description: new password string
+          example: MyNewPWD
+        captcha:
+          type: string
+          description: security captcha got from user
+        captchaToken:
+          type: string
+          description: captcha token, that will be checked for authorizing the update
+        tokenId:
+          type: string
+          description: token identifier
+      required:
+      - captcha
+      - captchaToken
+      - newPassword
+      - oldPassword
+      - tokenId
+    ExternalIdentity:
+      type: object
+      description: user's external identity
+      properties:
+        provider:
+          type: string
+          description: the external identity provider. Expected string (max 255 characters)
+          example: SIU
+        id:
+          type: string
+          description: the external identity identifier. Expected string (max 255 characters)
+          example: 44b738a0-b280-11e7-abc4-cec278b6b50a
+        login:
+          type: string
+          description: the external identity login. Expected string (max 255 characters)
+          example: bagginsf
+      required:
+      - provider
     User:
       type: object
       description: body of user data
@@ -280,24 +325,6 @@ components:
       - roles
       - state
       - tenantId
-    ExternalIdentity:
-      type: object
-      description: user's external identity
-      properties:
-        provider:
-          type: string
-          description: the external identity provider. Expected string (max 255 characters)
-          example: SIU
-        id:
-          type: string
-          description: the external identity identifier. Expected string (max 255 characters)
-          example: 44b738a0-b280-11e7-abc4-cec278b6b50a
-        login:
-          type: string
-          description: the external identity login. Expected string (max 255 characters)
-          example: bagginsf
-      required:
-      - provider
     WebErrorResponse:
       type: object
       description: Error response
@@ -338,33 +365,6 @@ components:
       required:
       - login
       - password
-      - tokenId
-    UpdateUserPasswordInfo:
-      type: object
-      description: body of user update password
-      properties:
-        oldPassword:
-          type: string
-          description: old password string
-          example: MyCurrentPWD
-        newPassword:
-          type: string
-          description: new password string
-          example: MyNewPWD
-        captcha:
-          type: string
-          description: security captcha got from user
-        captchaToken:
-          type: string
-          description: captcha token, that will be checked for authorizing the update
-        tokenId:
-          type: string
-          description: token identifier
-      required:
-      - captcha
-      - captchaToken
-      - newPassword
-      - oldPassword
       - tokenId
   securitySchemes:
     X-API-KEY:

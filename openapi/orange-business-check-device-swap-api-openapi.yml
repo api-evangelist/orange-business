@@ -72,39 +72,56 @@ paths:
         '422':
           $ref: '#/components/responses/Generic422'
 components:
+  schemas:
+    XCorrelator:
+      type: string
+      pattern: ^[a-zA-Z0-9-_:;.\/<>{}]{0,256}$
+      example: b4333c46-49c0-4f62-80d7-f0ef930f1c46
+    CreateCheckDeviceSwap:
+      type: object
+      properties:
+        phoneNumber:
+          $ref: '#/components/schemas/PhoneNumber'
+        maxAge:
+          type: integer
+          example: 240
+          description: 'Period in hours to be checked for device swap.
+
+            '
+          format: int32
+          minimum: 1
+          maximum: 2400
+          default: 240
+    ErrorInfo:
+      type: object
+      required:
+      - status
+      - code
+      - message
+      properties:
+        message:
+          type: string
+          description: A human-readable description of what the event represents
+        status:
+          type: integer
+          description: HTTP response status code
+        code:
+          type: string
+          description: A human-readable code to describe the error
+    CheckDeviceSwapInfo:
+      type: object
+      required:
+      - swapped
+      properties:
+        swapped:
+          type: boolean
+          description: Indicates whether the device has been swapped during the period within the provided age.
+    PhoneNumber:
+      type: string
+      pattern: ^\+[1-9][0-9]{4,14}$
+      example: '+34666111333'
+      description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
   responses:
-    Generic400Check:
-      description: Bad Request
-      headers:
-        x-correlator:
-          $ref: '#/components/headers/x-correlator'
-      content:
-        application/json:
-          schema:
-            allOf:
-            - $ref: '#/components/schemas/ErrorInfo'
-            - type: object
-              properties:
-                status:
-                  enum:
-                  - 400
-                code:
-                  enum:
-                  - INVALID_ARGUMENT
-                  - OUT_OF_RANGE
-          examples:
-            GENERIC_400_INVALID_ARGUMENT:
-              description: Invalid Argument. Generic Syntax Exception
-              value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: Client specified an invalid argument, request body or query param.
-            GENERIC_400_OUT_OF_RANGE:
-              description: Out of Range. Specific Syntax Exception used when a given field has a pre-defined range or a invalid filter criteria combination is requested
-              value:
-                status: 400
-                code: OUT_OF_RANGE
-                message: Client specified an invalid range.
     Generic422:
       description: Unprocessable Content
       headers:
@@ -144,6 +161,38 @@ components:
                 status: 422
                 code: UNNECESSARY_IDENTIFIER
                 message: The device is already identified by the access token.
+    Generic400Check:
+      description: Bad Request
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - $ref: '#/components/schemas/ErrorInfo'
+            - type: object
+              properties:
+                status:
+                  enum:
+                  - 400
+                code:
+                  enum:
+                  - INVALID_ARGUMENT
+                  - OUT_OF_RANGE
+          examples:
+            GENERIC_400_INVALID_ARGUMENT:
+              description: Invalid Argument. Generic Syntax Exception
+              value:
+                status: 400
+                code: INVALID_ARGUMENT
+                message: Client specified an invalid argument, request body or query param.
+            GENERIC_400_OUT_OF_RANGE:
+              description: Out of Range. Specific Syntax Exception used when a given field has a pre-defined range or a invalid filter criteria combination is requested
+              value:
+                status: 400
+                code: OUT_OF_RANGE
+                message: Client specified an invalid range.
     Generic401:
       description: Unauthorized
       headers:
@@ -231,55 +280,16 @@ components:
       description: Correlation id for the different services
       schema:
         $ref: '#/components/schemas/XCorrelator'
-  schemas:
-    ErrorInfo:
-      type: object
-      required:
-      - status
-      - code
-      - message
-      properties:
-        message:
-          type: string
-          description: A human-readable description of what the event represents
-        status:
-          type: integer
-          description: HTTP response status code
-        code:
-          type: string
-          description: A human-readable code to describe the error
-    CheckDeviceSwapInfo:
-      type: object
-      required:
-      - swapped
-      properties:
-        swapped:
-          type: boolean
-          description: Indicates whether the device has been swapped during the period within the provided age.
-    PhoneNumber:
-      type: string
-      pattern: ^\+[1-9][0-9]{4,14}$
-      example: '+34666111333'
-      description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
-    XCorrelator:
-      type: string
-      pattern: ^[a-zA-Z0-9-_:;.\/<>{}]{0,256}$
-      example: b4333c46-49c0-4f62-80d7-f0ef930f1c46
-    CreateCheckDeviceSwap:
-      type: object
-      properties:
-        phoneNumber:
-          $ref: '#/components/schemas/PhoneNumber'
-        maxAge:
-          type: integer
-          example: 240
-          description: 'Period in hours to be checked for device swap.
-
-            '
-          format: int32
-          minimum: 1
-          maximum: 2400
-          default: 240
+  examples:
+    CHECK_3LEGS:
+      summary: Check request with 3-legged access tokens
+      value:
+        maxAge: 120
+    CHECK_2LEGS:
+      summary: Check request without 3-legged access tokens
+      value:
+        phoneNumber: '+346661113334'
+        maxAge: 120
   parameters:
     x-correlator:
       name: x-correlator
@@ -287,16 +297,6 @@ components:
       description: Correlation id for the different services
       schema:
         $ref: '#/components/schemas/XCorrelator'
-  examples:
-    CHECK_2LEGS:
-      summary: Check request without 3-legged access tokens
-      value:
-        phoneNumber: '+346661113334'
-        maxAge: 120
-    CHECK_3LEGS:
-      summary: Check request with 3-legged access tokens
-      value:
-        maxAge: 120
   securitySchemes:
     openId:
       type: openIdConnect

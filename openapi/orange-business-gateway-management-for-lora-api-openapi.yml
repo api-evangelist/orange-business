@@ -204,17 +204,54 @@ paths:
                 $ref: '#/components/schemas/WebErrorResponse'
 components:
   schemas:
-    GwSystem:
+    LoraGatewayDefinition:
       type: object
       properties:
-        gpsState:
+        name:
           type: string
-          description: GPS state
-          example: UNKNOWN
-        timeSync:
+          description: Name of the gateway
+          example: FF02041D
+        description:
           type: string
-          description: Time synchronization
-          example: NTP
+          description: Description
+        location:
+          $ref: '#/components/schemas/LoraGatewayLocation'
+          description: Gateway location
+    PageableLoraGatewayInfo:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int64
+          description: 'number of the current page: starts at 0.'
+          example: 0
+        size:
+          type: integer
+          format: int64
+          description: number of data per page (= maximum number of data in the associated list of data:the last page can have less data)
+          example: 1
+        totalCount:
+          type: integer
+          format: int64
+          description: total count of data in the complete list.
+          example: 1
+        data:
+          type: array
+          description: list of data in this page.
+          items:
+            $ref: '#/components/schemas/LoraGatewayInfo'
+      required:
+      - data
+      - page
+      - size
+      - totalCount
+    GwConfig:
+      type: object
+      properties:
+        version:
+          type: string
+          description: Version
+          example: 2.2.47
     WebErrorResponse:
       type: object
       description: Error response
@@ -235,6 +272,44 @@ components:
       - code
       - id
       - message
+    LoraGatewayLocation:
+      type: object
+      properties:
+        lat:
+          type: number
+          format: double
+          description: Last geolocation latitude (GPS coordinate system)
+          example: 10.11212
+        lon:
+          type: number
+          format: double
+          description: Last geolocation longitude (GPS coordinate system)
+          example: 7.44464
+        alt:
+          type: number
+          format: double
+          description: Last geolocation altitude (meter)
+          example: 50
+        provider:
+          type: string
+          description: Computing geolocation method
+          example: GPS
+        lastUpdateTs:
+          type: string
+          format: date-time
+          description: Date/time of the last location
+          example: '2016-06-14T11:09:22.125Z'
+    GwSystem:
+      type: object
+      properties:
+        gpsState:
+          type: string
+          description: GPS state
+          example: UNKNOWN
+        timeSync:
+          type: string
+          description: Time synchronization
+          example: NTP
     LoraGatewayInfo:
       type: object
       properties:
@@ -277,54 +352,6 @@ components:
         networkPartner:
           $ref: '#/components/schemas/GwNetworkPartner'
           description: Network partner
-    PageableLoraGatewayInfo:
-      type: object
-      properties:
-        page:
-          type: integer
-          format: int64
-          description: 'number of the current page: starts at 0.'
-          example: 0
-        size:
-          type: integer
-          format: int64
-          description: number of data per page (= maximum number of data in the associated list of data:the last page can have less data)
-          example: 1
-        totalCount:
-          type: integer
-          format: int64
-          description: total count of data in the complete list.
-          example: 1
-        data:
-          type: array
-          description: list of data in this page.
-          items:
-            $ref: '#/components/schemas/LoraGatewayInfo'
-      required:
-      - data
-      - page
-      - size
-      - totalCount
-    LoraGatewayDefinition:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Name of the gateway
-          example: FF02041D
-        description:
-          type: string
-          description: Description
-        location:
-          $ref: '#/components/schemas/LoraGatewayLocation'
-          description: Gateway location
-    GwConfig:
-      type: object
-      properties:
-        version:
-          type: string
-          description: Version
-          example: 2.2.47
     GwNetworkPartner:
       type: object
       properties:
@@ -332,33 +359,6 @@ components:
           type: string
           description: Partner related instance
           example: OCP
-    LoraGatewayLocation:
-      type: object
-      properties:
-        lat:
-          type: number
-          format: double
-          description: Last geolocation latitude (GPS coordinate system)
-          example: 10.11212
-        lon:
-          type: number
-          format: double
-          description: Last geolocation longitude (GPS coordinate system)
-          example: 7.44464
-        alt:
-          type: number
-          format: double
-          description: Last geolocation altitude (meter)
-          example: 50
-        provider:
-          type: string
-          description: Computing geolocation method
-          example: GPS
-        lastUpdateTs:
-          type: string
-          format: date-time
-          description: Date/time of the last location
-          example: '2016-06-14T11:09:22.125Z'
   securitySchemes:
     X-API-KEY:
       type: apiKey

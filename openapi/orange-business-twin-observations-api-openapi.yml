@@ -134,20 +134,6 @@ paths:
           description: No Content
 components:
   schemas:
-    TwinObservationError:
-      type: object
-      properties:
-        code:
-          type: string
-          description: observation error code
-          example: DEVICE_ERROR
-        details:
-          type: string
-          description: observation error explanations
-          example: URIs were not found or are not supported
-        deviceCode:
-          $ref: '#/components/schemas/DeviceErrorCode'
-          description: device error response code, if any
     TwinObservation:
       type: object
       properties:
@@ -193,17 +179,6 @@ components:
       - name
       - paths
       - status
-    DeviceErrorCode:
-      type: object
-      properties:
-        value:
-          type: string
-          description: device error code value
-          example: '404'
-        reason:
-          type: string
-          description: device error code reason
-          example: NOT_FOUND
     TwinObservationCreateRequest:
       type: object
       description: Twin observation to create
@@ -232,6 +207,31 @@ components:
       required:
       - name
       - paths
+    DeviceErrorCode:
+      type: object
+      properties:
+        value:
+          type: string
+          description: device error code value
+          example: '404'
+        reason:
+          type: string
+          description: device error code reason
+          example: NOT_FOUND
+    TwinObservationError:
+      type: object
+      properties:
+        code:
+          type: string
+          description: observation error code
+          example: DEVICE_ERROR
+        details:
+          type: string
+          description: observation error explanations
+          example: URIs were not found or are not supported
+        deviceCode:
+          $ref: '#/components/schemas/DeviceErrorCode'
+          description: device error response code, if any
   securitySchemes:
     X-API-KEY:
       type: apiKey

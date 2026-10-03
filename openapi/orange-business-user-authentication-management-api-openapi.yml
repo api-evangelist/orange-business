@@ -68,13 +68,6 @@ paths:
                 $ref: '#/components/schemas/WhoAmiInfo'
 components:
   schemas:
-    WhoAmiInfo:
-      type: object
-      description: 'identifier of tenant account ex: "57xxxxxxxxxxxxxxxxxxxxxx". Expected identifier (max 24 characters)'
-      properties:
-        content:
-          type: string
-          description: 'identifier of tenant account ex: "57xxxxxxxxxxxxxxxxxxxxxx". Expected identifier (max 24 characters)'
     UpdateEmailValidationInfo:
       type: object
       description: body of update User Email
@@ -92,6 +85,13 @@ components:
       - captcha
       - captchaToken
       - tokenId
+    WhoAmiInfo:
+      type: object
+      description: 'identifier of tenant account ex: "57xxxxxxxxxxxxxxxxxxxxxx". Expected identifier (max 24 characters)'
+      properties:
+        content:
+          type: string
+          description: 'identifier of tenant account ex: "57xxxxxxxxxxxxxxxxxxxxxx". Expected identifier (max 24 characters)'
   securitySchemes:
     X-API-KEY:
       type: apiKey

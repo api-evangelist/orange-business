@@ -197,6 +197,65 @@ paths:
                 $ref: '#/components/schemas/BootstrapConfig'
 components:
   schemas:
+    BootstrapConfigRequest:
+      type: object
+      description: Bootstrap config to create
+      properties:
+        name:
+          type: string
+          description: Name of bootstrap configuration
+          example: My bootstrap config
+          maxLength: 255
+          minLength: 0
+        description:
+          type: string
+          description: Description of bootstrap configuration
+          example: My description of my bootstrap config
+          maxLength: 1024
+          minLength: 0
+        runServers:
+          type: array
+          description: List of run servers
+          items:
+            $ref: '#/components/schemas/RunServer'
+          maxItems: 1
+          minItems: 1
+        additionalOperations:
+          $ref: '#/components/schemas/BootstrapConfigOperations'
+          description: Write operations on additional objects (other than /0, /1, /2 and /21), optionally defining an external server
+      required:
+      - name
+      - runServers
+    AutoProvisioning:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: If true, the LwM2M device will be automatically created or updated in the Device Inventory on bootstrap, based on its Entry definition, even if it has not been provisioned beforehand. Can only be defined if useLiveObjects is true.
+          example: true
+    BootstrapConfigOperations:
+      type: object
+      properties:
+        externalConfigServer:
+          $ref: '#/components/schemas/ExternalConfigServer'
+          description: Define an external server which will dynamically provide additional write operations on each bootstrap request.
+        objectVersionUrns:
+          type: array
+          description: List of the targeted object version urns.
+          example:
+          - urn:oma:lwm2m:ext:3300:1.1
+          - urn:oma:lwm2m:ext:36050:1.0
+          items:
+            type: string
+          maxItems: 100
+          minItems: 0
+        writeOperations:
+          type: array
+          description: List of write operations to execute during bootstrap. Write operations will be performed at object level, which means it will replace all existing resources in the targeted object and only include the resources explicitly defined here.
+          items:
+            $ref: '#/components/schemas/BootstrapWriteOperation'
+          maxItems: 100
+          minItems: 0
     Lwm2mSecurity:
       type: object
       properties:
@@ -280,36 +339,6 @@ components:
           minItems: 1
       required:
       - shortServerId
-    BootstrapConfigOperations:
-      type: object
-      properties:
-        externalConfigServer:
-          $ref: '#/components/schemas/ExternalConfigServer'
-          description: Define an external server which will dynamically provide additional write operations on each bootstrap request.
-        objectVersionUrns:
-          type: array
-          description: List of the targeted object version urns.
-          example:
-          - urn:oma:lwm2m:ext:3300:1.1
-          - urn:oma:lwm2m:ext:36050:1.0
-          items:
-            type: string
-          maxItems: 100
-          minItems: 0
-        writeOperations:
-          type: array
-          description: List of write operations to execute during bootstrap. Write operations will be performed at object level, which means it will replace all existing resources in the targeted object and only include the resources explicitly defined here.
-          items:
-            $ref: '#/components/schemas/BootstrapWriteOperation'
-          maxItems: 100
-          minItems: 0
-    AutoProvisioning:
-      type: object
-      properties:
-        enabled:
-          type: boolean
-          description: If true, the LwM2M device will be automatically created or updated in the Device Inventory on bootstrap, based on its Entry definition, even if it has not been provisioned beforehand. Can only be defined if useLiveObjects is true.
-          example: true
     Lwm2mServer:
       type: object
       properties:
@@ -416,44 +445,6 @@ components:
       - binding
       - lifetime
       - shortServerId
-    ObjectSettings:
-      type: object
-      properties:
-        objectInstanceId:
-          type: integer
-          format: int32
-          description: The instance ID that will be used for this Object. If not specified, the ID is automatically assigned incrementally from 0 for the first Run Server in the list. For the Security Object, the instance used for the Bootstrap Server is avoided (a Discover operation is performed to identify the ID used).
-          maximum: 65534
-          minimum: 0
-    BootstrapConfigRequest:
-      type: object
-      description: Bootstrap config to create
-      properties:
-        name:
-          type: string
-          description: Name of bootstrap configuration
-          example: My bootstrap config
-          maxLength: 255
-          minLength: 0
-        description:
-          type: string
-          description: Description of bootstrap configuration
-          example: My description of my bootstrap config
-          maxLength: 1024
-          minLength: 0
-        runServers:
-          type: array
-          description: List of run servers
-          items:
-            $ref: '#/components/schemas/RunServer'
-          maxItems: 1
-          minItems: 1
-        additionalOperations:
-          $ref: '#/components/schemas/BootstrapConfigOperations'
-          description: Write operations on additional objects (other than /0, /1, /2 and /21), optionally defining an external server
-      required:
-      - name
-      - runServers
     BootstrapConfig:
       type: object
       properties:
@@ -493,32 +484,15 @@ components:
       - name
       - runServers
       - updated
-    BootstrapWriteOperation:
+    ObjectSettings:
       type: object
       properties:
-        path:
-          type: string
-          description: Path of the write operation. Must target a resource or a resource instance. Can not target /0, /1, /2 and /21 objects.
-          example: /3300/1/5750
-        value:
-          type: string
-          description: Value of the write operation
-          example: VOC Index
-      required:
-      - path
-      - value
-    Lwm2mDefinition:
-      type: object
-      properties:
-        security:
-          $ref: '#/components/schemas/Lwm2mSecurity'
-          description: Lwm2m definition for `LWM2M Security` object (ObjectID=0)
-        server:
-          $ref: '#/components/schemas/Lwm2mServer'
-          description: Lwm2m definition for `LWM2M Server` object (ObjectID=1)
-      required:
-      - security
-      - server
+        objectInstanceId:
+          type: integer
+          format: int32
+          description: The instance ID that will be used for this Object. If not specified, the ID is automatically assigned incrementally from 0 for the first Run Server in the list. For the Security Object, the instance used for the Bootstrap Server is avoided (a Discover operation is performed to identify the ID used).
+          maximum: 65534
+          minimum: 0
     RunServer:
       type: object
       properties:
@@ -545,6 +519,20 @@ components:
       - id
       - lwm2mDefinition
       - useLiveObjects
+    BootstrapWriteOperation:
+      type: object
+      properties:
+        path:
+          type: string
+          description: Path of the write operation. Must target a resource or a resource instance. Can not target /0, /1, /2 and /21 objects.
+          example: /3300/1/5750
+        value:
+          type: string
+          description: Value of the write operation
+          example: VOC Index
+      required:
+      - path
+      - value
     ExternalConfigServer:
       type: object
       properties:
@@ -564,6 +552,18 @@ components:
             - fhpao4654feae46463Z
       required:
       - url
+    Lwm2mDefinition:
+      type: object
+      properties:
+        security:
+          $ref: '#/components/schemas/Lwm2mSecurity'
+          description: Lwm2m definition for `LWM2M Security` object (ObjectID=0)
+        server:
+          $ref: '#/components/schemas/Lwm2mServer'
+          description: Lwm2m definition for `LWM2M Server` object (ObjectID=1)
+      required:
+      - security
+      - server
   securitySchemes:
     X-API-KEY:
       type: apiKey

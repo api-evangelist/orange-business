@@ -219,13 +219,6 @@ paths:
                   $ref: '#/components/schemas/LoraNetworkSubscriptionDetail'
 components:
   schemas:
-    LoraDeviceManufacturer:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Commercial name of the device manufacturer
-          example: Adeunis
     LoraNetworkSubscriptionDetail:
       type: object
       properties:
@@ -248,6 +241,13 @@ components:
             sfMax: 12
             sfMin: 7
             nbTransMin: 1
+    LoraDeviceManufacturer:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Commercial name of the device manufacturer
+          example: Adeunis
     WebErrorResponse:
       type: object
       description: Error response
@@ -268,6 +268,13 @@ components:
       - code
       - id
       - message
+    Manufacturer:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Commercial name of the device manufacturer
+          example: Adeunis
     LoraDeviceProfile:
       type: object
       properties:
@@ -290,13 +297,6 @@ components:
           - EU863-870 (EU868)
           items:
             type: string
-    Manufacturer:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Commercial name of the device manufacturer
-          example: Adeunis
   securitySchemes:
     X-API-KEY:
       type: apiKey

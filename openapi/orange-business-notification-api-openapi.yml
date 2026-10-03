@@ -80,6 +80,21 @@ components:
           description: phoneNumbers
           items:
             type: string
+    SendMessageRequest:
+      type: object
+      description: contact and message are mandatory
+      properties:
+        contact:
+          $ref: '#/components/schemas/ContactMessage'
+          description: contact
+        message:
+          type: object
+          additionalProperties:
+            type: string
+          description: message
+      required:
+      - contact
+      - message
     WebErrorResponse:
       type: object
       description: Error response
@@ -99,21 +114,6 @@ components:
       required:
       - code
       - id
-      - message
-    SendMessageRequest:
-      type: object
-      description: contact and message are mandatory
-      properties:
-        contact:
-          $ref: '#/components/schemas/ContactMessage'
-          description: contact
-        message:
-          type: object
-          additionalProperties:
-            type: string
-          description: message
-      required:
-      - contact
       - message
   securitySchemes:
     X-API-KEY:

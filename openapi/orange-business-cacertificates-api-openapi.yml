@@ -109,6 +109,11 @@ paths:
           description: Unknown CA certificate
 components:
   schemas:
+    CaCertificateRef:
+      type: object
+      properties:
+        id:
+          type: string
     CaCertificateDefinition:
       type: object
       description: Root or intermediate Certification Authority (CA) certificate. Only PEM format is supported. Certificate chains are not allowed. In case that intermediates CA are used, it must be the intermediate CA certificate which signs the devices certificates.
@@ -164,11 +169,6 @@ components:
       required:
       - certificate
       - comment
-    CaCertificateRef:
-      type: object
-      properties:
-        id:
-          type: string
     CaCertificate:
       type: object
       properties:

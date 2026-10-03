@@ -188,18 +188,30 @@ paths:
                 $ref: '#/components/schemas/WebErrorResponse'
 components:
   schemas:
-    TwinAttributeValue:
+    TwinAttribute:
       type: object
       properties:
-        reportedValue:
+        path:
           type: string
-          description: Attribute reported value
-        timestamp:
+          description: Path of the attribute
+          example: /5/0/3
+          minLength: 1
+        pathSegment:
           type: string
-          description: Value timestamp
-        pendingValue:
-          type: string
-          description: Pending value
+          description: Path segment of the attribute
+          example: '3'
+          minLength: 1
+        content:
+          $ref: '#/components/schemas/TwinAttributeValue'
+          description: Single attribute value
+        contents:
+          type: array
+          description: Multi-instance attribute values
+          items:
+            $ref: '#/components/schemas/TwinAttributeInstanceValue'
+      required:
+      - path
+      - pathSegment
     TwinObject:
       type: object
       properties:
@@ -242,67 +254,6 @@ components:
       - code
       - id
       - message
-    TwinObjectInstance:
-      type: object
-      properties:
-        path:
-          type: string
-          description: Path of the object
-          example: /5/0
-          minLength: 1
-        objectDefinitionId:
-          type: string
-          description: Unique identifier of the object-definition
-          example: urn:oma:lwm2m:oma:5:1.1
-          minLength: 1
-        attributes:
-          type: array
-          description: List of object attributes
-          items:
-            $ref: '#/components/schemas/TwinAttribute'
-          uniqueItems: true
-      required:
-      - objectDefinitionId
-      - path
-    TwinAttributeInstanceValue:
-      type: object
-      properties:
-        reportedValue:
-          type: string
-          description: Attribute reported value
-        timestamp:
-          type: string
-          description: Value timestamp
-        pendingValue:
-          type: string
-          description: Pending value
-        path:
-          type: string
-          description: Attribute multi-instantiable value path
-    TwinAttribute:
-      type: object
-      properties:
-        path:
-          type: string
-          description: Path of the attribute
-          example: /5/0/3
-          minLength: 1
-        pathSegment:
-          type: string
-          description: Path segment of the attribute
-          example: '3'
-          minLength: 1
-        content:
-          $ref: '#/components/schemas/TwinAttributeValue'
-          description: Single attribute value
-        contents:
-          type: array
-          description: Multi-instance attribute values
-          items:
-            $ref: '#/components/schemas/TwinAttributeInstanceValue'
-      required:
-      - path
-      - pathSegment
     ParentTwinObject:
       type: object
       properties:
@@ -321,6 +272,55 @@ components:
           description: List of children objects
           items:
             $ref: '#/components/schemas/TwinObject'
+          uniqueItems: true
+      required:
+      - objectDefinitionId
+      - path
+    TwinAttributeValue:
+      type: object
+      properties:
+        reportedValue:
+          type: string
+          description: Attribute reported value
+        timestamp:
+          type: string
+          description: Value timestamp
+        pendingValue:
+          type: string
+          description: Pending value
+    TwinAttributeInstanceValue:
+      type: object
+      properties:
+        reportedValue:
+          type: string
+          description: Attribute reported value
+        timestamp:
+          type: string
+          description: Value timestamp
+        pendingValue:
+          type: string
+          description: Pending value
+        path:
+          type: string
+          description: Attribute multi-instantiable value path
+    TwinObjectInstance:
+      type: object
+      properties:
+        path:
+          type: string
+          description: Path of the object
+          example: /5/0
+          minLength: 1
+        objectDefinitionId:
+          type: string
+          description: Unique identifier of the object-definition
+          example: urn:oma:lwm2m:oma:5:1.1
+          minLength: 1
+        attributes:
+          type: array
+          description: List of object attributes
+          items:
+            $ref: '#/components/schemas/TwinAttribute'
           uniqueItems: true
       required:
       - objectDefinitionId

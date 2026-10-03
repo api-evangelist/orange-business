@@ -671,6 +671,46 @@ paths:
                 $ref: '#/components/schemas/WebErrorResponse'
 components:
   schemas:
+    DebugModeInfo:
+      type: object
+      properties:
+        ttlHours:
+          type: integer
+          format: int32
+        startTime:
+          type: string
+          format: date-time
+        endTime:
+          type: string
+          format: date-time
+    DebugModeStartRequest:
+      type: object
+      properties:
+        ttlHours:
+          type: integer
+          format: int32
+          description: Define how long the debug mode will be activated. Must be between 1 hour and 360 hours (15 days).
+          maximum: 360
+          minimum: 1
+      required:
+      - ttlHours
+    InterfaceCreateRequest:
+      type: object
+      description: The device interface to add
+      properties:
+        connector:
+          type: string
+          description: Connector ID. A connector must respect the following regular expression <code>([\w\-]{1,128})</code> (max 128 characters)
+          example: lora
+        enabled:
+          type: boolean
+          description: Indicates whether the interface is enabled
+          example: true
+        definition:
+          description: Base definition. Expected string (max 10000 characters)
+      required:
+      - connector
+      - definition
     InterfaceCapabilities:
       type: object
       description: Full details about an interface capabilities
@@ -691,29 +731,26 @@ components:
           $ref: '#/components/schemas/InterfaceCapability'
           description: Interface twin capability
           readOnly: true
-    DebugModeStartRequest:
+    WebErrorResponse:
       type: object
+      description: Error response
       properties:
-        ttlHours:
-          type: integer
-          format: int32
-          description: Define how long the debug mode will be activated. Must be between 1 hour and 360 hours (15 days).
-          maximum: 360
-          minimum: 1
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
       required:
-      - ttlHours
-    DebugModeInfo:
-      type: object
-      properties:
-        ttlHours:
-          type: integer
-          format: int32
-        startTime:
-          type: string
-          format: date-time
-        endTime:
-          type: string
-          format: date-time
+      - code
+      - id
+      - message
     ConnectorNodeLocation:
       type: object
       properties:
@@ -751,6 +788,48 @@ components:
           format: date-time
           description: Date/time of the last location
           example: '2016-06-14T11:09:22.125Z'
+          readOnly: true
+    ServiceErrorResponse:
+      type: object
+      description: Generic Error in Response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+        category:
+          type: string
+          description: Error category
+          enum:
+          - PERMANENT
+          - TRANSIENT
+          - UNEXPECTED
+      required:
+      - category
+      - code
+      - id
+      - message
+    InterfaceCapability:
+      type: object
+      properties:
+        available:
+          type: boolean
+          description: Indicates whether the capability is available for the interface
+          example: true
+          readOnly: true
+        version:
+          type: integer
+          format: int32
+          description: Capability version
+          example: 1
           readOnly: true
     DeviceInterface:
       type: object
@@ -825,85 +904,6 @@ components:
           description: New enabled state for this connector node (or null)
         definition:
           description: New interface definition
-    WebErrorResponse:
-      type: object
-      description: Error response
-      properties:
-        id:
-          type: string
-          description: Unique identifier of this error instance
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Short error description
-        details:
-          type: string
-          description: Detailed error description
-      required:
-      - code
-      - id
-      - message
-    InterfaceCreateRequest:
-      type: object
-      description: The device interface to add
-      properties:
-        connector:
-          type: string
-          description: Connector ID. A connector must respect the following regular expression <code>([\w\-]{1,128})</code> (max 128 characters)
-          example: lora
-        enabled:
-          type: boolean
-          description: Indicates whether the interface is enabled
-          example: true
-        definition:
-          description: Base definition. Expected string (max 10000 characters)
-      required:
-      - connector
-      - definition
-    InterfaceCapability:
-      type: object
-      properties:
-        available:
-          type: boolean
-          description: Indicates whether the capability is available for the interface
-          example: true
-          readOnly: true
-        version:
-          type: integer
-          format: int32
-          description: Capability version
-          example: 1
-          readOnly: true
-    ServiceErrorResponse:
-      type: object
-      description: Generic Error in Response
-      properties:
-        id:
-          type: string
-          description: Unique identifier of this error instance
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Short error description
-        details:
-          type: string
-          description: Detailed error description
-        category:
-          type: string
-          description: Error category
-          enum:
-          - PERMANENT
-          - TRANSIENT
-          - UNEXPECTED
-      required:
-      - category
-      - code
-      - id
-      - message
   securitySchemes:
     X-API-KEY:
       type: apiKey

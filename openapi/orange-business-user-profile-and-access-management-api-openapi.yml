@@ -134,6 +134,92 @@ paths:
                 $ref: '#/components/schemas/ServiceErrorResponse'
 components:
   schemas:
+    UserAccess:
+      type: object
+      description: User access
+      properties:
+        id:
+          type: string
+          description: identifier of user access
+          example: 57FFFFFFFFFFFFFFFFFFFFFF
+        tenantId:
+          type: string
+          description: tenant identifier
+        tenantName:
+          type: string
+          description: tenant name
+        tenantAccountType:
+          type: string
+          description: tenant accountType
+        state:
+          type: string
+          description: state of user access
+          example: enabled
+        permissions:
+          type: array
+          description: list of access's permissions
+          example:
+          - USER_R
+          items:
+            type: string
+          uniqueItems: true
+        permissionSet:
+          type: string
+          description: access's permissions corresponding permission set
+          enum:
+          - CUSTOMER_USERACCESS_USER
+          - CUSTOMER_USERACCESS_ADMIN
+          - CUSTOMER_DEVICE
+          - CUSTOMER_CONNECTOR
+          - CUSTOMER_APPLICATION
+          - CUSTOMIZED
+        lastAccess:
+          type: string
+          format: date-time
+          description: user tenant last access instant
+        lastAccessIdentityProvider:
+          type: string
+          description: user tenant last access identity provider name
+        portalData:
+          description: user tenant portal data
+        mainUser:
+          type: boolean
+      required:
+      - id
+      - permissionSet
+      - permissions
+      - state
+      - tenantAccountType
+      - tenantId
+      - tenantName
+    PageableV2UserAccess:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int64
+          description: 'number of the current page: starts at 0.'
+          example: 0
+        size:
+          type: integer
+          format: int64
+          description: number of data per page (= maximum number of data in the associated list of data:the last page can have less data)
+          example: 1
+        totalCount:
+          type: integer
+          format: int64
+          description: total count of data in the complete list.
+          example: 1
+        data:
+          type: array
+          description: list of data in this page.
+          items:
+            $ref: '#/components/schemas/UserAccess'
+      required:
+      - data
+      - page
+      - size
+      - totalCount
     UserProfileIdentity:
       type: object
       description: user profile identity
@@ -164,34 +250,6 @@ components:
       - id
       - lastAuthentication
       - provider
-    PageableV2UserAccess:
-      type: object
-      properties:
-        page:
-          type: integer
-          format: int64
-          description: 'number of the current page: starts at 0.'
-          example: 0
-        size:
-          type: integer
-          format: int64
-          description: number of data per page (= maximum number of data in the associated list of data:the last page can have less data)
-          example: 1
-        totalCount:
-          type: integer
-          format: int64
-          description: total count of data in the complete list.
-          example: 1
-        data:
-          type: array
-          description: list of data in this page.
-          items:
-            $ref: '#/components/schemas/UserAccess'
-      required:
-      - data
-      - page
-      - size
-      - totalCount
     WebErrorResponse:
       type: object
       description: Error response
@@ -280,64 +338,6 @@ components:
           type: string
           description: 'the user language. Expected language ISO 639-1 (example: "en", "fr", "sk", "ro", "es") (case insensitive, max 2 characters)'
           example: en
-    UserAccess:
-      type: object
-      description: User access
-      properties:
-        id:
-          type: string
-          description: identifier of user access
-          example: 57FFFFFFFFFFFFFFFFFFFFFF
-        tenantId:
-          type: string
-          description: tenant identifier
-        tenantName:
-          type: string
-          description: tenant name
-        tenantAccountType:
-          type: string
-          description: tenant accountType
-        state:
-          type: string
-          description: state of user access
-          example: enabled
-        permissions:
-          type: array
-          description: list of access's permissions
-          example:
-          - USER_R
-          items:
-            type: string
-          uniqueItems: true
-        permissionSet:
-          type: string
-          description: access's permissions corresponding permission set
-          enum:
-          - CUSTOMER_USERACCESS_USER
-          - CUSTOMER_USERACCESS_ADMIN
-          - CUSTOMER_DEVICE
-          - CUSTOMER_CONNECTOR
-          - CUSTOMER_APPLICATION
-          - CUSTOMIZED
-        lastAccess:
-          type: string
-          format: date-time
-          description: user tenant last access instant
-        lastAccessIdentityProvider:
-          type: string
-          description: user tenant last access identity provider name
-        portalData:
-          description: user tenant portal data
-        mainUser:
-          type: boolean
-      required:
-      - id
-      - permissionSet
-      - permissions
-      - state
-      - tenantAccountType
-      - tenantId
-      - tenantName
   securitySchemes:
     X-API-KEY:
       type: apiKey

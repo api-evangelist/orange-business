@@ -107,71 +107,6 @@ paths:
                   $ref: '#/components/schemas/LostMessagesRatioResult'
 components:
   schemas:
-    NetworkMetricsRequest:
-      type: object
-      description: Filters applying to the network metrics search
-      properties:
-        filters:
-          $ref: '#/components/schemas/NetworkMetricsFilters'
-          description: Network metrics filters
-        timeAggregation:
-          $ref: '#/components/schemas/TimeAggregation'
-          description: Time aggregation
-        subAggregation:
-          $ref: '#/components/schemas/SubAggregation'
-          description: Sub aggregation
-      required:
-      - filters
-      - timeAggregation
-    SubAggregation:
-      type: object
-      description: Sub aggregation
-      properties:
-        field:
-          type: string
-          description: Aggregated results on specify field. Supported value is `messageType`
-          example: messageType
-      required:
-      - field
-    InterfaceDefinition:
-      type: object
-      properties:
-        connector:
-          type: string
-          description: Interface connector
-          example: lwm2m
-        nodeId:
-          type: string
-          description: Interface node identifier
-          example: 12345A0409001C1A
-      required:
-      - connector
-    TimeAggregation:
-      type: object
-      description: Time aggregation
-      properties:
-        interval:
-          type: string
-          description: Interval of the aggregated results.Available values are `15m`, `hour`, `day`, `week`
-          example: hour
-        timezone:
-          type: string
-          description: Timezone applied to the aggregated result on the filtered period. This field matches ISO 8601 UTC offset (e.g. +01:00)
-          example: +01:00
-      required:
-      - interval
-    SubAggregationBucket:
-      type: object
-      properties:
-        key:
-          type: string
-          description: key of sub aggregation
-          example: UPDATE_REQUEST
-        messageCount:
-          type: integer
-          format: int64
-          description: count
-          example: 5
     NetworkMetricsResult:
       type: object
       properties:
@@ -190,19 +125,16 @@ components:
           description: sub aggregation buckets
           items:
             $ref: '#/components/schemas/SubAggregationBucket'
-    LostMessagesRatioResult:
+    SubAggregation:
       type: object
+      description: Sub aggregation
       properties:
-        timeStart:
+        field:
           type: string
-          format: date-time
-          description: Date/time
-          example: '2019-01-01T00:00:00.000Z'
-        value:
-          type: number
-          format: double
-          description: ratio
-          example: 0.1
+          description: Aggregated results on specify field. Supported value is `messageType`
+          example: messageType
+      required:
+      - field
     LostMessagesRatioRequest:
       type: object
       description: Filters applying to the lost messages ratio search
@@ -216,6 +148,55 @@ components:
       required:
       - filters
       - timeAggregation
+    NetworkMetricsRequest:
+      type: object
+      description: Filters applying to the network metrics search
+      properties:
+        filters:
+          $ref: '#/components/schemas/NetworkMetricsFilters'
+          description: Network metrics filters
+        timeAggregation:
+          $ref: '#/components/schemas/TimeAggregation'
+          description: Time aggregation
+        subAggregation:
+          $ref: '#/components/schemas/SubAggregation'
+          description: Sub aggregation
+      required:
+      - filters
+      - timeAggregation
+    LostMessagesRatioResult:
+      type: object
+      properties:
+        timeStart:
+          type: string
+          format: date-time
+          description: Date/time
+          example: '2019-01-01T00:00:00.000Z'
+        value:
+          type: number
+          format: double
+          description: ratio
+          example: 0.1
+    LostMessagesFilters:
+      type: object
+      properties:
+        from:
+          type: string
+          format: date-time
+          description: Date and time from which the search for lost messages begins. Use ISO-8601 normalization.
+          example: '2003-09-06T20:05:00Z'
+        to:
+          type: string
+          format: date-time
+          description: Date and time until which the search for lost messages ends. Use ISO-8601 normalization.
+          example: '2003-09-07T15:12:13Z'
+        interface:
+          $ref: '#/components/schemas/InterfaceDefinition'
+          description: Interface
+      required:
+      - from
+      - interface
+      - to
     NetworkMetricsFilters:
       type: object
       properties:
@@ -267,26 +248,45 @@ components:
       - from
       - interface
       - to
-    LostMessagesFilters:
+    TimeAggregation:
+      type: object
+      description: Time aggregation
+      properties:
+        interval:
+          type: string
+          description: Interval of the aggregated results.Available values are `15m`, `hour`, `day`, `week`
+          example: hour
+        timezone:
+          type: string
+          description: Timezone applied to the aggregated result on the filtered period. This field matches ISO 8601 UTC offset (e.g. +01:00)
+          example: +01:00
+      required:
+      - interval
+    InterfaceDefinition:
       type: object
       properties:
-        from:
+        connector:
           type: string
-          format: date-time
-          description: Date and time from which the search for lost messages begins. Use ISO-8601 normalization.
-          example: '2003-09-06T20:05:00Z'
-        to:
+          description: Interface connector
+          example: lwm2m
+        nodeId:
           type: string
-          format: date-time
-          description: Date and time until which the search for lost messages ends. Use ISO-8601 normalization.
-          example: '2003-09-07T15:12:13Z'
-        interface:
-          $ref: '#/components/schemas/InterfaceDefinition'
-          description: Interface
+          description: Interface node identifier
+          example: 12345A0409001C1A
       required:
-      - from
-      - interface
-      - to
+      - connector
+    SubAggregationBucket:
+      type: object
+      properties:
+        key:
+          type: string
+          description: key of sub aggregation
+          example: UPDATE_REQUEST
+        messageCount:
+          type: integer
+          format: int64
+          description: count
+          example: 5
   securitySchemes:
     X-API-KEY:
       type: apiKey

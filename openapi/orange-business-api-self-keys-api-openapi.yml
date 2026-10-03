@@ -52,6 +52,39 @@ paths:
                 $ref: '#/components/schemas/WebErrorResponse'
 components:
   schemas:
+    RateLimit:
+      type: object
+      properties:
+        mqttBridgeWindowSize:
+          type: integer
+          format: int64
+          description: 'mqtt bridge rate limit: window size in seconds'
+          example: 1
+        mqttBridgeMaxMessages:
+          type: integer
+          format: int64
+          description: 'mqtt bridge rate limit: maximum messages allowed per time window'
+          example: 1
+        mqttDeviceWindowSize:
+          type: integer
+          format: int64
+          description: 'mqtt device rate limit: window size in seconds'
+          example: 1
+        mqttDeviceMaxMessages:
+          type: integer
+          format: int64
+          description: 'mqtt device rate limit: maximum messages allowed per time window'
+          example: 1
+        httpWindowSize:
+          type: integer
+          format: int64
+          description: 'http rate limit: window size in seconds'
+          example: 1
+        httpMaxCalls:
+          type: integer
+          format: int64
+          description: 'http rate limit: maximum api calls allowed per time window'
+          example: 1
     ApiKey:
       type: object
       properties:
@@ -177,39 +210,6 @@ components:
           items:
             type: string
           uniqueItems: true
-    RateLimit:
-      type: object
-      properties:
-        mqttBridgeWindowSize:
-          type: integer
-          format: int64
-          description: 'mqtt bridge rate limit: window size in seconds'
-          example: 1
-        mqttBridgeMaxMessages:
-          type: integer
-          format: int64
-          description: 'mqtt bridge rate limit: maximum messages allowed per time window'
-          example: 1
-        mqttDeviceWindowSize:
-          type: integer
-          format: int64
-          description: 'mqtt device rate limit: window size in seconds'
-          example: 1
-        mqttDeviceMaxMessages:
-          type: integer
-          format: int64
-          description: 'mqtt device rate limit: maximum messages allowed per time window'
-          example: 1
-        httpWindowSize:
-          type: integer
-          format: int64
-          description: 'http rate limit: window size in seconds'
-          example: 1
-        httpMaxCalls:
-          type: integer
-          format: int64
-          description: 'http rate limit: maximum api calls allowed per time window'
-          example: 1
     ClientCertificatesConfiguration:
       type: object
       properties:

@@ -97,6 +97,82 @@ paths:
                 type: string
 components:
   schemas:
+    Location:
+      type: object
+      description: geographic location
+      properties:
+        lat:
+          type: number
+          format: double
+          description: Latitude value
+          example: 45.000009
+        lon:
+          type: number
+          format: double
+          description: Longitude value
+          example: -30.00001
+        alt:
+          type: number
+          format: double
+          description: Altitude value
+          example: 5.00001
+        accuracy:
+          type: number
+          format: double
+          description: Accuracy value
+          example: 10.0
+        provider:
+          type: string
+          description: Provider of the location
+          example: GPS
+      required:
+      - lat
+      - lon
+    Metadata:
+      type: object
+      properties:
+        source:
+          type: string
+          description: source of the data
+          example: urn:tenantName:FFFFFFFFFFFFFFFF!mystream
+        encoding:
+          type: string
+          description: encoding format name, that should match the 'encoding' field of the decoder that will process this datamessage.
+    DataWeb:
+      type: object
+      description: DataMessage to add
+      properties:
+        timestamp:
+          type: string
+          description: ISO 8601 date time
+          example: '2016-08-24T10:32:52.598Z'
+        location:
+          $ref: '#/components/schemas/Location'
+        model:
+          type: string
+          description: Model of the injected data. Data with the same model must have coherent types in each value fields. This field is required to perform an advanced search on the data. Can not contains space or dot characters.
+          example: MyModelSettingName
+        value:
+          description: Must be a JsonObject (primitive objects like string or int are not allowed). It can not contain field names starting with '$' character or containing dot '.' character and its size should not exceed 1 MiB. To use decoding capability, 'value.payload' field must be use to set encoded content as String (in case of binary content, HexBinary String representation of this content)
+          example:
+            hexaFlag001: 2F00
+            temp: 22.0
+            pressure: 36575.0
+        tags:
+          type: array
+          description: Easy way to 'tag' the data in order to ease up advanced search through all streams and models
+          example:
+          - Motor
+          - Engine
+          items:
+            type: string
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+          description: 'Metadata of the stored value : may include user metadata (source) as well as additional information (protocol, server, user...)'
+          example:
+            source: urn:tenantName:FFFFFFFFFFFFFFFF!mystream
+      required:
+      - value
     DataStoredWeb:
       type: object
       description: data stored from the dataStream
@@ -154,82 +230,6 @@ components:
       - id
       - timestamp
       - value
-    DataWeb:
-      type: object
-      description: DataMessage to add
-      properties:
-        timestamp:
-          type: string
-          description: ISO 8601 date time
-          example: '2016-08-24T10:32:52.598Z'
-        location:
-          $ref: '#/components/schemas/Location'
-        model:
-          type: string
-          description: Model of the injected data. Data with the same model must have coherent types in each value fields. This field is required to perform an advanced search on the data. Can not contains space or dot characters.
-          example: MyModelSettingName
-        value:
-          description: Must be a JsonObject (primitive objects like string or int are not allowed). It can not contain field names starting with '$' character or containing dot '.' character and its size should not exceed 1 MiB. To use decoding capability, 'value.payload' field must be use to set encoded content as String (in case of binary content, HexBinary String representation of this content)
-          example:
-            hexaFlag001: 2F00
-            temp: 22.0
-            pressure: 36575.0
-        tags:
-          type: array
-          description: Easy way to 'tag' the data in order to ease up advanced search through all streams and models
-          example:
-          - Motor
-          - Engine
-          items:
-            type: string
-        metadata:
-          $ref: '#/components/schemas/Metadata'
-          description: 'Metadata of the stored value : may include user metadata (source) as well as additional information (protocol, server, user...)'
-          example:
-            source: urn:tenantName:FFFFFFFFFFFFFFFF!mystream
-      required:
-      - value
-    Location:
-      type: object
-      description: geographic location
-      properties:
-        lat:
-          type: number
-          format: double
-          description: Latitude value
-          example: 45.000009
-        lon:
-          type: number
-          format: double
-          description: Longitude value
-          example: -30.00001
-        alt:
-          type: number
-          format: double
-          description: Altitude value
-          example: 5.00001
-        accuracy:
-          type: number
-          format: double
-          description: Accuracy value
-          example: 10.0
-        provider:
-          type: string
-          description: Provider of the location
-          example: GPS
-      required:
-      - lat
-      - lon
-    Metadata:
-      type: object
-      properties:
-        source:
-          type: string
-          description: source of the data
-          example: urn:tenantName:FFFFFFFFFFFFFFFF!mystream
-        encoding:
-          type: string
-          description: encoding format name, that should match the 'encoding' field of the decoder that will process this datamessage.
   securitySchemes:
     X-API-KEY:
       type: apiKey

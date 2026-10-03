@@ -221,6 +221,72 @@ paths:
           $ref: '#/components/responses/Generic404'
 components:
   schemas:
+    XCorrelator:
+      type: string
+      pattern: ^[a-zA-Z0-9-_:;.\/<>{}]{0,256}$
+      example: b4333c46-49c0-4f62-80d7-f0ef930f1c46
+    SubscriptionDetailRequest:
+      description: The detail of the requested event subscription.
+      type: object
+      properties:
+        device:
+          $ref: '#/components/schemas/Device'
+        area:
+          $ref: '#/components/schemas/Area'
+      required:
+      - area
+    DeviceResponse:
+      description: 'An identifier for the end-user equipment able to connect to the network that the response refers to. This parameter is only returned when the API consumer includes the `device` parameter in their request (i.e. they are using a two-legged access token), and is relevant when more than one device identifier is specified, as only one of those device identifiers is allowed in the response.
+
+        If the API consumer provides more than one device identifier in their request, the API provider must return a single identifier which is the one they are using to fulfil the request, even if the identifiers do not match the same device. API provider does not perform any logic to validate/correlate that the indicated device identifiers match the same device. No error should be returned if the identifiers are otherwise valid to prevent API consumers correlating different identifiers with a given end user.
+
+        '
+      allOf:
+      - $ref: '#/components/schemas/Device'
+      - maxProperties: 1
+    Area:
+      type: object
+      description: The geofencing area where the monitor is active. This area is specified by API consumers in the subscription request. The same area definition is included in event notifications without any modifications.
+      properties:
+        areaType:
+          $ref: '#/components/schemas/AreaType'
+      required:
+      - areaType
+      discriminator:
+        propertyName: areaType
+        mapping:
+          CIRCLE: '#/components/schemas/Circle'
+    DeviceIpv4Addr:
+      type: object
+      description: 'The device should be identified by either the public (observed) IP address and port as seen by the application server, or the private (local) and any public (observed) IP addresses in use by the device (this information can be obtained by various means, for example from some DNS servers).
+
+
+        If the allocated and observed IP addresses are the same (i.e. NAT is not in use) then  the same address should be specified for both publicAddress and privateAddress.
+
+
+        If NAT64 is in use, the device should be identified by its publicAddress and publicPort, or separately by its allocated IPv6 address (field ipv6Address of the Device object)
+
+
+        In all cases, publicAddress must be specified, along with at least one of either privateAddress or publicPort, dependent upon which is known. In general, mobile devices cannot be identified by their public IPv4 address alone.
+
+        '
+      properties:
+        publicAddress:
+          $ref: '#/components/schemas/SingleIpv4Addr'
+        privateAddress:
+          $ref: '#/components/schemas/SingleIpv4Addr'
+        publicPort:
+          $ref: '#/components/schemas/Port'
+      anyOf:
+      - required:
+        - publicAddress
+        - privateAddress
+      - required:
+        - publicAddress
+        - publicPort
+      example:
+        publicAddress: 84.125.93.10
+        publicPort: 59765
     SinkCredential:
       type: object
       description: A sink credential provides authentication or authorization information necessary to enable delivery of events to a target.
@@ -244,111 +310,6 @@ components:
           REFRESHTOKEN: '#/components/schemas/RefreshTokenCredential'
       required:
       - credentialType
-    AreaType:
-      type: string
-      description: 'Type of this area.
-
-        CIRCLE - The area is defined as a circle.
-
-        '
-      enum:
-      - CIRCLE
-    NotificationEventType:
-      type: string
-      description: 'area-entered - Event triggered when the device enters the given area
-
-
-        area-left - Event triggered when the device leaves the given area
-
-
-        subscription-started - Event triggered when the subscription starts.
-
-
-        subscription-updated - Event triggered when the subscription is updated.
-
-
-        subscription-ended - Event triggered when the subscription ends
-
-        '
-      enum:
-      - org.camaraproject.geofencing-subscriptions.v0.area-entered
-      - org.camaraproject.geofencing-subscriptions.v0.area-left
-      - org.camaraproject.geofencing-subscriptions.v0.subscription-started
-      - org.camaraproject.geofencing-subscriptions.v0.subscription-updated
-      - org.camaraproject.geofencing-subscriptions.v0.subscription-ended
-    DeviceResponse:
-      description: 'An identifier for the end-user equipment able to connect to the network that the response refers to. This parameter is only returned when the API consumer includes the `device` parameter in their request (i.e. they are using a two-legged access token), and is relevant when more than one device identifier is specified, as only one of those device identifiers is allowed in the response.
-
-        If the API consumer provides more than one device identifier in their request, the API provider must return a single identifier which is the one they are using to fulfil the request, even if the identifiers do not match the same device. API provider does not perform any logic to validate/correlate that the indicated device identifiers match the same device. No error should be returned if the identifiers are otherwise valid to prevent API consumers correlating different identifiers with a given end user.
-
-        '
-      allOf:
-      - $ref: '#/components/schemas/Device'
-      - maxProperties: 1
-    SubscriptionDetailResponse:
-      description: The detail of the event subscription granted by the implementation.
-      type: object
-      properties:
-        device:
-          $ref: '#/components/schemas/DeviceResponse'
-        area:
-          $ref: '#/components/schemas/Area'
-      required:
-      - area
-    SubscriptionAsync:
-      description: Response for an event-type subscription request managed asynchronously (Creation or Deletion).
-      type: object
-      required:
-      - id
-      properties:
-        id:
-          $ref: '#/components/schemas/SubscriptionId'
-    Area:
-      type: object
-      description: The geofencing area where the monitor is active. This area is specified by API consumers in the subscription request. The same area definition is included in event notifications without any modifications.
-      properties:
-        areaType:
-          $ref: '#/components/schemas/AreaType'
-      required:
-      - areaType
-      discriminator:
-        propertyName: areaType
-        mapping:
-          CIRCLE: '#/components/schemas/Circle'
-    SubscriptionDetailRequest:
-      description: The detail of the requested event subscription.
-      type: object
-      properties:
-        device:
-          $ref: '#/components/schemas/Device'
-        area:
-          $ref: '#/components/schemas/Area'
-      required:
-      - area
-    ConfigResponse:
-      allOf:
-      - $ref: '#/components/schemas/Config'
-      - description: 'Implementation-specific configuration parameters are needed by the subscription manager for acquiring events.
-
-          In CAMARA we have predefined attributes like `subscriptionExpireTime`, `subscriptionMaxEvents`, `initialEvent`.
-
-          Specific event type attributes granted by the implementation are included in `subscriptionDetail`.
-
-          Note: If a request is performed for several event types, all subscribed events will use the same `config` parameters.
-
-          '
-        type: object
-        required:
-        - subscriptionDetail
-        properties:
-          subscriptionDetail:
-            $ref: '#/components/schemas/SubscriptionDetailResponse'
-    Source:
-      type: string
-      format: uri-reference
-      minLength: 1
-      description: "Identifies the context in which an event happened - be a non-empty `URI-reference` like:\n- URI with a DNS authority:\n  * https://github.com/cloudevents\n  * mailto:cncf-wg-serverless@lists.cncf.io\n- Universally-unique URN with a UUID:\n  * urn:uuid:6e8bc430-9c3a-11d9-9669-0800200c9a66\n- Application-specific identifier:\n  * /cloudevents/spec/pull/123\n  * 1-555-123-4567\n"
-      example: https://notificationSendServer12.supertelco.com
     ConfigRequest:
       allOf:
       - $ref: '#/components/schemas/Config'
@@ -367,21 +328,23 @@ components:
         properties:
           subscriptionDetail:
             $ref: '#/components/schemas/SubscriptionDetailRequest'
-    Protocol:
+    DeviceIpv6Address:
+      description: 'The device should be identified by the observed IPv6 address, or by any single IPv6 address from within the subnet allocated to the device (e.g. adding ::0 to the /64 prefix).
+
+        '
       type: string
-      enum:
-      - HTTP
-      - MQTT3
-      - MQTT5
-      - AMQP
-      - NATS
-      - KAFKA
-      description: Identifier of a delivery protocol. Only HTTP is allowed for now.
-      example: HTTP
-    XCorrelator:
+      format: ipv6
+      example: 2001:db8:85a3:8d3:1319:8a2e:370:7344
+    SingleIpv4Addr:
+      description: A single IPv4 address with no subnet mask.
       type: string
-      pattern: ^[a-zA-Z0-9-_:;.\/<>{}]{0,256}$
-      example: b4333c46-49c0-4f62-80d7-f0ef930f1c46
+      format: ipv4
+      example: 84.125.93.10
+    DateTime:
+      type: string
+      format: date-time
+      description: Timestamp of when the occurrence happened. It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
+      example: '2018-04-05T17:31:00Z'
     Subscription:
       description: Represents a event-type subscription.
       type: object
@@ -454,82 +417,200 @@ components:
           AMQP: '#/components/schemas/AMQPSubscriptionResponse'
           NATS: '#/components/schemas/NATSSubscriptionResponse'
           KAFKA: '#/components/schemas/ApacheKafkaSubscriptionResponse'
+    SubscriptionDetailResponse:
+      description: The detail of the event subscription granted by the implementation.
+      type: object
+      properties:
+        device:
+          $ref: '#/components/schemas/DeviceResponse'
+        area:
+          $ref: '#/components/schemas/Area'
+      required:
+      - area
+    SubscriptionEventType:
+      type: string
+      description: 'area-entered - Event triggered when the device enters the given area
+
+
+        area-left - Event triggered when the device leaves the given area
+
+        '
+      enum:
+      - org.camaraproject.geofencing-subscriptions.v0.area-entered
+      - org.camaraproject.geofencing-subscriptions.v0.area-left
+    PhoneNumber:
+      description: A public identifier addressing a telephone subscription. In mobile networks, it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
+      type: string
+      pattern: ^\+[1-9][0-9]{4,14}$
+      example: '+123456789'
+    Source:
+      type: string
+      format: uri-reference
+      minLength: 1
+      description: "Identifies the context in which an event happened - be a non-empty `URI-reference` like:\n- URI with a DNS authority:\n  * https://github.com/cloudevents\n  * mailto:cncf-wg-serverless@lists.cncf.io\n- Universally-unique URN with a UUID:\n  * urn:uuid:6e8bc430-9c3a-11d9-9669-0800200c9a66\n- Application-specific identifier:\n  * /cloudevents/spec/pull/123\n  * 1-555-123-4567\n"
+      example: https://notificationSendServer12.supertelco.com
+    AreaType:
+      type: string
+      description: 'Type of this area.
+
+        CIRCLE - The area is defined as a circle.
+
+        '
+      enum:
+      - CIRCLE
+    NetworkAccessIdentifier:
+      description: A public identifier addressing a subscription in a mobile network. In 3GPP terminology, it corresponds to the GPSI formatted with the External Identifier ({Local Identifier}@{Domain Identifier}). Unlike the telephone number, the network access identifier is not subjected to portability ruling in force, and is individually managed by each operator.
+      type: string
+      example: 123456789@domain.com
+    Protocol:
+      type: string
+      enum:
+      - HTTP
+      - MQTT3
+      - MQTT5
+      - AMQP
+      - NATS
+      - KAFKA
+      description: Identifier of a delivery protocol. Only HTTP is allowed for now.
+      example: HTTP
+    NotificationEventType:
+      type: string
+      description: 'area-entered - Event triggered when the device enters the given area
+
+
+        area-left - Event triggered when the device leaves the given area
+
+
+        subscription-started - Event triggered when the subscription starts.
+
+
+        subscription-updated - Event triggered when the subscription is updated.
+
+
+        subscription-ended - Event triggered when the subscription ends
+
+        '
+      enum:
+      - org.camaraproject.geofencing-subscriptions.v0.area-entered
+      - org.camaraproject.geofencing-subscriptions.v0.area-left
+      - org.camaraproject.geofencing-subscriptions.v0.subscription-started
+      - org.camaraproject.geofencing-subscriptions.v0.subscription-updated
+      - org.camaraproject.geofencing-subscriptions.v0.subscription-ended
+    Config:
+      description: 'Implementation-specific configuration parameters are needed by the subscription manager for acquiring events.
+
+        In CAMARA we have predefined attributes like `subscriptionExpireTime`, `subscriptionMaxEvents`, `initialEvent`.
+
+        '
+      type: object
+      properties:
+        subscriptionExpireTime:
+          type: string
+          format: date-time
+          example: '2023-01-17T13:18:23.682Z'
+          description: The subscription expiration time (in date-time format) requested by the API consumer. It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
+        subscriptionMaxEvents:
+          type: integer
+          description: 'Identifies the maximum number of event reports to be generated (>=1) requested by the API consumer - Once this number is reached, the subscription ends.
+
+            Note on combined usage of `initialEvent` and `subscriptionMaxEvents`:
+
+            If an event is triggered following `initialEvent` set to `true`, this event will be counted towards `subscriptionMaxEvents`.
+
+            '
+          minimum: 1
+          example: 5
+        initialEvent:
+          type: boolean
+          description: 'Set to `true` by API consumer if consumer wants to get an event as soon as the subscription is created and current situation reflects event request.
+
+            Example: Consumer request area entered event. If consumer sets initialEvent to true and device is already in the geofence, an event is triggered.
+
+            '
+    Device:
+      description: 'End-user device able to connect to a mobile network. Examples of devices include smartphones or IoT sensors/actuators.
+
+
+        The developer can choose to provide the below specified device identifiers:
+
+
+        * `ipv4Address`
+
+        * `ipv6Address`
+
+        * `phoneNumber`
+
+        * `networkAccessIdentifier`
+
+
+        NOTE1: the API provider might support only a subset of these options. The API consumer can provide multiple identifiers to be compatible across different API providers. In this case the identifiers MUST belong to the same device. Where more than one device identifier is provided, only one identifier will be selected by the implementation and this choice indicated to the API consumer in the response or event.
+
+        NOTE2: as for this Commonalities release, we are enforcing that the networkAccessIdentifier is only part of the schema for future-proofing, and CAMARA does not currently allow its use. After the CAMARA meta-release work is concluded and the relevant issues are resolved, its use will need to be explicitly documented in the guidelines.
+
+        '
+      type: object
+      properties:
+        phoneNumber:
+          $ref: '#/components/schemas/PhoneNumber'
+        networkAccessIdentifier:
+          $ref: '#/components/schemas/NetworkAccessIdentifier'
+        ipv4Address:
+          $ref: '#/components/schemas/DeviceIpv4Addr'
+        ipv6Address:
+          $ref: '#/components/schemas/DeviceIpv6Address'
+      minProperties: 1
+    ConfigResponse:
+      allOf:
+      - $ref: '#/components/schemas/Config'
+      - description: 'Implementation-specific configuration parameters are needed by the subscription manager for acquiring events.
+
+          In CAMARA we have predefined attributes like `subscriptionExpireTime`, `subscriptionMaxEvents`, `initialEvent`.
+
+          Specific event type attributes granted by the implementation are included in `subscriptionDetail`.
+
+          Note: If a request is performed for several event types, all subscribed events will use the same `config` parameters.
+
+          '
+        type: object
+        required:
+        - subscriptionDetail
+        properties:
+          subscriptionDetail:
+            $ref: '#/components/schemas/SubscriptionDetailResponse'
     Port:
       description: TCP or UDP port number.
       type: integer
       minimum: 0
       maximum: 65535
-    DeviceIpv4Addr:
+    SubscriptionAsync:
+      description: Response for an event-type subscription request managed asynchronously (Creation or Deletion).
       type: object
-      description: 'The device should be identified by either the public (observed) IP address and port as seen by the application server, or the private (local) and any public (observed) IP addresses in use by the device (this information can be obtained by various means, for example from some DNS servers).
-
-
-        If the allocated and observed IP addresses are the same (i.e. NAT is not in use) then  the same address should be specified for both publicAddress and privateAddress.
-
-
-        If NAT64 is in use, the device should be identified by its publicAddress and publicPort, or separately by its allocated IPv6 address (field ipv6Address of the Device object)
-
-
-        In all cases, publicAddress must be specified, along with at least one of either privateAddress or publicPort, dependent upon which is known. In general, mobile devices cannot be identified by their public IPv4 address alone.
-
-        '
-      properties:
-        publicAddress:
-          $ref: '#/components/schemas/SingleIpv4Addr'
-        privateAddress:
-          $ref: '#/components/schemas/SingleIpv4Addr'
-        publicPort:
-          $ref: '#/components/schemas/Port'
-      anyOf:
-      - required:
-        - publicAddress
-        - privateAddress
-      - required:
-        - publicAddress
-        - publicPort
-      example:
-        publicAddress: 84.125.93.10
-        publicPort: 59765
-    CloudEvent:
-      description: The notification callback.
       required:
       - id
-      - source
-      - specversion
-      - type
-      - time
-      - data
       properties:
         id:
+          $ref: '#/components/schemas/SubscriptionId'
+    SubscriptionId:
+      type: string
+      description: The unique identifier of the subscription in the scope of the subscription manager. When this information is contained within an event notification, this concept SHALL be referred as subscriptionId as per Commonalities Event Notification Model.
+      example: qs15-h556-rt89-1298
+    ErrorInfo:
+      description: The error info object for possible error cases.
+      type: object
+      required:
+      - status
+      - code
+      - message
+      properties:
+        status:
+          type: integer
+          description: HTTP response status code.
+        code:
           type: string
-          description: Identifier of this event, that must be unique in the source context.
-        source:
-          $ref: '#/components/schemas/Source'
-        type:
-          $ref: '#/components/schemas/NotificationEventType'
-        specversion:
+          description: A human-readable code to describe the error.
+        message:
           type: string
-          description: Version of the specification to which this event conforms (must be 1.0 if it conforms to cloudevents 1.0.2 version).
-          enum:
-          - '1.0'
-        datacontenttype:
-          type: string
-          description: media-type that describes the event payload encoding, must be "application/json" for CAMARA APIs
-          enum:
-          - application/json
-        data:
-          type: object
-          description: Event details payload described in each CAMARA API and referenced by its type.
-        time:
-          $ref: '#/components/schemas/DateTime'
-      discriminator:
-        propertyName: type
-        mapping:
-          org.camaraproject.geofencing-subscriptions.v0.area-left: '#/components/schemas/EventAreaLeft'
-          org.camaraproject.geofencing-subscriptions.v0.area-entered: '#/components/schemas/EventAreaEntered'
-          org.camaraproject.geofencing-subscriptions.v0.subscription-started: '#/components/schemas/EventSubscriptionStarted'
-          org.camaraproject.geofencing-subscriptions.v0.subscription-updated: '#/components/schemas/EventSubscriptionUpdated'
-          org.camaraproject.geofencing-subscriptions.v0.subscription-ended: '#/components/schemas/EventSubscriptionEnded'
+          description: A human-readable description of what the event represents.
     SubscriptionRequest:
       description: The request for creating an event-type event subscription.
       type: object
@@ -571,142 +652,87 @@ components:
           AMQP: '#/components/schemas/AMQPSubscriptionRequest'
           NATS: '#/components/schemas/NATSSubscriptionRequest'
           KAFKA: '#/components/schemas/ApacheKafkaSubscriptionRequest'
-    SubscriptionEventType:
-      type: string
-      description: 'area-entered - Event triggered when the device enters the given area
-
-
-        area-left - Event triggered when the device leaves the given area
-
-        '
-      enum:
-      - org.camaraproject.geofencing-subscriptions.v0.area-entered
-      - org.camaraproject.geofencing-subscriptions.v0.area-left
-    Config:
-      description: 'Implementation-specific configuration parameters are needed by the subscription manager for acquiring events.
-
-        In CAMARA we have predefined attributes like `subscriptionExpireTime`, `subscriptionMaxEvents`, `initialEvent`.
-
-        '
-      type: object
-      properties:
-        subscriptionExpireTime:
-          type: string
-          format: date-time
-          example: '2023-01-17T13:18:23.682Z'
-          description: The subscription expiration time (in date-time format) requested by the API consumer. It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
-        subscriptionMaxEvents:
-          type: integer
-          description: 'Identifies the maximum number of event reports to be generated (>=1) requested by the API consumer - Once this number is reached, the subscription ends.
-
-            Note on combined usage of `initialEvent` and `subscriptionMaxEvents`:
-
-            If an event is triggered following `initialEvent` set to `true`, this event will be counted towards `subscriptionMaxEvents`.
-
-            '
-          minimum: 1
-          example: 5
-        initialEvent:
-          type: boolean
-          description: 'Set to `true` by API consumer if consumer wants to get an event as soon as the subscription is created and current situation reflects event request.
-
-            Example: Consumer request area entered event. If consumer sets initialEvent to true and device is already in the geofence, an event is triggered.
-
-            '
-    SingleIpv4Addr:
-      description: A single IPv4 address with no subnet mask.
-      type: string
-      format: ipv4
-      example: 84.125.93.10
-    Device:
-      description: 'End-user device able to connect to a mobile network. Examples of devices include smartphones or IoT sensors/actuators.
-
-
-        The developer can choose to provide the below specified device identifiers:
-
-
-        * `ipv4Address`
-
-        * `ipv6Address`
-
-        * `phoneNumber`
-
-        * `networkAccessIdentifier`
-
-
-        NOTE1: the API provider might support only a subset of these options. The API consumer can provide multiple identifiers to be compatible across different API providers. In this case the identifiers MUST belong to the same device. Where more than one device identifier is provided, only one identifier will be selected by the implementation and this choice indicated to the API consumer in the response or event.
-
-        NOTE2: as for this Commonalities release, we are enforcing that the networkAccessIdentifier is only part of the schema for future-proofing, and CAMARA does not currently allow its use. After the CAMARA meta-release work is concluded and the relevant issues are resolved, its use will need to be explicitly documented in the guidelines.
-
-        '
-      type: object
-      properties:
-        phoneNumber:
-          $ref: '#/components/schemas/PhoneNumber'
-        networkAccessIdentifier:
-          $ref: '#/components/schemas/NetworkAccessIdentifier'
-        ipv4Address:
-          $ref: '#/components/schemas/DeviceIpv4Addr'
-        ipv6Address:
-          $ref: '#/components/schemas/DeviceIpv6Address'
-      minProperties: 1
-    ErrorInfo:
-      description: The error info object for possible error cases.
-      type: object
+    CloudEvent:
+      description: The notification callback.
       required:
-      - status
-      - code
-      - message
+      - id
+      - source
+      - specversion
+      - type
+      - time
+      - data
       properties:
-        status:
-          type: integer
-          description: HTTP response status code.
-        code:
+        id:
           type: string
-          description: A human-readable code to describe the error.
-        message:
+          description: Identifier of this event, that must be unique in the source context.
+        source:
+          $ref: '#/components/schemas/Source'
+        type:
+          $ref: '#/components/schemas/NotificationEventType'
+        specversion:
           type: string
-          description: A human-readable description of what the event represents.
-    DeviceIpv6Address:
-      description: 'The device should be identified by the observed IPv6 address, or by any single IPv6 address from within the subnet allocated to the device (e.g. adding ::0 to the /64 prefix).
-
-        '
-      type: string
-      format: ipv6
-      example: 2001:db8:85a3:8d3:1319:8a2e:370:7344
-    PhoneNumber:
-      description: A public identifier addressing a telephone subscription. In mobile networks, it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
-      type: string
-      pattern: ^\+[1-9][0-9]{4,14}$
-      example: '+123456789'
-    SubscriptionId:
-      type: string
-      description: The unique identifier of the subscription in the scope of the subscription manager. When this information is contained within an event notification, this concept SHALL be referred as subscriptionId as per Commonalities Event Notification Model.
-      example: qs15-h556-rt89-1298
-    NetworkAccessIdentifier:
-      description: A public identifier addressing a subscription in a mobile network. In 3GPP terminology, it corresponds to the GPSI formatted with the External Identifier ({Local Identifier}@{Domain Identifier}). Unlike the telephone number, the network access identifier is not subjected to portability ruling in force, and is individually managed by each operator.
-      type: string
-      example: 123456789@domain.com
-    DateTime:
-      type: string
-      format: date-time
-      description: Timestamp of when the occurrence happened. It must follow [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) and must have time zone.
-      example: '2018-04-05T17:31:00Z'
-  parameters:
-    SubscriptionId:
-      name: subscriptionId
-      in: path
-      description: Subscription identifier that was obtained from the create event subscription operation.
-      required: true
-      schema:
-        $ref: '#/components/schemas/SubscriptionId'
-    x-correlator:
-      name: x-correlator
-      in: header
-      description: Correlation id for the different services.
-      schema:
-        $ref: '#/components/schemas/XCorrelator'
+          description: Version of the specification to which this event conforms (must be 1.0 if it conforms to cloudevents 1.0.2 version).
+          enum:
+          - '1.0'
+        datacontenttype:
+          type: string
+          description: media-type that describes the event payload encoding, must be "application/json" for CAMARA APIs
+          enum:
+          - application/json
+        data:
+          type: object
+          description: Event details payload described in each CAMARA API and referenced by its type.
+        time:
+          $ref: '#/components/schemas/DateTime'
+      discriminator:
+        propertyName: type
+        mapping:
+          org.camaraproject.geofencing-subscriptions.v0.area-left: '#/components/schemas/EventAreaLeft'
+          org.camaraproject.geofencing-subscriptions.v0.area-entered: '#/components/schemas/EventAreaEntered'
+          org.camaraproject.geofencing-subscriptions.v0.subscription-started: '#/components/schemas/EventSubscriptionStarted'
+          org.camaraproject.geofencing-subscriptions.v0.subscription-updated: '#/components/schemas/EventSubscriptionUpdated'
+          org.camaraproject.geofencing-subscriptions.v0.subscription-ended: '#/components/schemas/EventSubscriptionEnded'
   examples:
+    SUBSCRIPTION_ENDED:
+      description: The cloud event when a geofence subscription ended.
+      value:
+        id: '123655'
+        source: https://notificationSendServer12.supertelco.com
+        type: org.camaraproject.geofencing-subscriptions.v0.subscription-ended
+        specversion: '1.0'
+        datacontenttype: application/json
+        time: 2023-03-22 05:40:23.682000+00:00
+        data:
+          subscriptionId: 987654321
+          device:
+            phoneNumber: 123456789
+          area:
+            areaType: CIRCLE
+            center:
+              latitude: 50.735851
+              longitude: 7.10066
+            radius: 2000
+          terminationReason: SUBSCRIPTION_EXPIRED
+    SUBSCRIPTION_UPDATED:
+      description: The cloud event when a geofence subscription was updated.
+      value:
+        id: '124003'
+        source: https://dataUsageServer.supertelco.com
+        type: org.camaraproject.geofencing-subscriptions.v0.subscription-updated
+        specversion: '1.0'
+        datacontenttype: application/json
+        data:
+          updateReason: SUBSCRIPTION_ACTIVE
+          subscriptionId: dv10-h556-rt89-1403
+          device:
+            phoneNumber: 123456789
+          area:
+            areaType: CIRCLE
+            center:
+              latitude: 50.735851
+              longitude: 7.10066
+            radius: 2000
+        time: '2024-03-05T15:00:23.682Z'
     SUBSCRIPTION_STARTED:
       description: The cloud event when a geofence subscription was started.
       value:
@@ -727,6 +753,25 @@ components:
               longitude: 7.10066
             radius: 2000
         time: '2024-03-05T15:00:23.682Z'
+    CIRCLE_AREA_LEFT:
+      description: The cloud event when a geofence area was left.
+      value:
+        id: '123655'
+        source: https://notificationSendServer12.supertelco.com
+        type: org.camaraproject.geofencing-subscriptions.v0.area-left
+        specversion: '1.0'
+        datacontenttype: application/json
+        time: 2023-03-22 05:40:23.682000+00:00
+        data:
+          subscriptionId: 987654321
+          device:
+            phoneNumber: 123456789
+          area:
+            areaType: CIRCLE
+            center:
+              latitude: 50.735851
+              longitude: 7.10066
+            radius: 2000
     REQUEST_CIRCLE_AREA_ENTERED:
       description: A sample geofence for entering for a circle area.
       value:
@@ -766,37 +811,16 @@ components:
               latitude: 50.735851
               longitude: 7.10066
             radius: 2000
-    SUBSCRIPTION_UPDATED:
-      description: The cloud event when a geofence subscription was updated.
-      value:
-        id: '124003'
-        source: https://dataUsageServer.supertelco.com
-        type: org.camaraproject.geofencing-subscriptions.v0.subscription-updated
-        specversion: '1.0'
-        datacontenttype: application/json
-        data:
-          updateReason: SUBSCRIPTION_ACTIVE
-          subscriptionId: dv10-h556-rt89-1403
-          device:
-            phoneNumber: 123456789
-          area:
-            areaType: CIRCLE
-            center:
-              latitude: 50.735851
-              longitude: 7.10066
-            radius: 2000
-        time: '2024-03-05T15:00:23.682Z'
-    CIRCLE_AREA_LEFT:
-      description: The cloud event when a geofence area was left.
+    SUBSCRIPTION_UNPROCESSABLE:
+      description: The cloud event when the subscription process was aborted.
       value:
         id: '123655'
         source: https://notificationSendServer12.supertelco.com
-        type: org.camaraproject.geofencing-subscriptions.v0.area-left
+        type: org.camaraproject.geofencing-subscriptions.v0.subscription-ended
         specversion: '1.0'
         datacontenttype: application/json
         time: 2023-03-22 05:40:23.682000+00:00
         data:
-          subscriptionId: 987654321
           device:
             phoneNumber: 123456789
           area:
@@ -805,6 +829,8 @@ components:
               latitude: 50.735851
               longitude: 7.10066
             radius: 2000
+          terminationReason: SUBSCRIPTION_UNPROCESSABLE
+          terminationDescription: The requested area cannot be covered by the network.
     REQUEST_CIRCLE_AREA_ENTERED_MULTIPLE_IDENTIFIERS:
       description: A sample geofence for entering for a circle area.
       value:
@@ -828,49 +854,41 @@ components:
           initialEvent: true
           subscriptionMaxEvents: 10
           subscriptionExpireTime: '2024-03-22T05:40:58.469Z'
-    SUBSCRIPTION_UNPROCESSABLE:
-      description: The cloud event when the subscription process was aborted.
-      value:
-        id: '123655'
-        source: https://notificationSendServer12.supertelco.com
-        type: org.camaraproject.geofencing-subscriptions.v0.subscription-ended
-        specversion: '1.0'
-        datacontenttype: application/json
-        time: 2023-03-22 05:40:23.682000+00:00
-        data:
-          device:
-            phoneNumber: 123456789
-          area:
-            areaType: CIRCLE
-            center:
-              latitude: 50.735851
-              longitude: 7.10066
-            radius: 2000
-          terminationReason: SUBSCRIPTION_UNPROCESSABLE
-          terminationDescription: The requested area cannot be covered by the network.
-    SUBSCRIPTION_ENDED:
-      description: The cloud event when a geofence subscription ended.
-      value:
-        id: '123655'
-        source: https://notificationSendServer12.supertelco.com
-        type: org.camaraproject.geofencing-subscriptions.v0.subscription-ended
-        specversion: '1.0'
-        datacontenttype: application/json
-        time: 2023-03-22 05:40:23.682000+00:00
-        data:
-          subscriptionId: 987654321
-          device:
-            phoneNumber: 123456789
-          area:
-            areaType: CIRCLE
-            center:
-              latitude: 50.735851
-              longitude: 7.10066
-            radius: 2000
-          terminationReason: SUBSCRIPTION_EXPIRED
   responses:
-    Generic401:
-      description: Unauthorized
+    Generic429:
+      description: Too Many Requests
+      headers:
+        X-Correlator:
+          $ref: '#/components/headers/x-correlator'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - $ref: '#/components/schemas/ErrorInfo'
+            - type: object
+              properties:
+                status:
+                  enum:
+                  - 429
+                code:
+                  enum:
+                  - QUOTA_EXCEEDED
+                  - TOO_MANY_REQUESTS
+          examples:
+            GENERIC_429_QUOTA_EXCEEDED:
+              description: Request is rejected due to exceeding a business quota limit
+              value:
+                status: 429
+                code: QUOTA_EXCEEDED
+                message: Out of resource quota.
+            GENERIC_429_TOO_MANY_REQUESTS:
+              description: Access to the API has been temporarily blocked due to rate or spike arrest limits being reached
+              value:
+                status: 429
+                code: TOO_MANY_REQUESTS
+                message: Rate limit reached.
+    CreateSubscriptionUnprocessableEntity422:
+      description: Unprocessable Entity
       headers:
         x-correlator:
           $ref: '#/components/headers/x-correlator'
@@ -883,17 +901,60 @@ components:
               properties:
                 status:
                   enum:
-                  - 401
+                  - 422
                 code:
                   enum:
-                  - UNAUTHENTICATED
+                  - MISSING_IDENTIFIER
+                  - MULTIEVENT_SUBSCRIPTION_NOT_SUPPORTED
+                  - SERVICE_NOT_APPLICABLE
+                  - UNNECESSARY_IDENTIFIER
+                  - UNSUPPORTED_IDENTIFIER
+                  - GEOFENCING_SUBSCRIPTIONS.AREA_NOT_COVERED
+                  - GEOFENCING_SUBSCRIPTIONS.INVALID_AREA
           examples:
-            GENERIC_401_UNAUTHENTICATED:
-              description: Request cannot be authenticated and a new authentication is required
+            GENERIC_422_SERVICE_NOT_APPLICABLE:
+              description: Service not applicable for the provided identifier
               value:
-                status: 401
-                code: UNAUTHENTICATED
-                message: Request not authenticated due to missing, invalid, or expired credentials. A new authentication is required.
+                status: 422
+                code: SERVICE_NOT_APPLICABLE
+                message: The service is not available for the provided identifier.
+            GENERIC_422_MISSING_IDENTIFIER:
+              description: An identifier is not included in the request and the device or phone number identification cannot be derived from the 3-legged access token
+              value:
+                status: 422
+                code: MISSING_IDENTIFIER
+                message: The device cannot be identified.
+            GENERIC_422_MULTIEVENT_SUBSCRIPTION_NOT_SUPPORTED:
+              value:
+                status: 422
+                code: MULTIEVENT_SUBSCRIPTION_NOT_SUPPORTED
+                message: Multi event types subscription not managed.
+            GENERIC_422_UNNECESSARY_IDENTIFIER:
+              description: An explicit identifier is provided when a device or phone number has already been identified from the access token
+              value:
+                status: 422
+                code: UNNECESSARY_IDENTIFIER
+                message: The device is already identified by the access token.
+            GENERIC_422_UNSUPPORTED_IDENTIFIER:
+              description: None of the provided identifiers is supported by the implementation
+              value:
+                status: 422
+                code: UNSUPPORTED_IDENTIFIER
+                message: The identifier provided is not supported.
+            GEOFENCING_422_AREA_NOT_COVERED:
+              summary: The area cannot be covered
+              description: The system is not able cover the requested area
+              value:
+                status: 422
+                code: GEOFENCING_SUBSCRIPTIONS.AREA_NOT_COVERED
+                message: Unable to cover the requested area
+            GEOFENCING_422_INVALID_AREA:
+              summary: Invalid area
+              description: The requested area is too small to be supported by the system.
+              value:
+                status: 422
+                code: GEOFENCING_SUBSCRIPTIONS.INVALID_AREA
+                message: The requested area is too small
     CreateSubscriptionBadRequest400:
       description: Problem with the client request.
       headers:
@@ -968,8 +1029,8 @@ components:
                 status: 410
                 code: GONE
                 message: Access to the target resource is no longer available.
-    CreateSubscriptionUnprocessableEntity422:
-      description: Unprocessable Entity
+    Generic401:
+      description: Unauthorized
       headers:
         x-correlator:
           $ref: '#/components/headers/x-correlator'
@@ -982,60 +1043,17 @@ components:
               properties:
                 status:
                   enum:
-                  - 422
+                  - 401
                 code:
                   enum:
-                  - MISSING_IDENTIFIER
-                  - MULTIEVENT_SUBSCRIPTION_NOT_SUPPORTED
-                  - SERVICE_NOT_APPLICABLE
-                  - UNNECESSARY_IDENTIFIER
-                  - UNSUPPORTED_IDENTIFIER
-                  - GEOFENCING_SUBSCRIPTIONS.AREA_NOT_COVERED
-                  - GEOFENCING_SUBSCRIPTIONS.INVALID_AREA
+                  - UNAUTHENTICATED
           examples:
-            GENERIC_422_SERVICE_NOT_APPLICABLE:
-              description: Service not applicable for the provided identifier
+            GENERIC_401_UNAUTHENTICATED:
+              description: Request cannot be authenticated and a new authentication is required
               value:
-                status: 422
-                code: SERVICE_NOT_APPLICABLE
-                message: The service is not available for the provided identifier.
-            GENERIC_422_MISSING_IDENTIFIER:
-              description: An identifier is not included in the request and the device or phone number identification cannot be derived from the 3-legged access token
-              value:
-                status: 422
-                code: MISSING_IDENTIFIER
-                message: The device cannot be identified.
-            GENERIC_422_MULTIEVENT_SUBSCRIPTION_NOT_SUPPORTED:
-              value:
-                status: 422
-                code: MULTIEVENT_SUBSCRIPTION_NOT_SUPPORTED
-                message: Multi event types subscription not managed.
-            GENERIC_422_UNNECESSARY_IDENTIFIER:
-              description: An explicit identifier is provided when a device or phone number has already been identified from the access token
-              value:
-                status: 422
-                code: UNNECESSARY_IDENTIFIER
-                message: The device is already identified by the access token.
-            GENERIC_422_UNSUPPORTED_IDENTIFIER:
-              description: None of the provided identifiers is supported by the implementation
-              value:
-                status: 422
-                code: UNSUPPORTED_IDENTIFIER
-                message: The identifier provided is not supported.
-            GEOFENCING_422_AREA_NOT_COVERED:
-              summary: The area cannot be covered
-              description: The system is not able cover the requested area
-              value:
-                status: 422
-                code: GEOFENCING_SUBSCRIPTIONS.AREA_NOT_COVERED
-                message: Unable to cover the requested area
-            GEOFENCING_422_INVALID_AREA:
-              summary: Invalid area
-              description: The requested area is too small to be supported by the system.
-              value:
-                status: 422
-                code: GEOFENCING_SUBSCRIPTIONS.INVALID_AREA
-                message: The requested area is too small
+                status: 401
+                code: UNAUTHENTICATED
+                message: Request not authenticated due to missing, invalid, or expired credentials. A new authentication is required.
     Generic403:
       description: Client does not have sufficient permission
       headers:
@@ -1061,69 +1079,6 @@ components:
                 status: 403
                 code: PERMISSION_DENIED
                 message: Client does not have sufficient permissions to perform this action.
-    SubscriptionIdRequired:
-      description: Problem with the client request
-      headers:
-        x-correlator:
-          $ref: '#/components/headers/x-correlator'
-      content:
-        application/json:
-          schema:
-            allOf:
-            - $ref: '#/components/schemas/ErrorInfo'
-            - type: object
-              properties:
-                status:
-                  enum:
-                  - 400
-                code:
-                  enum:
-                  - INVALID_ARGUMENT
-          examples:
-            GENERIC_400_INVALID_ARGUMENT:
-              summary: Schema validation failed
-              value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: Client specified an invalid argument, request body or query param.
-            GENERIC_400_SUBSCRIPTION_ID_REQUIRED:
-              summary: The subscription id is required
-              value:
-                status: 400
-                code: INVALID_ARGUMENT
-                message: 'Expected property is missing: subscriptionId'
-    Generic429:
-      description: Too Many Requests
-      headers:
-        X-Correlator:
-          $ref: '#/components/headers/x-correlator'
-      content:
-        application/json:
-          schema:
-            allOf:
-            - $ref: '#/components/schemas/ErrorInfo'
-            - type: object
-              properties:
-                status:
-                  enum:
-                  - 429
-                code:
-                  enum:
-                  - QUOTA_EXCEEDED
-                  - TOO_MANY_REQUESTS
-          examples:
-            GENERIC_429_QUOTA_EXCEEDED:
-              description: Request is rejected due to exceeding a business quota limit
-              value:
-                status: 429
-                code: QUOTA_EXCEEDED
-                message: Out of resource quota.
-            GENERIC_429_TOO_MANY_REQUESTS:
-              description: Access to the API has been temporarily blocked due to rate or spike arrest limits being reached
-              value:
-                status: 429
-                code: TOO_MANY_REQUESTS
-                message: Rate limit reached.
     Generic404:
       description: Not found
       headers:
@@ -1174,6 +1129,51 @@ components:
                 status: 400
                 code: INVALID_ARGUMENT
                 message: Client specified an invalid argument, request body or query param.
+    SubscriptionIdRequired:
+      description: Problem with the client request
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - $ref: '#/components/schemas/ErrorInfo'
+            - type: object
+              properties:
+                status:
+                  enum:
+                  - 400
+                code:
+                  enum:
+                  - INVALID_ARGUMENT
+          examples:
+            GENERIC_400_INVALID_ARGUMENT:
+              summary: Schema validation failed
+              value:
+                status: 400
+                code: INVALID_ARGUMENT
+                message: Client specified an invalid argument, request body or query param.
+            GENERIC_400_SUBSCRIPTION_ID_REQUIRED:
+              summary: The subscription id is required
+              value:
+                status: 400
+                code: INVALID_ARGUMENT
+                message: 'Expected property is missing: subscriptionId'
+  parameters:
+    x-correlator:
+      name: x-correlator
+      in: header
+      description: Correlation id for the different services.
+      schema:
+        $ref: '#/components/schemas/XCorrelator'
+    SubscriptionId:
+      name: subscriptionId
+      in: path
+      description: Subscription identifier that was obtained from the create event subscription operation.
+      required: true
+      schema:
+        $ref: '#/components/schemas/SubscriptionId'
   headers:
     x-correlator:
       description: Correlation id for the different services.

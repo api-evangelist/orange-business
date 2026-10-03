@@ -265,26 +265,6 @@ paths:
                 $ref: '#/components/schemas/WebErrorResponse'
 components:
   schemas:
-    WebErrorResponse:
-      type: object
-      description: Error response
-      properties:
-        id:
-          type: string
-          description: Unique identifier of this error instance
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Short error description
-        details:
-          type: string
-          description: Detailed error description
-      required:
-      - code
-      - id
-      - message
     DeviceParameter:
       type: object
       properties:
@@ -305,6 +285,50 @@ components:
           - OK
           - FAILED
           example: OK
+    NewDeviceParameterValue:
+      type: object
+      properties:
+        type:
+          type: string
+          description: parameter value type (INT32, UINT32, FLOAT, STRING or BINARY)
+          enum:
+          - INT32
+          - UINT32
+          - BINARY
+          - STRING
+          - FLOAT
+          - UNKNOWN
+        value:
+          description: 'configuration parameter value (number for INT32/UINT32 type, string for STRING type,float for FLOAT type, base64-encoded string for BINARY type) '
+    WebErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+      required:
+      - code
+      - id
+      - message
+    DeviceParametersSetRequest:
+      type: object
+      description: 'a map of requested configuration parameter descriptions (with type: ''INT32'', ''UINT32'', ''STRING'', ''FLOAT'', or ''BINARY'')'
+      properties:
+        parameters:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/NewDeviceParameterValue'
+          description: Device configuration update. Max number of parameters is 100. Parameter name max length is 128. Parameter value must be valid according to the type and max length is 2000.
     DeviceParameterValue:
       type: object
       properties:
@@ -324,30 +348,6 @@ components:
           type: string
           format: date-time
           description: configuration parameter value associated date/time (ISO 8601)
-    DeviceParametersSetRequest:
-      type: object
-      description: 'a map of requested configuration parameter descriptions (with type: ''INT32'', ''UINT32'', ''STRING'', ''FLOAT'', or ''BINARY'')'
-      properties:
-        parameters:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/NewDeviceParameterValue'
-          description: Device configuration update. Max number of parameters is 100. Parameter name max length is 128. Parameter value must be valid according to the type and max length is 2000.
-    NewDeviceParameterValue:
-      type: object
-      properties:
-        type:
-          type: string
-          description: parameter value type (INT32, UINT32, FLOAT, STRING or BINARY)
-          enum:
-          - INT32
-          - UINT32
-          - BINARY
-          - STRING
-          - FLOAT
-          - UNKNOWN
-        value:
-          description: 'configuration parameter value (number for INT32/UINT32 type, string for STRING type,float for FLOAT type, base64-encoded string for BINARY type) '
     DeviceConfig:
       type: object
       properties:

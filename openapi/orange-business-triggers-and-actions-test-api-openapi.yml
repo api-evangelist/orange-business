@@ -72,29 +72,6 @@ components:
       required:
       - fifoName
       - payload
-    HttpPushTestResult:
-      type: object
-      properties:
-        success:
-          type: boolean
-        urlBlacklisted:
-          type: boolean
-        errorMessage:
-          type: string
-        httpResponseStatusCode:
-          type: integer
-          format: int32
-        httpResponseBody:
-          type: string
-    FifoTestResult:
-      type: object
-      properties:
-        success:
-          type: boolean
-          description: Indicates if the test message was successfully published
-        errorMessage:
-          type: string
-          description: Details about the error if any
     HttpPushWebhookTest:
       type: object
       description: Http push request to be tested
@@ -121,6 +98,29 @@ components:
           type: integer
           format: int64
           description: The maximum delay allowed to complete the http POST test request, in milliseconds
+    FifoTestResult:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Indicates if the test message was successfully published
+        errorMessage:
+          type: string
+          description: Details about the error if any
+    HttpPushTestResult:
+      type: object
+      properties:
+        success:
+          type: boolean
+        urlBlacklisted:
+          type: boolean
+        errorMessage:
+          type: string
+        httpResponseStatusCode:
+          type: integer
+          format: int32
+        httpResponseBody:
+          type: string
   securitySchemes:
     X-API-KEY:
       type: apiKey

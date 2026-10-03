@@ -394,6 +394,19 @@ paths:
                 $ref: '#/components/schemas/WebErrorResponse'
 components:
   schemas:
+    UpdateConnectorNodeRequest:
+      type: object
+      description: The fields to update
+      properties:
+        deviceId:
+          type: string
+          description: New device id this connector node must be associated with (or null)
+          example: urn:lo:nsid:sensor:2327398
+        enabled:
+          type: boolean
+          description: New enabled state for this connector node (or null)
+        definition:
+          description: New interface definition
     ConnectorNodeLocation:
       type: object
       properties:
@@ -509,19 +522,6 @@ components:
       - code
       - id
       - message
-    UpdateConnectorNodeRequest:
-      type: object
-      description: The fields to update
-      properties:
-        deviceId:
-          type: string
-          description: New device id this connector node must be associated with (or null)
-          example: urn:lo:nsid:sensor:2327398
-        enabled:
-          type: boolean
-          description: New enabled state for this connector node (or null)
-        definition:
-          description: New interface definition
   securitySchemes:
     X-API-KEY:
       type: apiKey

@@ -146,6 +146,29 @@ paths:
                 $ref: '#/components/schemas/Pipeline'
 components:
   schemas:
+    GroupPath:
+      type: object
+      description: defines targeted group path
+      properties:
+        path:
+          type: string
+          description: path of the group
+          example: /europe/france
+        includeSubPath:
+          type: boolean
+          description: 'if true, all sub-paths will be targeted by this ActivityRule '
+      required:
+      - includeSubPath
+      - path
+    PipelineStepDescription:
+      type: object
+      discriminator:
+        propertyName: type
+      properties:
+        type:
+          type: string
+          enum:
+          - externalTransformation
     Pipeline:
       type: object
       description: DataMessage Pipeline definition
@@ -201,29 +224,6 @@ components:
       - name
       - priorityLevel
       - steps
-    GroupPath:
-      type: object
-      description: defines targeted group path
-      properties:
-        path:
-          type: string
-          description: path of the group
-          example: /europe/france
-        includeSubPath:
-          type: boolean
-          description: 'if true, all sub-paths will be targeted by this ActivityRule '
-      required:
-      - includeSubPath
-      - path
-    PipelineStepDescription:
-      type: object
-      discriminator:
-        propertyName: type
-      properties:
-        type:
-          type: string
-          enum:
-          - externalTransformation
     PipelineFilter:
       type: object
       properties:

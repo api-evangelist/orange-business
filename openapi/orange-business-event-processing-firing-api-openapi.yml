@@ -271,21 +271,25 @@ components:
       required:
       - firingType
       - name
-    FiringGuardMatchRequest:
+    MatchingRule:
       type: object
-      description: search parameters to select FiringGuard to remove
+      description: Defines the dataPredicate that will be applied to all new data. When it matches, then it may trigger a FiredEvent based on linked FiringRules defined.
       properties:
-        firingRuleId:
+        id:
           type: string
-          description: firingRuleId linked to the FiringGuard to reset
-          minLength: 1
-        selectionCriteria:
-          type: array
-          description: criteria that should match the FiringGuard to reset
-          items:
-            $ref: '#/components/schemas/SelectionCriteria'
+          description: id of the MatchingRule. Should be null when used for POST, and set for PUT.
+          readOnly: true
+        name:
+          type: string
+          description: name of the MatchingRule. Must be unique.
+        enabled:
+          type: boolean
+          description: activate or not the MatchingRule. Default is false.
+        dataPredicate:
+          description: the JsonLogic (http://jsonlogic.com/) pattern matching that will trigger an event for each new data that match this predicate. The JsonLogic predicate needs to return a boolean. In addition to the existing JsonLogic operators (logic and boolean, numeric, string, array), Live Objects provides geographic operators (distance, inside, insideindex, closeto, closetoindex), context operator (ctx) to retrieve data stored via the Context APIs and miscellaneous operators ('get' to retrieve an element from an array)...e.g. '{">":[{"var":"value.temp"},{"ctx":"temperature.threshold"}]}'.
       required:
-      - firingRuleId
+      - dataPredicate
+      - name
     MatchingContext:
       type: object
       description: 'hold the Matching context : data, MatchingRule and timestamp of the match'
@@ -329,25 +333,42 @@ components:
       required:
       - streamId
       - timestamp
-    MatchingRule:
+    FiringGuard:
       type: object
-      description: Defines the dataPredicate that will be applied to all new data. When it matches, then it may trigger a FiredEvent based on linked FiringRules defined.
+      description: Hold a FiringRule from triggering a FiredEvent if it has already been sent for the same aggregationKeys. Will exist only for FiringRule of type ONCE or SLEEP.
       properties:
         id:
           type: string
-          description: id of the MatchingRule. Should be null when used for POST, and set for PUT.
-          readOnly: true
-        name:
+          description: id of the FiringGuard.
+        firingRuleId:
           type: string
-          description: name of the MatchingRule. Must be unique.
-        enabled:
-          type: boolean
-          description: activate or not the MatchingRule. Default is false.
-        dataPredicate:
-          description: the JsonLogic (http://jsonlogic.com/) pattern matching that will trigger an event for each new data that match this predicate. The JsonLogic predicate needs to return a boolean. In addition to the existing JsonLogic operators (logic and boolean, numeric, string, array), Live Objects provides geographic operators (distance, inside, insideindex, closeto, closetoindex), context operator (ctx) to retrieve data stored via the Context APIs and miscellaneous operators ('get' to retrieve an element from an array)...e.g. '{">":[{"var":"value.temp"},{"ctx":"temperature.threshold"}]}'.
+          description: id of the FiringRule linked to this FiringGuard.
+        tenantId:
+          type: string
+          description: identifier of tenant account this FiringRule belongs to .
+        matchingContext:
+          $ref: '#/components/schemas/MatchingContext'
+          description: matchingContext that triggered this FringGuard.
+        guardCriteria:
+          type: array
+          description: pairs of aggregationKey/value that are hold by this FiringGuard
+          items:
+            $ref: '#/components/schemas/SelectionCriteria'
+        created:
+          type: string
+          format: date-time
+          description: creation of this FiringGuard
+        expireAt:
+          type: string
+          format: date-time
+          description: expiration of this FiringGuard
       required:
-      - dataPredicate
-      - name
+      - created
+      - firingRuleId
+      - guardCriteria
+      - id
+      - matchingContext
+      - tenantId
     Location:
       type: object
       description: geographic location
@@ -390,42 +411,21 @@ components:
       required:
       - keyPath
       - value
-    FiringGuard:
+    FiringGuardMatchRequest:
       type: object
-      description: Hold a FiringRule from triggering a FiredEvent if it has already been sent for the same aggregationKeys. Will exist only for FiringRule of type ONCE or SLEEP.
+      description: search parameters to select FiringGuard to remove
       properties:
-        id:
-          type: string
-          description: id of the FiringGuard.
         firingRuleId:
           type: string
-          description: id of the FiringRule linked to this FiringGuard.
-        tenantId:
-          type: string
-          description: identifier of tenant account this FiringRule belongs to .
-        matchingContext:
-          $ref: '#/components/schemas/MatchingContext'
-          description: matchingContext that triggered this FringGuard.
-        guardCriteria:
+          description: firingRuleId linked to the FiringGuard to reset
+          minLength: 1
+        selectionCriteria:
           type: array
-          description: pairs of aggregationKey/value that are hold by this FiringGuard
+          description: criteria that should match the FiringGuard to reset
           items:
             $ref: '#/components/schemas/SelectionCriteria'
-        created:
-          type: string
-          format: date-time
-          description: creation of this FiringGuard
-        expireAt:
-          type: string
-          format: date-time
-          description: expiration of this FiringGuard
       required:
-      - created
       - firingRuleId
-      - guardCriteria
-      - id
-      - matchingContext
-      - tenantId
   securitySchemes:
     X-API-KEY:
       type: apiKey
