@@ -219,6 +219,13 @@ paths:
                   $ref: '#/components/schemas/LoraNetworkSubscriptionDetail'
 components:
   schemas:
+    LoraDeviceManufacturer:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Commercial name of the device manufacturer
+          example: Adeunis
     LoraNetworkSubscriptionDetail:
       type: object
       properties:
@@ -241,7 +248,29 @@ components:
             sfMax: 12
             sfMin: 7
             nbTransMin: 1
-    LoraDeviceManufacturer:
+    LoraDeviceProfile:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique id of the device profile
+          example: Temperature sensor profile id
+        name:
+          type: string
+          description: Commercial name of the device profile
+          example: Temperature sensor profile name
+        manufacturer:
+          $ref: '#/components/schemas/Manufacturer'
+          description: Commercial name of the device manufacturer
+          example: Sensor maker
+        ismBands:
+          type: array
+          description: List of the ISM bands supported by the device profile
+          example:
+          - EU863-870 (EU868)
+          items:
+            type: string
+    Manufacturer:
       type: object
       properties:
         name:
@@ -268,35 +297,6 @@ components:
       - code
       - id
       - message
-    Manufacturer:
-      type: object
-      properties:
-        name:
-          type: string
-          description: Commercial name of the device manufacturer
-          example: Adeunis
-    LoraDeviceProfile:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique id of the device profile
-          example: Temperature sensor profile id
-        name:
-          type: string
-          description: Commercial name of the device profile
-          example: Temperature sensor profile name
-        manufacturer:
-          $ref: '#/components/schemas/Manufacturer'
-          description: Commercial name of the device manufacturer
-          example: Sensor maker
-        ismBands:
-          type: array
-          description: List of the ISM bands supported by the device profile
-          example:
-          - EU863-870 (EU868)
-          items:
-            type: string
   securitySchemes:
     X-API-KEY:
       type: apiKey

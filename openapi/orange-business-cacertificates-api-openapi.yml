@@ -109,6 +109,21 @@ paths:
           description: Unknown CA certificate
 components:
   schemas:
+    CaCertificate:
+      type: object
+      properties:
+        id:
+          type: string
+        certificate:
+          type: string
+        comment:
+          type: string
+        expires:
+          type: string
+          format: date-time
+      required:
+      - certificate
+      - comment
     CaCertificateRef:
       type: object
       properties:
@@ -166,21 +181,6 @@ components:
           type: string
           description: Certificate description.
           example: my awesome intermediate CA certificate
-      required:
-      - certificate
-      - comment
-    CaCertificate:
-      type: object
-      properties:
-        id:
-          type: string
-        certificate:
-          type: string
-        comment:
-          type: string
-        expires:
-          type: string
-          format: date-time
       required:
       - certificate
       - comment

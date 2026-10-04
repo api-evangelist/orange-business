@@ -64,24 +64,6 @@ components:
       required:
       - lat
       - lon
-    Metadata:
-      type: object
-      properties:
-        source:
-          type: string
-          description: source of the data
-          example: urn:tenantName:FFFFFFFFFFFFFFFF!mystream
-        encoding:
-          type: string
-          description: encoding format name, that should match the 'encoding' field of the decoder that will process this datamessage.
-    DataBulkWeb:
-      type: array
-      description: Bulk of Data to add
-      items:
-        $ref: '#/components/schemas/DataBulkItemWeb'
-      properties:
-        empty:
-          type: boolean
     DataBulkItemWeb:
       type: object
       description: Unitary data item in a bulk.
@@ -121,6 +103,24 @@ components:
           example: urn:tenantName:FFFFFFFFFFFFFFFF!mystream
       required:
       - value
+    DataBulkWeb:
+      type: array
+      description: Bulk of Data to add
+      items:
+        $ref: '#/components/schemas/DataBulkItemWeb'
+      properties:
+        empty:
+          type: boolean
+    Metadata:
+      type: object
+      properties:
+        source:
+          type: string
+          description: source of the data
+          example: urn:tenantName:FFFFFFFFFFFFFFFF!mystream
+        encoding:
+          type: string
+          description: encoding format name, that should match the 'encoding' field of the decoder that will process this datamessage.
   securitySchemes:
     X-API-KEY:
       type: apiKey

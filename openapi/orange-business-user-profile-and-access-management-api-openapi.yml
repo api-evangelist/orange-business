@@ -192,34 +192,34 @@ components:
       - tenantAccountType
       - tenantId
       - tenantName
-    PageableV2UserAccess:
+    UserProfile:
       type: object
+      description: User profile
       properties:
-        page:
-          type: integer
-          format: int64
-          description: 'number of the current page: starts at 0.'
-          example: 0
-        size:
-          type: integer
-          format: int64
-          description: number of data per page (= maximum number of data in the associated list of data:the last page can have less data)
-          example: 1
-        totalCount:
-          type: integer
-          format: int64
-          description: total count of data in the complete list.
-          example: 1
-        data:
+        id:
+          type: string
+          description: identifier of user
+          example: 57FFFFFFFFFFFFFFFFFFFFFF
+        email:
+          type: string
+          description: user email
+          example: me.name@mycompagny.mycom
+        language:
+          type: string
+          description: the user language, in ISO 639-1 format
+          example: en
+        identities:
           type: array
-          description: list of data in this page.
+          description: list of identities used by the user to be authenticated to Live Objects
           items:
-            $ref: '#/components/schemas/UserAccess'
+            $ref: '#/components/schemas/UserProfileIdentity'
+        merged:
+          type: boolean
       required:
-      - data
-      - page
-      - size
-      - totalCount
+      - email
+      - id
+      - identities
+      - language
     UserProfileIdentity:
       type: object
       description: user profile identity
@@ -250,26 +250,34 @@ components:
       - id
       - lastAuthentication
       - provider
-    WebErrorResponse:
+    PageableV2UserAccess:
       type: object
-      description: Error response
       properties:
-        id:
-          type: string
-          description: Unique identifier of this error instance
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Short error description
-        details:
-          type: string
-          description: Detailed error description
+        page:
+          type: integer
+          format: int64
+          description: 'number of the current page: starts at 0.'
+          example: 0
+        size:
+          type: integer
+          format: int64
+          description: number of data per page (= maximum number of data in the associated list of data:the last page can have less data)
+          example: 1
+        totalCount:
+          type: integer
+          format: int64
+          description: total count of data in the complete list.
+          example: 1
+        data:
+          type: array
+          description: list of data in this page.
+          items:
+            $ref: '#/components/schemas/UserAccess'
       required:
-      - code
-      - id
-      - message
+      - data
+      - page
+      - size
+      - totalCount
     ServiceErrorResponse:
       type: object
       description: Generic Error in Response
@@ -298,34 +306,6 @@ components:
       - code
       - id
       - message
-    UserProfile:
-      type: object
-      description: User profile
-      properties:
-        id:
-          type: string
-          description: identifier of user
-          example: 57FFFFFFFFFFFFFFFFFFFFFF
-        email:
-          type: string
-          description: user email
-          example: me.name@mycompagny.mycom
-        language:
-          type: string
-          description: the user language, in ISO 639-1 format
-          example: en
-        identities:
-          type: array
-          description: list of identities used by the user to be authenticated to Live Objects
-          items:
-            $ref: '#/components/schemas/UserProfileIdentity'
-        merged:
-          type: boolean
-      required:
-      - email
-      - id
-      - identities
-      - language
     UserProfilePatchRequestWeb:
       type: object
       description: body for user profile patch request
@@ -338,6 +318,26 @@ components:
           type: string
           description: 'the user language. Expected language ISO 639-1 (example: "en", "fr", "sk", "ro", "es") (case insensitive, max 2 characters)'
           example: en
+    WebErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+      required:
+      - code
+      - id
+      - message
   securitySchemes:
     X-API-KEY:
       type: apiKey

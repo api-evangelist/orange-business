@@ -83,24 +83,6 @@ paths:
       security: []
 components:
   schemas:
-    PasswordAuthenticationInfo:
-      type: object
-      description: body of authentication request
-      properties:
-        email:
-          type: string
-          description: User's email
-          example: me.name@mycompagny.mycom
-        login:
-          type: string
-          description: User's login
-          example: MyLoginName
-        password:
-          type: string
-          description: User's password
-          example: MyCurrentPWD
-      required:
-      - password
     RateLimit:
       type: object
       properties:
@@ -134,24 +116,13 @@ components:
           format: int64
           description: 'http rate limit: maximum api calls allowed per time window'
           example: 1
-    ResetPasswordValidationInfo:
+    AuthResWeb:
       type: object
-      description: Reset password request with user login/email and captcha validation
       properties:
-        userLogin:
-          type: string
-          description: User's login
-          example: MyLoginName
-        captcha:
-          type: string
-          description: User-provided captcha value
-        captchaToken:
-          type: string
-          description: Captcha token
-      required:
-      - captcha
-      - captchaToken
-      - userLogin
+        apiKey:
+          $ref: '#/components/schemas/ApiKey'
+        admin:
+          type: boolean
     UpdatePasswordValidationInfo:
       type: object
       description: body of user update password with token
@@ -174,6 +145,52 @@ components:
       - captchaToken
       - password
       - tokenId
+    PasswordAuthenticationInfo:
+      type: object
+      description: body of authentication request
+      properties:
+        email:
+          type: string
+          description: User's email
+          example: me.name@mycompagny.mycom
+        login:
+          type: string
+          description: User's login
+          example: MyLoginName
+        password:
+          type: string
+          description: User's password
+          example: MyCurrentPWD
+      required:
+      - password
+    ClientCertificatesConfiguration:
+      type: object
+      properties:
+        required:
+          type: boolean
+          description: Indicates if the client must use TLS client cert authentication
+          example: true
+        caCertIds:
+          type: array
+          description: List of Ca Certificate Ids used to authenticate devices. Expected array of string (max 100 elements, value max 255 characters)
+          example:
+          - 5b057d0fb8605a5e80758e42
+          items:
+            type: string
+      required:
+      - required
+    ScopeApplication:
+      type: object
+      properties:
+        fifos:
+          type: array
+          description: List of allowed FIFOs to publish or subscribe. Expected array of string (max 100 elements, value max 255 characters)
+          example:
+          - default
+          - supplierA
+          items:
+            type: string
+          uniqueItems: true
     ApiKey:
       type: object
       properties:
@@ -267,41 +284,24 @@ components:
           type: boolean
       required:
       - roles
-    AuthResWeb:
+    ResetPasswordValidationInfo:
       type: object
+      description: Reset password request with user login/email and captcha validation
       properties:
-        apiKey:
-          $ref: '#/components/schemas/ApiKey'
-        admin:
-          type: boolean
-    ScopeApplication:
-      type: object
-      properties:
-        fifos:
-          type: array
-          description: List of allowed FIFOs to publish or subscribe. Expected array of string (max 100 elements, value max 255 characters)
-          example:
-          - default
-          - supplierA
-          items:
-            type: string
-          uniqueItems: true
-    ClientCertificatesConfiguration:
-      type: object
-      properties:
-        required:
-          type: boolean
-          description: Indicates if the client must use TLS client cert authentication
-          example: true
-        caCertIds:
-          type: array
-          description: List of Ca Certificate Ids used to authenticate devices. Expected array of string (max 100 elements, value max 255 characters)
-          example:
-          - 5b057d0fb8605a5e80758e42
-          items:
-            type: string
+        userLogin:
+          type: string
+          description: User's login
+          example: MyLoginName
+        captcha:
+          type: string
+          description: User-provided captcha value
+        captchaToken:
+          type: string
+          description: Captcha token
       required:
-      - required
+      - captcha
+      - captchaToken
+      - userLogin
   securitySchemes:
     X-API-KEY:
       type: apiKey

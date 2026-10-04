@@ -245,60 +245,6 @@ components:
       - page
       - size
       - totalCount
-    GwConfig:
-      type: object
-      properties:
-        version:
-          type: string
-          description: Version
-          example: 2.2.47
-    WebErrorResponse:
-      type: object
-      description: Error response
-      properties:
-        id:
-          type: string
-          description: Unique identifier of this error instance
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Short error description
-        details:
-          type: string
-          description: Detailed error description
-      required:
-      - code
-      - id
-      - message
-    LoraGatewayLocation:
-      type: object
-      properties:
-        lat:
-          type: number
-          format: double
-          description: Last geolocation latitude (GPS coordinate system)
-          example: 10.11212
-        lon:
-          type: number
-          format: double
-          description: Last geolocation longitude (GPS coordinate system)
-          example: 7.44464
-        alt:
-          type: number
-          format: double
-          description: Last geolocation altitude (meter)
-          example: 50
-        provider:
-          type: string
-          description: Computing geolocation method
-          example: GPS
-        lastUpdateTs:
-          type: string
-          format: date-time
-          description: Date/time of the last location
-          example: '2016-06-14T11:09:22.125Z'
     GwSystem:
       type: object
       properties:
@@ -359,6 +305,60 @@ components:
           type: string
           description: Partner related instance
           example: OCP
+    GwConfig:
+      type: object
+      properties:
+        version:
+          type: string
+          description: Version
+          example: 2.2.47
+    LoraGatewayLocation:
+      type: object
+      properties:
+        lat:
+          type: number
+          format: double
+          description: Last geolocation latitude (GPS coordinate system)
+          example: 10.11212
+        lon:
+          type: number
+          format: double
+          description: Last geolocation longitude (GPS coordinate system)
+          example: 7.44464
+        alt:
+          type: number
+          format: double
+          description: Last geolocation altitude (meter)
+          example: 50
+        provider:
+          type: string
+          description: Computing geolocation method
+          example: GPS
+        lastUpdateTs:
+          type: string
+          format: date-time
+          description: Date/time of the last location
+          example: '2016-06-14T11:09:22.125Z'
+    WebErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+      required:
+      - code
+      - id
+      - message
   securitySchemes:
     X-API-KEY:
       type: apiKey

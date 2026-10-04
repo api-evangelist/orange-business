@@ -159,27 +159,91 @@ paths:
           description: No Content
 components:
   schemas:
-    BootstrapMasterEntrySummary:
+    BootstrapMasterEntryRequestSecurityInfo:
       type: object
       properties:
-        id:
+        mode:
           type: string
-          description: The id of the the bootstrap master entry
-          example: mQeAYP
+          description: The security mode used to authenticate to the LwM2M Bootstrap server
+          enum:
+          - PSK
+          example: PSK
+      required:
+      - mode
+    BootstrapMasterEntryPreSharedKeyInfo:
+      type: object
+      properties:
+        secret:
+          type: string
+          description: The PSK master secret. Encoded in hexadecimal.
+          example: 0123456789ABCDEF0123456789ABCDEF
+      required:
+      - secret
+    BootstrapMasterEntrySecurityInfo:
+      type: object
+      properties:
+        mode:
+          type: string
+          description: The security mode used to authenticate to the LwM2M Bootstrap server
+          enum:
+          - PSK
+          example: PSK
+        pskInfo:
+          $ref: '#/components/schemas/BootstrapMasterEntryPreSharedKeyInfo'
+          description: The master Pre-Shared Key (PSK) information
+      required:
+      - mode
+    BootstrapMasterEntryDefinition:
+      type: object
+      properties:
+        bootstrapConfigId:
+          type: string
+          description: The identifier of the bootstrap config to use (must be defined for the Bootstrap to work).
+          example: 63c17e68f98ac770eac303fb
+    BootstrapMasterEntryActivity:
+      type: object
+      properties:
+        bootstrapRequestCount:
+          type: integer
+          format: int32
+          description: The number of times a Bootstrap sequence has been initiated (a Bootstrap-Request has been received by the LwM2M server) using this master entry.
+          example: 1
+        lastBootstrapRequestDate:
+          type: string
+          format: date-time
+          description: The last time a Bootstrap sequence was initiated (a Bootstrap-Request has been received by the LwM2M server) using this master entry.
+          example: '2022-10-25T18:47:06Z'
+        bootstrapFinishCount:
+          type: integer
+          format: int32
+          description: The number of times a Bootstrap sequence has been successfully completed (a Bootstrap-Finish has been sent by the LwM2M server) using this master entry.
+          example: 1
+        lastBootstrapFinishDate:
+          type: string
+          format: date-time
+          description: The last time a Bootstrap sequence has been successfully completed (a Bootstrap-Finish has been sent by the LwM2M server) using this master entry.
+          example: '2022-10-25T18:49:10Z'
+      required:
+      - bootstrapFinishCount
+      - bootstrapRequestCount
+    BootstrapMasterEntryRequest:
+      type: object
+      description: Bootstrap master entry creation request
+      properties:
         name:
           type: string
           description: User-defined name of the bootstrap master entry
           example: My bootstrap master entry
+          maxLength: 255
+          minLength: 0
+        security:
+          $ref: '#/components/schemas/BootstrapMasterEntryRequestSecurityInfo'
+          description: Security info of the bootstrap master entry
         definition:
           $ref: '#/components/schemas/BootstrapMasterEntryDefinition'
-          description: The bootstrap master entry parameters
-        activity:
-          $ref: '#/components/schemas/BootstrapMasterEntryActivity'
-          description: Information about past Bootstrap sessions
       required:
-      - definition
-      - id
       - name
+      - security
     BootstrapMasterEntry:
       type: object
       properties:
@@ -217,91 +281,27 @@ components:
       - name
       - security
       - updated
-    BootstrapMasterEntryActivity:
+    BootstrapMasterEntrySummary:
       type: object
       properties:
-        bootstrapRequestCount:
-          type: integer
-          format: int32
-          description: The number of times a Bootstrap sequence has been initiated (a Bootstrap-Request has been received by the LwM2M server) using this master entry.
-          example: 1
-        lastBootstrapRequestDate:
+        id:
           type: string
-          format: date-time
-          description: The last time a Bootstrap sequence was initiated (a Bootstrap-Request has been received by the LwM2M server) using this master entry.
-          example: '2022-10-25T18:47:06Z'
-        bootstrapFinishCount:
-          type: integer
-          format: int32
-          description: The number of times a Bootstrap sequence has been successfully completed (a Bootstrap-Finish has been sent by the LwM2M server) using this master entry.
-          example: 1
-        lastBootstrapFinishDate:
-          type: string
-          format: date-time
-          description: The last time a Bootstrap sequence has been successfully completed (a Bootstrap-Finish has been sent by the LwM2M server) using this master entry.
-          example: '2022-10-25T18:49:10Z'
-      required:
-      - bootstrapFinishCount
-      - bootstrapRequestCount
-    BootstrapMasterEntryRequestSecurityInfo:
-      type: object
-      properties:
-        mode:
-          type: string
-          description: The security mode used to authenticate to the LwM2M Bootstrap server
-          enum:
-          - PSK
-          example: PSK
-      required:
-      - mode
-    BootstrapMasterEntrySecurityInfo:
-      type: object
-      properties:
-        mode:
-          type: string
-          description: The security mode used to authenticate to the LwM2M Bootstrap server
-          enum:
-          - PSK
-          example: PSK
-        pskInfo:
-          $ref: '#/components/schemas/BootstrapMasterEntryPreSharedKeyInfo'
-          description: The master Pre-Shared Key (PSK) information
-      required:
-      - mode
-    BootstrapMasterEntryPreSharedKeyInfo:
-      type: object
-      properties:
-        secret:
-          type: string
-          description: The PSK master secret. Encoded in hexadecimal.
-          example: 0123456789ABCDEF0123456789ABCDEF
-      required:
-      - secret
-    BootstrapMasterEntryDefinition:
-      type: object
-      properties:
-        bootstrapConfigId:
-          type: string
-          description: The identifier of the bootstrap config to use (must be defined for the Bootstrap to work).
-          example: 63c17e68f98ac770eac303fb
-    BootstrapMasterEntryRequest:
-      type: object
-      description: Bootstrap master entry creation request
-      properties:
+          description: The id of the the bootstrap master entry
+          example: mQeAYP
         name:
           type: string
           description: User-defined name of the bootstrap master entry
           example: My bootstrap master entry
-          maxLength: 255
-          minLength: 0
-        security:
-          $ref: '#/components/schemas/BootstrapMasterEntryRequestSecurityInfo'
-          description: Security info of the bootstrap master entry
         definition:
           $ref: '#/components/schemas/BootstrapMasterEntryDefinition'
+          description: The bootstrap master entry parameters
+        activity:
+          $ref: '#/components/schemas/BootstrapMasterEntryActivity'
+          description: Information about past Bootstrap sessions
       required:
+      - definition
+      - id
       - name
-      - security
   securitySchemes:
     X-API-KEY:
       type: apiKey

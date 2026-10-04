@@ -214,32 +214,26 @@ paths:
                 $ref: '#/components/schemas/WebErrorResponse'
 components:
   schemas:
-    UpdateUserPasswordInfo:
+    DiscoverActivationDefinition:
       type: object
-      description: body of user update password
+      description: Trial activation definition
       properties:
-        oldPassword:
+        password:
           type: string
-          description: old password string
-          example: MyCurrentPWD
-        newPassword:
-          type: string
-          description: new password string
-          example: MyNewPWD
-        captcha:
-          type: string
-          description: security captcha got from user
-        captchaToken:
-          type: string
-          description: captcha token, that will be checked for authorizing the update
+          description: Main user's password
+          example: MynewPWD
         tokenId:
           type: string
-          description: token identifier
+          description: Token provided by email
+        company:
+          type: string
+          description: Main user's company
+        login:
+          type: string
+          description: Main user's email
       required:
-      - captcha
-      - captchaToken
-      - newPassword
-      - oldPassword
+      - login
+      - password
       - tokenId
     ExternalIdentity:
       type: object
@@ -325,6 +319,33 @@ components:
       - roles
       - state
       - tenantId
+    UpdateUserPasswordInfo:
+      type: object
+      description: body of user update password
+      properties:
+        oldPassword:
+          type: string
+          description: old password string
+          example: MyCurrentPWD
+        newPassword:
+          type: string
+          description: new password string
+          example: MyNewPWD
+        captcha:
+          type: string
+          description: security captcha got from user
+        captchaToken:
+          type: string
+          description: captcha token, that will be checked for authorizing the update
+        tokenId:
+          type: string
+          description: token identifier
+      required:
+      - captcha
+      - captchaToken
+      - newPassword
+      - oldPassword
+      - tokenId
     WebErrorResponse:
       type: object
       description: Error response
@@ -345,27 +366,6 @@ components:
       - code
       - id
       - message
-    DiscoverActivationDefinition:
-      type: object
-      description: Trial activation definition
-      properties:
-        password:
-          type: string
-          description: Main user's password
-          example: MynewPWD
-        tokenId:
-          type: string
-          description: Token provided by email
-        company:
-          type: string
-          description: Main user's company
-        login:
-          type: string
-          description: Main user's email
-      required:
-      - login
-      - password
-      - tokenId
   securitySchemes:
     X-API-KEY:
       type: apiKey

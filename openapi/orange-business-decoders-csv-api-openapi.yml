@@ -201,47 +201,6 @@ paths:
                 $ref: '#/components/schemas/PayloadDescriptionTestResult'
 components:
   schemas:
-    CsvPayloadDescriptionTestRequest:
-      type: object
-      description: Csv format and encoded payload on which decoding shall be performed
-      properties:
-        columns:
-          type: array
-          description: the colums description of the CSV format
-          items:
-            $ref: '#/components/schemas/CsvColumn'
-        options:
-          $ref: '#/components/schemas/CsvOptions'
-          description: the CSV decoding options to apply
-        csvPayload:
-          type: string
-          description: The encoded payload to test, in CSV format
-        template:
-          type: string
-          description: 'The template to apply after the decoding, it can include mustache operations. e.g. ''{"tempF": {{#math}}{{temperature}} * 1.8 + 32{{/math}} }'''
-        mathEvalEnabled:
-          type: boolean
-          description: Applying, or not, math evaluation on templated decoded result. Default is true
-      required:
-      - columns
-      - csvPayload
-    PayloadDescriptionTestResult:
-      type: object
-      properties:
-        parsingOk:
-          type: boolean
-          description: indicates if the data payload can be parsed according to the data payload description
-        decodingResult:
-          description: the decoded data
-        decodingFailureReason:
-          type: string
-          description: if decoding has failed, the reason why it failed
-        descriptionValid:
-          type: boolean
-          description: 'indicates if the payload description is valid according to the type of decoding : csv, binary, js, js-split'
-        templatingOK:
-          type: boolean
-          description: indicates if the template has been successfully applied on decoded data
     CsvPayloadDescription:
       type: object
       description: binary decoder provisioning information
@@ -294,31 +253,30 @@ components:
       - columns
       - enabled
       - encoding
-    CsvOptions:
+    CsvPayloadDescriptionTestRequest:
       type: object
+      description: Csv format and encoded payload on which decoding shall be performed
       properties:
-        columnSeparator:
+        columns:
+          type: array
+          description: the colums description of the CSV format
+          items:
+            $ref: '#/components/schemas/CsvColumn'
+        options:
+          $ref: '#/components/schemas/CsvOptions'
+          description: the CSV decoding options to apply
+        csvPayload:
           type: string
-          description: Character used to separate values. Default is comma ','
-          example: ;
-        quoteChar:
+          description: The encoded payload to test, in CSV format
+        template:
           type: string
-          description: Character used for quoting values that contain column separator characters or linefeed. Default is double-quote '"'.
-          example: ''''
-        useEscapeChar:
+          description: 'The template to apply after the decoding, it can include mustache operations. e.g. ''{"tempF": {{#math}}{{temperature}} * 1.8 + 32{{/math}} }'''
+        mathEvalEnabled:
           type: boolean
-          description: Set to true if you want to use an escape char. Default is false.
-        escapeChar:
-          type: string
-          description: Character used to escape values. Default is backslash '\'
-          example: \
-        skipWhiteSpace:
-          type: boolean
-          description: if set to true, it will trim the decoded values (white spaces before and after will be removed). Default is false.
-        lineFeedSeparator:
-          type: string
-          description: Character used to separate data rows. If the message payload contains several rows, only the first one will be decoded. Default is line feed '\n'.
-          example: \n
+          description: Applying, or not, math evaluation on templated decoded result. Default is true
+      required:
+      - columns
+      - csvPayload
     CsvColumn:
       type: object
       properties:
@@ -345,6 +303,48 @@ components:
           description: date since when the decoder is certified. ISO 8601 date time.
           example: '2019-05-15T07:55:55.555Z'
           readOnly: true
+    CsvOptions:
+      type: object
+      properties:
+        columnSeparator:
+          type: string
+          description: Character used to separate values. Default is comma ','
+          example: ;
+        quoteChar:
+          type: string
+          description: Character used for quoting values that contain column separator characters or linefeed. Default is double-quote '"'.
+          example: ''''
+        useEscapeChar:
+          type: boolean
+          description: Set to true if you want to use an escape char. Default is false.
+        escapeChar:
+          type: string
+          description: Character used to escape values. Default is backslash '\'
+          example: \
+        skipWhiteSpace:
+          type: boolean
+          description: if set to true, it will trim the decoded values (white spaces before and after will be removed). Default is false.
+        lineFeedSeparator:
+          type: string
+          description: Character used to separate data rows. If the message payload contains several rows, only the first one will be decoded. Default is line feed '\n'.
+          example: \n
+    PayloadDescriptionTestResult:
+      type: object
+      properties:
+        parsingOk:
+          type: boolean
+          description: indicates if the data payload can be parsed according to the data payload description
+        decodingResult:
+          description: the decoded data
+        decodingFailureReason:
+          type: string
+          description: if decoding has failed, the reason why it failed
+        descriptionValid:
+          type: boolean
+          description: 'indicates if the payload description is valid according to the type of decoding : csv, binary, js, js-split'
+        templatingOK:
+          type: boolean
+          description: indicates if the template has been successfully applied on decoded data
   securitySchemes:
     X-API-KEY:
       type: apiKey

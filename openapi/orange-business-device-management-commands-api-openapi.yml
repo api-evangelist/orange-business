@@ -328,40 +328,6 @@ paths:
                 $ref: '#/components/schemas/WebErrorResponse'
 components:
   schemas:
-    CommandResponse:
-      type: object
-      properties:
-        value:
-          description: command response value (protocol/connector-dependant)
-          example:
-            success: true
-      required:
-      - value
-    CommandStatusReport:
-      type: object
-      properties:
-        content:
-          type: string
-    WebErrorResponse:
-      type: object
-      description: Error response
-      properties:
-        id:
-          type: string
-          description: Unique identifier of this error instance
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Short error description
-        details:
-          type: string
-          description: Detailed error description
-      required:
-      - code
-      - id
-      - message
     CommandRequest:
       type: object
       properties:
@@ -391,6 +357,57 @@ components:
       required:
       - connector
       - value
+    CommandResponse:
+      type: object
+      properties:
+        value:
+          description: command response value (protocol/connector-dependant)
+          example:
+            success: true
+      required:
+      - value
+    CommandHistory:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: timestamp of the entry
+          example: '2017-12-06T11:38:22.481Z'
+        status:
+          type: string
+          description: command status at the timestamp
+          enum:
+          - PENDING
+          - PROCESSING
+          - PROCESSED
+          - CANCELED
+          - ERROR
+          - RETRYING
+          - EXPIRED
+          - UNKNOWN
+          example: PROCESSING
+        deliveryStatus:
+          type: string
+          description: command delivery status at the timestamp
+          enum:
+          - SENDING
+          - SENT
+          - DELIVERED
+          - REPLIED
+          example: SENT
+        errorCode:
+          type: string
+          description: error code in case of ERROR status
+          example: INVALID_COMMAND_REQUEST
+        nodeId:
+          type: string
+          description: node id
+    CommandStatusReport:
+      type: object
+      properties:
+        content:
+          type: string
     CommandPolicy:
       type: object
       properties:
@@ -490,43 +507,6 @@ components:
           format: date-time
           description: command last status update date/time
           example: '2017-12-06T11:32:25.055Z'
-    CommandHistory:
-      type: object
-      properties:
-        timestamp:
-          type: string
-          format: date-time
-          description: timestamp of the entry
-          example: '2017-12-06T11:38:22.481Z'
-        status:
-          type: string
-          description: command status at the timestamp
-          enum:
-          - PENDING
-          - PROCESSING
-          - PROCESSED
-          - CANCELED
-          - ERROR
-          - RETRYING
-          - EXPIRED
-          - UNKNOWN
-          example: PROCESSING
-        deliveryStatus:
-          type: string
-          description: command delivery status at the timestamp
-          enum:
-          - SENDING
-          - SENT
-          - DELIVERED
-          - REPLIED
-          example: SENT
-        errorCode:
-          type: string
-          description: error code in case of ERROR status
-          example: INVALID_COMMAND_REQUEST
-        nodeId:
-          type: string
-          description: node id
     CreationCommandRequest:
       type: object
       description: new command request
@@ -539,6 +519,26 @@ components:
           description: Delivery policy for this command
       required:
       - request
+    WebErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+      required:
+      - code
+      - id
+      - message
   securitySchemes:
     X-API-KEY:
       type: apiKey

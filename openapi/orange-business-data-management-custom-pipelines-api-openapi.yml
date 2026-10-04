@@ -146,20 +146,66 @@ paths:
                 $ref: '#/components/schemas/Pipeline'
 components:
   schemas:
-    GroupPath:
+    PipelineFilter:
       type: object
-      description: defines targeted group path
       properties:
-        path:
-          type: string
-          description: path of the group
-          example: /europe/france
-        includeSubPath:
-          type: boolean
-          description: 'if true, all sub-paths will be targeted by this ActivityRule '
+        connectors:
+          type: array
+          description: list of filtered connectors. Null or empty to accept all connectors. e.g. lora, sms, mqtt, lwm2m.
+          example:
+          - lora
+          items:
+            type: string
+          uniqueItems: true
+        encodings:
+          type: array
+          description: list of filtered datamessage's encodings. Null or empty to accept all datamessage's encodings
+          items:
+            type: string
+          uniqueItems: true
+        groupPaths:
+          type: array
+          description: list of filtered group paths. Null or empty to accept all group paths
+          items:
+            $ref: '#/components/schemas/GroupPath'
+          uniqueItems: true
+        tags:
+          type: array
+          description: list of groups of tags that should be contained in message tags. There is a match if at least one group of tags is a match. A group of tags is a match if the tags of the message contains all elements of this group.<br>e.g. [["ALERT"]] will match all messages containing tag 'ALERT'.<br>e.g. [["HIGH", "ALERT"],["PROD"]] will match messages with either tag 'PROD' or both tags 'ALERT' and 'HIGH'.
+          example:
+          - - ALERT
+          items:
+            type: array
+            items:
+              type: string
+            uniqueItems: true
+          uniqueItems: true
+    ExternalTransformationStepDescription:
+      allOf:
+      - $ref: '#/components/schemas/PipelineStepDescription'
+      - type: object
+        properties:
+          url:
+            type: string
+            description: url of the external transformation service to call. (only the ports 80, 443, 8080, 8443 and 9243 are allowed).
+            example: http://lo-data-transformation.appspot.com/enrich
+          headers:
+            type: object
+            additionalProperties:
+              type: array
+              items:
+                type: string
+            description: A map of header to be passed in the http POST headers of the transformation request.
+            example:
+              x-my-header:
+              - account-1234
+          name:
+            type: string
+            description: Name of the step (will be added in the http POST headers of the transformation request).
+            maxLength: 1000
+            minLength: 0
       required:
-      - includeSubPath
-      - path
+      - url
     PipelineStepDescription:
       type: object
       discriminator:
@@ -224,66 +270,20 @@ components:
       - name
       - priorityLevel
       - steps
-    PipelineFilter:
+    GroupPath:
       type: object
+      description: defines targeted group path
       properties:
-        connectors:
-          type: array
-          description: list of filtered connectors. Null or empty to accept all connectors. e.g. lora, sms, mqtt, lwm2m.
-          example:
-          - lora
-          items:
-            type: string
-          uniqueItems: true
-        encodings:
-          type: array
-          description: list of filtered datamessage's encodings. Null or empty to accept all datamessage's encodings
-          items:
-            type: string
-          uniqueItems: true
-        groupPaths:
-          type: array
-          description: list of filtered group paths. Null or empty to accept all group paths
-          items:
-            $ref: '#/components/schemas/GroupPath'
-          uniqueItems: true
-        tags:
-          type: array
-          description: list of groups of tags that should be contained in message tags. There is a match if at least one group of tags is a match. A group of tags is a match if the tags of the message contains all elements of this group.<br>e.g. [["ALERT"]] will match all messages containing tag 'ALERT'.<br>e.g. [["HIGH", "ALERT"],["PROD"]] will match messages with either tag 'PROD' or both tags 'ALERT' and 'HIGH'.
-          example:
-          - - ALERT
-          items:
-            type: array
-            items:
-              type: string
-            uniqueItems: true
-          uniqueItems: true
-    ExternalTransformationStepDescription:
-      allOf:
-      - $ref: '#/components/schemas/PipelineStepDescription'
-      - type: object
-        properties:
-          url:
-            type: string
-            description: url of the external transformation service to call. (only the ports 80, 443, 8080, 8443 and 9243 are allowed).
-            example: http://lo-data-transformation.appspot.com/enrich
-          headers:
-            type: object
-            additionalProperties:
-              type: array
-              items:
-                type: string
-            description: A map of header to be passed in the http POST headers of the transformation request.
-            example:
-              x-my-header:
-              - account-1234
-          name:
-            type: string
-            description: Name of the step (will be added in the http POST headers of the transformation request).
-            maxLength: 1000
-            minLength: 0
+        path:
+          type: string
+          description: path of the group
+          example: /europe/france
+        includeSubPath:
+          type: boolean
+          description: 'if true, all sub-paths will be targeted by this ActivityRule '
       required:
-      - url
+      - includeSubPath
+      - path
   securitySchemes:
     X-API-KEY:
       type: apiKey

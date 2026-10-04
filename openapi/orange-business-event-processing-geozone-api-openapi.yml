@@ -127,27 +127,6 @@ paths:
                   $ref: '#/components/schemas/GeozoneContainer'
 components:
   schemas:
-    GeozoneContainerBase:
-      type: object
-      description: JSON geozone object to store
-      properties:
-        description:
-          type: string
-          description: Description of the geozone
-        properties:
-          type: object
-          additionalProperties: {}
-          description: Properties of the geozone you can add to ease managing them
-        geometry:
-          $ref: '#/components/schemas/Polygon'
-          description: Coordinates of the GeoZone
-        tags:
-          type: array
-          description: Tags of the geozone you can add to ease managing them
-          items:
-            type: string
-      required:
-      - geometry
     Polygon:
       type: object
       properties:
@@ -198,6 +177,27 @@ components:
       required:
       - geometry
       - zoneId
+    GeozoneContainerBase:
+      type: object
+      description: JSON geozone object to store
+      properties:
+        description:
+          type: string
+          description: Description of the geozone
+        properties:
+          type: object
+          additionalProperties: {}
+          description: Properties of the geozone you can add to ease managing them
+        geometry:
+          $ref: '#/components/schemas/Polygon'
+          description: Coordinates of the GeoZone
+        tags:
+          type: array
+          description: Tags of the geozone you can add to ease managing them
+          items:
+            type: string
+      required:
+      - geometry
   securitySchemes:
     X-API-KEY:
       type: apiKey

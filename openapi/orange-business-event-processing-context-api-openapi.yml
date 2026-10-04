@@ -154,24 +154,6 @@ paths:
                 format: int64
 components:
   schemas:
-    ContextContainer:
-      type: object
-      description: Hold context data that can be used inside matching rules and state processing functions
-      properties:
-        contextKey:
-          type: string
-          description: context key
-          minLength: 1
-        contextData:
-          description: context data
-        tags:
-          type: array
-          description: optional tags list for description and filtering
-          items:
-            type: string
-      required:
-      - contextData
-      - contextKey
     PageableContextContainer:
       type: object
       properties:
@@ -200,6 +182,24 @@ components:
       - page
       - size
       - totalCount
+    ContextContainer:
+      type: object
+      description: Hold context data that can be used inside matching rules and state processing functions
+      properties:
+        contextKey:
+          type: string
+          description: context key
+          minLength: 1
+        contextData:
+          description: context data
+        tags:
+          type: array
+          description: optional tags list for description and filtering
+          items:
+            type: string
+      required:
+      - contextData
+      - contextKey
   securitySchemes:
     X-API-KEY:
       type: apiKey

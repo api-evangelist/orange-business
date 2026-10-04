@@ -208,20 +208,24 @@ paths:
                   $ref: '#/components/schemas/ActivityState'
 components:
   schemas:
-    GroupPath:
+    ActivityStateMuteRequest:
       type: object
-      description: defines targeted group path
+      description: request to mute or reset the nextAlarm of ActivityStates targeting specific deviceId and/or ruleId
       properties:
-        path:
+        deviceId:
           type: string
-          description: path of the group
-          example: /europe/france
-        includeSubPath:
-          type: boolean
-          description: 'if true, all sub-paths will be targeted by this ActivityRule '
+          description: id of the targeted device. At least one of deviceId/activityRuleId must be set.
+        activityRuleId:
+          type: string
+          description: id of the targeted activityRule. At least one of deviceId/activityRuleId must be set.
+        nextAlarmOrder:
+          type: string
+          description: 'set the order type : mute or reset (from now) the next alarm'
+          enum:
+          - MUTE
+          - RESET
       required:
-      - includeSubPath
-      - path
+      - nextAlarmOrder
     ActivityState:
       type: object
       description: defines the current activity state of a specific device and a specific activity rule
@@ -257,50 +261,6 @@ components:
       - nextAlarm
       - numberOfAlarmReminders
       - state
-    ActivityStateMuteRequest:
-      type: object
-      description: request to mute or reset the nextAlarm of ActivityStates targeting specific deviceId and/or ruleId
-      properties:
-        deviceId:
-          type: string
-          description: id of the targeted device. At least one of deviceId/activityRuleId must be set.
-        activityRuleId:
-          type: string
-          description: id of the targeted activityRule. At least one of deviceId/activityRuleId must be set.
-        nextAlarmOrder:
-          type: string
-          description: 'set the order type : mute or reset (from now) the next alarm'
-          enum:
-          - MUTE
-          - RESET
-      required:
-      - nextAlarmOrder
-    Targets:
-      type: object
-      properties:
-        deviceIds:
-          type: array
-          description: List of targeted device ids. This field should not be empty if groupPaths is empty.
-          items:
-            type: string
-        groupPaths:
-          type: array
-          description: list of targeted group paths. This field should not be empty if deviceIds is empty.
-          items:
-            $ref: '#/components/schemas/GroupPath'
-    SilentPolicy:
-      type: object
-      properties:
-        duration:
-          type: string
-          description: the duration (ISO 8601) after which the device will be considered as silent if it had no contact with the platform. If less than 10 minutes, this duration will be handled as a 10 minutes delay. A silent event/alarm will be sent after expiration.
-          example: PT6H
-        repeatInterval:
-          type: string
-          description: if the device previously triggered a silent alarm and still had no contact with the platform; duration (ISO 8601) after which a new silent event/alarm will be sent. If less than 10 minutes, this duration will be handled as a 10 minutes delay. If null, no further alarm will be sent until the new active/silent cycle.
-          example: P1DT12H
-      required:
-      - duration
     ActivityRule:
       type: object
       description: defines the targets and the triggering behavior to watch for silent devices
@@ -329,6 +289,46 @@ components:
       - name
       - silentPolicy
       - targets
+    SilentPolicy:
+      type: object
+      properties:
+        duration:
+          type: string
+          description: the duration (ISO 8601) after which the device will be considered as silent if it had no contact with the platform. If less than 10 minutes, this duration will be handled as a 10 minutes delay. A silent event/alarm will be sent after expiration.
+          example: PT6H
+        repeatInterval:
+          type: string
+          description: if the device previously triggered a silent alarm and still had no contact with the platform; duration (ISO 8601) after which a new silent event/alarm will be sent. If less than 10 minutes, this duration will be handled as a 10 minutes delay. If null, no further alarm will be sent until the new active/silent cycle.
+          example: P1DT12H
+      required:
+      - duration
+    Targets:
+      type: object
+      properties:
+        deviceIds:
+          type: array
+          description: List of targeted device ids. This field should not be empty if groupPaths is empty.
+          items:
+            type: string
+        groupPaths:
+          type: array
+          description: list of targeted group paths. This field should not be empty if deviceIds is empty.
+          items:
+            $ref: '#/components/schemas/GroupPath'
+    GroupPath:
+      type: object
+      description: defines targeted group path
+      properties:
+        path:
+          type: string
+          description: path of the group
+          example: /europe/france
+        includeSubPath:
+          type: boolean
+          description: 'if true, all sub-paths will be targeted by this ActivityRule '
+      required:
+      - includeSubPath
+      - path
   securitySchemes:
     X-API-KEY:
       type: apiKey

@@ -234,43 +234,99 @@ paths:
                 format: int32
 components:
   schemas:
-    FiringRule:
+    FiringGuardMatchRequest:
       type: object
-      description: Defines if and how the matched data from MatchingRules will fire an event. You can restrict it for instance to trigger maximum 1 event per hour, or only once until you use the FiringGuard API to re-allow it. Associated to aggregationKeys, it will apply the firing type (eg 1 per hour) based on the value of these keys (eg 'streamId').
+      description: search parameters to select FiringGuard to remove
+      properties:
+        firingRuleId:
+          type: string
+          description: firingRuleId linked to the FiringGuard to reset
+          minLength: 1
+        selectionCriteria:
+          type: array
+          description: criteria that should match the FiringGuard to reset
+          items:
+            $ref: '#/components/schemas/SelectionCriteria'
+      required:
+      - firingRuleId
+    Location:
+      type: object
+      description: geographic location
+      properties:
+        lat:
+          type: number
+          format: double
+          description: Latitude value
+          example: 45.000009
+        lon:
+          type: number
+          format: double
+          description: Longitude value
+          example: -30.00001
+        alt:
+          type: number
+          format: double
+          description: Altitude value
+          example: 5.00001
+        accuracy:
+          type: number
+          format: double
+          description: Accuracy value
+          example: 10.0
+        provider:
+          type: string
+          description: Provider of the location
+          example: GPS
+      required:
+      - lat
+      - lon
+    SelectionCriteria:
+      type: object
+      properties:
+        keyPath:
+          type: string
+          description: json path of the field to select, defined by the FiringRule's aggregationKeys. e.g. 'streamId', 'metadata.connector'...
+        value:
+          description: value of the aggregationKey to match. e.g. 'urn:lo:mqtt:device001', 'lwm2m', ...
+      required:
+      - keyPath
+      - value
+    FiringGuard:
+      type: object
+      description: Hold a FiringRule from triggering a FiredEvent if it has already been sent for the same aggregationKeys. Will exist only for FiringRule of type ONCE or SLEEP.
       properties:
         id:
           type: string
-          description: id of the FiringRule. Should be null when used for POST, and set for PUT.
-          readOnly: true
-        name:
+          description: id of the FiringGuard.
+        firingRuleId:
           type: string
-          description: name of the FiringRule. Must be unique.
-        enabled:
-          type: boolean
-          description: activate or not the FiringRule. Default is false.
-        matchingRuleIds:
+          description: id of the FiringRule linked to this FiringGuard.
+        tenantId:
+          type: string
+          description: identifier of tenant account this FiringRule belongs to .
+        matchingContext:
+          $ref: '#/components/schemas/MatchingContext'
+          description: matchingContext that triggered this FringGuard.
+        guardCriteria:
           type: array
-          description: the list of MatchingRule ids that will be handeld by this FiringRule.
+          description: pairs of aggregationKey/value that are hold by this FiringGuard
           items:
-            type: string
-        aggregationKeys:
-          type: array
-          description: the list of jsonPath in the Data that will define on which group of data this FiringRule should be set. For instance 'streamId', 'metadata.source', 'value.type'. This field has no use in 'ALWAYS' firingType. For 'ONCE' or 'SLEEP' firingType, the rule will be triggerred based on the value of these keys. For instance, if aggregationKeys is set to ['streamId'] and firingType is set to 'ONCE', then only 1 event will be fired per distinct streamId.
-          items:
-            type: string
-        firingType:
+            $ref: '#/components/schemas/SelectionCriteria'
+        created:
           type: string
-          description: 'Defines the type of firing mechanism : ONCE, SLEEP, or ALWAYS. If the frequency of the firing rule is defined as ONCE or SLEEP then firing guards are created in the system to prevent new generation of fired events for a given firing context, built by the aggregationKeys parameter. You can then manage these FiringGuards through dedicated APIs. SLEEP mode will automatically remove the linked FiringGuard after the duration defined by the ''sleepDuration'' parameter.'
-          enum:
-          - ALWAYS
-          - ONCE
-          - SLEEP
-        sleepDuration:
+          format: date-time
+          description: creation of this FiringGuard
+        expireAt:
           type: string
-          description: 'sleep duration of the FiringRule. Is defined as a ISO-8601 Period string, restricted to days, hours, minutes and seconds. 1 day will always be equivalent to 24H, regardless of daylight saving time. eg. : ''P1D'', ''PT30M''. Must be set only for ''SLEEP'' FiringType.'
+          format: date-time
+          description: expiration of this FiringGuard
       required:
-      - firingType
-      - name
+      - created
+      - firingRuleId
+      - guardCriteria
+      - id
+      - matchingContext
+      - tenantId
     MatchingRule:
       type: object
       description: Defines the dataPredicate that will be applied to all new data. When it matches, then it may trigger a FiredEvent based on linked FiringRules defined.
@@ -333,99 +389,43 @@ components:
       required:
       - streamId
       - timestamp
-    FiringGuard:
+    FiringRule:
       type: object
-      description: Hold a FiringRule from triggering a FiredEvent if it has already been sent for the same aggregationKeys. Will exist only for FiringRule of type ONCE or SLEEP.
+      description: Defines if and how the matched data from MatchingRules will fire an event. You can restrict it for instance to trigger maximum 1 event per hour, or only once until you use the FiringGuard API to re-allow it. Associated to aggregationKeys, it will apply the firing type (eg 1 per hour) based on the value of these keys (eg 'streamId').
       properties:
         id:
           type: string
-          description: id of the FiringGuard.
-        firingRuleId:
+          description: id of the FiringRule. Should be null when used for POST, and set for PUT.
+          readOnly: true
+        name:
           type: string
-          description: id of the FiringRule linked to this FiringGuard.
-        tenantId:
-          type: string
-          description: identifier of tenant account this FiringRule belongs to .
-        matchingContext:
-          $ref: '#/components/schemas/MatchingContext'
-          description: matchingContext that triggered this FringGuard.
-        guardCriteria:
+          description: name of the FiringRule. Must be unique.
+        enabled:
+          type: boolean
+          description: activate or not the FiringRule. Default is false.
+        matchingRuleIds:
           type: array
-          description: pairs of aggregationKey/value that are hold by this FiringGuard
+          description: the list of MatchingRule ids that will be handeld by this FiringRule.
           items:
-            $ref: '#/components/schemas/SelectionCriteria'
-        created:
-          type: string
-          format: date-time
-          description: creation of this FiringGuard
-        expireAt:
-          type: string
-          format: date-time
-          description: expiration of this FiringGuard
-      required:
-      - created
-      - firingRuleId
-      - guardCriteria
-      - id
-      - matchingContext
-      - tenantId
-    Location:
-      type: object
-      description: geographic location
-      properties:
-        lat:
-          type: number
-          format: double
-          description: Latitude value
-          example: 45.000009
-        lon:
-          type: number
-          format: double
-          description: Longitude value
-          example: -30.00001
-        alt:
-          type: number
-          format: double
-          description: Altitude value
-          example: 5.00001
-        accuracy:
-          type: number
-          format: double
-          description: Accuracy value
-          example: 10.0
-        provider:
-          type: string
-          description: Provider of the location
-          example: GPS
-      required:
-      - lat
-      - lon
-    SelectionCriteria:
-      type: object
-      properties:
-        keyPath:
-          type: string
-          description: json path of the field to select, defined by the FiringRule's aggregationKeys. e.g. 'streamId', 'metadata.connector'...
-        value:
-          description: value of the aggregationKey to match. e.g. 'urn:lo:mqtt:device001', 'lwm2m', ...
-      required:
-      - keyPath
-      - value
-    FiringGuardMatchRequest:
-      type: object
-      description: search parameters to select FiringGuard to remove
-      properties:
-        firingRuleId:
-          type: string
-          description: firingRuleId linked to the FiringGuard to reset
-          minLength: 1
-        selectionCriteria:
+            type: string
+        aggregationKeys:
           type: array
-          description: criteria that should match the FiringGuard to reset
+          description: the list of jsonPath in the Data that will define on which group of data this FiringRule should be set. For instance 'streamId', 'metadata.source', 'value.type'. This field has no use in 'ALWAYS' firingType. For 'ONCE' or 'SLEEP' firingType, the rule will be triggerred based on the value of these keys. For instance, if aggregationKeys is set to ['streamId'] and firingType is set to 'ONCE', then only 1 event will be fired per distinct streamId.
           items:
-            $ref: '#/components/schemas/SelectionCriteria'
+            type: string
+        firingType:
+          type: string
+          description: 'Defines the type of firing mechanism : ONCE, SLEEP, or ALWAYS. If the frequency of the firing rule is defined as ONCE or SLEEP then firing guards are created in the system to prevent new generation of fired events for a given firing context, built by the aggregationKeys parameter. You can then manage these FiringGuards through dedicated APIs. SLEEP mode will automatically remove the linked FiringGuard after the duration defined by the ''sleepDuration'' parameter.'
+          enum:
+          - ALWAYS
+          - ONCE
+          - SLEEP
+        sleepDuration:
+          type: string
+          description: 'sleep duration of the FiringRule. Is defined as a ISO-8601 Period string, restricted to days, hours, minutes and seconds. 1 day will always be equivalent to 24H, regardless of daylight saving time. eg. : ''P1D'', ''PT30M''. Must be set only for ''SLEEP'' FiringType.'
       required:
-      - firingRuleId
+      - firingType
+      - name
   securitySchemes:
     X-API-KEY:
       type: apiKey

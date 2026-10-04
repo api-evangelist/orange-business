@@ -296,152 +296,6 @@ components:
           example: bagginsf
       required:
       - provider
-    User:
-      type: object
-      description: body of user data
-      properties:
-        id:
-          type: string
-          description: identifier of user
-          example: 57FFFFFFFFFFFFFFFFFFFFFF
-        login:
-          type: string
-          description: user login
-          example: MyLoginName
-        externalIdentity:
-          $ref: '#/components/schemas/ExternalIdentity'
-        email:
-          type: string
-          description: user email
-          example: me.name@mycompagny.mycom
-        tenantId:
-          type: string
-          description: identifier of tenant account this user will belong to
-          example: 51FFFFFFFFFFFFFFFFFFFFFF
-        roles:
-          type: array
-          description: list of user associated roles.
-          example:
-          - USER_R
-          - APIKEY_R
-          items:
-            type: string
-          uniqueItems: true
-        state:
-          type: string
-          description: 'user state : disabled, enabled or suspended'
-          example: enabled
-        lastAuthentication:
-          type: integer
-          format: int64
-          description: user last authentication timestamp in ms
-          example: 1475224200000
-        lastResetPassword:
-          type: integer
-          format: int64
-          description: user last password renewal operation timestamp in ms
-          example: 1475224200000
-        passwordExpiration:
-          type: integer
-          format: int64
-          description: user password expiration timestamp in ms
-          example: 1475224200000
-        language:
-          type: string
-          description: the user language, in ISO 639-1 format
-          example: en
-        portalData:
-          description: user portal data
-        mainUser:
-          type: boolean
-          description: user is the tenant's main user
-      required:
-      - email
-      - id
-      - login
-      - roles
-      - state
-      - tenantId
-    WebErrorResponse:
-      type: object
-      description: Error response
-      properties:
-        id:
-          type: string
-          description: Unique identifier of this error instance
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Short error description
-        details:
-          type: string
-          description: Detailed error description
-      required:
-      - code
-      - id
-      - message
-    UserUpdateCustomerDefinition:
-      type: object
-      description: body of user update
-      properties:
-        login:
-          type: string
-          description: the user login. If no external identity provider is used, LO identity is used and login must respect the following regular expression <code>[a-zA-Z0-9_-]{3,254}</code> or must be a valid email (deprecated, please use user profiles endpoints instead)
-          example: MyLoginName
-        email:
-          type: string
-          description: user email. Expected a valid email (max 254 characters) (deprecated, please use user profiles endpoints instead)
-          example: me.name@mycompagny.mycom
-        roles:
-          type: array
-          description: list of user associated roles. Basic roles are "USER_R", "USER_W", "API_KEY_R", "API_KEY_W" or any role string supplied at tenant account creation time. Expected array of role names (max all roles, role value max 255 characters). Assigned roles must be included in the roles of the authenticating API key or token.
-          example:
-          - USER_R
-          - APIKEY_R
-          items:
-            type: string
-          uniqueItems: true
-        state:
-          type: string
-          description: 'user state : disabled, enabled or suspended'
-          example: enabled
-        language:
-          type: string
-          description: 'user language. Expected language ISO 639-1 (example: "en", "fr", "sk", "ro", "es") (case insensitive, max 2 characters) (deprecated, please use user profiles endpoints instead)'
-          example: EN
-        mainUser:
-          type: boolean
-          description: Set the user as main user. Expected boolean (true/false)
-          example: true
-    UserCreationCustomerDefinition:
-      type: object
-      description: body of user creation
-      properties:
-        login:
-          type: string
-          description: the user login. If no external identity provider is used, LO identity is used and login must respect the following regular expression <code>[a-zA-Z0-9_-]{3,254}</code> or must be a valid email
-          example: MyLoginName
-        email:
-          type: string
-          description: the user email. Expected a valid email (max 254 characters)
-          example: me.name@mycompagny.mycom
-        roles:
-          type: array
-          description: list of user associated roles. Basic roles are "USER_R", "USER_W", "API_KEY_R", "API_KEY_W" or any role string supplied at tenant account creation time. Expected array of role names (max all roles, role value max 255 characters). Assigned roles must be included in the roles of the authenticating API key or token.
-          example:
-          - USER_R
-          - APIKEY_R
-          items:
-            type: string
-          uniqueItems: true
-        language:
-          type: string
-          description: 'user language. Expected language ISO 639-1 (example: "en", "fr", "sk", "ro", "es") (case insensitive, max 2 characters)'
-      required:
-      - email
-      - roles
     PageableUserForList:
       type: object
       properties:
@@ -538,6 +392,152 @@ components:
       - roles
       - state
       - tenantId
+    User:
+      type: object
+      description: body of user data
+      properties:
+        id:
+          type: string
+          description: identifier of user
+          example: 57FFFFFFFFFFFFFFFFFFFFFF
+        login:
+          type: string
+          description: user login
+          example: MyLoginName
+        externalIdentity:
+          $ref: '#/components/schemas/ExternalIdentity'
+        email:
+          type: string
+          description: user email
+          example: me.name@mycompagny.mycom
+        tenantId:
+          type: string
+          description: identifier of tenant account this user will belong to
+          example: 51FFFFFFFFFFFFFFFFFFFFFF
+        roles:
+          type: array
+          description: list of user associated roles.
+          example:
+          - USER_R
+          - APIKEY_R
+          items:
+            type: string
+          uniqueItems: true
+        state:
+          type: string
+          description: 'user state : disabled, enabled or suspended'
+          example: enabled
+        lastAuthentication:
+          type: integer
+          format: int64
+          description: user last authentication timestamp in ms
+          example: 1475224200000
+        lastResetPassword:
+          type: integer
+          format: int64
+          description: user last password renewal operation timestamp in ms
+          example: 1475224200000
+        passwordExpiration:
+          type: integer
+          format: int64
+          description: user password expiration timestamp in ms
+          example: 1475224200000
+        language:
+          type: string
+          description: the user language, in ISO 639-1 format
+          example: en
+        portalData:
+          description: user portal data
+        mainUser:
+          type: boolean
+          description: user is the tenant's main user
+      required:
+      - email
+      - id
+      - login
+      - roles
+      - state
+      - tenantId
+    UserUpdateCustomerDefinition:
+      type: object
+      description: body of user update
+      properties:
+        login:
+          type: string
+          description: the user login. If no external identity provider is used, LO identity is used and login must respect the following regular expression <code>[a-zA-Z0-9_-]{3,254}</code> or must be a valid email (deprecated, please use user profiles endpoints instead)
+          example: MyLoginName
+        email:
+          type: string
+          description: user email. Expected a valid email (max 254 characters) (deprecated, please use user profiles endpoints instead)
+          example: me.name@mycompagny.mycom
+        roles:
+          type: array
+          description: list of user associated roles. Basic roles are "USER_R", "USER_W", "API_KEY_R", "API_KEY_W" or any role string supplied at tenant account creation time. Expected array of role names (max all roles, role value max 255 characters). Assigned roles must be included in the roles of the authenticating API key or token.
+          example:
+          - USER_R
+          - APIKEY_R
+          items:
+            type: string
+          uniqueItems: true
+        state:
+          type: string
+          description: 'user state : disabled, enabled or suspended'
+          example: enabled
+        language:
+          type: string
+          description: 'user language. Expected language ISO 639-1 (example: "en", "fr", "sk", "ro", "es") (case insensitive, max 2 characters) (deprecated, please use user profiles endpoints instead)'
+          example: EN
+        mainUser:
+          type: boolean
+          description: Set the user as main user. Expected boolean (true/false)
+          example: true
+    UserCreationCustomerDefinition:
+      type: object
+      description: body of user creation
+      properties:
+        login:
+          type: string
+          description: the user login. If no external identity provider is used, LO identity is used and login must respect the following regular expression <code>[a-zA-Z0-9_-]{3,254}</code> or must be a valid email
+          example: MyLoginName
+        email:
+          type: string
+          description: the user email. Expected a valid email (max 254 characters)
+          example: me.name@mycompagny.mycom
+        roles:
+          type: array
+          description: list of user associated roles. Basic roles are "USER_R", "USER_W", "API_KEY_R", "API_KEY_W" or any role string supplied at tenant account creation time. Expected array of role names (max all roles, role value max 255 characters). Assigned roles must be included in the roles of the authenticating API key or token.
+          example:
+          - USER_R
+          - APIKEY_R
+          items:
+            type: string
+          uniqueItems: true
+        language:
+          type: string
+          description: 'user language. Expected language ISO 639-1 (example: "en", "fr", "sk", "ro", "es") (case insensitive, max 2 characters)'
+      required:
+      - email
+      - roles
+    WebErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+      required:
+      - code
+      - id
+      - message
   securitySchemes:
     X-API-KEY:
       type: apiKey

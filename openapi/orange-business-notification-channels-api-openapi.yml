@@ -136,36 +136,6 @@ paths:
                 $ref: '#/components/schemas/NotificationChannel'
 components:
   schemas:
-    NotificationChannelEmailRecipients:
-      type: object
-      description: Email recipients for a notification channel.
-      properties:
-        to:
-          type: array
-          example:
-          - to@example.com
-          items:
-            type: string
-          maxItems: 20
-          minItems: 1
-        cc:
-          type: array
-          example:
-          - cc@example.com
-          items:
-            type: string
-          maxItems: 20
-          minItems: 0
-        bcc:
-          type: array
-          example:
-          - bcc@example.com
-          items:
-            type: string
-          maxItems: 20
-          minItems: 0
-      required:
-      - to
     ServiceErrorResponse:
       type: object
       description: Generic Error in Response
@@ -244,6 +214,36 @@ components:
       - emails
       - language
       - name
+    NotificationChannelEmailRecipients:
+      type: object
+      description: Email recipients for a notification channel.
+      properties:
+        to:
+          type: array
+          example:
+          - to@example.com
+          items:
+            type: string
+          maxItems: 20
+          minItems: 1
+        cc:
+          type: array
+          example:
+          - cc@example.com
+          items:
+            type: string
+          maxItems: 20
+          minItems: 0
+        bcc:
+          type: array
+          example:
+          - bcc@example.com
+          items:
+            type: string
+          maxItems: 20
+          minItems: 0
+      required:
+      - to
   securitySchemes:
     X-API-KEY:
       type: apiKey

@@ -54,15 +54,6 @@ paths:
         - number-verification:device-phone-number:read
 components:
   schemas:
-    XCorrelator:
-      type: string
-      pattern: ^[a-zA-Z0-9-_:;.\/<>{}]{0,256}$
-      example: b4333c46-49c0-4f62-80d7-f0ef930f1c46
-    DevicePhoneNumber:
-      type: string
-      pattern: ^\+[1-9][0-9]{4,14}$
-      example: '+123456789'
-      description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
     NumberVerificationShareResponse:
       type: object
       description: Number verification share result
@@ -71,6 +62,15 @@ components:
       properties:
         devicePhoneNumber:
           $ref: '#/components/schemas/DevicePhoneNumber'
+    DevicePhoneNumber:
+      type: string
+      pattern: ^\+[1-9][0-9]{4,14}$
+      example: '+123456789'
+      description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
+    XCorrelator:
+      type: string
+      pattern: ^[a-zA-Z0-9-_:;.\/<>{}]{0,256}$
+      example: b4333c46-49c0-4f62-80d7-f0ef930f1c46
     ErrorInfo:
       type: object
       required:
@@ -87,37 +87,7 @@ components:
         message:
           type: string
           description: A human-readable description of what the event represents
-  headers:
-    x-correlator:
-      description: Correlation id for the different services
-      schema:
-        $ref: '#/components/schemas/XCorrelator'
   responses:
-    Generic401:
-      description: Unauthorized
-      headers:
-        x-correlator:
-          $ref: '#/components/headers/x-correlator'
-      content:
-        application/json:
-          schema:
-            allOf:
-            - $ref: '#/components/schemas/ErrorInfo'
-            - type: object
-              properties:
-                status:
-                  enum:
-                  - 401
-                code:
-                  enum:
-                  - UNAUTHENTICATED
-          examples:
-            GENERIC_401_UNAUTHENTICATED:
-              description: Request cannot be authenticated and a new authentication is required
-              value:
-                status: 401
-                code: UNAUTHENTICATED
-                message: Request not authenticated due to missing, invalid, or expired credentials. A new authentication is required.
     PhoneNumberVerificationPermissionDenied403:
       description: "Client does not have sufficient permission.\nIn addition to regular scenario of `PERMISSION_DENIED`, other scenarios may exist:\n  - Client authentication was not via mobile network. In order to check the authentication method, AMR parameter value in the 3-legged user's access token can be used and make sure that the authentication was not either by SMS+OTP nor username/password (`{\"code\": \"NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_MOBILE_NETWORK\",\"message\": \"Client must authenticate via the mobile network to use this service\"}`)\n"
       headers:
@@ -171,6 +141,36 @@ components:
             status: 400
             code: INVALID_ARGUMENT
             message: Client specified an invalid argument, request body or query param
+    Generic401:
+      description: Unauthorized
+      headers:
+        x-correlator:
+          $ref: '#/components/headers/x-correlator'
+      content:
+        application/json:
+          schema:
+            allOf:
+            - $ref: '#/components/schemas/ErrorInfo'
+            - type: object
+              properties:
+                status:
+                  enum:
+                  - 401
+                code:
+                  enum:
+                  - UNAUTHENTICATED
+          examples:
+            GENERIC_401_UNAUTHENTICATED:
+              description: Request cannot be authenticated and a new authentication is required
+              value:
+                status: 401
+                code: UNAUTHENTICATED
+                message: Request not authenticated due to missing, invalid, or expired credentials. A new authentication is required.
+  headers:
+    x-correlator:
+      description: Correlation id for the different services
+      schema:
+        $ref: '#/components/schemas/XCorrelator'
   parameters:
     x-correlator:
       name: x-correlator

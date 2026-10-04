@@ -210,15 +210,181 @@ paths:
                 $ref: '#/components/schemas/TenantDaysMetrics'
 components:
   schemas:
+    Inventory:
+      type: object
+      additionalProperties:
+        type: integer
+        format: int64
+      properties:
+        empty:
+          type: boolean
+    TenantDaysMetrics:
+      type: object
+      properties:
+        tenant:
+          $ref: '#/components/schemas/TenantExternalView'
+        days:
+          type: array
+          description: Statistics per day
+          example:
+          - day: '2022-04-01'
+            connectors:
+              lora:
+                traffic:
+                  in:
+                    msg: 54395
+                    bytes: 572827
+                    msgAckRequest: 1
+                  out:
+                    msg: 100
+                    bytes: 2858
+                inventory:
+                  maxNumberOfEnabledNodes: 30
+              mqtt:
+                traffic:
+                  in:
+                    msg: 45000
+                    virtualMsg: 45000
+                    bytes: 1120000
+                  out:
+                    msg: 35220
+                    virtualMsg: 35220
+                    bytes: 18373042
+              mqttApplication:
+                traffic:
+                  in:
+                    msg: 4500
+                    virtualMsg: 4500
+                    bytes: 112000
+              external:
+                traffic:
+                  in:
+                    msg: 2
+                    virtualMsg: 2
+                    bytes: 20
+                  out:
+                    msg: 1
+                    virtualMsg: 1
+                    bytes: 100
+              http:
+                traffic:
+                  in:
+                    msg: 359
+                    virtualMsg: 359
+                    bytes: 167457
+              sms_20259:
+                traffic:
+                  in:
+                    msg: 10
+                    virtualMsg: 10
+                    bytes: 1100
+                  out:
+                    msg: 1
+                    virtualMsg: 1
+                    bytes: 10
+            services:
+              deviceManagement:
+                numberOfSuccessfulDownloads: 123
+              storage:
+                storedDataMessagesInMB: 456
+              twin:
+                traffic:
+                  in:
+                    virtualMsg: 30647
+            devices:
+              numberOfRegisteredDevices: 70
+          - day: '2022-04-02'
+            connectors:
+              lora:
+                traffic:
+                  in:
+                    msg: 42716
+                    bytes: 493582
+                  out:
+                    msg: 77
+                    bytes: 1474
+                inventory:
+                  maxNumberOfEnabledNodes: 29
+              mqtt:
+                traffic:
+                  out:
+                    msg: 43229
+                    virtualMsg: 43229
+                    bytes: 23198520
+              mqttApplication:
+                traffic:
+                  in:
+                    msg: 4322
+                    virtualMsg: 4322
+                    bytes: 2319852
+              http:
+                traffic:
+                  in:
+                    msg: 1085
+                    virtualMsg: 1085
+                    bytes: 545462
+              lwm2m:
+                traffic:
+                  in:
+                    msg: 1994
+                    virtualMsg: 1994
+                    bytes: 607042
+                  out:
+                    msg: 19
+                    virtualMsg: 19
+                    bytes: 5
+            services:
+              deviceManagement:
+                numberOfSuccessfulDownloads: 100
+              storage:
+                storedDataMessagesInMB: 567
+              twin:
+                traffic:
+                  in:
+                    virtualMsg: 2658
+            devices:
+              numberOfRegisteredDevices: 70
+          items:
+            $ref: '#/components/schemas/DayMetrics'
     Twin:
       type: object
       properties:
         traffic:
           $ref: '#/components/schemas/Traffic'
-    Traffic:
+    TenantExternalView:
       type: object
       properties:
-        in:
+        id:
+          type: string
+          description: tenant Id
+          example: 57ed0a98266e260a12345
+        name:
+          type: string
+          description: tenant name
+          example: Tenant-test
+        offerAndOptions:
+          $ref: '#/components/schemas/OfferAndOptions'
+          description: detailed list of offer and options
+          example:
+            offer:
+              name: Discover_OFR_v2.2
+              displayName: Discover
+            options:
+            - name: option_name
+              displayName: option_display_name
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+          description: tenant properties
+          example:
+            diseId: '12345678'
+    ConnectorAccounting:
+      type: object
+      properties:
+        traffic:
+          $ref: '#/components/schemas/Traffic'
+        inventory:
           type: object
           additionalProperties:
             type: integer
@@ -226,8 +392,13 @@ components:
           properties:
             empty:
               type: boolean
-        out:
-          $ref: '#/components/schemas/MeterGroup'
+    BssRuleInfo:
+      type: object
+      properties:
+        name:
+          type: string
+        displayName:
+          type: string
     TenantMonthsMetrics:
       type: object
       properties:
@@ -371,213 +542,6 @@ components:
               numberOfRegisteredDevices: 70
           items:
             $ref: '#/components/schemas/MonthMetrics'
-    BssRuleInfo:
-      type: object
-      properties:
-        name:
-          type: string
-        displayName:
-          type: string
-    MeterGroup:
-      type: object
-      additionalProperties:
-        type: integer
-        format: int64
-      properties:
-        empty:
-          type: boolean
-    TenantExternalView:
-      type: object
-      properties:
-        id:
-          type: string
-          description: tenant Id
-          example: 57ed0a98266e260a12345
-        name:
-          type: string
-          description: tenant name
-          example: Tenant-test
-        offerAndOptions:
-          $ref: '#/components/schemas/OfferAndOptions'
-          description: detailed list of offer and options
-          example:
-            offer:
-              name: Discover_OFR_v2.2
-              displayName: Discover
-            options:
-            - name: option_name
-              displayName: option_display_name
-        properties:
-          type: object
-          additionalProperties:
-            type: string
-          description: tenant properties
-          example:
-            diseId: '12345678'
-    OfferAndOptions:
-      type: object
-      properties:
-        offer:
-          $ref: '#/components/schemas/BssRuleInfo'
-          description: name
-          example: Discover_OFR_v2.2
-        options:
-          type: array
-          description: displayName
-          example: Discover
-          items:
-            $ref: '#/components/schemas/BssRuleInfo'
-    Decoder:
-      type: object
-      properties:
-        traffic:
-          $ref: '#/components/schemas/Traffic'
-    DayMetrics:
-      type: object
-      properties:
-        day:
-          type: string
-          description: day in "YYYY-MM-DD" format.
-          example: '2020-04-01'
-        connectors:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/ConnectorAccounting'
-          description: connector (lora, mqtt, http) statistics
-        services:
-          $ref: '#/components/schemas/ServiceMetrics'
-          description: service statistics
-        devices:
-          $ref: '#/components/schemas/Inventory'
-          description: device statistics
-    TenantDaysMetrics:
-      type: object
-      properties:
-        tenant:
-          $ref: '#/components/schemas/TenantExternalView'
-        days:
-          type: array
-          description: Statistics per day
-          example:
-          - day: '2022-04-01'
-            connectors:
-              lora:
-                traffic:
-                  in:
-                    msg: 54395
-                    bytes: 572827
-                    msgAckRequest: 1
-                  out:
-                    msg: 100
-                    bytes: 2858
-                inventory:
-                  maxNumberOfEnabledNodes: 30
-              mqtt:
-                traffic:
-                  in:
-                    msg: 45000
-                    virtualMsg: 45000
-                    bytes: 1120000
-                  out:
-                    msg: 35220
-                    virtualMsg: 35220
-                    bytes: 18373042
-              mqttApplication:
-                traffic:
-                  in:
-                    msg: 4500
-                    virtualMsg: 4500
-                    bytes: 112000
-              external:
-                traffic:
-                  in:
-                    msg: 2
-                    virtualMsg: 2
-                    bytes: 20
-                  out:
-                    msg: 1
-                    virtualMsg: 1
-                    bytes: 100
-              http:
-                traffic:
-                  in:
-                    msg: 359
-                    virtualMsg: 359
-                    bytes: 167457
-              sms_20259:
-                traffic:
-                  in:
-                    msg: 10
-                    virtualMsg: 10
-                    bytes: 1100
-                  out:
-                    msg: 1
-                    virtualMsg: 1
-                    bytes: 10
-            services:
-              deviceManagement:
-                numberOfSuccessfulDownloads: 123
-              storage:
-                storedDataMessagesInMB: 456
-              twin:
-                traffic:
-                  in:
-                    virtualMsg: 30647
-            devices:
-              numberOfRegisteredDevices: 70
-          - day: '2022-04-02'
-            connectors:
-              lora:
-                traffic:
-                  in:
-                    msg: 42716
-                    bytes: 493582
-                  out:
-                    msg: 77
-                    bytes: 1474
-                inventory:
-                  maxNumberOfEnabledNodes: 29
-              mqtt:
-                traffic:
-                  out:
-                    msg: 43229
-                    virtualMsg: 43229
-                    bytes: 23198520
-              mqttApplication:
-                traffic:
-                  in:
-                    msg: 4322
-                    virtualMsg: 4322
-                    bytes: 2319852
-              http:
-                traffic:
-                  in:
-                    msg: 1085
-                    virtualMsg: 1085
-                    bytes: 545462
-              lwm2m:
-                traffic:
-                  in:
-                    msg: 1994
-                    virtualMsg: 1994
-                    bytes: 607042
-                  out:
-                    msg: 19
-                    virtualMsg: 19
-                    bytes: 5
-            services:
-              deviceManagement:
-                numberOfSuccessfulDownloads: 100
-              storage:
-                storedDataMessagesInMB: 567
-              twin:
-                traffic:
-                  in:
-                    virtualMsg: 2658
-            devices:
-              numberOfRegisteredDevices: 70
-          items:
-            $ref: '#/components/schemas/DayMetrics'
     MonthMetrics:
       type: object
       properties:
@@ -596,27 +560,6 @@ components:
         devices:
           $ref: '#/components/schemas/Inventory'
           description: device statistics
-    Inventory:
-      type: object
-      additionalProperties:
-        type: integer
-        format: int64
-      properties:
-        empty:
-          type: boolean
-    ConnectorAccounting:
-      type: object
-      properties:
-        traffic:
-          $ref: '#/components/schemas/Traffic'
-        inventory:
-          type: object
-          additionalProperties:
-            type: integer
-            format: int64
-          properties:
-            empty:
-              type: boolean
     ServiceMetrics:
       type: object
       properties:
@@ -640,6 +583,63 @@ components:
           $ref: '#/components/schemas/Twin'
         decoder:
           $ref: '#/components/schemas/Decoder'
+    DayMetrics:
+      type: object
+      properties:
+        day:
+          type: string
+          description: day in "YYYY-MM-DD" format.
+          example: '2020-04-01'
+        connectors:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/ConnectorAccounting'
+          description: connector (lora, mqtt, http) statistics
+        services:
+          $ref: '#/components/schemas/ServiceMetrics'
+          description: service statistics
+        devices:
+          $ref: '#/components/schemas/Inventory'
+          description: device statistics
+    Traffic:
+      type: object
+      properties:
+        in:
+          type: object
+          additionalProperties:
+            type: integer
+            format: int64
+          properties:
+            empty:
+              type: boolean
+        out:
+          $ref: '#/components/schemas/MeterGroup'
+    MeterGroup:
+      type: object
+      additionalProperties:
+        type: integer
+        format: int64
+      properties:
+        empty:
+          type: boolean
+    Decoder:
+      type: object
+      properties:
+        traffic:
+          $ref: '#/components/schemas/Traffic'
+    OfferAndOptions:
+      type: object
+      properties:
+        offer:
+          $ref: '#/components/schemas/BssRuleInfo'
+          description: name
+          example: Discover_OFR_v2.2
+        options:
+          type: array
+          description: displayName
+          example: Discover
+          items:
+            $ref: '#/components/schemas/BssRuleInfo'
   securitySchemes:
     X-API-KEY:
       type: apiKey

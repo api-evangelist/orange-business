@@ -45,6 +45,18 @@ paths:
                   $ref: '#/components/schemas/PayloadDescription'
 components:
   schemas:
+    PayloadDescriptionMetadata:
+      type: object
+      properties:
+        certified:
+          type: boolean
+          description: the decoder is certified for the specified encoding. Only a public decoder can be certified. The default value is false.
+          readOnly: true
+        certifiedSince:
+          type: string
+          description: date since when the decoder is certified. ISO 8601 date time.
+          example: '2019-05-15T07:55:55.555Z'
+          readOnly: true
     PayloadDescription:
       type: object
       properties:
@@ -87,18 +99,6 @@ components:
       required:
       - enabled
       - encoding
-    PayloadDescriptionMetadata:
-      type: object
-      properties:
-        certified:
-          type: boolean
-          description: the decoder is certified for the specified encoding. Only a public decoder can be certified. The default value is false.
-          readOnly: true
-        certifiedSince:
-          type: string
-          description: date since when the decoder is certified. ISO 8601 date time.
-          example: '2019-05-15T07:55:55.555Z'
-          readOnly: true
   securitySchemes:
     X-API-KEY:
       type: apiKey

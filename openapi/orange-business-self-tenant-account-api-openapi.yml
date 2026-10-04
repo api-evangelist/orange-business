@@ -78,6 +78,11 @@ components:
           type: string
           description: version
           example: v1
+    BusinessUnit:
+      type: object
+      properties:
+        name:
+          type: string
     AdminInfoVendor:
       type: object
       properties:
@@ -99,31 +104,6 @@ components:
           items:
             type: string
           uniqueItems: true
-    WebErrorResponse:
-      type: object
-      description: Error response
-      properties:
-        id:
-          type: string
-          description: Unique identifier of this error instance
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Short error description
-        details:
-          type: string
-          description: Detailed error description
-      required:
-      - code
-      - id
-      - message
-    BusinessUnit:
-      type: object
-      properties:
-        name:
-          type: string
     Tenant:
       type: object
       properties:
@@ -188,6 +168,26 @@ components:
           deprecated: true
         country:
           type: string
+    WebErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+      required:
+      - code
+      - id
+      - message
   securitySchemes:
     X-API-KEY:
       type: apiKey

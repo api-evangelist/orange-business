@@ -165,20 +165,60 @@ paths:
                 $ref: '#/components/schemas/StateProcessingFunctionTestResult'
 components:
   schemas:
-    StateProcessingFunctionTest:
+    StateProcessingRule:
       type: object
-      description: State Processing function test request
+      description: StateProcessingRule to add
       properties:
-        data:
-          $ref: '#/components/schemas/NewData'
-          description: data to test the stateProcessingFunction with
-        stateProcessingFunction:
-          description: 'the JsonLogic (http://jsonlogic.com/) state function. This is the core of the state processing logic. This function takes as input a data message and computes a state associated whith the state key. It can return any primitive value : String, Number, Boolean. e.g. ''{"if":[{"<":[{"var":"value.temp"},0]},"cold",{"<=":[{"var":"value.temp"},100]},"normal","hot"]}'''
-        currentState:
-          description: simulate a current state, it can be used by the state function
+        id:
+          type: string
+          description: id of the StateProcessingRule. Should be null when used for POST, and set for PUT.
+        name:
+          type: string
+          description: name of the StateProcessingRule. Must be unique.
+        enabled:
+          type: boolean
+          description: activate or not the StateProcessingRule. Default is false.
+        stateFunction:
+          description: 'the JsonLogic (http://jsonlogic.com/) state function. This is the core of the state processing logic. There are additional operators : ''currentstate'' to retrieve the current state value, ''ctx'' to retrieve values stored in Event Processing Context, ''distance'' and ''inside'' for geographic operators. This function takes as input a data message and computes a state associated whith the state key. It can return any primitive value : String, Number, Boolean. e.g. ''{"if":[{"<":[{"var":"value.temp"},0]},"cold",{"<=":[{"var":"value.temp"},100]},"normal","hot"]}'''
+        filterPredicate:
+          description: 'the JsonLogic (http://jsonlogic.com/) filter predicate applied before state function : if it does match, the stateFunction is applied, else it is not. If no filter predicate is specified, state function is applied to every data message. e.g. ''{"in":[{"var":"metadata.connector"},["mqtt","lwm2m"]]}'''
+        stateKeyPath:
+          type: string
+          description: the json path applied on dataMessage used to compute the stateKey. The state comparison is then restricted to dataMessages sharing the same stateKeyPath. e.g. 'streamId', 'metadata.source', 'metadata.group.id'
       required:
-      - data
-      - stateProcessingFunction
+      - name
+      - stateFunction
+    Location:
+      type: object
+      description: geographic location
+      properties:
+        lat:
+          type: number
+          format: double
+          description: Latitude value
+          example: 45.000009
+        lon:
+          type: number
+          format: double
+          description: Longitude value
+          example: -30.00001
+        alt:
+          type: number
+          format: double
+          description: Altitude value
+          example: 5.00001
+        accuracy:
+          type: number
+          format: double
+          description: Accuracy value
+          example: 10.0
+        provider:
+          type: string
+          description: Provider of the location
+          example: GPS
+      required:
+      - lat
+      - lon
     StateProcessingFunctionTestResult:
       type: object
       properties:
@@ -216,60 +256,20 @@ components:
       required:
       - streamId
       - timestamp
-    Location:
+    StateProcessingFunctionTest:
       type: object
-      description: geographic location
+      description: State Processing function test request
       properties:
-        lat:
-          type: number
-          format: double
-          description: Latitude value
-          example: 45.000009
-        lon:
-          type: number
-          format: double
-          description: Longitude value
-          example: -30.00001
-        alt:
-          type: number
-          format: double
-          description: Altitude value
-          example: 5.00001
-        accuracy:
-          type: number
-          format: double
-          description: Accuracy value
-          example: 10.0
-        provider:
-          type: string
-          description: Provider of the location
-          example: GPS
+        data:
+          $ref: '#/components/schemas/NewData'
+          description: data to test the stateProcessingFunction with
+        stateProcessingFunction:
+          description: 'the JsonLogic (http://jsonlogic.com/) state function. This is the core of the state processing logic. This function takes as input a data message and computes a state associated whith the state key. It can return any primitive value : String, Number, Boolean. e.g. ''{"if":[{"<":[{"var":"value.temp"},0]},"cold",{"<=":[{"var":"value.temp"},100]},"normal","hot"]}'''
+        currentState:
+          description: simulate a current state, it can be used by the state function
       required:
-      - lat
-      - lon
-    StateProcessingRule:
-      type: object
-      description: StateProcessingRule to add
-      properties:
-        id:
-          type: string
-          description: id of the StateProcessingRule. Should be null when used for POST, and set for PUT.
-        name:
-          type: string
-          description: name of the StateProcessingRule. Must be unique.
-        enabled:
-          type: boolean
-          description: activate or not the StateProcessingRule. Default is false.
-        stateFunction:
-          description: 'the JsonLogic (http://jsonlogic.com/) state function. This is the core of the state processing logic. There are additional operators : ''currentstate'' to retrieve the current state value, ''ctx'' to retrieve values stored in Event Processing Context, ''distance'' and ''inside'' for geographic operators. This function takes as input a data message and computes a state associated whith the state key. It can return any primitive value : String, Number, Boolean. e.g. ''{"if":[{"<":[{"var":"value.temp"},0]},"cold",{"<=":[{"var":"value.temp"},100]},"normal","hot"]}'''
-        filterPredicate:
-          description: 'the JsonLogic (http://jsonlogic.com/) filter predicate applied before state function : if it does match, the stateFunction is applied, else it is not. If no filter predicate is specified, state function is applied to every data message. e.g. ''{"in":[{"var":"metadata.connector"},["mqtt","lwm2m"]]}'''
-        stateKeyPath:
-          type: string
-          description: the json path applied on dataMessage used to compute the stateKey. The state comparison is then restricted to dataMessages sharing the same stateKeyPath. e.g. 'streamId', 'metadata.source', 'metadata.group.id'
-      required:
-      - name
-      - stateFunction
+      - data
+      - stateProcessingFunction
   securitySchemes:
     X-API-KEY:
       type: apiKey

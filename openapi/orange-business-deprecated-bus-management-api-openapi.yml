@@ -196,6 +196,26 @@ paths:
       deprecated: true
 components:
   schemas:
+    FifoCreateRequest:
+      type: object
+      description: body for create a new fifo
+      properties:
+        name:
+          type: string
+          description: Topic name of the FIFO. Fifo name must respect the following regular expression <code>[A-Za-z\d\-_~]+</code> (max 255 characters)
+          example: MyFIFOName
+        maxLengthBytes:
+          type: integer
+          format: int64
+          description: Deprecated, the value is ignored. There is no limit on the number of messages nor on the total size of messages that can be stored in a FIFO.
+          example: 524288
+        messageTtl:
+          type: integer
+          format: int32
+          description: Deprecated, the value is ignored. The TTL is fixed and depends on your offer. You can set the TTL of message to 0 by setting noRetention=true on the corresponding actionPolicy fifoPublish action.
+          example: 604800
+      required:
+      - name
     FifoTopic:
       type: object
       description: body of FIFO data
@@ -232,26 +252,6 @@ components:
           type: integer
           format: int32
           description: 'Deprecated. This value has no impact anymore.The TTL is now managed by the actionPolicy''s fifoPublish action that targets this FIFO : if ''noRetention'' is enabled, TTL is 0 else, it will be your offer''s recovery duration.'
-      required:
-      - name
-    FifoCreateRequest:
-      type: object
-      description: body for create a new fifo
-      properties:
-        name:
-          type: string
-          description: Topic name of the FIFO. Fifo name must respect the following regular expression <code>[A-Za-z\d\-_~]+</code> (max 255 characters)
-          example: MyFIFOName
-        maxLengthBytes:
-          type: integer
-          format: int64
-          description: Deprecated, the value is ignored. There is no limit on the number of messages nor on the total size of messages that can be stored in a FIFO.
-          example: 524288
-        messageTtl:
-          type: integer
-          format: int32
-          description: Deprecated, the value is ignored. The TTL is fixed and depends on your offer. You can set the TTL of message to 0 by setting noRetention=true on the corresponding actionPolicy fifoPublish action.
-          example: 604800
       required:
       - name
     PageableFifoTopic:

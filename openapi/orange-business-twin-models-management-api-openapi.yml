@@ -197,6 +197,55 @@ components:
           description: List of objectDefinitionId
           items:
             $ref: '#/components/schemas/ObjectDefinition'
+    AttributeDefinition:
+      type: object
+      properties:
+        pathSegment:
+          type: string
+          description: Used to build a part of the full path to access an instance of this element
+          example: '1'
+        name:
+          type: string
+          description: The full original name
+          example: Maximum Defer Period
+        description:
+          type: string
+          description: Description of the attribute
+          example: Attribute description
+        minOccurs:
+          type: integer
+          format: int32
+          description: Minimal occurrence (0 means optional, 1 means mandatory and at least 1 is required)
+          example: 0
+        maxOccurs:
+          type: integer
+          format: int32
+          description: Maximal occurrence (0 means infinite instances are allowed (unbounded), 1 means maximum 1 instance is allowed
+          example: 1
+        type:
+          type: string
+          description: '<p><span style="text-decoration: underline;">Attribute type supported values are :</span></p><ul><li>"STRING": represented as UTF-8 string</li><li>"INTEGER": represented as ASCII signed integer 1, 2,4 or 8 bytes</li><li>"UNSIGNED_INTEGER": represented as ASCII unsigned integer 1, 2,4 or 8 bytes</li><li>"BOOLEAN": represented as ASCII value 0 or 1</li><li>"FLOAT": represented as a 32 or 64-bit floating point values</li><li>"BASE64": represented as a sequence of binary octets</li><li>"DATETIME": represented as a Unix Time. A signed integer representing the number of seconds since Jan 1st, 1970 in the UTC time zone</li></ul><br/>'
+          enum:
+          - STRING
+          - INTEGER
+          - UNSIGNED_INTEGER
+          - BOOLEAN
+          - FLOAT
+          - BASE_64
+          - DATE_TIME
+          example: FLOAT
+        operations:
+          type: array
+          description: List of attribute operations among ["READ", "WRITE", "EXECUTE"]
+          example: WRITE
+          items:
+            type: string
+            enum:
+            - READ
+            - WRITE
+            - EXECUTE
+        mandatory:
+          type: boolean
     ObjectDefinition:
       type: object
       properties:
@@ -257,55 +306,6 @@ components:
           type: string
           description: The customer identifier in case of private model
           example: c10772fa-0577-11ec-9a03-0242ac130003
-    AttributeDefinition:
-      type: object
-      properties:
-        pathSegment:
-          type: string
-          description: Used to build a part of the full path to access an instance of this element
-          example: '1'
-        name:
-          type: string
-          description: The full original name
-          example: Maximum Defer Period
-        description:
-          type: string
-          description: Description of the attribute
-          example: Attribute description
-        minOccurs:
-          type: integer
-          format: int32
-          description: Minimal occurrence (0 means optional, 1 means mandatory and at least 1 is required)
-          example: 0
-        maxOccurs:
-          type: integer
-          format: int32
-          description: Maximal occurrence (0 means infinite instances are allowed (unbounded), 1 means maximum 1 instance is allowed
-          example: 1
-        type:
-          type: string
-          description: '<p><span style="text-decoration: underline;">Attribute type supported values are :</span></p><ul><li>"STRING": represented as UTF-8 string</li><li>"INTEGER": represented as ASCII signed integer 1, 2,4 or 8 bytes</li><li>"UNSIGNED_INTEGER": represented as ASCII unsigned integer 1, 2,4 or 8 bytes</li><li>"BOOLEAN": represented as ASCII value 0 or 1</li><li>"FLOAT": represented as a 32 or 64-bit floating point values</li><li>"BASE64": represented as a sequence of binary octets</li><li>"DATETIME": represented as a Unix Time. A signed integer representing the number of seconds since Jan 1st, 1970 in the UTC time zone</li></ul><br/>'
-          enum:
-          - STRING
-          - INTEGER
-          - UNSIGNED_INTEGER
-          - BOOLEAN
-          - FLOAT
-          - BASE_64
-          - DATE_TIME
-          example: FLOAT
-        operations:
-          type: array
-          description: List of attribute operations among ["READ", "WRITE", "EXECUTE"]
-          example: WRITE
-          items:
-            type: string
-            enum:
-            - READ
-            - WRITE
-            - EXECUTE
-        mandatory:
-          type: boolean
   securitySchemes:
     X-API-KEY:
       type: apiKey
