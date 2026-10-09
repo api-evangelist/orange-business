@@ -1,4 +1,4 @@
-generated: '2026-09-16'
+generated: '2026-09-23'
 method: generated
 source: openapi/orange-business-accounting-v1-api-openapi.yml, openapi/orange-business-alarm-rules-api-openapi.yml,
   openapi/orange-business-api-keys-api-openapi.yml, openapi/orange-business-api-self-keys-api-openapi.yml,
@@ -38,11 +38,11 @@ description: Recommended x-agentic-access execution contracts, classified heuris
 summary:
   operations: 278
   by_action_class:
-    connected: 125
-    acting: 153
+    connected: 136
+    acting: 142
   by_consequence:
-    read: 125
-    write: 147
+    read: 136
+    write: 136
     safety-critical: 5
     physical: 1
   human_in_the_loop_required: 5
@@ -263,18 +263,12 @@ operations:
   method: post
   operationId: searchSubscriptions
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /api/v1/networks/cellular/subscriptions/{subscriptionId}
   method: get
   operationId: getSubscription
@@ -319,34 +313,22 @@ operations:
   method: post
   operationId: getNetworkMetrics
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /api/v1/network-metrics/lostMessagesRatio
   method: post
   operationId: getLostMessagesRatio
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /api/v1/bootstrap/lwm2m/configs/{configId}
   method: get
   operationId: getLwm2mBootstrapConfig
@@ -525,34 +507,22 @@ operations:
   method: post
   operationId: searchBootstrapEntry
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /api/v1/bootstrap/lwm2m/entries/count
   method: post
   operationId: countBootstrapEntry
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /api/v1/bootstrap/lwm2m/entries/{endpointName}
   method: get
   operationId: getBootstrapEntry
@@ -916,18 +886,12 @@ operations:
   method: post
   operationId: dslQueryV1
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /api/v1/data/search/hits
   method: post
   operationId: dslQueryHitsOnlyV1
@@ -1246,18 +1210,12 @@ operations:
   method: post
   operationId: dslQueryV0
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /api/v0/data/search/hits
   method: post
   operationId: dslQueryHitsOnlyV0
@@ -2394,18 +2352,12 @@ operations:
   method: post
   operationId: getFiringGuards
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /api/v0/eventprocessing/firing-guard/{firingGuardId}
   method: get
   operationId: getFiringGuard
@@ -2785,36 +2737,24 @@ operations:
   method: post
   operationId: createSearch
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
-    audience: null
+    action-class: connected
+    consequence: read
+    subject: optional
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /retrieve
   method: post
   operationId: retrieveLocation
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
+    action-class: connected
+    consequence: read
+    subject: optional
     scope:
     - location-retrieval:read
-    audience: null
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /match
   method: post
   operationId: KYC_Match
@@ -3037,21 +2977,15 @@ operations:
   method: post
   operationId: retrieveDeviceSwapDate
   x-agentic-access:
-    action-class: acting
-    consequence: write
-    subject: required
+    action-class: connected
+    consequence: read
+    subject: optional
     scope:
     - device-swap
     - device-swap:retrieve-date
-    audience: null
     token:
-      max-ttl: 900
-    escalation:
-      human-in-the-loop: conditional
-      triggers:
-      - abnormal
-      - high-value
-    audit: required
+      max-ttl: 3600
+    audit: none
 - path: /api/v0/tenants/me
   method: get
   operationId: getMyTenant

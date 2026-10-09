@@ -25,11 +25,11 @@ artifacts:
     method: derived
     evidence: openapi/orange-business-check-device-swap-api
   collections/orange-business-check-sim-swap-api.opencollection.json:
-    method: derived
-    evidence: openapi/orange-business-check-sim-swap-api
+    method: unknown
+    evidence: no authorship recorded
   collections/orange-business-check-sim-swap-api.postman_collection.json:
-    method: derived
-    evidence: openapi/orange-business-check-sim-swap-api
+    method: unknown
+    evidence: no authorship recorded
   collections/orange-business-device-location-retrieval.opencollection.json:
     method: unknown
     evidence: no authorship recorded
@@ -43,17 +43,17 @@ artifacts:
     method: unknown
     evidence: no authorship recorded
   collections/orange-business-device-reachability-status-api.opencollection.json:
-    method: derived
-    evidence: openapi/orange-business-device-reachability-status-api
+    method: unknown
+    evidence: no authorship recorded
   collections/orange-business-device-reachability-status-api.postman_collection.json:
-    method: derived
-    evidence: openapi/orange-business-device-reachability-status-api
+    method: unknown
+    evidence: no authorship recorded
   collections/orange-business-device-reachability-status.opencollection.json:
-    method: derived
-    evidence: openapi/orange-business-device-reachability-status
+    method: unknown
+    evidence: no authorship recorded
   collections/orange-business-device-reachability-status.postman_collection.json:
-    method: derived
-    evidence: openapi/orange-business-device-reachability-status
+    method: unknown
+    evidence: no authorship recorded
   collections/orange-business-device-roaming-status.opencollection.json:
     method: unknown
     evidence: no authorship recorded
@@ -91,11 +91,11 @@ artifacts:
     method: derived
     evidence: openapi/orange-business-location-retrieval-api
   collections/orange-business-location-verification-api.opencollection.json:
-    method: derived
-    evidence: openapi/orange-business-location-verification-api
+    method: unknown
+    evidence: no authorship recorded
   collections/orange-business-location-verification-api.postman_collection.json:
-    method: derived
-    evidence: openapi/orange-business-location-verification-api
+    method: unknown
+    evidence: no authorship recorded
   collections/orange-business-match-api.opencollection.json:
     method: derived
     evidence: openapi/orange-business-match-api
@@ -121,17 +121,17 @@ artifacts:
     method: derived
     evidence: openapi/orange-business-phone-number-verify-api
   collections/orange-business-population-density-data-api.opencollection.json:
-    method: derived
-    evidence: openapi/orange-business-population-density-data-api
+    method: unknown
+    evidence: no authorship recorded
   collections/orange-business-population-density-data-api.postman_collection.json:
-    method: derived
-    evidence: openapi/orange-business-population-density-data-api
+    method: unknown
+    evidence: no authorship recorded
   collections/orange-business-population-density-data.opencollection.json:
-    method: derived
-    evidence: openapi/orange-business-population-density-data
+    method: unknown
+    evidence: no authorship recorded
   collections/orange-business-population-density-data.postman_collection.json:
-    method: derived
-    evidence: openapi/orange-business-population-density-data
+    method: unknown
+    evidence: no authorship recorded
   collections/orange-business-qos-sessions-api.opencollection.json:
     method: derived
     evidence: openapi/orange-business-qos-sessions-api
@@ -151,17 +151,17 @@ artifacts:
     method: derived
     evidence: openapi/orange-business-retrieve-device-swap-date-api
   collections/orange-business-retrieve-sim-swap-date-api.opencollection.json:
-    method: derived
-    evidence: openapi/orange-business-retrieve-sim-swap-date-api
+    method: unknown
+    evidence: no authorship recorded
   collections/orange-business-retrieve-sim-swap-date-api.postman_collection.json:
-    method: derived
-    evidence: openapi/orange-business-retrieve-sim-swap-date-api
+    method: unknown
+    evidence: no authorship recorded
   collections/orange-business-roaming-status-retrieval-api.opencollection.json:
-    method: derived
-    evidence: openapi/orange-business-roaming-status-retrieval-api
+    method: unknown
+    evidence: no authorship recorded
   collections/orange-business-roaming-status-retrieval-api.postman_collection.json:
-    method: derived
-    evidence: openapi/orange-business-roaming-status-retrieval-api
+    method: unknown
+    evidence: no authorship recorded
   collections/orange-business-sim-swap.opencollection.json:
     method: unknown
     evidence: no authorship recorded
@@ -180,55 +180,10 @@ artifacts:
   errors/orange-business-problem-types.yml:
     method: searched
     evidence: declared in the artifact
-  kin/checks-2026-09-05T072335.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-06T210741.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-07T135032.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-10T093022.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-10T111628.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-11T211707.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-12T193225.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-17T064519.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-19T080027.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-19T082702.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-19T114122.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-20T165047.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-20T191845.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-20T205517.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-21T110057.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-24T064859.yml:
-    method: generated
-    evidence: Kin Score snapshot written by score.rb
-  kin/score-2026-08-24T171257.yml:
+  front-door-ai/2026-09-17.yml:
+    method: unknown
+    evidence: no authorship recorded
+  kin/checks-2026-09-24T161608.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-08-25T125852.yml:
@@ -315,6 +270,123 @@ artifacts:
   kin/score-2026-09-05T072335.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-05T144739.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-05T195450.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-05T211839.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-06T011047.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-06T211804.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-06T224210.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-07T200636.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-07T213054.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-08T214843.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-08T232836.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-10T204815.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-10T222408.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-12T062655.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-12T080032.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-12T204651.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-12T221936.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-13T214537.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-14T064754.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-14T210656.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-14T225847.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-15T211329.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-15T230249.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-16T210549.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-16T225339.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-17T211151.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-17T233623.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-18T205255.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-18T231945.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-19T165737.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-19T193153.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-20T205903.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-20T232958.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-21T211425.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-21T233935.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-22T213221.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-23T000603.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-24T064009.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-24T090406.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-09-24T161608.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
   lifecycle/orange-business-lifecycle.yml:
     method: searched
     evidence: declared in the artifact
@@ -329,40 +401,52 @@ artifacts:
     evidence: declared in the artifact
   openapi/_original/orange-business-device-location-retrieval-openapi.yml:
     method: harvested
-    evidence: fetched from the provider as-is; byte-identical to the source
+    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
+      to the provider's source is unverified
   openapi/_original/orange-business-device-location-verification-openapi.yml:
     method: harvested
-    evidence: fetched from the provider as-is; byte-identical to the source
+    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
+      to the provider's source is unverified
   openapi/_original/orange-business-device-reachability-status-openapi.yml:
     method: harvested
-    evidence: fetched from the provider as-is; byte-identical to the source
+    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
+      to the provider's source is unverified
   openapi/_original/orange-business-device-roaming-status-openapi.yml:
     method: harvested
-    evidence: fetched from the provider as-is; byte-identical to the source
+    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
+      to the provider's source is unverified
   openapi/_original/orange-business-device-swap-openapi.yml:
     method: harvested
-    evidence: fetched from the provider as-is; byte-identical to the source
+    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
+      to the provider's source is unverified
   openapi/_original/orange-business-geofencing-openapi.yml:
     method: harvested
-    evidence: fetched from the provider as-is; byte-identical to the source
+    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
+      to the provider's source is unverified
   openapi/_original/orange-business-kyc-match-openapi.yml:
     method: harvested
-    evidence: fetched from the provider as-is; byte-identical to the source
+    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
+      to the provider's source is unverified
   openapi/_original/orange-business-live-objects-openapi.json:
     method: harvested
-    evidence: fetched from the provider as-is; byte-identical to the source
+    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
+      to the provider's source is unverified
   openapi/_original/orange-business-number-verification-openapi.yml:
     method: harvested
-    evidence: fetched from the provider as-is; byte-identical to the source
+    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
+      to the provider's source is unverified
   openapi/_original/orange-business-population-density-data-openapi.yml:
     method: harvested
-    evidence: fetched from the provider as-is; byte-identical to the source
+    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
+      to the provider's source is unverified
   openapi/_original/orange-business-quality-on-demand-openapi.yml:
     method: harvested
-    evidence: fetched from the provider as-is; byte-identical to the source
+    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
+      to the provider's source is unverified
   openapi/_original/orange-business-sim-swap-openapi.yml:
     method: harvested
-    evidence: fetched from the provider as-is; byte-identical to the source
+    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
+      to the provider's source is unverified
   openapi/orange-business-accounting-v1-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
@@ -393,16 +477,13 @@ artifacts:
   openapi/orange-business-bootstrap-master-entry-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
-  openapi/orange-business-ca-certificates-api-openapi.yml:
+  openapi/orange-business-cacertificates-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/orange-business-campaign-management-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/orange-business-check-device-swap-api-openapi.yml:
-    method: derived
-    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
-  openapi/orange-business-check-sim-swap-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/orange-business-data-bulk-injection-api-openapi.yml:
@@ -465,9 +546,6 @@ artifacts:
   openapi/orange-business-device-management-resources-management-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
-  openapi/orange-business-device-reachability-status-api-openapi.yml:
-    method: derived
-    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/orange-business-event-processing-activity-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
@@ -498,9 +576,6 @@ artifacts:
   openapi/orange-business-location-retrieval-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
-  openapi/orange-business-location-verification-api-openapi.yml:
-    method: derived
-    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/orange-business-match-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
@@ -516,19 +591,10 @@ artifacts:
   openapi/orange-business-phone-number-verify-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
-  openapi/orange-business-population-density-data-api-openapi.yml:
-    method: derived
-    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/orange-business-qos-sessions-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/orange-business-retrieve-device-swap-date-api-openapi.yml:
-    method: derived
-    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
-  openapi/orange-business-retrieve-sim-swap-date-api-openapi.yml:
-    method: derived
-    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
-  openapi/orange-business-roaming-status-retrieval-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/orange-business-self-tenant-account-api-openapi.yml:
