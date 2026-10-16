@@ -1,21 +1,19 @@
-# Kin Score artifact — orange-business — 2026-09-06T224210
+# Kin Score artifact — orange-business — 2026-10-11T110117
 # The API Evangelist rating (https://github.com/api-evangelist/kin-score). Generated; do not edit.
 ---
 kin_score:
   slug: orange-business
-  schema_version: 0.19.0
-  scored_at: '2026-09-06'
-  run_ts: 2026-09-06T224210
-  composite: 68.6
-  band: exemplar
+  schema_version: 0.23.0
+  scored_at: '2026-10-11'
+  run_ts: 2026-10-11T110117
+  composite: 65.3
+  band: strong
   facets:
-    discoverability: 66.7
-    contract_quality: 68.0
-    governance: 18.2
+    discoverability: 68.3
+    contract_quality: 62.0
+    contract_governance: 18.2
     operational_transparency: 78.9
     developer_ergonomics: 82.7
-    commercial_clarity: 65.8
-    contract_governance: 18.2
     access_clarity: 65.8
   agent_readiness:
     score: 43.5
@@ -45,7 +43,7 @@ kin_score:
     applies: true
     regime: Telecommunications
     regime_id: telecommunications
-    score: 75.0
+    score: 42.2
     matched_via: tags
   open_source:
     applies: true
@@ -56,7 +54,7 @@ kin_score:
     agentic_access: derived
     conformance: first-party
     contracts:
-      total: 69
+      total: 63
       derived: 0
       coverage: 0.0
       callable: 100.0
