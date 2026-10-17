@@ -159,17 +159,6 @@ paths:
           description: No Content
 components:
   schemas:
-    BootstrapMasterEntryRequestSecurityInfo:
-      type: object
-      properties:
-        mode:
-          type: string
-          description: The security mode used to authenticate to the LwM2M Bootstrap server
-          enum:
-          - PSK
-          example: PSK
-      required:
-      - mode
     BootstrapMasterEntryPreSharedKeyInfo:
       type: object
       properties:
@@ -179,27 +168,6 @@ components:
           example: 0123456789ABCDEF0123456789ABCDEF
       required:
       - secret
-    BootstrapMasterEntrySecurityInfo:
-      type: object
-      properties:
-        mode:
-          type: string
-          description: The security mode used to authenticate to the LwM2M Bootstrap server
-          enum:
-          - PSK
-          example: PSK
-        pskInfo:
-          $ref: '#/components/schemas/BootstrapMasterEntryPreSharedKeyInfo'
-          description: The master Pre-Shared Key (PSK) information
-      required:
-      - mode
-    BootstrapMasterEntryDefinition:
-      type: object
-      properties:
-        bootstrapConfigId:
-          type: string
-          description: The identifier of the bootstrap config to use (must be defined for the Bootstrap to work).
-          example: 63c17e68f98ac770eac303fb
     BootstrapMasterEntryActivity:
       type: object
       properties:
@@ -226,24 +194,52 @@ components:
       required:
       - bootstrapFinishCount
       - bootstrapRequestCount
-    BootstrapMasterEntryRequest:
+    BootstrapMasterEntryRequestSecurityInfo:
       type: object
-      description: Bootstrap master entry creation request
       properties:
+        mode:
+          type: string
+          description: The security mode used to authenticate to the LwM2M Bootstrap server
+          enum:
+          - PSK
+          example: PSK
+      required:
+      - mode
+    BootstrapMasterEntrySecurityInfo:
+      type: object
+      properties:
+        mode:
+          type: string
+          description: The security mode used to authenticate to the LwM2M Bootstrap server
+          enum:
+          - PSK
+          example: PSK
+        pskInfo:
+          $ref: '#/components/schemas/BootstrapMasterEntryPreSharedKeyInfo'
+          description: The master Pre-Shared Key (PSK) information
+      required:
+      - mode
+    BootstrapMasterEntrySummary:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id of the the bootstrap master entry
+          example: mQeAYP
         name:
           type: string
           description: User-defined name of the bootstrap master entry
           example: My bootstrap master entry
-          maxLength: 255
-          minLength: 0
-        security:
-          $ref: '#/components/schemas/BootstrapMasterEntryRequestSecurityInfo'
-          description: Security info of the bootstrap master entry
         definition:
           $ref: '#/components/schemas/BootstrapMasterEntryDefinition'
+          description: The bootstrap master entry parameters
+        activity:
+          $ref: '#/components/schemas/BootstrapMasterEntryActivity'
+          description: Information about past Bootstrap sessions
       required:
+      - definition
+      - id
       - name
-      - security
     BootstrapMasterEntry:
       type: object
       properties:
@@ -281,27 +277,31 @@ components:
       - name
       - security
       - updated
-    BootstrapMasterEntrySummary:
+    BootstrapMasterEntryRequest:
       type: object
+      description: Bootstrap master entry creation request
       properties:
-        id:
-          type: string
-          description: The id of the the bootstrap master entry
-          example: mQeAYP
         name:
           type: string
           description: User-defined name of the bootstrap master entry
           example: My bootstrap master entry
+          maxLength: 255
+          minLength: 0
+        security:
+          $ref: '#/components/schemas/BootstrapMasterEntryRequestSecurityInfo'
+          description: Security info of the bootstrap master entry
         definition:
           $ref: '#/components/schemas/BootstrapMasterEntryDefinition'
-          description: The bootstrap master entry parameters
-        activity:
-          $ref: '#/components/schemas/BootstrapMasterEntryActivity'
-          description: Information about past Bootstrap sessions
       required:
-      - definition
-      - id
       - name
+      - security
+    BootstrapMasterEntryDefinition:
+      type: object
+      properties:
+        bootstrapConfigId:
+          type: string
+          description: The identifier of the bootstrap config to use (must be defined for the Bootstrap to work).
+          example: 63c17e68f98ac770eac303fb
   securitySchemes:
     X-API-KEY:
       type: apiKey

@@ -67,8 +67,6 @@ paths:
                   $ref: '#/components/schemas/DataStoredWeb'
 components:
   schemas:
-    JsonObjectForSwagger:
-      description: JsonObject
     DataStoredWeb:
       type: object
       description: data stored from the dataStream
@@ -157,6 +155,8 @@ components:
       required:
       - lat
       - lon
+    JsonObjectForSwagger:
+      description: JsonObject
   securitySchemes:
     X-API-KEY:
       type: apiKey

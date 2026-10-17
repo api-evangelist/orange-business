@@ -204,19 +204,33 @@ paths:
                 $ref: '#/components/schemas/WebErrorResponse'
 components:
   schemas:
-    LoraGatewayDefinition:
+    WebErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+      required:
+      - code
+      - id
+      - message
+    GwConfig:
       type: object
       properties:
-        name:
+        version:
           type: string
-          description: Name of the gateway
-          example: FF02041D
-        description:
-          type: string
-          description: Description
-        location:
-          $ref: '#/components/schemas/LoraGatewayLocation'
-          description: Gateway location
+          description: Version
+          example: 2.2.47
     PageableLoraGatewayInfo:
       type: object
       properties:
@@ -245,17 +259,40 @@ components:
       - page
       - size
       - totalCount
-    GwSystem:
+    LoraGatewayLocation:
       type: object
       properties:
-        gpsState:
+        lat:
+          type: number
+          format: double
+          description: Last geolocation latitude (GPS coordinate system)
+          example: 10.11212
+        lon:
+          type: number
+          format: double
+          description: Last geolocation longitude (GPS coordinate system)
+          example: 7.44464
+        alt:
+          type: number
+          format: double
+          description: Last geolocation altitude (meter)
+          example: 50
+        provider:
           type: string
-          description: GPS state
-          example: UNKNOWN
-        timeSync:
+          description: Computing geolocation method
+          example: GPS
+        lastUpdateTs:
           type: string
-          description: Time synchronization
-          example: NTP
+          format: date-time
+          description: Date/time of the last location
+          example: '2016-06-14T11:09:22.125Z'
+    GwNetworkPartner:
+      type: object
+      properties:
+        instance:
+          type: string
+          description: Partner related instance
+          example: OCP
     LoraGatewayInfo:
       type: object
       properties:
@@ -298,67 +335,30 @@ components:
         networkPartner:
           $ref: '#/components/schemas/GwNetworkPartner'
           description: Network partner
-    GwNetworkPartner:
+    LoraGatewayDefinition:
       type: object
       properties:
-        instance:
+        name:
           type: string
-          description: Partner related instance
-          example: OCP
-    GwConfig:
+          description: Name of the gateway
+          example: FF02041D
+        description:
+          type: string
+          description: Description
+        location:
+          $ref: '#/components/schemas/LoraGatewayLocation'
+          description: Gateway location
+    GwSystem:
       type: object
       properties:
-        version:
+        gpsState:
           type: string
-          description: Version
-          example: 2.2.47
-    LoraGatewayLocation:
-      type: object
-      properties:
-        lat:
-          type: number
-          format: double
-          description: Last geolocation latitude (GPS coordinate system)
-          example: 10.11212
-        lon:
-          type: number
-          format: double
-          description: Last geolocation longitude (GPS coordinate system)
-          example: 7.44464
-        alt:
-          type: number
-          format: double
-          description: Last geolocation altitude (meter)
-          example: 50
-        provider:
+          description: GPS state
+          example: UNKNOWN
+        timeSync:
           type: string
-          description: Computing geolocation method
-          example: GPS
-        lastUpdateTs:
-          type: string
-          format: date-time
-          description: Date/time of the last location
-          example: '2016-06-14T11:09:22.125Z'
-    WebErrorResponse:
-      type: object
-      description: Error response
-      properties:
-        id:
-          type: string
-          description: Unique identifier of this error instance
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Short error description
-        details:
-          type: string
-          description: Detailed error description
-      required:
-      - code
-      - id
-      - message
+          description: Time synchronization
+          example: NTP
   securitySchemes:
     X-API-KEY:
       type: apiKey

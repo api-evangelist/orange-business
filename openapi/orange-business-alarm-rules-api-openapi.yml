@@ -225,21 +225,6 @@ paths:
                   $ref: '#/components/schemas/AlarmRuleSupportedValues'
 components:
   schemas:
-    ThrottleConfig:
-      type: object
-      properties:
-        muteDuration:
-          type: string
-          description: 'The duration for which notifications for the same alarm are muted after being sent.
-
-            During this period, additional notifications for the same alarm will not be sent,
-
-            even if the alarm is repeatedly triggered.
-
-            Specify the duration using the ISO 8601 duration format (e.g., ''PT1H'' for 1 hour, ''P1D'' for 1 day).
-
-            '
-          example: P7D
     TriggerConditionSupportedValues:
       type: object
       properties:
@@ -261,78 +246,6 @@ components:
           - PT24H
           items:
             type: string
-    ThrottleConfigSupportedValues:
-      type: object
-      properties:
-        supportedMuteDurations:
-          type: array
-          description: the supported mute durations.
-          example:
-          - PT6H
-          - PT12H
-          - P1D
-          - P2D
-          items:
-            type: string
-    AlarmTrigger:
-      type: object
-      properties:
-        condition:
-          $ref: '#/components/schemas/TriggerCondition'
-          description: trigger condition configuration
-    RangeDouble:
-      type: object
-      properties:
-        minimum:
-          type: number
-          format: double
-        maximum:
-          type: number
-          format: double
-    SupportedThreshold:
-      type: object
-      properties:
-        values:
-          type: array
-          description: the supported threshold values. Null if a range of values is supported.
-          example:
-          - 25
-          - 50
-          - 75
-          - 90
-          - 99
-          items:
-            type: number
-            format: double
-        range:
-          $ref: '#/components/schemas/RangeDouble'
-          description: the supported threshold range. Both minimum and maximum values are included in the supported range. Null if a list of values is supported.
-          example:
-            minimum: 0
-            maximum: 100
-        type:
-          type: string
-          description: the type of the threshold
-          enum:
-          - percentage
-      required:
-      - type
-    AlarmRuleSupportedValues:
-      type: object
-      description: gives the supported values for alarm configurations
-      properties:
-        type:
-          type: string
-          description: specific type of the alarm
-          example: messageDeliverySuccessRatio
-        throttle:
-          $ref: '#/components/schemas/ThrottleConfigSupportedValues'
-          description: the supported throttle values
-        trigger:
-          $ref: '#/components/schemas/TriggerSupportedValues'
-          description: the supported trigger values
-      required:
-      - type
     AlarmRule:
       type: object
       description: defines an alarm configuration
@@ -363,17 +276,6 @@ components:
       - name
       - notifications
       - type
-    AlarmNotifications:
-      type: object
-      properties:
-        notificationChannelIds:
-          type: array
-          description: ids of notification channels that define the recipients of the alarm
-          example: default
-          items:
-            type: string
-      required:
-      - notificationChannelIds
     TriggerCondition:
       type: object
       properties:
@@ -392,12 +294,110 @@ components:
       required:
       - comparisonOperator
       - threshold
+    AlarmNotifications:
+      type: object
+      properties:
+        notificationChannelIds:
+          type: array
+          description: ids of notification channels that define the recipients of the alarm
+          example: default
+          items:
+            type: string
+      required:
+      - notificationChannelIds
+    AlarmTrigger:
+      type: object
+      properties:
+        condition:
+          $ref: '#/components/schemas/TriggerCondition'
+          description: trigger condition configuration
     TriggerSupportedValues:
       type: object
       properties:
         condition:
           $ref: '#/components/schemas/TriggerConditionSupportedValues'
           description: the supported trigger condition values
+    RangeDouble:
+      type: object
+      properties:
+        minimum:
+          type: number
+          format: double
+        maximum:
+          type: number
+          format: double
+    AlarmRuleSupportedValues:
+      type: object
+      description: gives the supported values for alarm configurations
+      properties:
+        type:
+          type: string
+          description: specific type of the alarm
+          example: messageDeliverySuccessRatio
+        throttle:
+          $ref: '#/components/schemas/ThrottleConfigSupportedValues'
+          description: the supported throttle values
+        trigger:
+          $ref: '#/components/schemas/TriggerSupportedValues'
+          description: the supported trigger values
+      required:
+      - type
+    ThrottleConfig:
+      type: object
+      properties:
+        muteDuration:
+          type: string
+          description: 'The duration for which notifications for the same alarm are muted after being sent.
+
+            During this period, additional notifications for the same alarm will not be sent,
+
+            even if the alarm is repeatedly triggered.
+
+            Specify the duration using the ISO 8601 duration format (e.g., ''PT1H'' for 1 hour, ''P1D'' for 1 day).
+
+            '
+          example: P7D
+    SupportedThreshold:
+      type: object
+      properties:
+        values:
+          type: array
+          description: the supported threshold values. Null if a range of values is supported.
+          example:
+          - 25
+          - 50
+          - 75
+          - 90
+          - 99
+          items:
+            type: number
+            format: double
+        range:
+          $ref: '#/components/schemas/RangeDouble'
+          description: the supported threshold range. Both minimum and maximum values are included in the supported range. Null if a list of values is supported.
+          example:
+            minimum: 0
+            maximum: 100
+        type:
+          type: string
+          description: the type of the threshold
+          enum:
+          - percentage
+      required:
+      - type
+    ThrottleConfigSupportedValues:
+      type: object
+      properties:
+        supportedMuteDurations:
+          type: array
+          description: the supported mute durations.
+          example:
+          - PT6H
+          - PT12H
+          - P1D
+          - P2D
+          items:
+            type: string
   securitySchemes:
     X-API-KEY:
       type: apiKey

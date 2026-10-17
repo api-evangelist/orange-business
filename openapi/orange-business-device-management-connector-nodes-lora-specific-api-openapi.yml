@@ -219,35 +219,33 @@ paths:
                   $ref: '#/components/schemas/LoraNetworkSubscriptionDetail'
 components:
   schemas:
-    LoraDeviceManufacturer:
+    WebErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+      required:
+      - code
+      - id
+      - message
+    Manufacturer:
       type: object
       properties:
         name:
           type: string
           description: Commercial name of the device manufacturer
           example: Adeunis
-    LoraNetworkSubscriptionDetail:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique id of the connectivity plan
-          example: orange-cs/cp_ack_location_rep3_adrv2
-        name:
-          type: string
-          description: Commercial name of the connectivity plan
-          example: Reseau national LoRa Orange
-        parameters:
-          type: object
-          additionalProperties: {}
-          description: List of CP details
-          example:
-            nbTransMax: 3
-            location: true
-            ackUl: false
-            sfMax: 12
-            sfMin: 7
-            nbTransMin: 1
     LoraDeviceProfile:
       type: object
       properties:
@@ -270,33 +268,35 @@ components:
           - EU863-870 (EU868)
           items:
             type: string
-    Manufacturer:
+    LoraNetworkSubscriptionDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique id of the connectivity plan
+          example: orange-cs/cp_ack_location_rep3_adrv2
+        name:
+          type: string
+          description: Commercial name of the connectivity plan
+          example: Reseau national LoRa Orange
+        parameters:
+          type: object
+          additionalProperties: {}
+          description: List of CP details
+          example:
+            nbTransMax: 3
+            location: true
+            ackUl: false
+            sfMax: 12
+            sfMin: 7
+            nbTransMin: 1
+    LoraDeviceManufacturer:
       type: object
       properties:
         name:
           type: string
           description: Commercial name of the device manufacturer
           example: Adeunis
-    WebErrorResponse:
-      type: object
-      description: Error response
-      properties:
-        id:
-          type: string
-          description: Unique identifier of this error instance
-        code:
-          type: string
-          description: Error code
-        message:
-          type: string
-          description: Short error description
-        details:
-          type: string
-          description: Detailed error description
-      required:
-      - code
-      - id
-      - message
   securitySchemes:
     X-API-KEY:
       type: apiKey

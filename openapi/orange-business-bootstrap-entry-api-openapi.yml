@@ -358,109 +358,48 @@ paths:
           description: No Content
 components:
   schemas:
-    BootstrapEntry:
-      type: object
-      description: Bootstrap entry to create
-      properties:
-        endpointName:
-          type: string
-          description: The endpoint client name
-          example: urn:imei:123456789012345
-          pattern: ^[\w\-_:]{1,269}
-        security:
-          $ref: '#/components/schemas/BootstrapSecurityInfo'
-          description: The security information to authenticate to the LwM2M Bootstrap server
-        masterEntry:
-          $ref: '#/components/schemas/MasterEntryReference'
-          description: The link to the master entry if the entry was automatically create from a master entry
-        definition:
-          $ref: '#/components/schemas/BootstrapConfigParams'
-          description: The BootstrapConfig parameters for the endpoint (must be defined for the Bootstrap to work)
-        activity:
-          $ref: '#/components/schemas/BootstrapState'
-          description: Information about past Bootstrap sessions
-        created:
-          type: string
-          format: date-time
-          description: Date on which the BootstrapEntry was created
-          example: '2022-10-21T10:30:58Z'
-        updated:
-          type: string
-          format: date-time
-          description: Date on which the BootstrapEntry was last updated
-          example: '2022-10-25T17:45:02Z'
-      required:
-      - endpointName
-      - security
-    EndpointBootstrapConfig:
-      type: object
-      properties:
-        runServers:
-          type: array
-          description: The list of run servers configurations
-          items:
-            $ref: '#/components/schemas/EndpointRunServerConfig'
-        additionalOperationsInfo:
-          $ref: '#/components/schemas/BootstrapConfigOperationsInfo'
-    BootstrapSecurityInfo:
-      type: object
-      description: the new Bootstrap security info
-      properties:
-        mode:
-          type: string
-          description: The security mode used to authenticate to the LwM2M Bootstrap server
-          enum:
-          - PSK
-          example: PSK
-        pskInfo:
-          $ref: '#/components/schemas/BootstrapPreSharedKeyInfo'
-          description: The Pre-Shared Key (PSK) information
-      required:
-      - mode
-    BootstrapEntrySearchRequest:
-      type: object
-      properties:
-        endpointNames:
-          type: array
-          description: List of entries' endpointNames to filter on.
-          example: urn:lo:nsid:lwm2m:sensor12Stream
-          items:
-            type: string
-          maxItems: 100
-          minItems: 0
-        bootstrapConfigIds:
-          type: array
-          description: Ids of bootstrap configuration to filter on. Empty string "" filters on entries without config.
-          example: 63c18eb501e3fb673233ba1b
-          items:
-            type: string
-          maxItems: 100
-          minItems: 0
     MasterEntryReference:
       type: object
       properties:
         id:
           type: string
           description: The id of the linked master entry
-    BootstrapEntryCountRequest:
+    RunPreSharedKeyInfo:
       type: object
       properties:
-        endpointNames:
-          type: array
-          description: List of entries' endpointNames to filter on.
-          example: urn:lo:nsid:lwm2m:sensor12Stream
-          items:
-            type: string
-          maxItems: 100
-          minItems: 0
-        bootstrapConfigIds:
-          type: array
-          description: Ids of bootstrap configuration to filter on. Empty string "" filters on entries without config.
-          example: 63c18eb501e3fb673233ba1b
-          items:
-            type: string
-          maxItems: 100
-          minItems: 0
+        identity:
+          type: string
+          description: The PSK Identity. If it is not defined, the Identity of the PSK used to authenticate to the LwM2M Bootstrap server is used.
+          example: urn:imei:123456789012345
+          maxLength: 128
+          minLength: 1
+        secret:
+          type: string
+          description: The PSK secret. Must be encoded in hexadecimal.
+          example: 0123456789ABCDEF0123456789ABCDEF
+          maxLength: 128
+          minLength: 32
+      required:
+      - secret
+    BootstrapConfigWriteOperationInfo:
+      type: object
+      properties:
+        path:
+          type: string
+    RunServerConfigParams:
+      type: object
+      description: the new Run Server info
+      properties:
+        id:
+          type: string
+          description: Run server unique identifier for which the following parameters will apply. Must correspond to the one defined in the BootstrapConfig Must respect the following regular expression <code>^[a-zA-Z0-9]{1,128}$</code> (max 128 characters).
+          example: server01
+          pattern: ^[a-zA-Z0-9]{1,128}$
+        security:
+          $ref: '#/components/schemas/RunSecurityInfo'
+          description: The security information to authenticate to the LwM2M Run server.
+      required:
+      - id
     BootstrapState:
       type: object
       properties:
@@ -500,6 +439,21 @@ components:
       - bootstrapFinishCount
       - bootstrapRequestCount
       - status
+    BootstrapSecurityInfo:
+      type: object
+      description: the new Bootstrap security info
+      properties:
+        mode:
+          type: string
+          description: The security mode used to authenticate to the LwM2M Bootstrap server
+          enum:
+          - PSK
+          example: PSK
+        pskInfo:
+          $ref: '#/components/schemas/BootstrapPreSharedKeyInfo'
+          description: The Pre-Shared Key (PSK) information
+      required:
+      - mode
     RunSecurityInfo:
       type: object
       properties:
@@ -508,17 +462,25 @@ components:
           description: The Pre-Shared Key (PSK) information.
       required:
       - pskInfo
-    BootstrapEntryCountResult:
+    BootstrapEntryCountRequest:
       type: object
       properties:
-        filtered:
-          type: integer
-          format: int64
-          description: number of entries matching the search request
-        total:
-          type: integer
-          format: int64
-          description: total number of entries in your account
+        endpointNames:
+          type: array
+          description: List of entries' endpointNames to filter on.
+          example: urn:lo:nsid:lwm2m:sensor12Stream
+          items:
+            type: string
+          maxItems: 100
+          minItems: 0
+        bootstrapConfigIds:
+          type: array
+          description: Ids of bootstrap configuration to filter on. Empty string "" filters on entries without config.
+          example: 63c18eb501e3fb673233ba1b
+          items:
+            type: string
+          maxItems: 100
+          minItems: 0
     BootstrapConfigParams:
       type: object
       properties:
@@ -533,27 +495,15 @@ components:
             $ref: '#/components/schemas/RunServerConfigParams'
           maxItems: 1
           minItems: 0
-    BootstrapConfigWriteOperationInfo:
-      type: object
-      properties:
-        path:
-          type: string
-    BootstrapConfigOperationsInfo:
-      type: object
-      properties:
-        writeOperationsInfo:
-          type: array
-          items:
-            $ref: '#/components/schemas/BootstrapConfigWriteOperationInfo'
-    RunPreSharedKeyInfo:
+    BootstrapPreSharedKeyInfo:
       type: object
       properties:
         identity:
           type: string
-          description: The PSK Identity. If it is not defined, the Identity of the PSK used to authenticate to the LwM2M Bootstrap server is used.
+          description: The PSK Identity
           example: urn:imei:123456789012345
           maxLength: 128
-          minLength: 1
+          minLength: 0
         secret:
           type: string
           description: The PSK secret. Must be encoded in hexadecimal.
@@ -561,7 +511,28 @@ components:
           maxLength: 128
           minLength: 32
       required:
+      - identity
       - secret
+    BootstrapEntryCountResult:
+      type: object
+      properties:
+        filtered:
+          type: integer
+          format: int64
+          description: number of entries matching the search request
+        total:
+          type: integer
+          format: int64
+          description: total number of entries in your account
+    EndpointRunServerConfig:
+      type: object
+      properties:
+        security:
+          $ref: '#/components/schemas/EndpointSecurityObjectConfig'
+          description: The configuration for the `LWM2M Security` object (ObjectID=0)
+        server:
+          $ref: '#/components/schemas/EndpointServerObjectConfig'
+          description: The configuration for the `LWM2M Server` object (ObjectID=1)
     EndpointServerObjectConfig:
       type: object
       properties:
@@ -736,47 +707,76 @@ components:
             format: int64
       required:
       - shortServerId
-    RunServerConfigParams:
+    BootstrapEntry:
       type: object
-      description: the new Run Server info
+      description: Bootstrap entry to create
       properties:
-        id:
+        endpointName:
           type: string
-          description: Run server unique identifier for which the following parameters will apply. Must correspond to the one defined in the BootstrapConfig Must respect the following regular expression <code>^[a-zA-Z0-9]{1,128}$</code> (max 128 characters).
-          example: server01
-          pattern: ^[a-zA-Z0-9]{1,128}$
-        security:
-          $ref: '#/components/schemas/RunSecurityInfo'
-          description: The security information to authenticate to the LwM2M Run server.
-      required:
-      - id
-    EndpointRunServerConfig:
-      type: object
-      properties:
-        security:
-          $ref: '#/components/schemas/EndpointSecurityObjectConfig'
-          description: The configuration for the `LWM2M Security` object (ObjectID=0)
-        server:
-          $ref: '#/components/schemas/EndpointServerObjectConfig'
-          description: The configuration for the `LWM2M Server` object (ObjectID=1)
-    BootstrapPreSharedKeyInfo:
-      type: object
-      properties:
-        identity:
-          type: string
-          description: The PSK Identity
+          description: The endpoint client name
           example: urn:imei:123456789012345
-          maxLength: 128
-          minLength: 0
-        secret:
+          pattern: ^[\w\-_:]{1,269}
+        security:
+          $ref: '#/components/schemas/BootstrapSecurityInfo'
+          description: The security information to authenticate to the LwM2M Bootstrap server
+        masterEntry:
+          $ref: '#/components/schemas/MasterEntryReference'
+          description: The link to the master entry if the entry was automatically create from a master entry
+        definition:
+          $ref: '#/components/schemas/BootstrapConfigParams'
+          description: The BootstrapConfig parameters for the endpoint (must be defined for the Bootstrap to work)
+        activity:
+          $ref: '#/components/schemas/BootstrapState'
+          description: Information about past Bootstrap sessions
+        created:
           type: string
-          description: The PSK secret. Must be encoded in hexadecimal.
-          example: 0123456789ABCDEF0123456789ABCDEF
-          maxLength: 128
-          minLength: 32
+          format: date-time
+          description: Date on which the BootstrapEntry was created
+          example: '2022-10-21T10:30:58Z'
+        updated:
+          type: string
+          format: date-time
+          description: Date on which the BootstrapEntry was last updated
+          example: '2022-10-25T17:45:02Z'
       required:
-      - identity
-      - secret
+      - endpointName
+      - security
+    BootstrapEntrySearchRequest:
+      type: object
+      properties:
+        endpointNames:
+          type: array
+          description: List of entries' endpointNames to filter on.
+          example: urn:lo:nsid:lwm2m:sensor12Stream
+          items:
+            type: string
+          maxItems: 100
+          minItems: 0
+        bootstrapConfigIds:
+          type: array
+          description: Ids of bootstrap configuration to filter on. Empty string "" filters on entries without config.
+          example: 63c18eb501e3fb673233ba1b
+          items:
+            type: string
+          maxItems: 100
+          minItems: 0
+    BootstrapConfigOperationsInfo:
+      type: object
+      properties:
+        writeOperationsInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/BootstrapConfigWriteOperationInfo'
+    EndpointBootstrapConfig:
+      type: object
+      properties:
+        runServers:
+          type: array
+          description: The list of run servers configurations
+          items:
+            $ref: '#/components/schemas/EndpointRunServerConfig'
+        additionalOperationsInfo:
+          $ref: '#/components/schemas/BootstrapConfigOperationsInfo'
   securitySchemes:
     X-API-KEY:
       type: apiKey

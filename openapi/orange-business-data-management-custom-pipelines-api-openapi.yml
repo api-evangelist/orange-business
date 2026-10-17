@@ -146,6 +146,55 @@ paths:
                 $ref: '#/components/schemas/Pipeline'
 components:
   schemas:
+    PipelineStepDescription:
+      type: object
+      discriminator:
+        propertyName: type
+      properties:
+        type:
+          type: string
+          enum:
+          - externalTransformation
+    ExternalTransformationStepDescription:
+      allOf:
+      - $ref: '#/components/schemas/PipelineStepDescription'
+      - type: object
+        properties:
+          url:
+            type: string
+            description: url of the external transformation service to call. (only the ports 80, 443, 8080, 8443 and 9243 are allowed).
+            example: http://lo-data-transformation.appspot.com/enrich
+          headers:
+            type: object
+            additionalProperties:
+              type: array
+              items:
+                type: string
+            description: A map of header to be passed in the http POST headers of the transformation request.
+            example:
+              x-my-header:
+              - account-1234
+          name:
+            type: string
+            description: Name of the step (will be added in the http POST headers of the transformation request).
+            maxLength: 1000
+            minLength: 0
+      required:
+      - url
+    GroupPath:
+      type: object
+      description: defines targeted group path
+      properties:
+        path:
+          type: string
+          description: path of the group
+          example: /europe/france
+        includeSubPath:
+          type: boolean
+          description: 'if true, all sub-paths will be targeted by this ActivityRule '
+      required:
+      - includeSubPath
+      - path
     PipelineFilter:
       type: object
       properties:
@@ -180,41 +229,6 @@ components:
               type: string
             uniqueItems: true
           uniqueItems: true
-    ExternalTransformationStepDescription:
-      allOf:
-      - $ref: '#/components/schemas/PipelineStepDescription'
-      - type: object
-        properties:
-          url:
-            type: string
-            description: url of the external transformation service to call. (only the ports 80, 443, 8080, 8443 and 9243 are allowed).
-            example: http://lo-data-transformation.appspot.com/enrich
-          headers:
-            type: object
-            additionalProperties:
-              type: array
-              items:
-                type: string
-            description: A map of header to be passed in the http POST headers of the transformation request.
-            example:
-              x-my-header:
-              - account-1234
-          name:
-            type: string
-            description: Name of the step (will be added in the http POST headers of the transformation request).
-            maxLength: 1000
-            minLength: 0
-      required:
-      - url
-    PipelineStepDescription:
-      type: object
-      discriminator:
-        propertyName: type
-      properties:
-        type:
-          type: string
-          enum:
-          - externalTransformation
     Pipeline:
       type: object
       description: DataMessage Pipeline definition
@@ -270,20 +284,6 @@ components:
       - name
       - priorityLevel
       - steps
-    GroupPath:
-      type: object
-      description: defines targeted group path
-      properties:
-        path:
-          type: string
-          description: path of the group
-          example: /europe/france
-        includeSubPath:
-          type: boolean
-          description: 'if true, all sub-paths will be targeted by this ActivityRule '
-      required:
-      - includeSubPath
-      - path
   securitySchemes:
     X-API-KEY:
       type: apiKey

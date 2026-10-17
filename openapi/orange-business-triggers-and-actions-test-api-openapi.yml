@@ -60,20 +60,27 @@ paths:
                 $ref: '#/components/schemas/FifoTestResult'
 components:
   schemas:
-    HttpPushTestResult:
+    FifoTestRequest:
+      type: object
+      description: FIFO test message request
+      properties:
+        fifoName:
+          type: string
+          description: name of the fifo to publish in
+        payload:
+          description: Fifo message to send, must be not null and json Object serializable
+      required:
+      - fifoName
+      - payload
+    FifoTestResult:
       type: object
       properties:
         success:
           type: boolean
-        urlBlacklisted:
-          type: boolean
+          description: Indicates if the test message was successfully published
         errorMessage:
           type: string
-        httpResponseStatusCode:
-          type: integer
-          format: int32
-        httpResponseBody:
-          type: string
+          description: Details about the error if any
     HttpPushWebhookTest:
       type: object
       description: Http push request to be tested
@@ -100,27 +107,20 @@ components:
           type: integer
           format: int64
           description: The maximum delay allowed to complete the http POST test request, in milliseconds
-    FifoTestRequest:
-      type: object
-      description: FIFO test message request
-      properties:
-        fifoName:
-          type: string
-          description: name of the fifo to publish in
-        payload:
-          description: Fifo message to send, must be not null and json Object serializable
-      required:
-      - fifoName
-      - payload
-    FifoTestResult:
+    HttpPushTestResult:
       type: object
       properties:
         success:
           type: boolean
-          description: Indicates if the test message was successfully published
+        urlBlacklisted:
+          type: boolean
         errorMessage:
           type: string
-          description: Details about the error if any
+        httpResponseStatusCode:
+          type: integer
+          format: int32
+        httpResponseBody:
+          type: string
   securitySchemes:
     X-API-KEY:
       type: apiKey

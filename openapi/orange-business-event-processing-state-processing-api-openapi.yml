@@ -165,6 +165,31 @@ paths:
                 $ref: '#/components/schemas/StateProcessingFunctionTestResult'
 components:
   schemas:
+    StateProcessingFunctionTestResult:
+      type: object
+      properties:
+        stateFunctionValid:
+          type: boolean
+          description: indicates if the state function is valid with jsonLogic syntax
+        dataValid:
+          type: boolean
+          description: indicates if data is valid
+        stateFunctionResult:
+          description: state function result when applied to data
+    StateProcessingFunctionTest:
+      type: object
+      description: State Processing function test request
+      properties:
+        data:
+          $ref: '#/components/schemas/NewData'
+          description: data to test the stateProcessingFunction with
+        stateProcessingFunction:
+          description: 'the JsonLogic (http://jsonlogic.com/) state function. This is the core of the state processing logic. This function takes as input a data message and computes a state associated whith the state key. It can return any primitive value : String, Number, Boolean. e.g. ''{"if":[{"<":[{"var":"value.temp"},0]},"cold",{"<=":[{"var":"value.temp"},100]},"normal","hot"]}'''
+        currentState:
+          description: simulate a current state, it can be used by the state function
+      required:
+      - data
+      - stateProcessingFunction
     StateProcessingRule:
       type: object
       description: StateProcessingRule to add
@@ -219,17 +244,6 @@ components:
       required:
       - lat
       - lon
-    StateProcessingFunctionTestResult:
-      type: object
-      properties:
-        stateFunctionValid:
-          type: boolean
-          description: indicates if the state function is valid with jsonLogic syntax
-        dataValid:
-          type: boolean
-          description: indicates if data is valid
-        stateFunctionResult:
-          description: state function result when applied to data
     NewData:
       type: object
       properties:
@@ -256,20 +270,6 @@ components:
       required:
       - streamId
       - timestamp
-    StateProcessingFunctionTest:
-      type: object
-      description: State Processing function test request
-      properties:
-        data:
-          $ref: '#/components/schemas/NewData'
-          description: data to test the stateProcessingFunction with
-        stateProcessingFunction:
-          description: 'the JsonLogic (http://jsonlogic.com/) state function. This is the core of the state processing logic. This function takes as input a data message and computes a state associated whith the state key. It can return any primitive value : String, Number, Boolean. e.g. ''{"if":[{"<":[{"var":"value.temp"},0]},"cold",{"<=":[{"var":"value.temp"},100]},"normal","hot"]}'''
-        currentState:
-          description: simulate a current state, it can be used by the state function
-      required:
-      - data
-      - stateProcessingFunction
   securitySchemes:
     X-API-KEY:
       type: apiKey

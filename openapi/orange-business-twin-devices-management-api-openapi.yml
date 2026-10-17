@@ -188,6 +188,48 @@ paths:
                 $ref: '#/components/schemas/WebErrorResponse'
 components:
   schemas:
+    WebErrorResponse:
+      type: object
+      description: Error response
+      properties:
+        id:
+          type: string
+          description: Unique identifier of this error instance
+        code:
+          type: string
+          description: Error code
+        message:
+          type: string
+          description: Short error description
+        details:
+          type: string
+          description: Detailed error description
+      required:
+      - code
+      - id
+      - message
+    TwinObjectInstance:
+      type: object
+      properties:
+        path:
+          type: string
+          description: Path of the object
+          example: /5/0
+          minLength: 1
+        objectDefinitionId:
+          type: string
+          description: Unique identifier of the object-definition
+          example: urn:oma:lwm2m:oma:5:1.1
+          minLength: 1
+        attributes:
+          type: array
+          description: List of object attributes
+          items:
+            $ref: '#/components/schemas/TwinAttribute'
+          uniqueItems: true
+      required:
+      - objectDefinitionId
+      - path
     TwinAttribute:
       type: object
       properties:
@@ -212,55 +254,6 @@ components:
       required:
       - path
       - pathSegment
-    TwinAttributeInstanceValue:
-      type: object
-      properties:
-        reportedValue:
-          type: string
-          description: Attribute reported value
-        timestamp:
-          type: string
-          description: Value timestamp
-        pendingValue:
-          type: string
-          description: Pending value
-        path:
-          type: string
-          description: Attribute multi-instantiable value path
-    TwinAttributeValue:
-      type: object
-      properties:
-        reportedValue:
-          type: string
-          description: Attribute reported value
-        timestamp:
-          type: string
-          description: Value timestamp
-        pendingValue:
-          type: string
-          description: Pending value
-    TwinObjectInstance:
-      type: object
-      properties:
-        path:
-          type: string
-          description: Path of the object
-          example: /5/0
-          minLength: 1
-        objectDefinitionId:
-          type: string
-          description: Unique identifier of the object-definition
-          example: urn:oma:lwm2m:oma:5:1.1
-          minLength: 1
-        attributes:
-          type: array
-          description: List of object attributes
-          items:
-            $ref: '#/components/schemas/TwinAttribute'
-          uniqueItems: true
-      required:
-      - objectDefinitionId
-      - path
     ParentTwinObject:
       type: object
       properties:
@@ -305,26 +298,33 @@ components:
       required:
       - objectDefinitionId
       - path
-    WebErrorResponse:
+    TwinAttributeValue:
       type: object
-      description: Error response
       properties:
-        id:
+        reportedValue:
           type: string
-          description: Unique identifier of this error instance
-        code:
+          description: Attribute reported value
+        timestamp:
           type: string
-          description: Error code
-        message:
+          description: Value timestamp
+        pendingValue:
           type: string
-          description: Short error description
-        details:
+          description: Pending value
+    TwinAttributeInstanceValue:
+      type: object
+      properties:
+        reportedValue:
           type: string
-          description: Detailed error description
-      required:
-      - code
-      - id
-      - message
+          description: Attribute reported value
+        timestamp:
+          type: string
+          description: Value timestamp
+        pendingValue:
+          type: string
+          description: Pending value
+        path:
+          type: string
+          description: Attribute multi-instantiable value path
   securitySchemes:
     X-API-KEY:
       type: apiKey

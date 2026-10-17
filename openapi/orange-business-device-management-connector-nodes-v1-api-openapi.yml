@@ -394,44 +394,6 @@ paths:
                 $ref: '#/components/schemas/WebErrorResponse'
 components:
   schemas:
-    ConnectorNodeLocation:
-      type: object
-      properties:
-        lat:
-          type: number
-          format: double
-          description: Last geolocation latitude (GPS coordinate system)
-          example: 10.11212
-          readOnly: true
-        lon:
-          type: number
-          format: double
-          description: Last geolocation longitude (GPS coordinate system)
-          example: 7.44464
-          readOnly: true
-        alt:
-          type: number
-          format: double
-          description: Last geolocation altitude (meter)
-          example: 50
-          readOnly: true
-        provider:
-          type: string
-          description: Computing geolocation method
-          example: RSSI
-          readOnly: true
-        accuracy:
-          type: number
-          format: double
-          description: Last global geolocation tolerance (meter)
-          example: 100
-          readOnly: true
-        lastUpdateTs:
-          type: string
-          format: date-time
-          description: Date/time of the last location
-          example: '2016-06-14T11:09:22.125Z'
-          readOnly: true
     ConnectorNode:
       type: object
       description: Full details about a connector node (=device interface)
@@ -489,19 +451,6 @@ components:
           description: Date/time of the device update
           example: '2016-06-03T15:55:36.944Z'
           readOnly: true
-    UpdateConnectorNodeRequest:
-      type: object
-      description: The fields to update
-      properties:
-        deviceId:
-          type: string
-          description: New device id this connector node must be associated with (or null)
-          example: urn:lo:nsid:sensor:2327398
-        enabled:
-          type: boolean
-          description: New enabled state for this connector node (or null)
-        definition:
-          description: New interface definition
     WebErrorResponse:
       type: object
       description: Error response
@@ -522,6 +471,57 @@ components:
       - code
       - id
       - message
+    UpdateConnectorNodeRequest:
+      type: object
+      description: The fields to update
+      properties:
+        deviceId:
+          type: string
+          description: New device id this connector node must be associated with (or null)
+          example: urn:lo:nsid:sensor:2327398
+        enabled:
+          type: boolean
+          description: New enabled state for this connector node (or null)
+        definition:
+          description: New interface definition
+    ConnectorNodeLocation:
+      type: object
+      properties:
+        lat:
+          type: number
+          format: double
+          description: Last geolocation latitude (GPS coordinate system)
+          example: 10.11212
+          readOnly: true
+        lon:
+          type: number
+          format: double
+          description: Last geolocation longitude (GPS coordinate system)
+          example: 7.44464
+          readOnly: true
+        alt:
+          type: number
+          format: double
+          description: Last geolocation altitude (meter)
+          example: 50
+          readOnly: true
+        provider:
+          type: string
+          description: Computing geolocation method
+          example: RSSI
+          readOnly: true
+        accuracy:
+          type: number
+          format: double
+          description: Last global geolocation tolerance (meter)
+          example: 100
+          readOnly: true
+        lastUpdateTs:
+          type: string
+          format: date-time
+          description: Date/time of the last location
+          example: '2016-06-14T11:09:22.125Z'
+          readOnly: true
   securitySchemes:
     X-API-KEY:
       type: apiKey
