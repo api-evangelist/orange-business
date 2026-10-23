@@ -10,7 +10,10 @@
     },
     {
       "source": "https://developer.orange.com/blog/",
-      "error": "HTTPError"
+      "feed_url": "https://developer.orange.com/blog/",
+      "title": "",
+      "saved": 0,
+      "method": "none"
     },
     {
       "source": "https://www.orange-business.com/en/blogs",
@@ -27,6 +30,13 @@
       "method": "none"
     },
     {
+      "source": "https://blog.liveobjects.orange-business.com/feed/",
+      "feed_url": "https://blog.liveobjects.orange-business.com/feed/",
+      "title": "",
+      "saved": 0,
+      "method": "feed"
+    },
+    {
       "source": "https://liveobjects.orange-business.com/swagger/",
       "feed_url": "https://liveobjects.orange-business.com/swagger/",
       "title": "",
@@ -41,8 +51,8 @@
       "method": "feed"
     }
   ],
-  "post_count": 1,
-  "fetched": "2026-10-10T13:15:00Z",
+  "post_count": 16,
+  "fetched": "2026-10-17T14:53:57Z",
   "feed_nature": "undetermined",
   "feed_nature_basis": null,
   "feed_nature_note": "Whether these posts are the vendor publishing or its support community, decided on the URL path grammar of the saved posts -- not the hostname, which carries both on Khoros, and not author diversity, which flags large vendor blogs as forums. 'undetermined' means undetermined."
