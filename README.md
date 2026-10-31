@@ -1,4 +1,4 @@
-# Orange Business (orange-business)
+# Orange Business
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,1272 +66,265 @@
 
 Orange Business is the B2B, telco-cloud, and developer arm of Orange S.A. — France's leading telecommunications group operating across Europe, the Middle East, and Africa. The company markets itself as "an operator, integrator, and platform player" and serves 30,000+ enterprise customers across 65 countries with cloud, cybersecurity, SD-WAN/SASE, 5G, IoT, data, AI, and digital-workplace services. Orange's developer surface is split across two tracks. The Orange Developer portal (developer.orange.com) publishes the Orange Open Gateway — Orange's implementation of GSMA Open Gateway / CAMARA standardised network APIs (Number Verification, SIM Swap, Device Swap, KYC Match, Device Location, Geofencing, Device Status, Quality on Demand, Population Density Data) — alongside Orange-specific APIs for IoT (Live Objects, IoT Global Connectivity), payments (Orange Money WebPay, Pay With Orange Bill, carrier billing across Orange Africa), communications (Voice, SMS MEA, Business Talk, Contact Everyone), cloud (Cloud Avenue sovereign IaaS, Evolution Platform), and identity (Live Identity Verify, Live Identity Captcha). The Orange Business Services portfolio adds a B2B TM Forum–aligned API track for ordering, billing, incident management, eligibility, and order tracking. The Orange-OpenSource GitHub org backs the developer ecosystem with 427+ repos including Hurl (the popular Rust HTTP testing CLI with 18K+ stars), the Boosted accessible Bootstrap framework, the OUDS Orange Unified Design System for iOS / Android / Flutter, and 5G Kubernetes Helm charts. Orange has also stood up Orange LiveNet, a business unit dedicated to commercialising programmable network capabilities, and is one of the founding operators of the GSMA Open Gateway initiative with the CAMARA Linux Foundation project.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/orange-business/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/orange-business/refs/heads/main/apis.yml)
+**Areas:** 5G · Artificial Intelligence · B2B · CAMARA · Cloud · Communications · Cybersecurity · Developer Platform · Digital Workplace · Enterprise · France · IoT
+
+## Orange Business on APIs.io
+
+Everything profiled for Orange Business is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/orange-business/](https://apis.io/providers/orange-business/)** — or go straight to one of the APIs or properties below.
+
+### APIs (86)
+
+- [Orange Business IoT Managed Global Connectivity API](https://apis.io/apis/orange-business/orange-business-iot-managed-global-connectivity-api/) — Manage Orange Business cellular IoT SIM fleets worldwide — activation, suspension, usage, location, diagnostics — across 200+ countries via a single REST…
+- [Orange Business Orange Money WebPay API](https://apis.io/apis/orange-business/orange-business-orange-money-webpay-api/) — Accept Orange Money mobile-wallet payments on web and mobile checkouts across Mali, Cameroon, Cote d'Ivoire, Senegal, Madagascar, Botswana, Guinea Conakry,…
+- [Orange Business Pay With Orange Bill API](https://apis.io/apis/orange-business/orange-business-pay-with-orange-bill-api/) — Direct-carrier-billing API that lets merchants charge purchases to a customer's Orange mobile invoice. Aimed at digital goods, content, and…
+- [Orange Business SMS Middle East and Africa API](https://apis.io/apis/orange-business/orange-business-sms-mea-api/) — A2P SMS delivery API for Orange Middle East and Africa footprint. Supports transactional, OTP, and marketing messages across Orange's African operating…
+- [Orange Business Voice as a Service API](https://apis.io/apis/orange-business/orange-business-voice-as-a-service-api/) — Programmable voice / VoIP API for integrating outbound calls, IVR, and click-to-call into business applications on Orange's voice platform.
+- [Orange Business Contact Everyone API](https://apis.io/apis/orange-business/orange-business-contact-everyone-api/) — Multichannel contact and notification API — SMS, voice, email, and fax broadcast — used for crisis communications, mass notifications, and customer outreach…
+- [Orange Business Talk API](https://apis.io/apis/orange-business/orange-business-business-talk-api/) — Programmable management for Business Talk, Orange Business's enterprise SIP trunking and IP voice service. Provision lines, manage sites, and integrate…
+- [Orange Business Cloud Avenue API](https://apis.io/apis/orange-business/orange-business-cloud-avenue-api/) — REST API for Cloud Avenue, Orange Business's France-sovereign VMware-based managed IaaS — provision virtual datacenters, networks, storage, and compute…
+- [Orange Business Evolution Platform IaaS API](https://apis.io/apis/orange-business/orange-business-evolution-platform-iaas-api/) — Sandbox IaaS environment for testing applications on Orange Business's Evolution Platform with full REST API access to VMs, networks, and storage.
+- [Orange Business EVPL Online API](https://apis.io/apis/orange-business/orange-business-evpl-online-api/) — Order, manage, and monitor Ethernet Virtual Private Line connectivity services across Orange Business's global Ethernet backbone via REST.
+- [Orange Business EVPL Monitoring API](https://apis.io/apis/orange-business/orange-business-evpl-monitoring-api/) — Real-time monitoring API for EVPL and adjacent Orange Business network services — fetch link health, throughput, and incident state for managed enterprise…
+- [Orange Business Content Delivery Boost API](https://apis.io/apis/orange-business/orange-business-content-delivery-boost-api/) — Manage CDN edge caching, purge, and acceleration policies for content delivered over Orange's networks — primarily targeted at media and large enterprise…
+- [Orange Business Core Information API](https://apis.io/apis/orange-business/orange-business-core-information-api/) — Customer-facing inventory API for Orange Business Services — list contracts, sites, services, and product instances under a B2B account.
+- [Orange Business Ordering API](https://apis.io/apis/orange-business/orange-business-ordering-api/) — Place, modify, and cancel orders against the Orange Business Services product catalogue. Aligned with TM Forum Open APIs (TMF622-style product ordering).
+- [Orange Business Order Tracking API](https://apis.io/apis/orange-business/orange-business-order-tracking-api/) — Track the lifecycle and milestones of an Orange Business Services order — status, expected delivery, blocking issues, and milestone history.
+- [Orange Business Billing API](https://apis.io/apis/orange-business/orange-business-billing-api/) — Programmatic access to Orange Business Services M2M invoices, charges, and itemised usage records for enterprise finance and FinOps integration.
+- [Orange Business Incident API](https://apis.io/apis/orange-business/orange-business-incident-api/) — Open, update, and track Orange Business Services support tickets via REST. Aligned with TM Forum TMF621 Trouble Ticket conventions to plug into enterprise…
+- [Orange Business API Place](https://apis.io/apis/orange-business/orange-business-api-place-api/) — Marketplace surface for discovering Orange Business APIs — programmatic catalogue access for the Orange Business API portfolio.
+- [Orange Business Operator Eligibility (France) API](https://apis.io/apis/orange-business/orange-business-operator-eligibility-fr-api/) — Check broadband and fibre eligibility at a French address for operator partners — feeds B2B onboarding flows.
+- [Orange Business RIP Operator Eligibility (France) API](https://apis.io/apis/orange-business/orange-business-rip-operator-eligibility-fr-api/) — Public-initiative network (RIP) fibre eligibility check for French regional fibre rollouts, used by alternative operators to qualify customer addresses.
+- [Orange Business Live Identity Verify API](https://apis.io/apis/orange-business/orange-business-live-identity-verify-api/) — Real-time identity verification combining ID-document capture, liveness detection, and biometric match against the document. Targets remote onboarding for…
+- [Orange Business Live Identity Captcha API](https://apis.io/apis/orange-business/orange-business-live-identity-captcha-api/) — Behavioural and challenge-based human-verification (captcha) API used inside Orange's Live Identity suite to gate sensitive flows against automated abuse.
+- [Orange Business Messaging Pro Cameroon API](https://apis.io/apis/orange-business/orange-business-messagingpro-cameroon-api/) — Cameroon-specific A2P messaging platform for enterprise SMS, USSD, and rich messaging deliveries to Orange Cameroon subscribers.
+- [Orange Business Check Device Swap API](https://apis.io/apis/orange-business/orange-business-check-device-swap-api/) — Validate if the SIM of the end-user has been installed in a different device during a past period
+- [Orange Business Geofencing subscriptions API](https://apis.io/apis/orange-business/orange-business-geofencing-subscriptions-api/) — Operations to manage event subscriptions on geofencing events for leaving and entering an area.
+- [Orange Business Location retrieval API](https://apis.io/apis/orange-business/orange-business-location-retrieval-api/) — Retrieve the location of a device
+- [Orange Business Match API](https://apis.io/apis/orange-business/orange-business-match-api/) — Operations to match a customer identity against the account data bound to their phone number.
+- [Orange Business Phone number share API](https://apis.io/apis/orange-business/orange-business-phone-number-share-api/) — API operation to return the phone number associated to the access token.
+- [Orange Business Phone number verify API](https://apis.io/apis/orange-business/orange-business-phone-number-verify-api/) — API operation to verify a phone number received as input. It can be received either in plain text or hashed format.
+- [Orange Business QoS Sessions API](https://apis.io/apis/orange-business/orange-business-qos-sessions-api/) — Manage QoS sessions
+- [Orange Business Retrieve Device Swap Date API](https://apis.io/apis/orange-business/orange-business-retrieve-device-swap-date-api/) — Receive the last date in which the device of the end-user was swapped
+- [Orange Business Accounting - V1 API](https://apis.io/apis/orange-business/orange-business-accounting-v1-api/) — get your accounting metrics
+- [Orange Business Alarm rules API](https://apis.io/apis/orange-business/orange-business-alarm-rules-api/) — Manage your alarm rules
+- [Orange Business Api keys API](https://apis.io/apis/orange-business/orange-business-api-keys-api/) — API key management
+- [Orange Business Api self keys API](https://apis.io/apis/orange-business/orange-business-api-self-keys-api/) — API self key management
+- [Orange Business Audit Log API](https://apis.io/apis/orange-business/orange-business-audit-log-api/) — Search through your AuditLog messages
+- [Orange Business Beta - Cellular networks management API](https://apis.io/apis/orange-business/orange-business-beta-cellular-networks-management-api/) — Cellular subscriptions and providers management
+- [Orange Business Beta - Network metrics API](https://apis.io/apis/orange-business/orange-business-beta-network-metrics-api/) — Search network metrics
+- [Orange Business Bootstrap Config API](https://apis.io/apis/orange-business/orange-business-bootstrap-config-api/) — Manage lwm2m bootstrap config
+- [Orange Business Bootstrap Entry API](https://apis.io/apis/orange-business/orange-business-bootstrap-entry-api/) — Manage LwM2M bootstrap entries
+- [Orange Business Bootstrap Master Entry API](https://apis.io/apis/orange-business/orange-business-bootstrap-master-entry-api/) — Manage LwM2M bootstrap master entries
+- [Orange Business Campaign management API](https://apis.io/apis/orange-business/orange-business-campaign-management-api/) — Management of actions on a fleet of devices
+- [Orange Business Data bulk injection API](https://apis.io/apis/orange-business/orange-business-data-bulk-injection-api/) — APIs to inject a bulk of data
+- [Orange Business Data management custom pipelines API](https://apis.io/apis/orange-business/orange-business-data-management-custom-pipelines-api/) — APIs to manage dataMessage custom pipelines
+- [Orange Business Data management data search API](https://apis.io/apis/orange-business/orange-business-data-management-data-search-api/) — APIs to search through injected data
+- [Orange Business Data management data store API](https://apis.io/apis/orange-business/orange-business-data-management-data-store-api/) — APIs to store and retrieve data
+- [Orange Business Decoders API](https://apis.io/apis/orange-business/orange-business-decoders-api/) — list all decoders for a tenant
+- [Orange Business Decoders - binary API](https://apis.io/apis/orange-business/orange-business-decoders-binary-api/) — binary decoder provisioning
+- [Orange Business Decoders - CSV API](https://apis.io/apis/orange-business/orange-business-decoders-csv-api/) — CSV decoder provisioning
+- [Orange Business Decoders - public API](https://apis.io/apis/orange-business/orange-business-decoders-public-api/) — public decoder management
+- [Orange Business Deprecated - Bus management API](https://apis.io/apis/orange-business/orange-business-deprecated-bus-management-api/) — FIFO are now automatically managed with FifoPublish Action in Trigger & Actions
+- [Orange Business Deprecated - Data management data search - V0 API](https://apis.io/apis/orange-business/orange-business-deprecated-data-management-data-search-v0-api/) — use data search V1 instead
+- [Orange Business Device Analytics API](https://apis.io/apis/orange-business/orange-business-device-analytics-api/) — Manage your device analytics rules
+- [Orange Business Device management - Commands API](https://apis.io/apis/orange-business/orange-business-device-management-commands-api/) — Devices commands
+- [Orange Business Device management - Configuration API](https://apis.io/apis/orange-business/orange-business-device-management-configuration-api/) — Devices configuration
+- [Orange Business Device management - Connector nodes - LoRa specific API](https://apis.io/apis/orange-business/orange-business-device-management-connector-nodes-lora-specific-api/) — LoRa connector specificity
+- [Orange Business Device management - Connector nodes - V1 API](https://apis.io/apis/orange-business/orange-business-device-management-connector-nodes-v1-api/) — Connector nodes management
+- [Orange Business Device management - Groups - V1 API](https://apis.io/apis/orange-business/orange-business-device-management-groups-v1-api/) — Group management
+- [Orange Business Device management - Interfaces API](https://apis.io/apis/orange-business/orange-business-device-management-interfaces-api/) — Devices' interfaces management
+- [Orange Business Device management - Inventory - V1 API](https://apis.io/apis/orange-business/orange-business-device-management-inventory-v1-api/) — Devices inventory
+- [Orange Business Device management - Resources API](https://apis.io/apis/orange-business/orange-business-device-management-resources-api/) — Devices resources and firmware
+- [Orange Business Device management - Resources management API](https://apis.io/apis/orange-business/orange-business-device-management-resources-management-api/) — Resources management and firmware
+- [Orange Business Event processing - Activity API](https://apis.io/apis/orange-business/orange-business-event-processing-activity-api/) — ActivityRule management
+- [Orange Business Event processing - Context API](https://apis.io/apis/orange-business/orange-business-event-processing-context-api/) — Context management
+- [Orange Business Event processing - Firing API](https://apis.io/apis/orange-business/orange-business-event-processing-firing-api/) — FiringRules and FiringGuards management
+- [Orange Business Event processing - Geozone API](https://apis.io/apis/orange-business/orange-business-event-processing-geozone-api/) — Geozone management
+- [Orange Business Event processing - Matching API](https://apis.io/apis/orange-business/orange-business-event-processing-matching-api/) — MatchingRules management
+- [Orange Business Event processing - State processing API](https://apis.io/apis/orange-business/orange-business-event-processing-state-processing-api/) — State processing Rules management
+- [Orange Business Gateway management for LoRa API](https://apis.io/apis/orange-business/orange-business-gateway-management-for-lora-api/) — Gateway management
+- [Orange Business Inventory Explorer API](https://apis.io/apis/orange-business/orange-business-inventory-explorer-api/) — Inventory explorer management
+- [Orange Business Notification API](https://apis.io/apis/orange-business/orange-business-notification-api/) — sending email or sms notifications
+- [Orange Business Notification channels API](https://apis.io/apis/orange-business/orange-business-notification-channels-api/) — Manage notification channels
+- [Orange Business Self tenant account API](https://apis.io/apis/orange-business/orange-business-self-tenant-account-api/) — Self tenant account management
+- [Orange Business Self User management API](https://apis.io/apis/orange-business/orange-business-self-user-management-api/) — manage self user
+- [Orange Business Triggers and Actions API](https://apis.io/apis/orange-business/orange-business-triggers-and-actions-api/) — Action policies on event and messages
+- [Orange Business Triggers and Actions - Test API](https://apis.io/apis/orange-business/orange-business-triggers-and-actions-test-api/) — Test api for actions
+- [Orange Business Twin data rules management API](https://apis.io/apis/orange-business/orange-business-twin-data-rules-management-api/) — Manage twin data rules
+- [Orange Business Twin devices management API](https://apis.io/apis/orange-business/orange-business-twin-devices-management-api/) — Manage twin device
+- [Orange Business Twin models management API](https://apis.io/apis/orange-business/orange-business-twin-models-management-api/) — Manage twin model
+- [Orange Business Twin observations API](https://apis.io/apis/orange-business/orange-business-twin-observations-api/) — Manage twin observations
+- [Orange Business Twin operations management API](https://apis.io/apis/orange-business/orange-business-twin-operations-management-api/) — Manage twin device operations
+- [Orange Business User authentication API](https://apis.io/apis/orange-business/orange-business-user-authentication-api/) — authentication
+- [Orange Business User authentication management API](https://apis.io/apis/orange-business/orange-business-user-authentication-management-api/) — authentication management
+- [Orange Business User Profile and Access Management API](https://apis.io/apis/orange-business/orange-business-user-profile-and-access-management-api/) — manage user profile and get access list
+- [Orange Business Users management API](https://apis.io/apis/orange-business/orange-business-users-management-api/) — manage users
+- [Orange Business Cacertificates API](https://apis.io/apis/orange-business/orange-business-cacertificates-api/) — CA certificates for MQTT client cert. authentication
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### AsyncAPI (1)
+
+Event-driven and webhook contracts.
 
-## Scope
+- [Orange Business Webhooks](https://apis.io/asyncapis/orange-business/orange-business-webhooks/)
 
-- **Access:** 3rd-Party
+#### MCP servers (1)
 
-## Tags
+Model Context Protocol servers that expose the API to agents.
 
-- 5G
-- AI
-- B2B
-- CAMARA
-- Cloud
-- Communications
-- Cybersecurity
-- Developer Platform
-- Digital Workplace
-- Enterprise
-- France
-- IoT
-- Identity
-- Mobile Money
-- Network APIs
-- Open Gateway
-- Orange
-- Payments
-- SD-WAN
-- SMS
-- SASE
-- Telco
-- Voice
+- [Orange CAMARA MCP Enablement PI1 server](https://apis.io/servers/orange-business/orange-camara-mcp-enablement-pi1-server/)
 
-## APIs
+#### Agentic access (1)
 
-### Orange Business Number Verification API
+Which operations an agent can call, which act, and which need a human in the loop.
 
-Silent, network-based mobile phone number verification using the SIM in the end user's device. Replaces SMS OTP and authenticator flows for app onboarding, login, and password reset. Implements the CAMARA Number Verification specification on Orange's network. Live in France and Spain through the Orange Open Gateway, with additional Orange Europe and Africa footprints in progress.
+- [Orange Business Agentic Access](https://apis.io/agentic-access/orange-business/orange-business-agentic-access/)
 
-- **Human URL:** [https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview](https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview)
+#### Collections (25)
 
-#### Tags
+Postman and Open Collection request collections.
 
-- Authentication
-- CAMARA
-- Identity
-- Number Verification
-- Open Gateway
-- Telco
+- [Device Location Retrieval Check Device Swap API](https://apis.io/collections/orange-business/open-orange-business-check-device-swap-api/)
+- [Device Location Retrieval Check Device Swap Check SIM swap API](https://apis.io/collections/orange-business/open-orange-business-check-sim-swap-api/)
+- [Device Location Retrieval](https://apis.io/collections/orange-business/open-orange-business-device-location-retrieval/)
+- [Device Location Verification](https://apis.io/collections/orange-business/open-orange-business-device-location-verification/)
+- [Device Reachability Status](https://apis.io/collections/orange-business/open-orange-business-device-reachability-status/)
+- [Device Location Retrieval Check Device Swap Device reachability status API](https://apis.io/collections/orange-business/open-orange-business-device-reachability-status-api/)
+- [Device Roaming Status](https://apis.io/collections/orange-business/open-orange-business-device-roaming-status/)
+- [Device Swap](https://apis.io/collections/orange-business/open-orange-business-device-swap/)
+- [Device Geofencing Subscriptions](https://apis.io/collections/orange-business/open-orange-business-geofencing/)
+- [Device Location Retrieval Check Device Swap Geofencing subscriptions API](https://apis.io/collections/orange-business/open-orange-business-geofencing-subscriptions-api/)
+- [Know Your Customer Match](https://apis.io/collections/orange-business/open-orange-business-kyc-match/)
+- [Device Check Device Swap Location retrieval API](https://apis.io/collections/orange-business/open-orange-business-location-retrieval-api/)
+- [Device Location Retrieval Check Device Swap Location verification API](https://apis.io/collections/orange-business/open-orange-business-location-verification-api/)
+- [Device Location Retrieval Check Device Swap Match API](https://apis.io/collections/orange-business/open-orange-business-match-api/)
+- [Number Verification](https://apis.io/collections/orange-business/open-orange-business-number-verification/)
+- [Device Location Retrieval Check Device Swap Phone number share API](https://apis.io/collections/orange-business/open-orange-business-phone-number-share-api/)
+- [Device Location Retrieval Check Device Swap Phone number verify API](https://apis.io/collections/orange-business/open-orange-business-phone-number-verify-api/)
+- [Population Density Data](https://apis.io/collections/orange-business/open-orange-business-population-density-data/)
+- [Device Location Retrieval Check Device Swap Population Density Data API](https://apis.io/collections/orange-business/open-orange-business-population-density-data-api/)
+- [Device Location Retrieval Check Device Swap QoS Sessions API](https://apis.io/collections/orange-business/open-orange-business-qos-sessions-api/)
+- [Quality-On-Demand](https://apis.io/collections/orange-business/open-orange-business-quality-on-demand/)
+- [Device Location Retrieval Check Device Swap Retrieve Device Swap Date API](https://apis.io/collections/orange-business/open-orange-business-retrieve-device-swap-date-api/)
+- [Device Location Retrieval Check Device Swap Retrieve SIM swap date API](https://apis.io/collections/orange-business/open-orange-business-retrieve-sim-swap-date-api/)
+- [Device Location Retrieval Check Device Swap Roaming status retrieval API](https://apis.io/collections/orange-business/open-orange-business-roaming-status-retrieval-api/)
+- [SIM Swap](https://apis.io/collections/orange-business/open-orange-business-sim-swap/)
 
-#### Properties
+#### Overlays (15)
 
-- [Documentation](https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/current/overview)
-- [OpenAPI](openapi/orange-business-number-verification-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/orange-business-number-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-number-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Source Code](https://github.com/camaraproject/NumberVerification)
+OpenAPI overlays, including conversational phrasing for each operation.
 
-### Orange Business SIM Swap API
+- [Orange Business Check Device Swap Api Overlay](https://apis.io/overlays/orange-business/orange-business-check-device-swap-api-overlay/)
+- [Orange Business Check Sim Swap Api Overlay](https://apis.io/overlays/orange-business/orange-business-check-sim-swap-api-overlay/)
+- [Orange Business Device Reachability Status Api Overlay](https://apis.io/overlays/orange-business/orange-business-device-reachability-status-api-overlay/)
+- [Orange Business Geofencing Subscriptions Api Overlay](https://apis.io/overlays/orange-business/orange-business-geofencing-subscriptions-api-overlay/)
+- [Orange Business Live Objects Overlay](https://apis.io/overlays/orange-business/orange-business-live-objects-overlay/)
+- [Orange Business Location Retrieval Api Overlay](https://apis.io/overlays/orange-business/orange-business-location-retrieval-api-overlay/)
+- [Orange Business Location Verification Api Overlay](https://apis.io/overlays/orange-business/orange-business-location-verification-api-overlay/)
+- [Orange Business Match Api Overlay](https://apis.io/overlays/orange-business/orange-business-match-api-overlay/)
+- [Orange Business Phone Number Share Api Overlay](https://apis.io/overlays/orange-business/orange-business-phone-number-share-api-overlay/)
+- [Orange Business Phone Number Verify Api Overlay](https://apis.io/overlays/orange-business/orange-business-phone-number-verify-api-overlay/)
+- [Orange Business Population Density Data Api Overlay](https://apis.io/overlays/orange-business/orange-business-population-density-data-api-overlay/)
+- [Orange Business Qos Sessions Api Overlay](https://apis.io/overlays/orange-business/orange-business-qos-sessions-api-overlay/)
+- [Orange Business Retrieve Device Swap Date Api Overlay](https://apis.io/overlays/orange-business/orange-business-retrieve-device-swap-date-api-overlay/)
+- [Orange Business Retrieve Sim Swap Date Api Overlay](https://apis.io/overlays/orange-business/orange-business-retrieve-sim-swap-date-api-overlay/)
+- [Orange Business Roaming Status Retrieval Api Overlay](https://apis.io/overlays/orange-business/orange-business-roaming-status-retrieval-api-overlay/)
 
-Detect whether the SIM associated with a mobile phone number has been swapped recently. Used to flag account takeover risk before high-value actions (login, transfers, password reset). Implements the CAMARA SIM Swap API on Orange France and Orange Spain networks via the Orange Open Gateway.
+#### Security (3)
 
-- **Human URL:** [https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/current/overview](https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/current/overview)
+Authentication, trust centre, and vulnerability disclosure.
 
-#### Tags
+- [Orange Business Authentication](https://apis.io/security/orange-business/orange-business-authentication/)
+- [Orange Business Domain Security](https://apis.io/security/orange-business/orange-business-domain-security/)
+- [Orange Business Vulnerability Disclosure](https://apis.io/security/orange-business/orange-business-vulnerability-disclosure/)
 
-- CAMARA
-- Fraud Prevention
-- Identity
-- Open Gateway
-- SIM Swap
-- Telco
+#### OAuth scopes (1)
 
-#### Properties
+The permissions the API asks for.
 
-- [Documentation](https://docs.developer.orange.com/network-apis/api-catalog/sim-swap/playground/current/overview)
-- [OpenAPI](openapi/orange-business-sim-swap-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/orange-business-sim-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-sim-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Source Code](https://github.com/camaraproject/SimSwap)
+- [Orange Business Scopes](https://apis.io/scopes/orange-business/orange-business-scopes/)
 
-### Orange Business Device Swap API
+#### Plans and pricing (1)
 
-Detect changes to the device (IMEI) associated with a SIM, surfacing risk signals beyond SIM swap. Implements the CAMARA Device Swap API.
+Published plans, tiers and prices.
 
-- **Human URL:** [https://docs.developer.orange.com/network-apis/api-catalog/device-swap/es/current/overview](https://docs.developer.orange.com/network-apis/api-catalog/device-swap/es/current/overview)
+- [Orange Business Plans Pricing](https://apis.io/plans/orange-business/orange-business-plans-pricing/)
 
-#### Tags
+#### Rate limits (1)
 
-- CAMARA
-- Device Swap
-- Fraud Prevention
-- Open Gateway
-- Telco
+Published request limits.
 
-#### Properties
+- [Orange Business Rate Limits](https://apis.io/rate-limits/orange-business/orange-business-rate-limits/)
 
-- [Documentation](https://docs.developer.orange.com/network-apis/api-catalog/device-swap/es/current/overview)
-- [OpenAPI](openapi/orange-business-device-swap-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/orange-business-device-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Source Code](https://github.com/camaraproject/DeviceSwap)
+## Where to find this API
 
-### Orange Business KYC Match API
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-Match user-provided KYC attributes (name, address, date of birth, document numbers) against the operator's authoritative subscriber record and return a per-attribute match/no-match response. Implements the CAMARA Know Your Customer (KYC) Match API.
-
-- **Human URL:** [https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/current/overview](https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/current/overview)
-
-#### Tags
-
-- CAMARA
-- Identity
-- KYC
-- Open Gateway
-- Telco
-
-#### Properties
-
-- [Documentation](https://docs.developer.orange.com/network-apis/api-catalog/kyc-match/playground/current/overview)
-- [OpenAPI](openapi/orange-business-kyc-match-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/orange-business-kyc-match.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-kyc-match.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Source Code](https://github.com/camaraproject/KnowYourCustomerMatch)
-
-### Orange Business Device Location Retrieval API
-
-Retrieve the network-derived location of a mobile device with operator-provided accuracy and confidence. Implements the CAMARA Device Location Retrieval API.
-
-- **Human URL:** [https://developer.orange.com/apis/device-location-retrieval-camara/](https://developer.orange.com/apis/device-location-retrieval-camara/)
-
-#### Tags
-
-- CAMARA
-- Device Location
-- Geolocation
-- Open Gateway
-- Telco
-
-#### Properties
-
-- [Documentation](https://developer.orange.com/apis/device-location-retrieval-camara/)
-- [OpenAPI](openapi/orange-business-device-location-retrieval-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/orange-business-device-location-retrieval.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-retrieval.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Source Code](https://github.com/camaraproject/DeviceLocation)
-
-### Orange Business Device Location Verification API
-
-Verify whether a mobile device is within a specified geographic area without exposing precise coordinates. Returns match/no-match plus confidence. Implements the CAMARA Device Location Verification API.
-
-- **Human URL:** [https://developer.orange.com/apis/device-location-verification-camara/](https://developer.orange.com/apis/device-location-verification-camara/)
-
-#### Tags
-
-- CAMARA
-- Device Location
-- Geolocation
-- Open Gateway
-- Telco
-
-#### Properties
-
-- [Documentation](https://developer.orange.com/apis/device-location-verification-camara/)
-- [OpenAPI](openapi/orange-business-device-location-verification-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/orange-business-device-location-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Source Code](https://github.com/camaraproject/DeviceLocation)
-
-### Orange Business Geofencing API
-
-Create event subscriptions that notify when a device enters or leaves a defined geographic area. Implements the CAMARA Geofencing Subscriptions API for area-based event detection.
-
-- **Human URL:** [https://developer.orange.com/apis/camara-geofencing/](https://developer.orange.com/apis/camara-geofencing/)
-
-#### Tags
-
-- CAMARA
-- Geofencing
-- Geolocation
-- Open Gateway
-- Telco
-
-#### Properties
-
-- [Documentation](https://developer.orange.com/apis/camara-geofencing/)
-- [OpenAPI](openapi/orange-business-geofencing-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/orange-business-geofencing.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-geofencing.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Source Code](https://github.com/camaraproject/DeviceLocation)
-
-### Orange Business Device Reachability Status API
-
-Query whether a device is currently reachable over the mobile network (connected data, connected SMS, or not connected). Implements the CAMARA Device Reachability Status API.
-
-- **Human URL:** [https://developer.orange.com/apis/camara-device-reachability-status/](https://developer.orange.com/apis/camara-device-reachability-status/)
-
-#### Tags
-
-- CAMARA
-- Device Status
-- Open Gateway
-- Reachability
-- Telco
-
-#### Properties
-
-- [Documentation](https://developer.orange.com/apis/camara-device-reachability-status/)
-- [OpenAPI](openapi/orange-business-device-reachability-status-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/orange-business-device-reachability-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-reachability-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Source Code](https://github.com/camaraproject/DeviceStatus)
-
-### Orange Business Device Roaming Status API
-
-Query whether a device is currently roaming and, when permitted, in which country. Implements the CAMARA Device Roaming Status API and supports event subscriptions for roaming changes.
-
-- **Human URL:** [https://developer.orange.com/apis/camara-device-roaming-status/](https://developer.orange.com/apis/camara-device-roaming-status/)
-
-#### Tags
-
-- CAMARA
-- Device Status
-- Open Gateway
-- Roaming
-- Telco
-
-#### Properties
-
-- [Documentation](https://developer.orange.com/apis/camara-device-roaming-status/)
-- [OpenAPI](openapi/orange-business-device-roaming-status-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/orange-business-device-roaming-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-roaming-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Source Code](https://github.com/camaraproject/DeviceStatus)
-
-### Orange Business Quality on Demand API
-
-Request a temporary boosted network quality profile (latency, throughput, packet loss target) for a specified device session and application flow. Implements the CAMARA Quality on Demand API and unlocks 5G network-slicing-style guarantees for streaming, gaming, drones, and field operations.
-
-- **Human URL:** [https://developer.orange.com/apis/camara-quality-of-service-on-demand/](https://developer.orange.com/apis/camara-quality-of-service-on-demand/)
-
-#### Tags
-
-- CAMARA
-- Network
-- Open Gateway
-- QoS
-- Quality on Demand
-- Telco
-
-#### Properties
-
-- [Documentation](https://developer.orange.com/apis/camara-quality-of-service-on-demand/)
-- [OpenAPI](openapi/orange-business-quality-on-demand-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/orange-business-quality-on-demand.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-quality-on-demand.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Source Code](https://github.com/camaraproject/QualityOnDemand)
-
-### Orange Business Population Density Data API
-
-Predictive population density estimations for France and Corsica derived from anonymised aggregated mobile network signals. Returns per-area density bands for retail, mobility, urban planning, and emergency response use cases. Implements the CAMARA Population Density Data API.
-
-- **Human URL:** [https://developer.orange.com/products/population-density-data/](https://developer.orange.com/products/population-density-data/)
-
-#### Tags
-
-- CAMARA
-- Mobility
-- Open Gateway
-- Population
-- Telco
-
-#### Properties
-
-- [Documentation](https://developer.orange.com/products/population-density-data/)
-- [OpenAPI](openapi/orange-business-population-density-data-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/orange-business-population-density-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-population-density-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Source Code](https://github.com/camaraproject/PopulationDensityData)
-
-### Orange Business Live Objects API
-
-Orange's IoT platform (also branded Datavenue) for connecting, managing, and ingesting data from IoT devices over LoRa, NB-IoT, LTE-M, and classic cellular. REST and MQTT interfaces for device, group, command, and data-stream management with end-to-end security and multi-tenant fleet operations.
-
-- **Human URL:** [https://liveobjects.orange-business.com/](https://liveobjects.orange-business.com/)
-
-#### Tags
-
-- Connectivity
-- Devices
-- IoT
-- Live Objects
-- Telco
-
-#### Properties
-
-- [Portal](https://liveobjects.orange-business.com/)
-- [Documentation](https://developer.orange.com/apis/datavenue)
-- [Postman Collection](collections/orange-business-device-location-retrieval.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-retrieval.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-location-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-reachability-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-reachability-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-roaming-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-roaming-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-geofencing.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-geofencing.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-kyc-match.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-kyc-match.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-number-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-number-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-population-density-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-population-density-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-quality-on-demand.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-quality-on-demand.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-sim-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-sim-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Orange Business IoT Managed Global Connectivity API
-
-Manage Orange Business cellular IoT SIM fleets worldwide — activation, suspension, usage, location, diagnostics — across 200+ countries via a single REST surface. Backs the Orange Business Mobile Connect platform for global M2M and IoT deployments.
-
-- **Human URL:** [https://developer.orange.com/apis/iot-managed-global-connectivity](https://developer.orange.com/apis/iot-managed-global-connectivity)
-
-#### Tags
-
-- Connectivity
-- IoT
-- SIM
-- Telco
-
-#### Properties
-
-- [Documentation](https://developer.orange.com/apis/iot-managed-global-connectivity)
-- [Postman Collection](collections/orange-business-device-location-retrieval.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-retrieval.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-location-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-reachability-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-reachability-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-roaming-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-roaming-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-geofencing.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-geofencing.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-kyc-match.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-kyc-match.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-number-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-number-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-population-density-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-population-density-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-quality-on-demand.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-quality-on-demand.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-sim-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-sim-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Orange Business Orange Money WebPay API
-
-Accept Orange Money mobile-wallet payments on web and mobile checkouts across Mali, Cameroon, Cote d'Ivoire, Senegal, Madagascar, Botswana, Guinea Conakry, Guinea Bissau, Sierra Leone, DR Congo, and Central African Republic. End-user OTP via Orange Money USSD; supports tax, donations, school fees, and standard e-commerce.
-
-- **Human URL:** [https://developer.orange.com/apis/om-webpay](https://developer.orange.com/apis/om-webpay)
-
-#### Tags
-
-- Africa
-- Mobile Money
-- Orange Money
-- Payments
-- Telco
-
-#### Properties
-
-- [Documentation](https://developer.orange.com/apis/om-webpay)
-- [Postman Collection](collections/orange-business-device-location-retrieval.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-retrieval.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-location-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-reachability-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-reachability-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-roaming-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-roaming-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-geofencing.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-geofencing.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-kyc-match.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-kyc-match.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-number-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-number-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-population-density-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-population-density-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-quality-on-demand.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-quality-on-demand.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-sim-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-sim-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Orange Business Pay With Orange Bill API
-
-Direct-carrier-billing API that lets merchants charge purchases to a customer's Orange mobile invoice. Aimed at digital goods, content, and microtransactions for Orange subscribers.
-
-- **Human URL:** [https://developer.orange.com/apis/pay-with-orange-bill](https://developer.orange.com/apis/pay-with-orange-bill)
-
-#### Tags
-
-- Carrier Billing
-- Payments
-- Telco
-
-#### Properties
-
-- [Documentation](https://developer.orange.com/apis/pay-with-orange-bill)
-- [Postman Collection](collections/orange-business-device-location-retrieval.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-retrieval.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-location-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-reachability-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-reachability-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-roaming-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-roaming-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-geofencing.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-geofencing.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-kyc-match.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-kyc-match.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-number-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-number-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-population-density-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-population-density-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-quality-on-demand.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-quality-on-demand.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-sim-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-sim-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Orange Business SMS Middle East and Africa API
-
-A2P SMS delivery API for Orange Middle East and Africa footprint. Supports transactional, OTP, and marketing messages across Orange's African operating companies.
-
-- **Human URL:** [https://developer.orange.com/apis/sms](https://developer.orange.com/apis/sms)
-
-#### Tags
-
-- Africa
-- Messaging
-- Middle East
-- SMS
-- Telco
-
-#### Properties
-
-- [Documentation](https://developer.orange.com/apis/sms)
-- [Postman Collection](collections/orange-business-device-location-retrieval.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-retrieval.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-location-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-reachability-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-reachability-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-roaming-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-roaming-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-geofencing.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-geofencing.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-kyc-match.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-kyc-match.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-number-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-number-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-population-density-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-population-density-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-quality-on-demand.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-quality-on-demand.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-sim-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-sim-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Orange Business Voice as a Service API
-
-Programmable voice / VoIP API for integrating outbound calls, IVR, and click-to-call into business applications on Orange's voice platform.
-
-- **Human URL:** [https://developer.orange.com/apis/voice-api](https://developer.orange.com/apis/voice-api)
-
-#### Tags
-
-- Communications
-- Telco
-- Voice
-- VoIP
-
-#### Properties
-
-- [Documentation](https://developer.orange.com/apis/voice-api)
-- [Postman Collection](collections/orange-business-device-location-retrieval.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-retrieval.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-location-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-reachability-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-reachability-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-roaming-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-roaming-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-geofencing.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-geofencing.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-kyc-match.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-kyc-match.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-number-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-number-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-population-density-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-population-density-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-quality-on-demand.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-quality-on-demand.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-sim-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-sim-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Orange Business Contact Everyone API
-
-Multichannel contact and notification API — SMS, voice, email, and fax broadcast — used for crisis communications, mass notifications, and customer outreach campaigns by Orange Business enterprise customers.
-
-- **Human URL:** [https://developer.orange.com/apis/contact-everyone](https://developer.orange.com/apis/contact-everyone)
-
-#### Tags
-
-- Communications
-- Multichannel
-- Notifications
-- Telco
-
-#### Properties
-
-- [Documentation](https://developer.orange.com/apis/contact-everyone)
-- [Postman Collection](collections/orange-business-device-location-retrieval.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-retrieval.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-location-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-reachability-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-reachability-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-roaming-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-roaming-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-geofencing.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-geofencing.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-kyc-match.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-kyc-match.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-number-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-number-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-population-density-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-population-density-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-quality-on-demand.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-quality-on-demand.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-sim-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-sim-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Orange Business Business Talk API
-
-Programmable management for Business Talk, Orange Business's enterprise SIP trunking and IP voice service. Provision lines, manage sites, and integrate voice with UCaaS platforms.
-
-- **Human URL:** [https://developer.orange.com/apis/businesstalk](https://developer.orange.com/apis/businesstalk)
-
-#### Tags
-
-- Communications
-- Enterprise
-- SIP Trunking
-- Telco
-- Voice
-
-#### Properties
-
-- [Documentation](https://developer.orange.com/apis/businesstalk)
-- [Postman Collection](collections/orange-business-device-location-retrieval.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-retrieval.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-location-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-reachability-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-reachability-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-roaming-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-roaming-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-geofencing.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-geofencing.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-kyc-match.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-kyc-match.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-number-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-number-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-population-density-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-population-density-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-quality-on-demand.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-quality-on-demand.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-sim-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-sim-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Orange Business Cloud Avenue API
-
-REST API for Cloud Avenue, Orange Business's France-sovereign VMware-based managed IaaS — provision virtual datacenters, networks, storage, and compute resources programmatically.
-
-- **Human URL:** [https://developer.orange.com/apis/cloud-avenue](https://developer.orange.com/apis/cloud-avenue)
-
-#### Tags
-
-- Cloud
-- IaaS
-- Sovereign Cloud
-- Telco
-- VMware
-
-#### Properties
-
-- [Documentation](https://developer.orange.com/apis/cloud-avenue)
-- [Postman Collection](collections/orange-business-device-location-retrieval.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-retrieval.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-location-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-reachability-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-reachability-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-roaming-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-roaming-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-geofencing.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-geofencing.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-kyc-match.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-kyc-match.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-number-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-number-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-population-density-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-population-density-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-quality-on-demand.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-quality-on-demand.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-sim-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-sim-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Orange Business Evolution Platform IaaS API
-
-Sandbox IaaS environment for testing applications on Orange Business's Evolution Platform with full REST API access to VMs, networks, and storage.
-
-- **Human URL:** [https://developer.orange.com/apis/evolution-platform-iaas-sandbox](https://developer.orange.com/apis/evolution-platform-iaas-sandbox)
-
-#### Tags
-
-- Cloud
-- IaaS
-- Sandbox
-- Telco
-
-#### Properties
-
-- [Documentation](https://developer.orange.com/apis/evolution-platform-iaas-sandbox)
-- [Postman Collection](collections/orange-business-device-location-retrieval.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-retrieval.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-location-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-reachability-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-reachability-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-roaming-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-roaming-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-geofencing.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-geofencing.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-kyc-match.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-kyc-match.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-number-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-number-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-population-density-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-population-density-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-quality-on-demand.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-quality-on-demand.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-sim-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-sim-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Orange Business EVPL Online API
-
-Order, manage, and monitor Ethernet Virtual Private Line connectivity services across Orange Business's global Ethernet backbone via REST.
-
-- **Human URL:** [https://developer.orange.com/apis/evpl-online/](https://developer.orange.com/apis/evpl-online/)
-
-#### Tags
-
-- Connectivity
-- Enterprise
-- Ethernet
-- Network
-- Telco
-
-#### Properties
-
-- [Documentation](https://developer.orange.com/apis/evpl-online/)
-- [Postman Collection](collections/orange-business-device-location-retrieval.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-retrieval.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-location-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-reachability-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-reachability-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-roaming-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-roaming-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-geofencing.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-geofencing.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-kyc-match.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-kyc-match.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-number-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-number-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-population-density-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-population-density-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-quality-on-demand.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-quality-on-demand.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-sim-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-sim-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Orange Business EVPL Monitoring API
-
-Real-time monitoring API for EVPL and adjacent Orange Business network services — fetch link health, throughput, and incident state for managed enterprise connectivity.
-
-- **Human URL:** [https://developer.orange.com/apis/api-monitoring-live](https://developer.orange.com/apis/api-monitoring-live)
-
-#### Tags
-
-- Monitoring
-- Network
-- Observability
-- Telco
-
-#### Properties
-
-- [Documentation](https://developer.orange.com/apis/api-monitoring-live)
-- [Postman Collection](collections/orange-business-device-location-retrieval.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-retrieval.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-location-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-reachability-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-reachability-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-roaming-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-roaming-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-geofencing.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-geofencing.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-kyc-match.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-kyc-match.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-number-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-number-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-population-density-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-population-density-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-quality-on-demand.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-quality-on-demand.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-sim-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-sim-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Orange Business Content Delivery Boost API
-
-Manage CDN edge caching, purge, and acceleration policies for content delivered over Orange's networks — primarily targeted at media and large enterprise customers.
-
-- **Human URL:** [https://developer.orange.com/apis/content-delivery-boost](https://developer.orange.com/apis/content-delivery-boost)
-
-#### Tags
-
-- CDN
-- Content Delivery
-- Performance
-- Telco
-
-#### Properties
-
-- [Documentation](https://developer.orange.com/apis/content-delivery-boost)
-- [Postman Collection](collections/orange-business-device-location-retrieval.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-retrieval.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-location-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-reachability-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-reachability-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-roaming-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-roaming-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-geofencing.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-geofencing.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-kyc-match.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-kyc-match.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-number-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-number-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-population-density-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-population-density-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-quality-on-demand.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-quality-on-demand.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-sim-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-sim-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Orange Business Core Information API
-
-Customer-facing inventory API for Orange Business Services — list contracts, sites, services, and product instances under a B2B account.
-
-- **Human URL:** [https://developer.orange.com/apis/orange-business-services-core-information](https://developer.orange.com/apis/orange-business-services-core-information)
-
-#### Tags
-
-- B2B
-- Customer
-- Inventory
-- Orange Business Services
-- Telco
-
-#### Properties
-
-- [Documentation](https://developer.orange.com/apis/orange-business-services-core-information)
-- [Postman Collection](collections/orange-business-device-location-retrieval.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-retrieval.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-location-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-reachability-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-reachability-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-roaming-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-roaming-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-geofencing.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-geofencing.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-kyc-match.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-kyc-match.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-number-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-number-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-population-density-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-population-density-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-quality-on-demand.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-quality-on-demand.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-sim-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-sim-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Orange Business Ordering API
-
-Place, modify, and cancel orders against the Orange Business Services product catalogue. Aligned with TM Forum Open APIs (TMF622-style product ordering).
-
-- **Human URL:** [https://developer.orange.com/apis/orange-business-services-ordering](https://developer.orange.com/apis/orange-business-services-ordering)
-
-#### Tags
-
-- B2B
-- Ordering
-- Orange Business Services
-- TM Forum
-- Telco
-
-#### Properties
-
-- [Documentation](https://developer.orange.com/apis/orange-business-services-ordering)
-- [Postman Collection](collections/orange-business-device-location-retrieval.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-retrieval.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-location-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-reachability-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-reachability-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-roaming-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-roaming-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-geofencing.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-geofencing.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-kyc-match.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-kyc-match.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-number-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-number-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-population-density-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-population-density-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-quality-on-demand.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-quality-on-demand.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-sim-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-sim-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Orange Business Order Tracking API
-
-Track the lifecycle and milestones of an Orange Business Services order — status, expected delivery, blocking issues, and milestone history.
-
-- **Human URL:** [https://developer.orange.com/apis/order-tracking-documentation](https://developer.orange.com/apis/order-tracking-documentation)
-
-#### Tags
-
-- B2B
-- Order Tracking
-- Orange Business Services
-- Telco
-
-#### Properties
-
-- [Documentation](https://developer.orange.com/apis/order-tracking-documentation)
-- [Postman Collection](collections/orange-business-device-location-retrieval.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-retrieval.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-location-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-reachability-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-reachability-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-roaming-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-roaming-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-geofencing.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-geofencing.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-kyc-match.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-kyc-match.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-number-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-number-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-population-density-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-population-density-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-quality-on-demand.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-quality-on-demand.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-sim-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-sim-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Orange Business Billing API
-
-Programmatic access to Orange Business Services M2M invoices, charges, and itemised usage records for enterprise finance and FinOps integration.
-
-- **Human URL:** [https://developer.orange.com/apis/orange-business-services-billing-m2m](https://developer.orange.com/apis/orange-business-services-billing-m2m)
-
-#### Tags
-
-- B2B
-- Billing
-- Orange Business Services
-- Telco
-
-#### Properties
-
-- [Documentation](https://developer.orange.com/apis/orange-business-services-billing-m2m)
-- [Postman Collection](collections/orange-business-device-location-retrieval.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-retrieval.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-location-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-reachability-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-reachability-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-roaming-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-roaming-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-geofencing.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-geofencing.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-kyc-match.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-kyc-match.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-number-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-number-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-population-density-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-population-density-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-quality-on-demand.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-quality-on-demand.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-sim-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-sim-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Orange Business Incident API
-
-Open, update, and track Orange Business Services support tickets via REST. Aligned with TM Forum TMF621 Trouble Ticket conventions to plug into enterprise ITSM workflows.
-
-- **Human URL:** [https://developer.orange.com/apis/orange-business-services-incident](https://developer.orange.com/apis/orange-business-services-incident)
-
-#### Tags
-
-- B2B
-- Incident Management
-- ITSM
-- Orange Business Services
-- TM Forum
-- Telco
-
-#### Properties
-
-- [Documentation](https://developer.orange.com/apis/orange-business-services-incident)
-- [Postman Collection](collections/orange-business-device-location-retrieval.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-retrieval.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-location-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-reachability-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-reachability-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-roaming-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-roaming-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-geofencing.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-geofencing.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-kyc-match.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-kyc-match.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-number-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-number-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-population-density-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-population-density-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-quality-on-demand.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-quality-on-demand.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-sim-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-sim-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Orange Business API Place
-
-Marketplace surface for discovering Orange Business APIs — programmatic catalogue access for the Orange Business API portfolio.
-
-- **Human URL:** [https://developer.orange.com/apis/api-place](https://developer.orange.com/apis/api-place)
-
-#### Tags
-
-- API Marketplace
-- B2B
-- Catalogue
-- Telco
-
-#### Properties
-
-- [Documentation](https://developer.orange.com/apis/api-place)
-- [Postman Collection](collections/orange-business-device-location-retrieval.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-retrieval.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-location-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-reachability-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-reachability-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-roaming-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-roaming-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-geofencing.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-geofencing.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-kyc-match.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-kyc-match.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-number-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-number-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-population-density-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-population-density-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-quality-on-demand.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-quality-on-demand.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-sim-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-sim-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Orange Business Operator Eligibility (France) API
-
-Check broadband and fibre eligibility at a French address for operator partners — feeds B2B onboarding flows.
-
-- **Human URL:** [https://developer.orange.com/apis/operator-eligibility-fr](https://developer.orange.com/apis/operator-eligibility-fr)
-
-#### Tags
-
-- B2B
-- Broadband
-- Eligibility
-- France
-- Telco
-
-#### Properties
-
-- [Documentation](https://developer.orange.com/apis/operator-eligibility-fr)
-- [Postman Collection](collections/orange-business-device-location-retrieval.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-retrieval.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-location-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-reachability-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-reachability-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-roaming-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-roaming-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-geofencing.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-geofencing.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-kyc-match.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-kyc-match.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-number-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-number-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-population-density-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-population-density-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-quality-on-demand.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-quality-on-demand.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-sim-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-sim-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Orange Business RIP Operator Eligibility (France) API
-
-Public-initiative network (RIP) fibre eligibility check for French regional fibre rollouts, used by alternative operators to qualify customer addresses.
-
-- **Human URL:** [https://developer.orange.com/apis/rip-operator-eligibility-fr](https://developer.orange.com/apis/rip-operator-eligibility-fr)
-
-#### Tags
-
-- B2B
-- Broadband
-- Eligibility
-- Fibre
-- France
-- Telco
-
-#### Properties
-
-- [Documentation](https://developer.orange.com/apis/rip-operator-eligibility-fr)
-- [Postman Collection](collections/orange-business-device-location-retrieval.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-retrieval.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-location-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-reachability-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-reachability-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-roaming-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-roaming-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-geofencing.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-geofencing.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-kyc-match.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-kyc-match.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-number-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-number-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-population-density-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-population-density-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-quality-on-demand.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-quality-on-demand.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-sim-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-sim-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Orange Business Live Identity Verify API
-
-Real-time identity verification combining ID-document capture, liveness detection, and biometric match against the document. Targets remote onboarding for regulated industries.
-
-- **Human URL:** [https://developer.orange.com/apis/live-identity-verify](https://developer.orange.com/apis/live-identity-verify)
-
-#### Tags
-
-- Biometrics
-- Fraud Prevention
-- Identity
-- KYC
-- Telco
-
-#### Properties
-
-- [Documentation](https://developer.orange.com/apis/live-identity-verify)
-- [Postman Collection](collections/orange-business-device-location-retrieval.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-retrieval.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-location-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-reachability-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-reachability-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-roaming-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-roaming-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-geofencing.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-geofencing.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-kyc-match.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-kyc-match.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-number-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-number-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-population-density-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-population-density-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-quality-on-demand.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-quality-on-demand.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-sim-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-sim-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Orange Business Live Identity Captcha API
-
-Behavioural and challenge-based human-verification (captcha) API used inside Orange's Live Identity suite to gate sensitive flows against automated abuse.
-
-- **Human URL:** [https://developer.orange.com/apis/live-identity-captcha](https://developer.orange.com/apis/live-identity-captcha)
-
-#### Tags
-
-- Anti-Bot
-- Captcha
-- Fraud Prevention
-- Identity
-- Telco
-
-#### Properties
-
-- [Documentation](https://developer.orange.com/apis/live-identity-captcha)
-- [Postman Collection](collections/orange-business-device-location-retrieval.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-retrieval.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-location-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-reachability-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-reachability-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-roaming-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-roaming-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-geofencing.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-geofencing.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-kyc-match.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-kyc-match.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-number-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-number-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-population-density-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-population-density-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-quality-on-demand.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-quality-on-demand.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-sim-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-sim-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Orange Business Messaging Pro Cameroon API
-
-Cameroon-specific A2P messaging platform for enterprise SMS, USSD, and rich messaging deliveries to Orange Cameroon subscribers.
-
-- **Human URL:** [https://developer.orange.com/apis/messagingpro-cameroon](https://developer.orange.com/apis/messagingpro-cameroon)
-
-#### Tags
-
-- Africa
-- Cameroon
-- Messaging
-- SMS
-- Telco
-
-#### Properties
-
-- [Documentation](https://developer.orange.com/apis/messagingpro-cameroon)
-- [Postman Collection](collections/orange-business-device-location-retrieval.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-retrieval.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-location-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-location-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-reachability-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-reachability-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-roaming-status.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-roaming-status.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-device-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-device-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-geofencing.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-geofencing.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-kyc-match.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-kyc-match.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-number-verification.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-number-verification.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-population-density-data.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-population-density-data.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-quality-on-demand.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-quality-on-demand.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [Postman Collection](collections/orange-business-sim-swap.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/orange-business-sim-swap.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-## Common Properties
-
-- [Portal](https://developer.orange.com/)
-- [Portal](https://www.orange-business.com/en)
+- [Website](https://www.orange.com/)
 - [Documentation](https://docs.developer.orange.com/)
-- [Documentation](https://developer.orange.com/products/network-apis/)
-- [Documentation](https://developer.orange.com/blog/orange-open-gateway-the-new-era-of-digital-services/)
-- [Documentation](https://developer.orange.com/blog/orange-livenet-a-new-business-unit-to-market-network-apis/)
-- [Documentation](https://www.gsma.com/solutions-and-impact/gsma-open-gateway/gsma_orgs/orange-2/)
-- [Source Code](https://github.com/camaraproject)
-- [GitHub Organization](https://github.com/Orange-OpenSource)
-- [Tool](https://github.com/Orange-OpenSource/hurl)
-- [Tool](https://github.com/Orange-OpenSource/Orange-Boosted-Bootstrap)
-- [SDK](https://github.com/Orange-OpenSource/ouds-ios)
-- [SDK](https://github.com/Orange-OpenSource/ouds-android)
-- [SDK](https://github.com/Orange-OpenSource/ouds-flutter)
-- [Tool](https://github.com/Orange-OpenSource/towards5gs-helm)
-- [Blog](https://developer.orange.com/blog/)
-- [Blog](https://www.orange-business.com/en/blogs)
-- [Documentation](https://5glab.orange.com/en/)
-- [Blog](https://www.orange.com/en/news)
-- [LinkedIn](https://www.linkedin.com/company/orange-business/)
-- [LinkedIn](https://www.linkedin.com/company/orange/)
-- [Twitter](https://twitter.com/orangebusiness)
-- [Terms of Service](https://www.orange-business.com/en/legal-notice)
-- [Privacy Policy](https://www.orange-business.com/en/personal-data-protection)
+- [Getting started](https://docs.developer.orange.com/network-apis/practical-guides/try-it-for-free/getting-started)
+- [API reference](https://docs.developer.orange.com/network-apis/api-catalog/number-verification/playground/1.0/api-reference)
+- [Pricing](https://developer.orange.com/talk-to-sales/)
 - [Support](https://developer.orange.com/contact)
-- [Support](https://developer.orange.com/talk-to-sales/)
-- [Sign Up](https://developer.orange.com/register)
-- [Documentation](https://www.orange-business.com/en/our-solutions)
-- [Documentation](https://www.orange-business.com/en/products/live-intelligence)
-- [Portal](https://liveobjects.orange-business.com/)
-- [Portal](https://cloud.orange-business.com/)
+- [Blog](https://developer.orange.com/blog/)
+- [Terms of service](https://www.orange-business.com/en/legal-information)
+- [Privacy policy](https://www.orange-business.com/en/privacy-policy)
+- [GitHub](https://github.com/Orange-OpenSource)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** info@apievangelist.com
+**Kin Score 65.3** — strong · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 68.3 |
+| Contract quality | 62.0 |
+| Contract governance | 18.2 |
+| Operational transparency | 78.9 |
+| Developer ergonomics | 82.7 |
+| Access clarity | 65.8 |
+
+**Agent readiness 43.2** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | documented (partial credit) |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | yes |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | yes |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | documented (partial credit) |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 42.2** — Telecommunications
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/orange-business/](https://apis.io/providers/orange-business/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Orange Business: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/orange-business/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
